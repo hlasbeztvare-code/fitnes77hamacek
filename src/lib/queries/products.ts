@@ -1,20 +1,14 @@
-import { db } from '@/lib/db';
+import { db } from "@/lib/db";
 
-export async function getAllSupplements() {
+export async function getSupplements() {
   return db.product.findMany({
-    where: {
-      category: 'supplement',
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
+    orderBy: { createdAt: 'desc' }
   });
 }
 
 export async function getSupplementBySlug(slug: string) {
+  if (!slug) return null;
   return db.product.findUnique({
-    where: {
-      slug,
-    },
+    where: { slug },
   });
 }
