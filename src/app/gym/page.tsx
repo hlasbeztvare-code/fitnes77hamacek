@@ -13,91 +13,95 @@ export default async function GymPage() {
   } catch (e) {}
 
   return (
-    <main className="bg-white min-h-screen text-black pb-20 selection:bg-[#E10600] overflow-x-hidden">
+    <main className="bg-white min-h-screen text-black selection:bg-[#E10600] overflow-x-hidden">
       
-      {/* 1. COMPACT HERO (Jen 45% výšky, masivní hloubka) */}
-      <section className="relative h-[45vh] flex items-center justify-center overflow-hidden bg-[#fdfdfd] border-b border-black/5">
-        <div className="max-w-[1200px] w-full mx-auto relative z-10 flex flex-col items-center justify-center">
+      {/* 1. ULTRA-CLEAN COMPACT HERO (The Levitating Core) */}
+      <section className="relative h-[45vh] flex items-center justify-center overflow-hidden bg-white">
+        <div className="max-w-[1200px] w-full mx-auto relative z-20 flex flex-col items-center justify-center pt-8">
           <Reveal>
-            <div className="mb-2 inline-flex items-center gap-2 bg-black/5 px-3 py-0.5 border border-black/5 transform -skew-x-12">
-              <span className="text-[#E10600] font-black uppercase tracking-[0.3em] text-[8px] italic font-mono">F77_CORE</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-8xl font-black uppercase italic leading-[0.85] tracking-tighter text-black"
-                style={{ filter: 'drop-shadow(0 8px 8px rgba(0,0,0,0.08)) drop-shadow(0 20px 30px rgba(0,0,0,0.12))' }}>
+            <h1 className="text-6xl md:text-[8.5rem] font-black uppercase italic leading-[0.8] tracking-tighter text-black"
+                style={{ filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.12))' }}>
               FITNESS<span className="text-[#E10600]">77</span>
             </h1>
-            
-            <div className="mt-[-4px]">
-              <h2 className="text-6xl md:text-9xl font-black uppercase italic leading-[0.8] tracking-tighter"
+            <div className="mt-[-2px]">
+              <h2 className="text-7xl md:text-[10rem] font-black uppercase italic leading-[0.8] tracking-tighter"
                   style={{ 
-                    WebkitTextStroke: '1.8px #E10600', 
+                    WebkitTextStroke: '2px #E10600', 
                     color: 'transparent', 
                     filter: 'drop-shadow(0 15px 30px rgba(225,6,0,0.25))' 
                   }}>
                 HARDCORE
               </h2>
             </div>
+            <div className="mt-8 flex items-center gap-4">
+               <span className="h-[1px] w-8 bg-[#E10600]" />
+               <p className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-400 italic">Mladá Boleslav // Jiráskova 1320</p>
+               <span className="h-[1px] w-8 bg-[#E10600]" />
+            </div>
           </Reveal>
         </div>
       </section>
 
-      {/* 2. COMPACT TRAINERS & PRICES (Vše na jednom místě) */}
-      <section className="py-12 px-4 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12">
+      {/* 2. THE ELITE COMMANDERS (Frameless & Aggressive) */}
+      <section className="py-20 bg-white relative">
+        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-4">
+          <Reveal x={-40}>
+            <div className="relative group cursor-crosshair">
+              <div className="absolute top-0 left-0 text-[8rem] font-black italic opacity-[0.03] leading-none select-none">FOUNDER</div>
+              <div className="relative aspect-[3/4] w-full grayscale contrast-125 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-[1.02]">
+                <Image src="/images/trainers/hlavacek.png" alt="Hamáček" fill className="object-contain object-bottom" />
+              </div>
+              <div className="mt-6">
+                <h3 className="text-4xl font-black uppercase italic leading-none mb-1">Hamáček</h3>
+                <p className="text-[10px] font-black text-[#E10600] uppercase tracking-[0.4em] italic">Head_of_Units // FTVS_UK</p>
+              </div>
+            </div>
+          </Reveal>
           
-          {/* TRENÉŘI - Menší karty */}
-          <div className="space-y-4">
-            <Reveal><h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-300 mb-4 italic">Commanders</h3></Reveal>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { name: 'Hamáček', img: '/images/trainers/hlavacek.png', role: 'Head Coach' },
-                { name: 'Soustružník', img: '/images/trainers/soustruznik.png', role: 'Elite Coach' }
-              ].map((t, i) => (
-                <Reveal key={i} x={-20} delay={i * 0.1}>
-                  <div className="group relative bg-zinc-50 border border-black/5 p-4 flex flex-col items-center overflow-hidden hover:bg-white transition-all shadow-sm">
-                    <div className="w-full aspect-[4/5] relative grayscale group-hover:grayscale-0 transition-all duration-700">
-                      <Image src={t.img} alt={t.name} fill className="object-contain object-bottom" />
-                    </div>
-                    <div className="text-center pt-4">
-                      <h4 className="text-lg font-black uppercase italic leading-none">{t.name}</h4>
-                      <p className="text-[8px] font-bold text-[#E10600] uppercase tracking-widest italic">{t.role}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
+          <Reveal x={40} delay={0.2}>
+            <div className="relative group cursor-crosshair md:mt-32">
+              <div className="absolute top-0 right-0 text-[8rem] font-black italic opacity-[0.03] leading-none select-none">ELITE</div>
+              <div className="relative aspect-[3/4] w-full grayscale contrast-125 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-[1.02]">
+                <Image src="/images/trainers/soustruznik.png" alt="Soustružník" fill className="object-contain object-bottom" />
+              </div>
+              <div className="mt-6">
+                <h3 className="text-4xl font-black uppercase italic leading-none mb-1">Soustružník</h3>
+                <p className="text-[10px] font-black text-[#E10600] uppercase tracking-[0.4em] italic">Elite_Coach // Pro_Division</p>
+              </div>
             </div>
-          </div>
+          </Reveal>
+        </div>
+      </section>
 
-          {/* PERMANENTKY - Úzký elegantní list */}
-          <div className="space-y-4">
-            <Reveal><h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-300 mb-4 italic">Pricing_Units</h3></Reveal>
-            <div className="border border-black/5 bg-white shadow-xl divide-y divide-black/5">
-              {[
-                { name: 'RAW_ENTRY', price: '180' },
-                { name: 'WARRIOR_30', price: '1290' },
-                { name: 'ELITE_365', price: '10900' }
-              ].map((p, i) => (
-                <div key={i} className="p-6 flex justify-between items-center hover:bg-black hover:text-white transition-all group cursor-pointer">
-                  <div>
-                    <p className="text-[8px] font-black text-[#E10600] uppercase tracking-widest italic">TYPE_{p.name}</p>
-                    <h4 className="text-2xl font-black italic">ACCESS_GRANTED</h4>
-                  </div>
-                  <div className="text-3xl font-black italic">{p.price},-</div>
-                </div>
-              ))}
-            </div>
+      {/* 3. PRICING (Sovereign Minimalist List) */}
+      <section className="py-32 bg-white">
+        <div className="max-w-4xl mx-auto px-4">
+          <Reveal><h2 className="text-[10px] font-black uppercase tracking-[0.8em] text-zinc-300 mb-12 italic text-center">Pricing_Structure</h2></Reveal>
+          <div className="divide-y-2 divide-black/5 border-y-2 border-black/5">
+            {[
+              { name: 'RAW_ENTRY', price: '180', time: '1_Day' },
+              { name: 'WARRIOR_30', price: '1290', time: '30_Days' },
+              { name: 'ELITE_365', price: '10900', time: '365_Days' }
+            ].map((p, i) => (
+              <div key={i} className="py-10 flex flex-wrap justify-between items-center group hover:px-6 transition-all duration-500 cursor-pointer hover:bg-[#E10600] hover:text-white">
+                <span className="text-[10px] font-black uppercase tracking-widest opacity-40 group-hover:opacity-100 group-hover:text-white transition-all">{p.time}</span>
+                <h4 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter">{p.name}</h4>
+                <span className="text-5xl font-black italic group-hover:translate-x-[-10px] transition-transform">{p.price},-</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 3. GALLERY - Menší Masonry pro šetření místa */}
-      <section className="py-12 px-4 max-w-[1600px] mx-auto border-t border-black/5">
-        <Reveal><h3 className="text-[10px] font-black uppercase tracking-[0.8em] text-zinc-300 mb-8 italic text-center">Archive_Scan</h3></Reveal>
-        <div className="columns-3 md:columns-5 lg:columns-6 gap-2 space-y-2">
+      {/* 4. THE INFINITE WALL (Gallery without borders) */}
+      <section className="py-20 bg-white">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
           {galleryFiles.map((file, i) => (
-            <div key={i} className="relative overflow-hidden group border border-black/5 shadow-sm">
-              <img src={`/images/gym/gallery/${file}`} alt="F77" className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" />
+            <div key={i} className="relative aspect-square overflow-hidden group">
+              <img src={`/images/gym/gallery/${file}`} alt="F77" className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                 <span className="text-white font-black italic text-[10px] tracking-widest">VIEW_ARCHIVE</span>
+              </div>
             </div>
           ))}
         </div>
