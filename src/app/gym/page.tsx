@@ -14,12 +14,12 @@ export default async function GymPage() {
   } catch (e) {}
 
   return (
-    <main className="bg-black min-h-screen text-white selection:bg-[#E10600] overflow-x-hidden">
+    <main className="bg-white min-h-screen text-black selection:bg-[#E10600] overflow-x-hidden">
       
-      {/* 1. HERO - NEDOTKNUTELNÁ SEKCE */}
+      {/* 1. HERO - NEDOTKNUTELNÁ SEKCE (Respektuju tvůj příkaz) */}
       <section className="relative h-[40vh] flex flex-col justify-center px-6 border-b-4 border-[#E10600] bg-zinc-950">
         <Reveal y={20}>
-          <div className="max-w-[1400px] mx-auto w-full">
+          <div className="max-w-[1400px] mx-auto w-full relative z-10">
             <h1 className="text-[10vw] font-black uppercase italic leading-[0.75] tracking-tighter text-white">
               FITNESS<span className="text-[#E10600]">77</span>
             </h1>
@@ -34,67 +34,96 @@ export default async function GymPage() {
         </Reveal>
       </section>
 
-      {/* 2. THE CORE: LEVÝ TRENÉR - PERMICE - PRAVÝ TRENÉR */}
-      <section className="bg-black py-16 px-4 border-b border-white/10">
-        <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+      {/* 2. THE CORE (Trinity): BÍLÝ BACK, ČERVENÝ AKCENTY */}
+      <section className="bg-white py-20 px-4 border-b-8 border-black">
+        <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
           
-          {/* VLEVO: HAMÁČEK (Barevný, Ostrý) */}
-          <div className="flex flex-col items-center lg:items-start space-y-4">
-            <div className="relative w-full aspect-[4/5] bg-zinc-900 border border-white/10 overflow-hidden">
+          {/* VLEVO: HAMÁČEK (Barevný, Ostrý, Bílé pozadí) */}
+          <div className="flex flex-col items-center lg:items-start space-y-6">
+            <div className="relative w-full aspect-[4/5] bg-white border-4 border-black overflow-hidden group">
               <Image src="/images/trainers/old_web_1.jpg" alt="Hamáček" fill className="object-cover object-top hover:scale-105 transition-transform duration-500" priority />
             </div>
             <div className="w-full">
-              <span className="text-[#E10600] font-black italic text-2xl">01</span>
-              <h3 className="text-4xl font-black uppercase italic leading-none">Hamáček</h3>
-              <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-1 mb-4 italic">FOUNDER // HEAD COACH</p>
-              <Link href="/shop/hamacek-stack" className="inline-block px-6 py-3 bg-white text-black text-[10px] font-black uppercase italic hover:bg-[#E10600] hover:text-white transition-all">
-                Hamáček_Stack →
-              </Link>
+              <div className="flex items-center gap-3">
+                 <span className="text-black font-black italic text-4xl">01</span>
+                 <h3 className="text-5xl font-black uppercase italic leading-none tracking-tighter">Hamáček</h3>
+              </div>
+              <p className="text-[10px] font-bold text-black uppercase tracking-widest mt-2 italic border-l-2 border-[#E10600] pl-3">ZAKLADATEL // UNIT_01</p>
+              
+              <p className="text-sm text-zinc-800 mt-6 mb-8 leading-relaxed max-w-sm">
+                Hlavní mozek F77. Specialista na naturální kulturistiku a extrémní silový rozvoj. Naturální přístup, nekompromisní výsledky. Jiráskova 1320.
+              </p>
+              
+              <div className="flex flex-col gap-3">
+                <Link href="/shop/hamacek-stack" className="w-full text-center py-4 bg-[#E10600] text-white text-[11px] font-black uppercase italic hover:bg-black transition-all">
+                  Rezervovat Trénink
+                </Link>
+                <Link href="/shop/plans" className="w-full text-center py-3 bg-black text-white text-[10px] font-black uppercase italic hover:bg-white hover:text-black border border-black transition-all">
+                  Get_Battle_Plan →
+                </Link>
+              </div>
             </div>
           </div>
 
-          {/* UPROSTŘED: PERMANENTKY */}
-          <div className="flex flex-col justify-center bg-zinc-950/50 p-8 border border-white/5 h-full">
-            <h2 className="text-center text-xl font-black uppercase tracking-[0.5em] text-zinc-500 italic mb-10">ACCESS_PROTOCOL</h2>
-            <div className="space-y-2">
+          {/* UPROSTŘED: PERMANENTKY (Bílý list, Červený hover) */}
+          <div className="flex flex-col justify-center bg-zinc-50 p-10 border-4 border-black h-full sticky top-10">
+            <h2 className="text-center text-4xl font-black uppercase tracking-tighter text-black italic mb-12 border-b-2 border-black pb-4">
+               Ceník Vstupů
+            </h2>
+            <div className="space-y-3">
               {[
-                { name: 'RAW_ENTRY', price: '180' },
-                { name: 'WARRIOR_30', price: '1290' },
-                { name: 'ELITE_365', price: '10900' }
+                { name: 'RAW_ENTRY', czech: 'Jednorázový Vstup', price: '180' },
+                { name: 'WARRIOR_30', czech: 'Měsíční Permanentka', price: '1290' },
+                { name: 'ELITE_365', czech: 'Roční Permanentka', price: '10900' }
               ].map((p, i) => (
-                <div key={i} className="py-6 border-b border-white/10 flex flex-col items-center justify-center hover:bg-white hover:text-black transition-all duration-300 cursor-pointer text-center group">
-                  <h4 className="text-3xl font-black uppercase italic tracking-tighter group-hover:scale-110 transition-transform">{p.name}</h4>
-                  <span className="text-xl font-black italic text-[#E10600] group-hover:text-black mt-2">{p.price} CZK</span>
+                <div key={i} className="py-6 border-b border-black/5 flex justify-between items-center hover:bg-[#E10600] transition-all duration-300 px-5 group cursor-pointer hover:border-[#E10600]">
+                  <div>
+                     <h4 className="text-3xl font-black uppercase italic tracking-tighter group-hover:text-white transition-colors">{p.name}</h4>
+                     <p className="text-[9px] font-black text-zinc-500 uppercase tracking-wider group-hover:text-white transition-colors">{p.czech}</p>
+                  </div>
+                  <span className="text-3xl font-black italic text-[#E10600] group-hover:text-white transition-colors">{p.price} CZK</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* VPRAVO: SOUSTRUŽNÍK (Barevný, Ostrý) */}
-          <div className="flex flex-col items-center lg:items-end space-y-4 text-right">
-            <div className="relative w-full aspect-[4/5] bg-zinc-900 border border-white/10 overflow-hidden">
+          {/* VPRAVO: SOUSTRUŽNÍK (Barevný, Ostrý, Bílé pozadí) */}
+          <div className="flex flex-col items-center lg:items-end space-y-6 text-right">
+            <div className="relative w-full aspect-[4/5] bg-white border-4 border-black overflow-hidden group">
               <Image src="/images/trainers/old_web_2.jpg" alt="Soustružník" fill className="object-cover object-top hover:scale-105 transition-transform duration-500" priority />
             </div>
-            <div className="w-full">
-              <span className="text-[#E10600] font-black italic text-2xl">02</span>
-              <h3 className="text-4xl font-black uppercase italic leading-none">Soustružník</h3>
-              <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-1 mb-4 italic">ELITE // PRO UNIT</p>
-              <Link href="/shop/soustruznik-stack" className="inline-block px-6 py-3 bg-white text-black text-[10px] font-black uppercase italic hover:bg-[#E10600] hover:text-white transition-all">
-                Soustružník_Stack →
-              </Link>
+            <div className="w-full flex flex-col items-end">
+              <div className="flex items-center gap-3">
+                 <h3 className="text-5xl font-black uppercase italic leading-none tracking-tighter">Soustružník</h3>
+                 <span className="text-black/30 font-black italic text-4xl group-hover:text-[#E10600] transition-colors">02</span>
+              </div>
+              <p className="text-[10px] font-bold text-black uppercase tracking-widest mt-2 italic border-r-2 border-[#E10600] pr-3">ELITE COACH // UNIT_02</p>
+              
+              <p className="text-sm text-zinc-800 mt-6 mb-8 leading-relaxed max-w-sm text-right">
+                Elitní coach a aktivní závodník. Nekompromisní technika, dynamika a posouvání hranic lidského těla. Každý trénink je bitva.
+              </p>
+              
+              <div className="flex flex-col gap-3 w-full">
+                <Link href="/shop/soustruznik-stack" className="w-full text-center py-4 bg-[#E10600] text-white text-[11px] font-black uppercase italic hover:bg-black transition-all">
+                  Rezervovat Trénink
+                </Link>
+                <Link href="/shop/plans" className="w-full text-center py-3 bg-black text-white text-[10px] font-black uppercase italic hover:bg-white hover:text-black border border-black transition-all">
+                  ELITE_PROGRAMS →
+                </Link>
+              </div>
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* 3. POD TÍM: GALERIE (Kompaktní fotky vedle sebe) */}
-      <section className="py-8 px-4 bg-black">
-         <h2 className="text-center text-[10px] font-black uppercase tracking-[0.8em] text-zinc-600 italic mb-8">F77_VAULT_ARCHIVE</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
+      {/* 3. POD TÍM: GALERIE (Kompaktní na černém podkladu pro kontrast) */}
+      <section className="py-12 px-2 bg-black">
+         <h2 className="text-center text-[10px] font-black uppercase tracking-[0.8em] text-zinc-600 italic mb-10">F77_VAULT_ARCHIVE</h2>
+        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-1">
           {galleryFiles.map((file, i) => (
-            <div key={i} className="relative aspect-square overflow-hidden group border border-white/10">
-              <img src={`/images/gym/gallery/${file}`} alt="F77 Vault" className="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-300" loading="lazy" />
+            <div key={i} className="relative aspect-square overflow-hidden group border border-black/5">
+              <img src={`/images/gym/gallery/${file}`} alt="F77 Vault" className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-300" loading="lazy" />
             </div>
           ))}
         </div>
