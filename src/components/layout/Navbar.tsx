@@ -18,53 +18,29 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: "Suplementy", href: "/supplements" },
-    { name: "Vybavení", href: "/equipment" },
-    { name: "Trenéři & Gym", href: "/gym" },
-    { name: "Bazar", href: "/bazaar" },
-    { name: "Blog", href: "/blog" },
-  ];
-
   return (
-    <header className={`sticky top-0 z-[100] w-full transition-all duration-300 border-b border-zinc-200 dark:border-white/10 ${
-      isScrolled 
-        ? "bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md py-2 shadow-sm" 
-        : "bg-white dark:bg-zinc-950 py-2"
+    <header className={`sticky top-0 z-[100] w-full transition-all duration-300 bg-white border-b border-zinc-200 ${
+      isScrolled ? "py-2 shadow-sm" : "py-4"
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          
           <Link href="/" className="flex-shrink-0 flex items-center group">
-            <span className="text-2xl font-black uppercase tracking-tighter text-zinc-900 dark:text-white group-active:scale-95 transition-transform">
+            <span className="text-2xl font-black uppercase tracking-tighter text-black">
               FITNESS<span className="text-[#E10600]">77</span>
             </span>
           </Link>
-
-          <nav className="hidden md:flex space-x-8">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                className={`text-xs font-bold uppercase tracking-wide transition-colors ${
-                  pathname === link.href ? "text-[#E10600]" : "text-zinc-600 dark:text-zinc-400 hover:text-[#E10600]"
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+          <nav className="hidden md:flex space-x-8 font-bold uppercase text-[11px] tracking-widest text-zinc-500">
+            <Link href="/supplements" className="hover:text-[#E10600] transition-colors">Suplementy</Link>
+            <Link href="/equipment" className="hover:text-[#E10600] transition-colors">Vybavení</Link>
+            <Link href="/gym" className="text-black border-b-2 border-[#E10600]">Trenéři & Gym</Link>
+            <Link href="/bazaar" className="hover:text-[#E10600] transition-colors">Bazar</Link>
           </nav>
-
           <div className="flex items-center gap-4">
             <ThemeToggle />
-            <Link href="/cart" className="relative hidden md:flex items-center group">
-              <div className="bg-zinc-100 dark:bg-zinc-900 p-2 rounded-xl group-hover:bg-[#E10600] transition-colors duration-300">
-                <ShoppingCart className="w-4 h-4 text-zinc-900 dark:text-white group-hover:text-white transition-colors" />
-              </div>
+            <Link href="/cart" className="relative p-2 bg-zinc-100 rounded-lg hover:bg-[#E10600] group transition-all">
+              <ShoppingCart className="w-5 h-5 text-black group-hover:text-white" />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#E10600] text-white text-[9px] font-black h-4 w-4 rounded-full flex items-center justify-center border border-white dark:border-zinc-950 shadow-sm">
-                  {cartCount}
-                </span>
+                <span className="absolute -top-2 -right-2 bg-[#E10600] text-white text-[10px] font-black h-5 w-5 rounded-full flex items-center justify-center border-2 border-white">{cartCount}</span>
               )}
             </Link>
           </div>
