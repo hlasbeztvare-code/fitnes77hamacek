@@ -7,8 +7,13 @@ export async function getSupplements() {
     });
   } catch (error) {
     console.error("Prisma Error:", error);
-    return []; // Vrátíme prázdný pole, aby web nespadl
+    return []; 
   }
+}
+
+// TADY JE TA CHYBĚJÍCÍ FUNKCE PRO HOME PAGE! (smrk)
+export async function getAllSupplements() {
+  return getSupplements();
 }
 
 export async function getSupplementBySlug(slug: string) {
