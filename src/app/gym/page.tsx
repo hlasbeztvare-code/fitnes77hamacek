@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import Image from 'next/image';
 
 export default async function GymPage() {
-  // 1. Automatické načtení stažených fotek z galerie (těch 40 kousků)
+  // 1. Automatické načtení stažených fotek (těch 40 kousků)
   const galleryDir = path.join(process.cwd(), 'public/images/gym/gallery');
   let galleryFiles: string[] = [];
   try {
@@ -18,14 +18,14 @@ export default async function GymPage() {
     console.error("Galerie nenalezena, koukoute!");
   }
 
-  // 2. Načtení 'vstříknutých' textů z databáze (z inject.ts)
+  // 2. Načtení 'vstříknutých' textů z databáze
   const legacyContent = await db.trainer.findUnique({
     where: { slug: 'heritage-data' }
   });
 
   return (
     <main className="bg-zinc-950 min-h-screen text-white pb-32 selection:bg-[#E10600]">
-      {/* SECTION 1: HERITAGE HERO - Starej web v novým kabátu */}
+      {/* SECTION 1: HERITAGE HERO */}
       <section className="relative py-32 px-4 border-b border-white/5 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none italic font-black text-[25vw] leading-none select-none -translate-x-10">
           77_DNA
@@ -36,8 +36,12 @@ export default async function GymPage() {
             <span className="text-[#E10600] font-black uppercase tracking-[0.4em] text-[10px] flex items-center gap-2">
               <span className="w-8 h-[1px] bg-[#E10600]" /> Mladá Boleslav // Est. 2014
             </span>
+            {/* Outline text vyřešený přes standardní CSS v inline stylu pro Server Component */}
             <h1 className="text-7xl md:text-[10rem] font-black uppercase italic mt-6 mb-10 leading-[0.8] tracking-tighter">
-              Hardcore <br/><span className="text-zinc-800 outline-text">Heritage</span>
+              Hardcore <br/>
+              <span style={{ WebkitTextStroke: '1px rgba(255,255,255,0.1)', color: 'transparent' }}>
+                Heritage
+              </span>
             </h1>
             <div className="grid md:grid-cols-2 gap-16 items-end mt-20">
               <p className="text-zinc-400 text-xl leading-relaxed font-medium border-l-2 border-[#E10600] pl-8">
@@ -52,7 +56,7 @@ export default async function GymPage() {
         </div>
       </section>
 
-      {/* SECTION 2: THE GALLERY MASHUP - Agresivní Masonry Grid */}
+      {/* SECTION 2: THE GALLERY MASHUP */}
       <section className="px-4 py-16">
         <div className="max-w-[1800px] mx-auto columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
           {galleryFiles.map((file, i) => (
@@ -74,11 +78,11 @@ export default async function GymPage() {
         </div>
       </section>
 
-      {/* SECTION 3: ALFA & OMEGA CONVERSION - Tady se prodává */}
+      {/* SECTION 3: CONVERSION */}
       <section className="py-40 relative">
         <div className="max-w-4xl mx-auto text-center px-4">
           <Reveal>
-            <h2 className="text-6xl md:text-8xl font-black uppercase italic mb-10 tracking-tighter">
+            <h2 className="text-6xl md:text-8xl font-black uppercase italic mb-10 tracking-tighter text-white">
               Chceš stejný <span className="text-[#E10600]">výsledky?</span>
             </h2>
             <p className="text-zinc-500 text-xl mb-16 max-w-2xl mx-auto uppercase font-bold tracking-tight">
@@ -102,13 +106,6 @@ export default async function GymPage() {
           </Reveal>
         </div>
       </section>
-
-      <style jsx>{`
-        .outline-text {
-          -webkit-text-stroke: 1px rgba(255,255,255,0.1);
-          color: transparent;
-        }
-      `}</style>
     </main>
   );
 }
