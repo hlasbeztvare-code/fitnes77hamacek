@@ -1,142 +1,114 @@
-'use client';
-
-import { trainers } from '@/lib/mock/trainers';
+import fs from 'fs';
+import path from 'path';
+import Reveal from "@/components/ui/Reveal";
+import { db } from "@/lib/db";
 import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
 
-export default function GymPage() {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end start"]
+export default async function GymPage() {
+  // 1. Automatické načtení stažených fotek z galerie (těch 40 kousků)
+  const galleryDir = path.join(process.cwd(), 'public/images/gym/gallery');
+  let galleryFiles: string[] = [];
+  try {
+    if (fs.existsSync(galleryDir)) {
+      galleryFiles = fs.readdirSync(galleryDir).filter(file => 
+        /\.(jpg|jpeg|png|webp)$/i.test(file)
+      );
+    }
+  } catch (e) {
+    console.error("Galerie nenalezena, koukoute!");
+  }
+
+  // 2. Načtení 'vstříknutých' textů z databáze (z inject.ts)
+  const legacyContent = await db.trainer.findUnique({
+    where: { slug: 'heritage-data' }
   });
 
-  const [hoveredPass, setHoveredPass] = useState<number | null>(null);
-
-  const passes = [
-    { title: "Day Pass", price: "400 Kč", note: "Jednorázový zážitek" },
-    { title: "Basic Membership", price: "1 200 Kč", note: "Standardní přístup" },
-    { title: "Gold Membership", price: "1 800 Kč", note: "All-inclusive s bonusy" },
-    { title: "VIP Experience", price: "3 000 Kč", note: "To nejlepší pro nejnáročnější" }
-  ];
-
-  const opacityHero = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const scaleHero = useTransform(scrollYProgress, [0, 0.4], [1, 1.05]);
-  const yHamacek = useTransform(scrollYProgress, [0, 1], [0, -350]);
-  const ySoustruznik = useTransform(scrollYProgress, [0, 1], [200, -200]);
-  const opacityTrainers = useTransform(scrollYProgress, [0.1, 0.5], [0, 1]);
-
   return (
-    <div className="bg-white text-zinc-950 min-h-screen overflow-x-hidden font-sans">
-      
-      {/* SPLIT HERO SECTION */}
-      <section ref={targetRef} className="relative h-[85vh] flex flex-col lg:flex-row overflow-hidden bg-black border-b border-zinc-900">
+    <main className="bg-zinc-950 min-h-screen text-white pb-32 selection:bg-[#E10600]">
+      {/* SECTION 1: HERITAGE HERO - Starej web v novým kabátu */}
+      <section className="relative py-32 px-4 border-b border-white/5 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none italic font-black text-[25vw] leading-none select-none -translate-x-10">
+          77_DNA
+        </div>
         
-        {/* LEVÁ STRANA - SVĚTLÁ + FITKO FOTKA */}
-        <motion.div 
-          style={{ opacity: opacityHero, scale: scaleHero }}
-          className="w-full lg:w-1/2 h-full bg-white relative p-12 lg:p-20 flex flex-col justify-center border-r border-zinc-100"
-        >
-          <Image 
-            src="/images/brand/gym-hero.jpg" 
-            alt="Fitness 77 Interior"
-            fill
-            priority
-            className="object-cover opacity-25"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent" />
-          
-          <div className="relative z-10 max-w-md mx-auto w-full">
-            <h1 className="text-4xl font-black uppercase italic mb-12 tracking-tighter border-l-8 border-[#E10600] pl-6 text-zinc-950">
-              Vstupy a <br /><span className="text-[#E10600]">Permanentky</span>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <Reveal>
+            <span className="text-[#E10600] font-black uppercase tracking-[0.4em] text-[10px] flex items-center gap-2">
+              <span className="w-8 h-[1px] bg-[#E10600]" /> Mladá Boleslav // Est. 2014
+            </span>
+            <h1 className="text-7xl md:text-[10rem] font-black uppercase italic mt-6 mb-10 leading-[0.8] tracking-tighter">
+              Hardcore <br/><span className="text-zinc-800 outline-text">Heritage</span>
             </h1>
-            <div className="grid gap-6">
-              {passes.map((p, i) => (
-                <div 
-                  key={i} 
-                  className="flex justify-between items-end border-b border-zinc-200 pb-4 group cursor-pointer"
-                  onMouseEnter={() => setHoveredPass(i)}
-                  onMouseLeave={() => setHoveredPass(null)}
-                >
-                  <div className="relative">
-                    <h3 className="text-lg font-black uppercase tracking-tight group-hover:text-[#E10600] transition-colors">{p.title}</h3>
-                    <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">{p.note}</p>
-                    {hoveredPass === i && (
-                      <motion.div layoutId="underline" className="absolute -bottom-1 left-0 right-0 h-1 bg-[#E10600]" />
-                    )}
-                  </div>
-                  <div className="text-3xl font-black text-[#E10600] italic transition-transform group-hover:scale-110">{p.price}</div>
-                </div>
-              ))}
+            <div className="grid md:grid-cols-2 gap-16 items-end mt-20">
+              <p className="text-zinc-400 text-xl leading-relaxed font-medium border-l-2 border-[#E10600] pl-8">
+                {legacyContent?.bio || "Vzali jsme duši původního fitness77.cz a voperovali ji do moderního kódu. Takhle vypadá 10 let disciplíny, železa a výsledků."}
+              </p>
+              <div className="hidden md:flex flex-col gap-2 items-end">
+                <p className="text-[10px] uppercase font-black tracking-widest text-zinc-600">Archive Status: Online</p>
+                <p className="text-[10px] uppercase font-black tracking-widest text-zinc-600">Assets: {galleryFiles.length} Raw Images</p>
+              </div>
             </div>
-          </div>
-        </motion.div>
-
-        {/* PRAVÁ STRANA - TMAVÁ + LOGO + PNG BORCI */}
-        <div className="w-full lg:w-1/2 h-full bg-zinc-950 relative overflow-hidden flex flex-col items-center justify-center p-12">
-          
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative z-20 text-center flex flex-col items-center"
-          >
-            <Image 
-              src="/images/brand/f77_full.png"
-              alt="Logo Fitness 77"
-              width={350}
-              height={100}
-              className="mb-8 w-[250px] md:w-[380px] h-auto drop-shadow-[0_0_25px_rgba(225,6,0,0.4)]"
-            />
-            <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter leading-none text-white">
-              TRAINING <span className="text-[#E10600]">NATION</span>
-            </h2>
-          </motion.div>
-          
-          {/* PNG HAMÁČEK */}
-          <motion.div 
-            style={{ y: yHamacek, opacity: opacityTrainers }} 
-            className="absolute -top-40 left-[-15%] w-[550px] h-[750px] z-10 pointer-events-none hidden lg:block"
-          >
-            <Image 
-              src="/images/trainers/hlavacek.png" 
-              alt="Hamáček"
-              fill
-              className="object-contain grayscale contrast-125 saturate-150"
-            />
-          </motion.div>
-
-          {/* PNG SOUSTRUŽNÍK */}
-          <motion.div 
-            style={{ y: ySoustruznik, opacity: opacityTrainers }} 
-            className="absolute top-1/4 -right-[-15%] w-[550px] h-[750px] z-10 pointer-events-none hidden lg:block"
-          >
-            <Image 
-              src="/images/trainers/soustruznik.png" 
-              alt="Soustružník"
-              fill
-              className="object-contain grayscale contrast-125 saturate-150"
-            />
-          </motion.div>
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
+          </Reveal>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="py-20 bg-black text-center border-t border-zinc-900">
-        <Image 
-          src="/images/brand/f77_full.png"
-          alt="Logo Footer"
-          width={150}
-          height={50}
-          className="mx-auto mb-6 opacity-30 grayscale"
-        />
-        <p className="text-zinc-700 text-[10px] uppercase font-bold tracking-[0.5em]">
-          F77 — PERFORMANCE DESIGN — WORLD CLASS *smrk*
-        </p>
-      </footer>
-    </div>
+      {/* SECTION 2: THE GALLERY MASHUP - Agresivní Masonry Grid */}
+      <section className="px-4 py-16">
+        <div className="max-w-[1800px] mx-auto columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
+          {galleryFiles.map((file, i) => (
+            <Reveal key={file} delay={i * 0.02}>
+              <div className="relative group overflow-hidden border border-white/5 bg-zinc-900 rounded-none shadow-2xl hover:border-[#E10600]/40 transition-all duration-700">
+                <img
+                  src={`/images/gym/gallery/${file}`}
+                  alt={`Fitness 77 Archive ${i}`}
+                  className="w-full h-auto grayscale contrast-150 brightness-[0.6] group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-[1.03] transition-all duration-1000 ease-in-out"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-8 flex flex-col justify-end">
+                  <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#E10600] mb-2">RAW_DATA_MB // 0{i+1}</span>
+                  <p className="text-sm font-black text-white uppercase italic tracking-tighter">Vizuální historie Fitness 77</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* SECTION 3: ALFA & OMEGA CONVERSION - Tady se prodává */}
+      <section className="py-40 relative">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <Reveal>
+            <h2 className="text-6xl md:text-8xl font-black uppercase italic mb-10 tracking-tighter">
+              Chceš stejný <span className="text-[#E10600]">výsledky?</span>
+            </h2>
+            <p className="text-zinc-500 text-xl mb-16 max-w-2xl mx-auto uppercase font-bold tracking-tight">
+              Díváš se na 10 let historie. Pokud chceš bejt součástí další kapitoly, potřebuješ správný palivo.
+            </p>
+            <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
+              <a 
+                href="/supplements" 
+                className="group relative bg-[#E10600] text-white px-16 py-8 font-black uppercase italic text-2xl transition-all duration-300 hover:pr-20"
+              >
+                Koupit suplementy
+                <span className="absolute right-6 opacity-0 group-hover:opacity-100 transition-all">→</span>
+              </a>
+              <a 
+                href="/kontakt" 
+                className="text-white px-16 py-8 font-black uppercase italic text-2xl border border-white/10 hover:bg-white hover:text-black transition-all"
+              >
+                Domluvit trénink
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <style jsx>{`
+        .outline-text {
+          -webkit-text-stroke: 1px rgba(255,255,255,0.1);
+          color: transparent;
+        }
+      `}</style>
+    </main>
   );
 }
