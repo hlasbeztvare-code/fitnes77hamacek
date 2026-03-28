@@ -14,14 +14,14 @@ export default async function GymPage() {
   } catch (e) {}
 
   return (
-    <main className="bg-[#050505] min-h-screen text-white selection:bg-[#E10600] selection:text-white overflow-x-hidden">
+    <main className="bg-[#FFFFFF] min-h-screen text-white selection:bg-[#E10600] selection:text-white overflow-x-hidden">
       
-      {/* 1. HERO - Masivní hloubka a 3D Typo (Navbar je červenej z předchozího kroku) */}
-      <section className="relative h-[45vh] flex flex-col justify-center px-6 border-b border-white/10 bg-[#0a0a0a]">
+      {/* 1. HERO - Nude White + Masivní 3D Typo (Navbar je červenej z předchozího kroku) */}
+      <section className="relative h-[45vh] flex flex-col justify-center px-6 border-b border-white/10 bg-[#FFFFFF]">
         <Reveal y={20}>
           <div className="max-w-[1400px] mx-auto w-full relative z-10">
             {/* 3D Typo s vrstveným text-shadow pro hloubku */}
-            <h1 className="text-[10vw] font-black uppercase italic leading-[0.75] tracking-tighter text-white"
+            <h1 className="text-[10vw] font-black uppercase italic leading-[0.75] tracking-tighter text-black"
                 style={{ textShadow: '0 4px 4px rgba(0,0,0,0.8), 0 8px 10px rgba(0,0,0,0.6)' }}>
               FITNESS<span className="text-[#E10600]" style={{ textShadow: '0 4px 10px rgba(225,6,0,0.5)' }}>77</span>
             </h1>
@@ -33,11 +33,11 @@ export default async function GymPage() {
                  <div className="flex gap-8 border-l-4 border-[#E10600] pl-5 shadow-[0_0_30px_rgba(225,6,0,0.2)]">
                     <div>
                        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">PO - PÁ</p>
-                       <p className="text-2xl font-black italic">06:00 - 22:00</p>
+                       <p className="text-2xl font-black italic text-black">06:00 - 22:00</p>
                     </div>
                     <div>
                        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">SO - NE</p>
-                       <p className="text-2xl font-black italic">08:00 - 20:00</p>
+                       <p className="text-2xl font-black italic text-black">08:00 - 20:00</p>
                     </div>
                  </div>
                </div>
@@ -55,7 +55,7 @@ export default async function GymPage() {
       {/* 2. THE CORE (Trinity): Brutální hloubka, Vrstvení, Sklo */}
       <section className="relative py-28 px-4">
         {/* Jemný pozadní přechod pro hloubku celé sekce */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] to-[#050505] z-0 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFFFFF] to-[#FDFDFD] z-0 pointer-events-none"></div>
 
         <div className="relative z-10 max-w-[1700px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-14 items-start">
           
@@ -71,7 +71,7 @@ export default async function GymPage() {
             <div className="relative -mt-24 mx-4 lg:mx-8 bg-black/40 backdrop-blur-xl p-7 border border-white/10 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.9)] z-20 group-hover:border-white/20 transition-all duration-500 group-hover:scale-[1.03]">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#E10600] to-transparent"></div>
               <div className="flex justify-between items-end mb-2">
-                <h3 className="text-4xl font-black uppercase italic leading-none tracking-tighter">Hamáček</h3>
+                <h3 className="text-4xl font-black uppercase italic leading-none tracking-tighter text-white">Hamáček</h3>
                 <span className="text-[#E10600] font-black italic text-2xl opacity-50">01</span>
               </div>
               <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-5 italic border-l-2 border-[#E10600] pl-3">ZAKLADATEL // HEAD COACH</p>
@@ -124,7 +124,7 @@ export default async function GymPage() {
             <div className="relative -mt-24 mx-4 lg:mx-8 bg-black/40 backdrop-blur-xl p-7 border border-white/10 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.9)] z-20 group-hover:border-white/20 transition-all duration-500 group-hover:scale-[1.03] flex flex-col items-end">
               <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-[#E10600] to-transparent"></div>
               <div className="flex justify-between items-end mb-2 w-full flex-row-reverse">
-                <h3 className="text-4xl font-black uppercase italic leading-none tracking-tighter">Soustružník</h3>
+                <h3 className="text-4xl font-black uppercase italic leading-none tracking-tighter text-white">Soustružník</h3>
                 <span className="text-[#E10600] font-black italic text-2xl opacity-50">02</span>
               </div>
               <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-5 italic border-r-2 border-[#E10600] pr-3">ELITNÍ KOUČ // PRO UNIT</p>
@@ -145,7 +145,7 @@ export default async function GymPage() {
       </section>
 
       {/* 3. POD TÍM: GALERIE - Hloubka, Hover efekty */}
-      <section className="py-16 px-4 bg-[#050505] border-t border-white/5 relative z-10">
+      <section className="py-16 px-4 bg-[#FFFFFF] border-t border-white/5 relative z-10">
          <h2 className="text-center text-[11px] font-black uppercase tracking-[0.8em] text-zinc-600 italic mb-10">F77_VAULT_ARCHIVE</h2>
          {/* Hloubka a hover na galerii */}
         <div className="max-w-[1400px] mx-auto flex flex-wrap justify-center gap-5">
