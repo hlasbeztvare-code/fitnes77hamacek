@@ -1,50 +1,81 @@
-import { equipmentItems } from '@/lib/mock/equipment';
+import { notFound } from "next/navigation";
+import Image from "next/image";
+// LUCKY FIX: Používáme tvůj specifický název funkce getSupplementBySlug
+import { getSupplementBySlug } from "@/lib/queries/products";
+import AddToCartButton from "@/components/shop/AddToCartButton";
+import MobileStickyCTA from "@/components/mobile/MobileStickyCTA";
 
-export default function EquipmentPage() {
+interface Props {
+  params: Promise<{ slug: string }> | { slug: string };
+}
+
+/**
+ * ARCHITEKTURA (LUCKY):
+ * 1. Opraven import na getSupplementBySlug.
+ * 2. Asynchronní načtení parametrů.
+ * 3. Čistý 3D design: Odstraněno tvrdé ohraničení pozadí. Přidán prostor, 
+ * floating efekt a floor shadow (stín na podlaze) pro extrémní hloubku.
+ * 4. Barva cenovky změněna na vysoce konverzní smaragdovou.
+ */
+export default async function SupplementDetailPage({ params }: Props) {
+  // Bezpečná extrakce parametrů
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+  
+  // Načtení dat pomocí tvé existující funkce
+  const product = await getSupplementBySlug(slug);
+
+  if (!product) {
+    notFound();
+  }
+
   return (
-    <section className="py-16">
-      <div className="mx-auto w-[min(1200px,calc(100%-32px))]">
-        <div className="mb-10">
-          <span className="text-sm font-bold uppercase tracking-[0.2em] 
-text-[#E10600]">
-            Vybavení
-          </span>
-          <h1 className="mt-3 text-5xl font-bold uppercase">
-            Silové a profesionální vybavení
-          </h1>
-          <p className="mt-4 max-w-2xl text-zinc-600 dark:text-zinc-400">
-            Výběr vybavení pro výkonnostní trénink, silový progres a 
-kvalitní gym zázemí.
-          </p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+        
+        {/* Produktové Foto - 3D Floating Efekt */}
+        <div className="relative aspect-square w-full flex items-center justify-center py-10 group">
+          
+          {/* Vzdušný "floor shadow" pod produktem simulující podlahu a hloubku */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-2/3 h-10 bg-black/15 dark:bg-black/60 blur-2xl rounded-[100%] transition-all duration-700 group-hover:w-3/4 group-hover:bg-black/20 dark:group-hover:bg-black/80 group-hover:blur-3xl z-0"></div>
+          
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-contain z-10 drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_20px_30px_rgba(0,0,0,0.5)] group-hover:-translate-y-6 group-hover:scale-105 transition-all duration-700 ease-out"
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {equipmentItems.map((item) => (
-            <article
-              key={item.id}
-              className="overflow-hidden rounded-xl border border-zinc-200 
-bg-white transition hover:-translate-y-1 hover:border-[#E10600] 
-hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-950"
-            >
-              <div
-                className="aspect-video w-full bg-cover bg-center"
-                style={{ backgroundImage: `url(${item.image})` }}
-              />
-              <div className="p-6">
-                <h2 className="text-2xl font-bold 
-uppercase">{item.name}</h2>
-                <p className="mt-4 text-sm leading-6 text-zinc-600 
-dark:text-zinc-400">
-                  {item.description}
-                </p>
-                <div className="mt-6 text-2xl font-bold text-[#E10600]">
-                  {item.price.toLocaleString('cs-CZ')} Kč
-                </div>
-              </div>
-            </article>
-          ))}
+        {/* Informace o Produktu */}
+        <div className="flex flex-col justify-center">
+          <span className="text-zinc-500 font-black uppercase tracking-widest text-sm mb-4">
+            {product.category || "Premium Nutrition"}
+          </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tighter text-zinc-900 dark:text-white leading-tight">
+            {product.name}
+          </h1>
+          
+          {/* Cenovka s novou barvou (Emerald Green) pro čistší vizuál a vyšší konverzi */}
+          <p className="text-4xl lg:text-5xl font-black text-emerald-500 dark:text-emerald-400 mb-8 tracking-tight drop-shadow-sm">
+            {product.price.toLocaleString()} Kč
+          </p>
+          
+          <div className="prose prose-lg dark:prose-invert mb-10 text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <p>{product.description || "Nejvyšší kvalita pro dosažení vašich cílů. Posuňte své limity s Fitness77."}</p>
+          </div>
+
+          {/* Add to Cart s unikátním IDčkem pro naši mobilní Sticky lištu */}
+          <div id="main-buy-button" className="w-full sm:max-w-md pt-4">
+            <AddToCartButton product={product} />
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Vložená Sticky Komponenta pro Thumb-Zone konverzi */}
+      <MobileStickyCTA product={product} triggerId="main-buy-button" />
+    </div>
   );
 }

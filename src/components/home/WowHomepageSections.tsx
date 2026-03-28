@@ -78,24 +78,76 @@ export default async function WowHomepageSections() {
         <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
           <Reveal>
             <div className="max-w-3xl">
-              <div className="inline-block border-l-4 border-[#E10600] pl-3 text-sm font-black uppercase tracking-[0.22em] text-[#E10600]">
-                Top produkty
-              </div>
               <h2 className="mt-4 text-4xl font-black uppercase leading-[0.95] text-zinc-950 md:text-6xl">
-                Bestseller <span className="text-[#E10600]">kolekce</span>
+                NAŠE <span className="text-[#E10600]">SUPLEMENTY</span>
               </h2>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 md:text-lg">
+                Prémiová kvalita pro maximální výkon. Vyber si z naší nabídky a posuň své limity na další úroveň.
+              </p>
             </div>
           </Reveal>
 
           <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {products.slice(0, 4).map((product, index) => (
+            {[
+              {
+                id: 'creatine-0',
+                name: 'CREATINE MONOHYDRATE',
+                slug: 'creatine-monohydrate',
+                price: 1499,
+                category: 'SUPLEMENT',
+                image: '/images/products/creatine.png',
+              },
+              {
+                id: 'omega-0',
+                name: 'BCAA AMINO COMPLEX',
+                slug: 'bcaa-amino-complex',
+                price: 1499,
+                category: 'SUPLEMENT',
+                image: '/images/products/bcaa.png',
+              },
+              {
+                id: 'deadpump-0',
+                name: 'DEADPUMP PRE-WORKOUT',
+                slug: 'deadpump-pre-workout',
+                price: 1499,
+                category: 'PŘEDTRÉNINKOVKA',
+                image: '/images/products/deadpump.png',
+              },
+              {
+                id: 'kase-0',
+                name: 'OVESNÁ KAŠE',
+                slug: 'ovesna-kase',
+                price: 1499,
+                category: 'ZDRAVÁ STRAVA',
+                image: '/images/products/kase.png',
+              },
+              {
+                id: 'whey-vanilla-0',
+                name: '80% WHEY PROTEIN VANILKA',
+                slug: 'whey-protein-vanilka',
+                price: 1499,
+                category: 'PROTEIN',
+                image: '/images/products/wheyvanilka.png',
+              },
+              {
+                id: 'whey-blueberry-0',
+                name: '80% WHEY PROTEIN BORŮVKA',
+                slug: 'whey-protein-boruvka',
+                price: 1499,
+                category: 'PROTEIN',
+                image: '/images/products/wheyboruvka.png',
+              },
+              {
+                id: 'whey-strawberry-0',
+                name: '80% WHEY PROTEIN JAHODA',
+                slug: 'whey-protein-jahoda',
+                price: 1499,
+                category: 'PROTEIN',
+                image: '/images/products/wheyjahoda.png',
+              }
+            ].map((product, index) => (
               <Reveal key={product.id} delay={index * 0.06}>
-                <ProductCard
-                  product={{
-                    ...product,
-                    compareAtPrice: product.compareAtPrice ?? 0,
-                  }}
-                />
+                <ProductCard product={product} basePath="/supplements" />
               </Reveal>
             ))}
           </div>
