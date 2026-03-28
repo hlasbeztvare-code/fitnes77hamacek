@@ -15,12 +15,12 @@ export default async function GymPage() {
   return (
     <main className="bg-white min-h-screen text-black pb-40 selection:bg-[#E10600] overflow-x-hidden">
       
-      {/* 1. THE PEAK HERO (Tvůj Masterpiece) */}
+      {/* 1. THE PEAK HERO (Tvůj bílý Masterpiece) */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden bg-[#fdfdfd]">
         <div className="max-w-[1400px] w-full mx-auto relative z-10 flex flex-col items-center justify-center pt-10">
           <Reveal>
             <div className="mb-4 inline-flex items-center gap-3 bg-black/5 px-4 py-1 border border-black/5 transform -skew-x-12">
-              <span className="text-[#E10600] font-black uppercase tracking-[0.4em] text-[9px] italic">UNIT_F77_RAW // SINCE 2014</span>
+              <span className="text-[#E10600] font-black uppercase tracking-[0.4em] text-[9px] italic font-mono">UNIT_F77_RAW // SINCE 2014</span>
             </div>
             
             <h1 className="text-7xl md:text-9xl font-black uppercase italic leading-[0.8] tracking-tighter text-black"
@@ -42,61 +42,77 @@ export default async function GymPage() {
         </div>
       </section>
 
-      {/* 2. THE TECHNICAL GRID (Místo nudnýho textu) */}
+      {/* 2. TRAINERS SECTION (Vracíme Hamáčka a Soustružníka ve velkým stylu) */}
       <section className="py-24 px-4 max-w-7xl mx-auto border-t border-black/5">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-          {[
-            { label: 'AREA', value: '600m2' },
-            { label: 'EQUIPMENT', value: '40+ UNITS' },
-            { label: 'LOCATION', value: 'BOLKA' },
-            { label: 'LEVEL', value: 'ELITE' }
-          ].map((item, i) => (
-            <Reveal key={i} delay={i * 0.1}>
-              <div className="space-y-2">
-                <p className="text-[10px] font-black text-zinc-300 uppercase tracking-[0.5em]">{item.label}</p>
-                <p className="text-4xl font-black italic uppercase">{item.value}</p>
+        <Reveal><h2 className="text-xs font-black uppercase tracking-[0.5em] text-zinc-300 mb-16 italic text-center">Elite_Commanders</h2></Reveal>
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Hamáček */}
+          <Reveal x={-30}>
+            <div className="group relative bg-zinc-50 border border-black/5 p-8 flex gap-8 items-end overflow-hidden hover:bg-white transition-all duration-500 shadow-sm hover:shadow-2xl">
+              <div className="w-1/2 aspect-[3/4] relative grayscale group-hover:grayscale-0 transition-all duration-700">
+                <Image src="/images/trainers/hlavacek.png" alt="Hamáček" fill className="object-contain object-bottom" />
               </div>
-            </Reveal>
-          ))}
+              <div className="w-1/2 pb-4">
+                <h3 className="text-3xl font-black uppercase italic leading-none mb-2">Hamáček</h3>
+                <p className="text-[10px] font-bold text-[#E10600] uppercase tracking-widest mb-4 italic">Founder // Head Coach</p>
+                <p className="text-zinc-500 text-xs font-medium leading-relaxed uppercase italic">Absolvent FTVS UK. Strategie, síla, nekompromisní výsledky.</p>
+              </div>
+            </div>
+          </Reveal>
+          {/* Soustružník */}
+          <Reveal x={30} delay={0.2}>
+            <div className="group relative bg-zinc-50 border border-black/5 p-8 flex gap-8 items-end overflow-hidden hover:bg-white transition-all duration-500 shadow-sm hover:shadow-2xl">
+              <div className="w-1/2 aspect-[3/4] relative grayscale group-hover:grayscale-0 transition-all duration-700">
+                <Image src="/images/trainers/soustruznik.png" alt="Soustružník" fill className="object-contain object-bottom" />
+              </div>
+              <div className="w-1/2 pb-4">
+                <h3 className="text-3xl font-black uppercase italic leading-none mb-2">Soustružník</h3>
+                <p className="text-[10px] font-bold text-[#E10600] uppercase tracking-widest mb-4 italic">Elite Coach // Pro Unit</p>
+                <p className="text-zinc-500 text-xs font-medium leading-relaxed uppercase italic">Technika, dynamika a posouvání hranic lidskýho těla.</p>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* 3. THE INFINITE WALL (World-Class Gallery) */}
-      <section className="relative py-10 bg-white">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
-          {galleryFiles.map((file, i) => (
-            <Reveal key={i} delay={i * 0.02} y={0} x={0}>
-              <div className="relative aspect-square overflow-hidden group bg-zinc-100">
-                <img 
-                  src={`/images/gym/gallery/${file}`} 
-                  alt="F77" 
-                  className="w-full h-full object-cover grayscale contrast-125 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-[#E10600]/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* 4. THE PRICING (Sovereign Cards) */}
-      <section className="py-32 px-4 max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-0 border border-black/5">
+      {/* 3. PRICING (Sovereign White Cards) */}
+      <section className="py-24 bg-[#f9f9f9] border-y border-black/5">
+        <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-0 border border-black/5 bg-white shadow-2xl">
           {[
-            { name: 'ENTRY', price: '180' },
-            { name: 'WARRIOR', price: '1290' },
-            { name: 'ELITE', price: '10900' }
+            { name: 'RAW_ENTRY', price: '180', note: 'SINGLE_UNIT' },
+            { name: 'WARRIOR_30', price: '1290', note: 'MOST_WANTED' },
+            { name: 'ELITE_365', price: '10900', note: 'TOP_LEAGUE' }
           ].map((p, i) => (
-            <div key={i} className="p-12 border-r last:border-0 border-black/5 hover:bg-black hover:text-white transition-all duration-500 group">
-              <p className="text-[10px] font-black uppercase tracking-[0.5em] mb-8 text-[#E10600]">TYPE_{p.name}</p>
+            <div key={i} className="p-12 border-r last:border-0 border-black/5 hover:bg-black hover:text-white transition-all duration-700 group">
+              <p className="text-[10px] font-black uppercase tracking-[0.5em] mb-8 text-[#E10600] italic">{p.note}</p>
               <h3 className="text-5xl font-black italic mb-12">{p.price},-</h3>
-              <button className="w-full py-4 border border-black/10 font-black uppercase italic text-[10px] tracking-widest group-hover:border-white/20 transition-all">
-                Select_Access
+              <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-10 group-hover:text-zinc-600 transition-colors">TYPE_{p.name}</p>
+              <button className="w-full py-4 border border-black/10 font-black uppercase italic text-[10px] tracking-widest group-hover:bg-[#E10600] group-hover:border-[#E10600] transition-all">
+                Grab_Access
               </button>
             </div>
           ))}
         </div>
       </section>
+
+      {/* 4. THE INFINITE WALL (World-Class Gallery) */}
+      <section className="py-24 px-4 max-w-[1600px] mx-auto">
+        <Reveal><h2 className="text-xs font-black uppercase tracking-[0.8em] text-zinc-300 mb-20 italic text-center">Visual_Archive_F77</h2></Reveal>
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+          {galleryFiles.map((file, i) => (
+            <Reveal key={i} delay={i * 0.05}>
+              <div className="relative overflow-hidden group border border-black/5 shadow-lg">
+                <img 
+                  src={`/images/gym/gallery/${file}`} 
+                  alt="F77 Heritage" 
+                  className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
+                />
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
     </main>
   );
 }
