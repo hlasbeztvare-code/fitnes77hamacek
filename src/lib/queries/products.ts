@@ -7,7 +7,7 @@ export async function getSupplements() {
 }
 
 export async function getSupplementBySlug(slug: string) {
-  if (!slug) return null;
+  if (!slug || slug === "undefined") return null;
   return db.product.findUnique({
     where: { slug },
   });
