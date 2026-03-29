@@ -1,113 +1,98 @@
 "use client";
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import Reveal from "@/components/ui/Reveal"; // Tady jsi mi chyběl, ty mrdko! (smrk)
+import Reveal from "@/components/ui/Reveal";
 
 export default function GymPage() {
-  // První fotka šla dopici, zbytek seřazen (smrk)
   const galleryFiles = Array.from({ length: 39 }, (_, i) => `gym_photo_${i + 1}.jpg`);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const marqueeText = " // HARDCORE MB // RAW_HERITAGE // UNIT_01 // UNIT_02 // ";
 
+  // Magie pro orošení fotky na pozadí trenérů
+  const { scrollYProgress } = useScroll();
+  const blurValue = useTransform(scrollYProgress, [0.1, 0.3], ["20px", "0px"]);
+  const opacityValue = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
+
   return (
     <main className="min-h-screen selection:bg-[#E10600] selection:text-white overflow-x-hidden scroll-smooth bg-white relative">
       
-      {/* 1. HERO - S OROŠENOU FOTKOU NA POZADÍ (smrk) */}
-      <section className="relative h-[45vh] flex flex-col justify-center px-6 bg-white z-20 border-b border-zinc-100 overflow-hidden">
-        
-        {/* TVOJE FOTKA S OROŠENÍM (REVEAL EFEKT) */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
-          animate={{ opacity: 0.15, scale: 1, filter: "blur(0px)" }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute inset-0 z-0"
-        >
-          <Image 
-            src="/images/gym/gym_old_0.jpg" 
-            alt="F77 Hero Background" 
-            fill 
-            className="object-cover grayscale"
-            priority
-          />
-        </motion.div>
-
-        <div className="max-w-[1100px] mx-auto w-full relative z-10">
-          <Reveal y={20}>
-            <motion.div
-              initial={{ x: 300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="relative"
+      {/* 1. HERO - ČISTÁ BÍLÁ + MOKRÝ NÁPIS (smrk) */}
+      <section className="relative h-[40vh] flex flex-col justify-center px-6 bg-white z-20 border-b border-zinc-100">
+        <div className="max-w-[1100px] mx-auto w-full relative">
+          <motion.div
+            initial={{ x: 300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="relative"
+          >
+            <h1 className="text-[7vw] font-black uppercase italic leading-[0.75] tracking-tighter relative inline-block
+                           bg-gradient-to-b from-black via-zinc-800 to-black bg-clip-text text-transparent
+                           after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/40 after:to-transparent after:animate-textShine"
             >
-              <h1 className="text-[7vw] font-black uppercase italic leading-[0.75] tracking-tighter relative inline-block
-                             bg-gradient-to-b from-black via-zinc-800 to-black bg-clip-text text-transparent
-                             after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/40 after:to-transparent after:animate-textShine"
-              >
-                FITNESS<span className="text-[#E10600]">77</span>
-              </h1>
-            </motion.div>
+              FITNESS<span className="text-[#E10600]">77</span>
+            </h1>
+          </motion.div>
 
-            <div className="flex flex-col md:flex-row justify-between md:items-end mt-4 gap-4">
-               <motion.div 
-                 initial={{ y: -50, opacity: 0 }}
-                 animate={{ y: 0, opacity: 1 }}
-                 transition={{ duration: 0.5, delay: 0.3 }}
-               >
-                 <p className="text-[7px] font-black uppercase tracking-[0.6em] text-zinc-400 italic mb-2">RAW_HERITAGE // MB</p>
-                 <div className="border-b border-zinc-200 pb-1 flex gap-6">
-                    <div>
-                       <p className="text-[8px] text-zinc-500 font-bold uppercase">PO - PÁ</p>
-                       <p className="text-xl font-black italic text-black">06:00 - 22:00</p>
-                    </div>
-                    <div>
-                       <p className="text-[8px] text-zinc-500 font-bold uppercase">SO - NE</p>
-                       <p className="text-xl font-black italic text-black">08:00 - 20:00</p>
-                    </div>
-                 </div>
-               </motion.div>
-
-               <motion.h2 
-                 initial={{ x: -300, opacity: 0 }}
-                 animate={{ x: 0, opacity: 1 }}
-                 transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
-                 className="text-[5vw] font-black uppercase italic leading-[0.75] tracking-tighter"
-                 style={{ WebkitTextStroke: '1px black', color: 'transparent' }}
-               >
-                 HARDCORE
-               </motion.h2>
-            </div>
-          </Reveal>
+          <div className="flex flex-col md:flex-row justify-between md:items-end mt-4 gap-4">
+             <motion.div initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}>
+               <p className="text-[7px] font-black uppercase tracking-[0.6em] text-zinc-400 italic mb-2">RAW_HERITAGE // MB</p>
+               <div className="border-b border-zinc-200 pb-1 flex gap-6">
+                  <div>
+                     <p className="text-[8px] text-zinc-500 font-bold uppercase">PO - PÁ</p>
+                     <p className="text-xl font-black italic">06:00 - 22:00</p>
+                  </div>
+                  <div>
+                     <p className="text-[8px] text-zinc-500 font-bold uppercase">SO - NE</p>
+                     <p className="text-xl font-black italic">08:00 - 20:00</p>
+                  </div>
+               </div>
+             </motion.div>
+             <motion.h2 initial={{ x: -300, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.7, delay: 0.1 }}
+               className="text-[5vw] font-black uppercase italic leading-[0.75] tracking-tighter"
+               style={{ WebkitTextStroke: '1px black', color: 'transparent' }}
+             >
+               HARDCORE
+             </motion.h2>
+          </div>
         </div>
       </section>
 
-      {/* 2. TENKÝ JEZDÍCÍ PROUŽEK (smrk) */}
+      {/* 2. JEZDÍCÍ PROUŽEK */}
       <section className="bg-black py-2 border-y border-[#E10600] z-20 relative">
         <div className="overflow-hidden flex whitespace-nowrap">
-          <motion.div
-            className="flex items-center gap-8 text-[#E10600] font-black uppercase italic text-lg"
-            animate={{ x: [0, -100 + "%"] }}
-            transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-          >
-            {[...Array(15)].map((_, j) => (
-              <span key={j}>{marqueeText}</span>
-            ))}
+          <motion.div className="flex items-center gap-8 text-[#E10600] font-black uppercase italic text-lg"
+            animate={{ x: [0, -100 + "%"] }} transition={{ repeat: Infinity, duration: 25, ease: "linear" }}>
+            {[...Array(15)].map((_, j) => <span key={j}>{marqueeText}</span>)}
           </motion.div>
         </div>
       </section>
 
-      {/* 3. ZBYTEK - ŠEDÉ SKLO (smrk) */}
-      <section className="relative py-16 px-4 z-10 bg-[#E5E7EB] bg-opacity-20 backdrop-blur-3xl min-h-[60vh]">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          
+      {/* 3. SEKCE TRENÉŘI S OROŠENÝM POZADÍM (smrk) */}
+      <section className="relative py-24 px-4 z-10 min-h-screen overflow-hidden">
+        
+        {/* POZADÍ SEKCE - FOTKA CO SE PROČIŠŤUJE */}
+        <motion.div 
+          style={{ opacity: opacityValue, filter: `blur(${blurValue})` }}
+          className="absolute inset-0 z-0"
+        >
+          <Image 
+            src="/images/gym/gym_old_0.jpg" 
+            alt="Gym Background" 
+            fill 
+            className="object-cover grayscale opacity-20"
+          />
+        </motion.div>
+
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative z-10">
           {/* TRENÉR VLEVO: HAMÁČEK */}
           <div className="group relative">
             <div className="relative aspect-[4/5] overflow-hidden shadow-xl border border-white/20 scale-95 group-hover:scale-100 transition-transform">
-              <Image src="/images/trainers/old_web_1.jpg" alt="Hamáček" fill className="object-cover object-top" priority />
+              <Image src="/images/trainers/old_web_1.jpg" alt="Hamáček" fill className="object-cover object-top" />
             </div>
-            <div className="relative -mt-16 mx-8 bg-white/70 backdrop-blur-xl p-5 border border-white/40 shadow-xl">
-              <h3 className="text-xl font-black uppercase italic text-black tracking-tighter">Hamáček</h3>
+            <div className="relative -mt-16 mx-8 bg-white/80 backdrop-blur-xl p-5 border border-white/40 shadow-xl">
+              <h3 className="text-xl font-black uppercase italic text-black">Hamáček</h3>
               <p className="text-xs text-zinc-600 mt-2">Unit_01 // Founder</p>
               <div className="mt-3 p-2 bg-black/5 border border-black/10 rounded">
                 <p className="text-[9px] font-black text-zinc-400">STACK: ISOLAT + CREAPURE</p>
@@ -117,7 +102,7 @@ export default function GymPage() {
 
           {/* PERMANENTKY STŘED */}
           <div className="group relative lg:mt-10">
-            <div className="relative bg-white/70 backdrop-blur-xl p-8 border border-white/40 shadow-xl border-t-4 border-t-[#E10600]">
+            <div className="relative bg-white/80 backdrop-blur-xl p-8 border border-white/40 shadow-xl border-t-4 border-t-[#E10600]">
               <h3 className="text-2xl font-black uppercase italic mb-6 text-black text-center tracking-tighter">Vstupy</h3>
               <div className="space-y-4 mb-8 text-sm text-black">
                 <div className="flex justify-between border-b border-black/5 pb-1"><span>JEDNORÁZ</span><span className="font-black italic">180</span></div>
@@ -131,21 +116,20 @@ export default function GymPage() {
           {/* TRENÉR VPRAVO: SOUSTRUŽNÍK */}
           <div className="group relative text-right">
             <div className="relative aspect-[4/5] overflow-hidden shadow-xl border border-white/20 scale-95 group-hover:scale-100 transition-transform">
-              <Image src="/images/trainers/old_web_2.jpg" alt="Soustružník" fill className="object-cover object-top" priority />
+              <Image src="/images/trainers/old_web_2.jpg" alt="Soustružník" fill className="object-cover object-top" />
             </div>
-            <div className="relative -mt-16 mx-8 bg-white/70 backdrop-blur-xl p-5 border border-white/40 shadow-xl flex flex-col items-end">
-              <h3 className="text-xl font-black uppercase italic text-black tracking-tighter">Soustružník</h3>
+            <div className="relative -mt-16 mx-8 bg-white/80 backdrop-blur-xl p-5 border border-white/40 shadow-xl flex flex-col items-end">
+              <h3 className="text-xl font-black uppercase italic text-black">Soustružník</h3>
               <p className="text-xs text-zinc-600 mt-2">Unit_02 // Elite</p>
               <div className="mt-3 p-2 bg-black/5 border border-black/10 rounded w-full text-right">
                 <p className="text-[9px] font-black text-zinc-400">STACK: VITAMINS + ZMA</p>
               </div>
             </div>
           </div>
-
         </div>
 
-        {/* 4. GALERIE - KOMPAKTNÍ SEŘAZENÝ GRID */}
-        <div className="mt-24 grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-1 px-4 max-w-[1400px] mx-auto">
+        {/* GALERIE - SEŘAZENÁ */}
+        <div className="mt-24 grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-1 px-4 max-w-[1400px] mx-auto relative z-10">
           {galleryFiles.map((file, i) => (
             <div key={i} className="relative aspect-square cursor-pointer overflow-hidden opacity-70 hover:opacity-100 transition-all shadow-lg" onClick={() => setSelectedImage(`/images/gym/gallery/${file}`)}>
               <img src={`/images/gym/gallery/${file}`} alt={`F77 Gallery ${i}`} className="w-full h-full object-cover" />
@@ -159,7 +143,7 @@ export default function GymPage() {
         {selectedImage && (
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[300] bg-black/90 flex items-center justify-center p-8 cursor-zoom-out"
+            className="fixed inset-0 z-[300] bg-black/95 flex items-center justify-center p-8 cursor-zoom-out"
             onClick={() => setSelectedImage(null)}
           >
             <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} className="relative max-w-4xl w-full h-[70vh]">
