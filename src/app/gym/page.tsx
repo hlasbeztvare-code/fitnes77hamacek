@@ -20,38 +20,49 @@ export default function GymPage() {
     }
   };
 
-  const sluzby = [
-    { n: "OSOBNÍ TRENÉR", i: "👤" },
-    { n: "POSILOVÁNÍ SVALŮ", i: "🏋️" },
-    { n: "POÚRAZOVÉ CVIČENÍ", i: "🏥" },
-    { n: "REDUKCE HMOTNOSTI", i: "📉" },
-    { n: "SILOVÝ TRÉNINK", i: "💪" },
-    { n: "ZLEPŠENÍ KONDICE", i: "🏃" },
-    { n: "OBČERSTVENÍ", i: "🍎" },
-    { n: "CVIČEBNÍ PLÁNY", i: "📅" },
-    { n: "PRODEJ DOPLŇKŮ", i: "🧴" }
+  const sluzbyShort = [
+    "OSOBNÍ TRENÉR", "SILOVÝ TRÉNINK", "REDUKCE VÁHY", 
+    "POÚRAZOVÉ STAVY", "STRAVOVACÍ PLÁNY", "PRODEJ DOPLŇKŮ"
   ];
 
   return (
     <main className="bg-[#0A0A0A] min-h-screen text-white selection:bg-[#E10600] selection:text-white overflow-x-hidden relative scroll-smooth">
       
-      {/* 1. HERO */}
-      <section className="relative min-h-[45vh] flex flex-col justify-center px-4 md:px-6 border-b border-zinc-100/10 bg-black z-20 py-16 md:py-0">
+      {/* 1. HERO S INTEGROVANÝMI SLUŽBAMI (smrk) */}
+      <section className="relative min-h-[70vh] md:min-h-[60vh] flex flex-col justify-center px-4 md:px-6 border-b border-zinc-100/10 bg-black z-20 py-20">
         <Reveal y={20}>
           <div className="max-w-[1400px] mx-auto w-full relative z-10">
-            <h1 className="text-[15vw] md:text-[10vw] font-black uppercase italic leading-[0.75] tracking-tighter text-white">
+            <h1 className="text-[15vw] md:text-[10vw] font-black uppercase italic leading-[0.75] tracking-tighter text-white drop-shadow-[0_10px_30px_rgba(0,0,0,1)]">
               FITNESS<span className="text-[#E10600]">77</span>
             </h1>
-            <div className="flex flex-col md:flex-row justify-between md:items-end mt-8 md:mt-4 gap-10 md:gap-6">
-               <div className="flex flex-col gap-6 relative z-20">
-                 <p className="text-[8px] font-black uppercase tracking-[0.8em] text-zinc-500 italic">MLADÁ BOLESLAV // LEGENDÁRNÍ_GYM</p>
-                 <div className="flex flex-col sm:flex-row gap-8 border-l-4 border-[#E10600] pl-5 bg-black/40 backdrop-blur-md p-5 relative shadow-2xl">
-                    <div className="absolute inset-y-0 -left-1 w-1 bg-[#E10600]"></div>
-                    <div><p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">PO - PÁ</p><p className="text-xl md:text-2xl font-black italic text-white">06:00 - 21:00</p></div>
-                    <div><p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">SO - NE</p><p className="text-xl md:text-2xl font-black italic text-white">09:00 - 20:00</p></div>
+            
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mt-12 gap-12">
+               <div className="flex flex-col gap-8 w-full lg:w-auto">
+                 {/* SLUŽBY PŘÍMO V HERO (smrk) */}
+                 <div className="grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-8 border-l-2 border-[#E10600] pl-6 py-2 bg-white/5 backdrop-blur-sm p-6">
+                    {sluzbyShort.map((s, i) => (
+                      <div key={i} className="flex items-center gap-2 group">
+                        <div className="w-1 h-1 bg-[#E10600] group-hover:scale-[3] transition-transform"></div>
+                        <span className="text-[10px] md:text-[11px] font-black italic uppercase tracking-widest text-zinc-400 group-hover:text-white transition-colors">{s}</span>
+                      </div>
+                    ))}
+                 </div>
+
+                 <div className="flex flex-col sm:flex-row gap-8 border-l-4 border-white/10 pl-5 bg-black/40 p-5 relative">
+                    <div><p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">PO - PÁ</p><p className="text-xl md:text-2xl font-black italic text-white tracking-tighter">06:00 - 21:00</p></div>
+                    <div><p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">SO - NE</p><p className="text-xl md:text-2xl font-black italic text-white tracking-tighter">09:00 - 20:00</p></div>
                  </div>
                </div>
-               <Link href="/shop" onClick={() => triggerHaptic(20)} className="px-8 py-4 bg-white text-black font-black uppercase italic text-xs tracking-widest hover:bg-[#E10600] hover:text-white transition-all">VSTOUPIT DO E-SHOPU →</Link>
+
+               <div className="flex flex-col items-end gap-6 w-full lg:w-auto">
+                  <h2 className="text-[10vw] md:text-[6vw] font-black uppercase italic leading-none tracking-tighter opacity-10"
+                      style={{ WebkitTextStroke: '1px #E10600', color: 'transparent' }}>
+                    HARDCORE_MB
+                  </h2>
+                  <Link href="/shop" onClick={() => triggerHaptic(20)} className="w-full lg:w-auto px-12 py-5 bg-white text-black font-black uppercase italic text-xs tracking-[0.2em] hover:bg-[#E10600] hover:text-white transition-all text-center">
+                    VSTOUPIT DO E-SHOPU →
+                  </Link>
+               </div>
             </div>
           </div>
         </Reveal>
@@ -80,42 +91,16 @@ export default function GymPage() {
         </div>
       </section>
 
-      {/* 3. SLUŽBY - NOVÉ UMÍSTĚNÍ A CLEAN STYL (smrk) */}
-      <section className="relative py-24 bg-black overflow-hidden border-b border-white/5">
-        <div className="max-w-[1400px] mx-auto px-6 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-            <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter leading-none">NAŠE<br/><span className="text-[#E10600]">SLUŽBY</span></h2>
-            <div className="hidden md:block w-1/2 h-px bg-white/10 mb-4 border-t border-dashed border-zinc-700"></div>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-y-12 gap-x-8">
-            {sluzby.map((s, i) => (
-              <motion.div 
-                key={i} 
-                whileHover={{ x: 10 }}
-                className="flex items-center gap-4 group border-l border-zinc-800 pl-6 py-2 hover:border-[#E10600] transition-colors"
-              >
-                <span className="text-2xl filter grayscale group-hover:grayscale-0 transition-all">{s.i}</span>
-                <p className="font-black italic uppercase tracking-tighter text-sm md:text-lg text-zinc-400 group-hover:text-white transition-colors leading-none">
-                  {s.n}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. TRENÉŘI TRINITY */}
+      {/* 3. TRENÉŘI TRINITY */}
       <section className="relative py-20 md:py-32 px-4 z-10 bg-[#0A0A0A]">
         <div className="max-w-[1700px] mx-auto flex flex-col lg:grid lg:grid-cols-3 gap-20 md:gap-16 items-start">
-          {/* HAMÁČEK */}
           <div className="w-full flex flex-col group relative order-2 lg:order-1">
             <div className="relative w-full aspect-[4/5] bg-zinc-900 overflow-hidden shadow-2xl rounded-sm">
               <Image src="/images/trainers/old_web_1.jpg" alt="HAMÁČEK" fill className="object-cover object-top" />
             </div>
-            <div className="relative -mt-24 mx-2 md:mx-8 bg-black/60 backdrop-blur-2xl p-8 border border-white/10 shadow-2xl z-20 transition-all hover:border-[#E10600]/50">
+            <div className="relative -mt-24 mx-2 md:mx-8 bg-black/60 backdrop-blur-2xl p-8 border border-white/10 shadow-2xl z-20">
               <div className="absolute top-0 left-0 w-full h-1 bg-[#E10600]"></div>
-              <h3 className="text-4xl font-black uppercase italic text-white tracking-tighter">HAMÁČEK</h3>
+              <h3 className="text-4xl font-black uppercase italic text-white tracking-tighter tracking-tighter">HAMÁČEK</h3>
               <p className="text-[10px] font-bold text-zinc-400 uppercase mt-2 border-l-2 border-[#E10600] pl-3 italic">HLAVNÍ KOUČ</p>
               <div className="mt-6 pt-6 border-t border-white/5">
                 <p className="text-[9px] font-black text-[#E10600] tracking-widest mb-3 uppercase italic">DOPORUČENÉ SUPLE</p>
@@ -128,12 +113,11 @@ export default function GymPage() {
             </div>
           </div>
 
-          {/* FILOZOFIE & CENÍK */}
           <div className="w-full flex flex-col gap-12 order-1 lg:order-2 text-center">
             <div className="relative bg-black/60 backdrop-blur-2xl p-10 border border-white/10 shadow-2xl">
               <h3 className="text-3xl font-black uppercase italic text-white mb-8 tracking-[0.3em]">FILOZOFIE</h3>
               <p className="text-2xl font-black text-white leading-tight mb-8 uppercase italic tracking-tighter">DŘEME PRO VÝSLEDKY, NE PRO FOTKY.</p>
-              <p className="text-[11px] text-zinc-500 italic uppercase">220 M², 30 STROJŮ VITA A PROFI KARDIO ZÓNA.</p>
+              <p className="text-[11px] text-zinc-500 italic uppercase tracking-widest">220 M², 30 STROJŮ VITA A PROFI KARDIO ZÓNA.</p>
             </div>
             <div className="flex flex-col group relative lg:mt-12 text-left">
               <div className="bg-black/10 backdrop-blur-md h-24 flex items-center justify-center border-t-2 border-[#E10600]"><span className="text-4xl md:text-5xl font-black italic opacity-20 uppercase tracking-[0.3em]">CENÍK</span></div>
@@ -151,14 +135,13 @@ export default function GymPage() {
             </div>
           </div>
 
-          {/* SOUSTRUŽNÍK */}
           <div className="w-full flex flex-col group relative order-3 text-right">
             <div className="relative w-full aspect-[4/5] bg-zinc-900 overflow-hidden shadow-2xl rounded-sm">
               <Image src="/images/trainers/old_web_2.jpg" alt="SOUSTRUŽNÍK" fill className="object-cover object-top" />
             </div>
-            <div className="relative -mt-24 mx-2 md:mx-8 bg-black/60 backdrop-blur-2xl p-8 border border-white/10 shadow-2xl z-20 flex flex-col items-end transition-all hover:border-[#E10600]/50">
+            <div className="relative -mt-24 mx-2 md:mx-8 bg-black/60 backdrop-blur-2xl p-8 border border-white/10 shadow-2xl z-20 flex flex-col items-end">
               <div className="absolute top-0 right-0 w-full h-1 bg-[#E10600]"></div>
-              <h3 className="text-4xl font-black uppercase italic text-white tracking-tighter">SOUSTRUŽNÍK</h3>
+              <h3 className="text-4xl font-black uppercase italic text-white tracking-tighter tracking-tighter">SOUSTRUŽNÍK</h3>
               <p className="text-[10px] font-bold text-zinc-400 uppercase mt-2 border-r-2 border-[#E10600] pr-3 italic">PRO UNIT</p>
               <div className="mt-6 pt-6 border-t border-white/5 w-full">
                 <p className="text-[9px] font-black text-[#E10600] tracking-widest mb-3 uppercase italic">DOPORUČENÉ SUPLE</p>
@@ -173,10 +156,10 @@ export default function GymPage() {
         </div>
       </section>
 
-      {/* 5. PARTNEŘI */}
+      {/* 4. PARTNEŘI */}
       <section className="py-20 bg-black border-b border-white/5">
         <div className="max-w-[1400px] mx-auto px-6 text-center">
-          <p className="text-zinc-500 font-black italic uppercase tracking-[0.5em] text-[10px] mb-12">S NÁMI SPOLUPRACUJÍ</p>
+          <p className="text-zinc-600 font-black italic uppercase tracking-[0.5em] text-[10px] mb-12 italic">S NÁMI SPOLUPRACUJÍ</p>
           <div className="flex flex-wrap justify-center items-center gap-16 opacity-30 hover:opacity-100 transition-opacity">
             <div className="relative w-[180px] h-[50px] grayscale hover:grayscale-0 transition-all cursor-pointer"><Image src="/images/partners/multi_sport.png" alt="MultiSport" fill className="object-contain" /></div>
             <div className="relative w-[180px] h-[50px] grayscale hover:grayscale-0 transition-all cursor-pointer"><Image src="/images/partners/aktiva_pronet.png" alt="AktivaPronet" fill className="object-contain" /></div>
@@ -184,10 +167,10 @@ export default function GymPage() {
         </div>
       </section>
 
-      {/* 6. GALERIE */}
+      {/* 5. GALERIE */}
       <section className="py-20 bg-black relative z-10 overflow-hidden">
          <div className="max-w-[1400px] mx-auto px-6 mb-12">
-            <h2 className="text-4xl font-black uppercase italic text-white tracking-tighter">GALERIE</h2>
+            <h2 className="text-4xl font-black uppercase italic text-white tracking-tighter underline decoration-[#E10600] decoration-4 underline-offset-8 uppercase">GALERIE</h2>
          </div>
          <div className="flex gap-3 overflow-x-auto pb-10 px-6 no-scrollbar snap-x snap-mandatory scroll-smooth">
             {galleryFiles.map((file, i) => (
