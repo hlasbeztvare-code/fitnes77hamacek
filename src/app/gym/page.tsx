@@ -14,17 +14,18 @@ export default function GymPage() {
 
   const { scrollY } = useScroll();
   const yBg = useTransform(scrollY, [0, 800], [0, 120]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0.3]);
 
   const sluzby = [
-    { n: "OSOBNÍ TRENÉR", i: "👤" },
-    { n: "POSILOVÁNÍ SVALŮ", i: "🏋️" },
-    { n: "POÚRAZOVÉ CVIČENÍ", i: "🏥" },
-    { n: "REDUKCE HMOTNOSTI", i: "📉" },
-    { n: "SILOVÝ TRÉNINK", i: "💪" },
-    { n: "ZLEPŠENÍ KONDICE", i: "🏃" },
-    { n: "OBČERSTVENÍ", i: "🍎" },
-    { n: "CVIČEBNÍ PLÁNY", i: "📅" },
-    { n: "PRODEJ DOPLŇKŮ", i: "🧴" }
+    "OSOBNÍ TRENÉR",
+    "POSILOVÁNÍ SVALŮ",
+    "POÚRAZOVÉ CVIČENÍ",
+    "REDUKCE HMOTNOSTI",
+    "SILOVÝ TRÉNINK",
+    "ZLEPŠENÍ KONDICE",
+    "OBČERSTVENÍ",
+    "CVIČEBNÍ PLÁNY",
+    "PRODEJ DOPLŇKŮ"
   ];
 
   return (
@@ -33,8 +34,13 @@ export default function GymPage() {
       {/* HERO */}
       <section className="relative min-h-screen overflow-hidden bg-black">
 
-        {/* BG PARALLAX */}
-        <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 opacity-80">
+        <motion.div 
+          style={{ y: yBg, scale: 1.05 }} 
+          initial={{ scale: 1.1 }} 
+          animate={{ scale: 1.05 }} 
+          transition={{ duration: 6, ease: "easeOut" }}
+          className="absolute inset-0 z-0 opacity-80"
+        >
           <Image 
             src="/images/hero/hero_beton_fitness77.png"
             alt="BETON_F77"
@@ -43,39 +49,32 @@ export default function GymPage() {
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/40"></div>
+          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
         </motion.div>
 
-        {/* TEXT — FIXED NA OBRAZ */}
         <div className="absolute inset-0 z-20 pointer-events-none">
-          <h1 className="
-            absolute
-            top-[17%]
-            left-1/2
-            -translate-x-1/2
-            text-[14.5vw] md:text-[11vw]
-            tracking-[-0.05em]
-            whitespace-nowrap
-            mix-blend-overlay
-          ">
+          <motion.h1 
+            style={{ opacity }}
+            className="absolute top-[17%] left-1/2 -translate-x-1/2 text-[14.5vw] md:text-[11vw] tracking-[-0.05em] whitespace-nowrap mix-blend-overlay drop-shadow-[0_10px_40px_rgba(0,0,0,0.9)]"
+          >
             FITNESS<span className="text-[#FF0000] drop-shadow-[0_0_20px_rgba(255,0,0,0.6)]">77</span>
-          </h1>
+          </motion.h1>
 
-          <div className="
-            absolute
-            top-[32%]
-            left-1/2
-            -translate-x-1/2
-            text-[10px]
-            tracking-[0.5em]
-            text-white/70
-            text-center
-          ">
+          <div className="absolute top-[32%] left-1/2 -translate-x-1/2 text-[10px] tracking-[0.5em] text-white/70 text-center">
             JIRÁSKOVA 1320 // MB NATIVE // NO LIMITS
             <br />
             MLADÁ BOLESLAV
           </div>
         </div>
 
+        {/* CTA */}
+        <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-30">
+          <Link href="/kontakt">
+            <button className="px-8 py-3 bg-[#FF0000] text-black font-bold hover:bg-white transition">
+              ZAČNI DNES
+            </button>
+          </Link>
+        </div>
       </section>
 
       {/* STATS */}
@@ -87,8 +86,12 @@ export default function GymPage() {
             { t: "NEJVĚTŠÍ", d: "V MLADÉ BOLESLAVI", i: "/images/gym/gallery/gym_photo_3.jpg" },
             { t: "TOP SLUŽBY", d: "NEKOMPROMISNÍ PŘÍSTUP", i: "/images/gym/gallery/gym_photo_4.jpg" }
           ].map((item, idx) => (
-            <div key={idx} className="relative h-64 overflow-hidden border border-white/10 group bg-zinc-900">
+            <div key={idx} className="relative h-64 overflow-hidden border border-white/10 group bg-zinc-900 hover:scale-[1.02] transition duration-500">
+              
               <Image src={item.i} alt={item.t} fill className="object-cover grayscale opacity-20 group-hover:opacity-60 transition-all duration-700" />
+
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%]"></div>
+
               <div className="absolute bottom-6 left-6">
                 <p className="text-4xl text-[#FF0000]">{item.t}</p>
                 <p className="text-[11px] text-white tracking-widest mt-2">{item.d}</p>
@@ -102,7 +105,6 @@ export default function GymPage() {
       <section className="py-24 px-4 bg-black">
         <div className="max-w-[1700px] mx-auto grid lg:grid-cols-3 gap-16">
 
-          {/* HAMÁČEK */}
           <div>
             <div className="relative aspect-[4/5]">
               <Image src="/images/trainers/old_web_1.jpg" alt="HAMÁČEK" fill className="object-cover grayscale hover:grayscale-0" />
@@ -113,26 +115,33 @@ export default function GymPage() {
             </div>
           </div>
 
-          {/* SLUŽBY + CENÍK */}
           <div className="text-center space-y-10">
             <div>
               <h3 className="text-xl text-[#FF0000] mb-6">SLUŽBY</h3>
               {sluzby.map((s, i) => (
-                <div key={i} className="py-2 border-b border-zinc-800">{s.n}</div>
+                <div key={i} className="py-2 border-b border-zinc-800">{s}</div>
               ))}
             </div>
 
             <div>
               <h3 className="text-xs text-zinc-500 mb-4">CENÍK</h3>
-              <div className="grid grid-cols-3 gap-2">
-                <div>160</div>
-                <div>1490</div>
-                <div>12990</div>
+              <div className="grid grid-cols-3 gap-4 text-sm">
+                <div className="border border-zinc-800 p-4">
+                  <p>BASIC</p>
+                  <p className="text-[#FF0000] text-xl">160 Kč</p>
+                </div>
+                <div className="border-2 border-[#FF0000] p-4 scale-105">
+                  <p>PRO</p>
+                  <p className="text-[#FF0000] text-xl">1490 Kč</p>
+                </div>
+                <div className="border border-zinc-800 p-4">
+                  <p>ELITE</p>
+                  <p className="text-[#FF0000] text-xl">12990 Kč</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* SOUSTRUŽNÍK */}
           <div>
             <div className="relative aspect-[4/5]">
               <Image src="/images/trainers/old_web_2.jpg" alt="SOUSTRUŽNÍK" fill className="object-cover grayscale hover:grayscale-0" />
