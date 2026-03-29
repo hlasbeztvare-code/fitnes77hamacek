@@ -10,6 +10,7 @@ export default function GymPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
+    // Načtení všech fotek do pásu
     const files = Array.from({ length: 40 }, (_, i) => `gym_photo_${i + 1}.jpg`);
     setGalleryFiles(files);
   }, []);
@@ -73,6 +74,7 @@ export default function GymPage() {
       {/* 3. THE CORE TRINITY */}
       <section className="relative py-32 px-4 z-10 bg-[#0A0A0A]">
         <div className="max-w-[1700px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-start">
+          
           <div className="flex flex-col group relative">
             <div className="relative w-full aspect-[4/5] bg-zinc-900 overflow-hidden shadow-2xl rounded-sm">
               <Image src="/images/trainers/old_web_1.jpg" alt="HAMÁČEK" fill className="object-cover object-top" priority />
@@ -80,7 +82,7 @@ export default function GymPage() {
             <div className="relative -mt-28 mx-4 lg:mx-8 bg-black/60 backdrop-blur-2xl p-8 border border-white/10 shadow-2xl z-20">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#E10600] to-transparent shadow-[0_0_15px_rgba(225,6,0,0.8)]"></div>
               <h3 className="text-4xl font-black uppercase italic text-white tracking-tighter">HAMÁČEK</h3>
-              <p className="text-[10px] font-bold text-zinc-400 uppercase mt-2 border-l-2 border-[#E10600] pl-3 italic">ZAKLADATEL // HLAVNÍ KOUČ</p>
+              <p className="text-[10px] font-bold text-zinc-400 uppercase mt-2 border-l-2 border-[#E10600] pl-3 italic text-shadow-none">ZAKLADATEL // HLAVNÍ KOUČ</p>
               <p className="text-sm text-zinc-400 mb-8 leading-relaxed italic uppercase mt-4">NEKOMPROMISNÍ PŘÍSTUP, NATURÁLNÍ CESTA. HAMÁČEK JE TVŮJ PRŮVODCE PEKLEM.</p>
               <Link href="/kontakt" className="block w-full text-center py-4 bg-[#E10600] text-white text-xs font-black uppercase italic">REZERVOVAT TRÉNINK</Link>
             </div>
@@ -102,18 +104,14 @@ export default function GymPage() {
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#E10600] to-transparent shadow-[0_0_15px_rgba(225,6,0,0.8)]"></div>
                 <h3 className="text-3xl font-black uppercase italic mb-6">VSTUPY</h3>
                 <div className="space-y-1 mb-10 text-white">
-                  {[
-                    { name: 'JEDNORÁZOVÝ VSTUP', price: '180', label: 'ZÁKLADNÍ' },
-                    { name: 'MĚSÍČNÍ ČLENSTVÍ', price: '1290', label: 'NEJPRODÁVANĚJŠÍ' },
-                    { name: 'ROČNÍ ČLENSTVÍ', price: '10900', label: 'ELITNÍ' }
-                  ].map((item, idx) => (
+                  {[{ name: 'JEDNORÁZOVÝ VSTUP', price: '180', label: 'ZÁKLADNÍ' }, { name: 'MĚSÍČNÍ ČLENSTVÍ', price: '1290', label: 'NEJPRODÁVANĚJŠÍ' }, { name: 'ROČNÍ ČLENSTVÍ', price: '10900', label: 'ELITNÍ' }].map((item, idx) => (
                     <div key={idx} className="flex justify-between items-center py-5 border-b border-white/5 px-2">
                       <div><h4 className="font-black italic text-xl uppercase tracking-tighter">{item.name}</h4><p className="text-[9px] text-zinc-500 font-bold uppercase">{item.label}</p></div>
                       <span className="text-2xl font-black italic tracking-tighter">{item.price} CZK</span>
                     </div>
                   ))}
                 </div>
-                <Link href="/shop" className="block w-full text-center py-5 bg-white text-black text-xs font-black uppercase italic">KOUPIT ONLINE →</Link>
+                <Link href="/shop" className="block w-full text-center py-5 bg-white text-black text-xs font-black uppercase italic">KOUPIT PERMICI ONLINE →</Link>
               </div>
             </div>
           </div>
@@ -125,7 +123,7 @@ export default function GymPage() {
             <div className="relative -mt-28 mx-4 lg:mx-8 bg-black/60 backdrop-blur-2xl p-8 border border-white/10 shadow-2xl z-20 flex flex-col items-end">
               <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-[#E10600] to-transparent shadow-[0_0_15px_rgba(225,6,0,0.8)]"></div>
               <h3 className="text-4xl font-black uppercase italic text-white tracking-tighter">SOUSTRUŽNÍK</h3>
-              <p className="text-[10px] font-bold text-zinc-400 uppercase mt-2 border-r-2 border-[#E10600] pr-3 italic">ELITNÍ KOUČ // PRO UNIT</p>
+              <p className="text-[10px] font-bold text-zinc-400 uppercase mt-2 border-r-2 border-[#E10600] pr-3 italic text-shadow-none">ELITNÍ KOUČ // PRO UNIT</p>
               <p className="text-sm text-zinc-400 mb-8 leading-relaxed italic text-right uppercase mt-4">SPECIALISTA NA HYPERTROFII. MUSÍŠ POSLOUCHAT MISTRA SOUSTRUHU.</p>
               <Link href="/kontakt" className="block w-full text-center py-4 bg-[#E10600] text-white text-xs font-black uppercase italic">REZERVOVAT TRÉNINK</Link>
             </div>
@@ -133,7 +131,7 @@ export default function GymPage() {
         </div>
       </section>
 
-      {/* 4. GALERIE */}
+      {/* 4. GALERIE - POSLEDNÍ SEKCE V TOMHLE FILU */}
       <section className="py-24 bg-black relative z-10 border-t border-white/5 overflow-hidden">
          <div className="max-w-[1400px] mx-auto px-4 mb-10">
             <h2 className="text-4xl font-black uppercase italic text-white tracking-tighter underline decoration-[#E10600] decoration-4 underline-offset-8">GALERIE</h2>
@@ -146,49 +144,6 @@ export default function GymPage() {
             ))}
          </div>
       </section>
-
-      {/* 5. FOOTER - SROVNANÝ MONUMENT (smrk) */}
-      <footer className="bg-black border-t border-zinc-800 pt-20 pb-10 px-6 relative z-10">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-            {/* BRAND */}
-            <div className="col-span-1 md:col-span-2">
-              <h3 className="text-5xl font-black uppercase italic text-white mb-6">FITNESS<span className="text-[#E10600]">77</span></h3>
-              <p className="text-zinc-500 text-sm max-w-sm uppercase italic leading-relaxed">
-                NEJKOMPROMISNÍ GYM V MLADÉ BOLESLAVI. ŽÁDNÝ KECY, JENOM VÝSLEDKY. PŘIPOJ SE K JEDNOTCE.
-              </p>
-            </div>
-            {/* NAV */}
-            <div>
-              <h4 className="text-[#E10600] font-black uppercase italic mb-6 tracking-widest">MENU</h4>
-              <ul className="space-y-4 text-sm font-bold uppercase italic">
-                <li><Link href="/gym" className="hover:text-[#E10600] transition-colors">GYM</Link></li>
-                <li><Link href="/eshop" className="hover:text-[#E10600] transition-colors">ESHOP</Link></li>
-                <li><Link href="/kontakt" className="hover:text-[#E10600] transition-colors">KONTAKT</Link></li>
-              </ul>
-            </div>
-            {/* INFO */}
-            <div>
-              <h4 className="text-[#E10600] font-black uppercase italic mb-6 tracking-widest">ADRESA</h4>
-              <p className="text-zinc-300 text-sm font-bold uppercase italic leading-relaxed">
-                U STADIONU 1234<br />
-                MLADÁ BOLESLAV<br />
-                293 01
-              </p>
-            </div>
-          </div>
-          {/* BOTTOM BAR */}
-          <div className="border-t border-zinc-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-zinc-600 text-[10px] font-bold uppercase tracking-[0.3em]">
-              © 2026 FITNESS77 // VŠECHNA PRÁVA VYHRAZENA
-            </p>
-            <div className="flex gap-8 text-zinc-600 text-[10px] font-bold uppercase tracking-[0.3em]">
-              <span className="hover:text-white cursor-pointer transition-colors">INSTAGRAM</span>
-              <span className="hover:text-white cursor-pointer transition-colors">FACEBOOK</span>
-            </div>
-          </div>
-        </div>
-      </footer>
 
       {/* MODAL ZOOM */}
       <AnimatePresence>
