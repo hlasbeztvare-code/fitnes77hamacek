@@ -23,34 +23,27 @@ export default function GymPage() {
   return (
     <main className="bg-black text-white overflow-x-hidden relative scroll-smooth min-h-screen font-black uppercase tracking-tighter">
       
-      {/* 1. HERO - FULLSCREEN + IZOLACE BETONU + SHADOW NA LEVÝ STRANĚ (smrk) */}
-      <section className="relative min-h-screen flex flex-col justify-end px-6 z-20 py-24 overflow-hidden border-b border-[#FF0000]/20 bg-zinc-950">
-        <div className="absolute inset-0 z-0 opacity-60">
+      {/* 1. HERO - FULLSCREEN + NÁPIS PŘESNĚ PŘES OBRÁZEK (smrk) */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden border-b border-[#FF0000]/20 bg-zinc-950">
+        <div className="absolute inset-0 z-0 opacity-80">
           <Image 
             src="/images/hero/hero_beton_fitness77.png" 
             alt="BETON_F77" 
             fill 
-            className="object-cover md:object-contain object-center grayscale" 
+            className="object-cover md:object-contain object-center" 
             priority 
           />
-          {/* BRUTÁLNÍ GRADIENT NA LEVOU STRANU (smrk) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
         </div>
 
-        <Reveal y={20}>
-          <div className="max-w-[1400px] mx-auto w-full relative z-10 text-center md:text-left">
-            <h1 className="text-[16vw] md:text-[10vw] leading-[0.7] text-white font-black uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,1)] tracking-tighter">
+        <div className="relative z-10 w-full flex justify-center items-center h-full">
+           <h1 className="text-[14vw] md:text-[11.2vw] leading-none text-white font-black uppercase tracking-tighter opacity-90 mix-blend-overlay">
               FITNESS<span className="text-[#FF0000]">77</span>
             </h1>
-            <div className="mt-10 border-l-[6px] border-[#FF0000] pl-6 bg-black/80 p-8 shadow-2xl inline-block border border-white/5 backdrop-blur-xl">
-              <p className="text-[10px] text-zinc-500 font-bold tracking-[0.3em] mb-2 uppercase">BOLESLAVSKÝ ORIGINÁL</p>
-              <p className="text-xl md:text-3xl text-white font-black">PO–PÁ 06:00 – 21:00 / SO–NE 09:00 – 20:00</p>
-            </div>
-          </div>
-        </Reveal>
+        </div>
       </section>
 
-      {/* 2. STATS - ZPÁTKY NA SVÝM MÍSTĚ (smrk) */}
+      {/* 2. STATS - TY 4 FOTKY S POPISEM (smrk) */}
       <section className="relative py-16 px-4 z-20 bg-black">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
@@ -60,25 +53,24 @@ export default function GymPage() {
             { t: "TOP SLUŽBY", d: "NEKOMPROMISNÍ PŘÍSTUP", i: "/images/gym/gallery/gym_photo_4.jpg" }
           ].map((item, idx) => (
             <div key={idx} className="relative h-64 overflow-hidden border border-white/10 group bg-zinc-900">
-              <Image src={item.i} alt={item.t} fill className="object-cover grayscale opacity-20 group-hover:opacity-60 transition-all duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <Image src={item.i} alt={item.t} fill className="object-cover grayscale opacity-30 group-hover:opacity-70 transition-all duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
               <div className="absolute bottom-6 left-6 z-10 text-left">
                 <p className="text-4xl text-[#FF0000] font-black leading-none tracking-tighter">{item.t}</p>
-                <p className="text-[11px] font-black text-white tracking-widest mt-2 leading-none uppercase">{item.d}</p>
+                <p className="text-[11px] font-black text-white tracking-[0.2em] mt-2 leading-none uppercase">{item.d}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 3. TRENÉŘI, SLUŽBY A CENÍK - ZPÁTKY NA SVÝM MÍSTĚ (smrk) */}
+      {/* 3. TRENÉŘI, SLUŽBY A CENÍK (smrk) */}
       <section className="relative py-24 px-4 z-10 bg-black">
         <div className="max-w-[1700px] mx-auto flex flex-col lg:grid lg:grid-cols-3 gap-16 items-start relative z-10 font-black">
-          
           {/* HAMÁČEK */}
           <div className="w-full flex flex-col">
-            <div className="relative w-full aspect-[4/5] bg-zinc-900 overflow-hidden border border-white/5 transition-transform duration-700">
-              <Image src="/images/trainers/old_web_1.jpg" alt="HAMÁČEK" fill className="object-cover object-top grayscale hover:grayscale-0" />
+            <div className="relative w-full aspect-[4/5] bg-zinc-900 overflow-hidden border border-white/5">
+              <Image src="/images/trainers/old_web_1.jpg" alt="HAMÁČEK" fill className="object-cover object-top grayscale hover:grayscale-0 transition-all duration-700" />
             </div>
             <div className="relative -mt-20 mx-4 bg-black p-8 border-t-4 border-[#FF0000] shadow-2xl backdrop-blur-xl">
               <h3 className="text-5xl tracking-tighter leading-none mb-1 font-black uppercase italic">HAMÁČEK</h3>
@@ -87,7 +79,7 @@ export default function GymPage() {
             </div>
           </div>
 
-          {/* SLUŽBY & CENÍK - ZPÁTKY UPPROSTŘED (smrk) */}
+          {/* SLUŽBY & CENÍK */}
           <div className="w-full flex flex-col gap-10 order-first lg:order-none text-center relative z-20">
             <div className="relative bg-zinc-900 p-8 border border-white/5 shadow-2xl backdrop-blur-3xl">
               <h3 className="text-2xl font-black text-[#FF0000] mb-10 tracking-[0.4em] uppercase font-black italic">SLUŽBY F77</h3>
@@ -106,7 +98,7 @@ export default function GymPage() {
               <div className="grid grid-cols-3 gap-3">
                 {[{ n: 'JEDNORÁZ', p: '160' }, { n: 'MĚSÍČNÍ', p: '1490' }, { n: 'ROČNÍ', p: '12990' }].map((item, idx) => (
                   <div key={idx} className="flex flex-col items-center py-6 border border-white/5 bg-white/5 hover:bg-white/10 transition-all">
-                    <h4 className="text-[9px] text-zinc-500 mb-2 font-black uppercase tracking-widestleading-none">{item.n}</h4>
+                    <h4 className="text-[9px] text-zinc-500 mb-2 font-black uppercase tracking-widest leading-none">{item.n}</h4>
                     <span className="text-xl text-[#FF0000] font-black leading-none">{item.p} CZK</span>
                   </div>
                 ))}
@@ -116,8 +108,8 @@ export default function GymPage() {
 
           {/* SOUSTRUŽNÍK */}
           <div className="w-full flex flex-col text-right">
-            <div className="relative w-full aspect-[4/5] bg-zinc-900 overflow-hidden border border-white/5 transition-transform duration-700">
-              <Image src="/images/trainers/old_web_2.jpg" alt="SOUSTRUŽNÍK" fill className="object-cover object-top grayscale hover:grayscale-0" />
+            <div className="relative w-full aspect-[4/5] bg-zinc-900 overflow-hidden border border-white/5">
+              <Image src="/images/trainers/old_web_2.jpg" alt="SOUSTRUŽNÍK" fill className="object-cover object-top grayscale hover:grayscale-0 transition-all duration-700" />
             </div>
             <div className="relative -mt-20 mx-4 bg-black p-8 border-t-4 border-[#FF0000] shadow-2xl flex flex-col items-end backdrop-blur-xl">
               <h3 className="text-5xl tracking-tighter leading-none mb-1 font-black uppercase italic">SOUSTRUŽNÍK</h3>
@@ -128,7 +120,7 @@ export default function GymPage() {
         </div>
       </section>
 
-      {/* 4. GALERIE - ZPÁTKY NA KONCI (smrk) */}
+      {/* 4. GALERIE (smrk) */}
       <section className="relative py-24 border-t border-white/5 bg-zinc-950 overflow-hidden font-black">
          <div className="max-w-[1400px] mx-auto px-6 mb-16 text-center relative z-10">
             <h2 className="text-7xl text-white tracking-tighter border-b-[8px] border-[#FF0000] inline-block font-black uppercase px-4 pb-2">GALERIE_MB</h2>
