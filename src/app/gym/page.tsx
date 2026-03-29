@@ -26,7 +26,7 @@ export default function GymPage() {
       <div className="fixed inset-0 z-0 opacity-40 pointer-events-none mix-blend-overlay bg-fixed bg-center bg-cover scale-110" 
            style={{ backgroundImage: "url('/images/textures/beton_hardcore.jpg')" }}></div>
 
-      {/* HERO */}
+      {/* 1. HERO */}
       <section className="relative min-h-[40vh] flex flex-col justify-center px-6 border-b border-[#FF0000]/20 z-20 py-20">
         <Reveal y={20}>
           <div className="max-w-[1400px] mx-auto w-full relative z-10">
@@ -34,14 +34,35 @@ export default function GymPage() {
               FITNESS<span className="text-[#FF0000]">77</span>
             </h1>
             <div className="mt-8 border-l-[6px] border-[#FF0000] pl-6 bg-black/80 p-6 shadow-2xl inline-block border border-white/5">
-              <p className="text-[9px] text-zinc-600 font-bold tracking-widest mb-1">PROVOZNÍ DOBA</p>
+              <p className="text-[9px] text-zinc-600 font-bold tracking-widest mb-1 uppercase">PROVOZNÍ DOBA</p>
               <p className="text-xl md:text-2xl text-white font-black">PO–PÁ 06:00 – 21:00 / SO–NE 09:00 – 20:00</p>
             </div>
           </div>
         </Reveal>
       </section>
 
-      {/* CORE SECTION - TRENÉŘI A SLUŽBY (smrk) */}
+      {/* 2. STATS - TYTO 4 FOTKY S POPISEM (VRÁCENO DOPICII - smrk) */}
+      <section className="relative py-12 px-4 border-b border-white/5 z-20">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { t: "220 M²", d: "ROZLOHA FITKA", i: "/images/gym/gallery/gym_photo_1.jpg" },
+            { t: "30 STROJŮ", d: "ČESKÁ ZNAČKA VITA", i: "/images/gym/gallery/gym_photo_2.jpg" },
+            { t: "NEJVĚTŠÍ", d: "V MLADÉ BOLESLAVI", i: "/images/gym/gallery/gym_photo_3.jpg" },
+            { t: "TOP SLUŽBY", d: "NEKOMPROMISNÍ PŘÍSTUP", i: "/images/gym/gallery/gym_photo_4.jpg" }
+          ].map((item, idx) => (
+            <div key={idx} className="relative h-64 overflow-hidden group border-2 border-white/5">
+              <Image src={item.i} alt={item.t} fill className="object-cover grayscale opacity-40 group-hover:opacity-100 transition-all duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+              <div className="absolute bottom-5 left-5">
+                <p className="text-3xl text-[#FF0000] tracking-tighter font-black">{item.t}</p>
+                <p className="text-[10px] font-black text-white tracking-[0.2em] uppercase leading-tight">{item.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. TRENÉŘI, SLUŽBY A CENÍK */}
       <section className="relative py-20 px-4 z-10">
         <div className="max-w-[1700px] mx-auto flex flex-col lg:grid lg:grid-cols-3 gap-16 items-start relative z-10">
           
@@ -57,7 +78,7 @@ export default function GymPage() {
             </div>
           </div>
 
-          {/* STŘED: SLUŽBY A CENÍK (VRÁCENO DOPICII - smrk) */}
+          {/* SLUŽBY A CENÍK */}
           <div className="w-full flex flex-col gap-8 order-first lg:order-none font-black text-center">
             <div className="relative bg-black/80 backdrop-blur-3xl p-8 border-2 border-white/10 shadow-2xl">
               <h3 className="text-2xl font-black text-[#FF0000] mb-8 tracking-[0.4em]">SLUŽBY F77</h3>
@@ -76,7 +97,7 @@ export default function GymPage() {
                 {[{ n: 'JEDNORÁZ', p: '160' }, { n: 'MĚSÍČNÍ', p: '1490' }, { n: 'ROČNÍ', p: '12990' }].map((item, idx) => (
                   <div key={idx} className="flex flex-col items-center py-5 border border-white/5 bg-white/5 hover:bg-white/10 transition-all">
                     <h4 className="text-[8px] text-zinc-500 mb-1 tracking-widest">{item.n}</h4>
-                    <span className="text-xl text-[#FF0000] leading-none tracking-tighter">{item.p} CZK</span>
+                    <span className="text-xl text-[#FF0000] leading-none tracking-tighter font-black">{item.p} CZK</span>
                   </div>
                 ))}
               </div>
@@ -89,7 +110,7 @@ export default function GymPage() {
               <Image src="/images/trainers/old_web_2.jpg" alt="SOUSTRUŽNÍK" fill className="object-cover object-top" />
             </div>
             <div className="relative -mt-20 mx-4 bg-black/95 p-8 border-t-4 border-[#FF0000] shadow-2xl flex flex-col items-end">
-              <h3 className="text-5xl tracking-tighter leading-none mb-1 font-black">SOUSTRUŽNÍK</h3>
+              <h3 className="text-5xl tracking-tighter leading-none mb-1 font-black uppercase">SOUSTRUŽNÍK</h3>
               <p className="text-[10px] text-zinc-500 tracking-[0.4em] mb-4">PRO UNIT</p>
               <Link href="/kontakt" className="block w-full text-center py-5 bg-[#FF0000] text-white text-[11px] tracking-[0.3em] mt-8 font-black">REZERVOVAT</Link>
             </div>
@@ -100,7 +121,7 @@ export default function GymPage() {
       {/* GALERIE */}
       <section className="relative py-20 border-t-2 border-[#FF0000]/20 bg-black/40 overflow-hidden">
          <div className="max-w-[1400px] mx-auto px-6 mb-12 text-center relative z-10">
-            <h2 className="text-6xl text-white tracking-tight border-b-4 border-[#FF0000] inline-block font-black">GALERIE_MB</h2>
+            <h2 className="text-6xl text-white tracking-tight border-b-4 border-[#FF0000] inline-block font-black uppercase">GALERIE_MB</h2>
          </div>
          <div className="flex gap-4 overflow-x-auto pb-16 px-6 no-scrollbar scroll-smooth relative z-10">
             {galleryFiles.map((file, i) => (
