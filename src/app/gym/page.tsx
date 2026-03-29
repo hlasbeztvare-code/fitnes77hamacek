@@ -1,15 +1,10 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+
+import Trainers from "@/components/Trainers";
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function GymPage() {
-  const [galleryFiles, setGalleryFiles] = useState<string[]>([]);
-
-  useEffect(() => {
-    const files = Array.from({ length: 40 }, (_, i) => "gym_photo_" + (i + 1) + ".jpg");
-    setGalleryFiles(files);
-  }, []);
 
   const { scrollY } = useScroll();
   const yBg = useTransform(scrollY, [0, 800], [0, 120]);
@@ -32,7 +27,7 @@ export default function GymPage() {
       {/* HERO */}
       <section className="relative min-h-screen overflow-hidden bg-black">
         <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 opacity-80">
-          <Image 
+          <Image
             src="/images/hero/hero_beton_fitness77.png"
             alt="BETON_F77"
             fill
@@ -56,20 +51,21 @@ export default function GymPage() {
       </section>
 
       {/* CHAOS SLUŽBY */}
-      <section className="relative py-40 overflow-hidden bg-black">
+      <section className="relative h-[900px] md:h-[1100px] overflow-hidden bg-black">
         {sluzby.map((s, i) => {
-          const randomX = (i % 2 === 0 ? -1 : 1) * (60 + i * 15);
-          const randomY = i * 70;
+
+          const offset = (i % 2 === 0 ? -1 : 1) * (80 + i * 20);
+          const top = 100 + i * 90;
 
           return (
             <motion.div
               key={i}
-              initial={{ x: randomX * 2, opacity: 0 }}
-              whileInView={{ x: randomX, opacity: 1 }}
-              transition={{ duration: 0.6, delay: i * 0.08 }}
+              initial={{ x: offset * 2, opacity: 0 }}
+              whileInView={{ x: offset, opacity: 1 }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
               viewport={{ once: true }}
               className="absolute left-1/2 -translate-x-1/2"
-              style={{ top: randomY }}
+              style={{ top }}
             >
               <div className="
                 text-white
@@ -92,28 +88,8 @@ export default function GymPage() {
 
       {/* TRENÉŘI */}
       <section className="py-24 px-4 bg-black">
-        <div className="max-w-[1700px] mx-auto grid lg:grid-cols-2 gap-16">
-
-          <div>
-            <div className="relative aspect-[4/5]">
-              <Image src="/images/trainers/old_web_1.jpg" alt="HAMÁČEK" fill className="object-cover grayscale hover:grayscale-0" />
-            </div>
-            <div className="-mt-16 bg-black p-6 border-t-4 border-[#FF0000]">
-              <h3 className="text-4xl">HAMÁČEK</h3>
-              <p className="text-xs text-zinc-500 mt-2">HLAVNÍ KOUČ</p>
-            </div>
-          </div>
-
-          <div>
-            <div className="relative aspect-[4/5]">
-              <Image src="/images/trainers/old_web_2.jpg" alt="SOUSTRUŽNÍK" fill className="object-cover grayscale hover:grayscale-0" />
-            </div>
-            <div className="-mt-16 bg-black p-6 border-t-4 border-[#FF0000]">
-              <h3 className="text-4xl">SOUSTRUŽNÍK</h3>
-              <p className="text-xs text-zinc-500 mt-2">PRO UNIT</p>
-            </div>
-          </div>
-
+        <div className="max-w-[1700px] mx-auto">
+          <Trainers />
         </div>
       </section>
 
