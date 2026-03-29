@@ -1,59 +1,58 @@
-"use client";
-import React from 'react';
+'use client';
+
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import ThemeToggle from './ThemeToggle';
+import { useCartStore } from '@/hooks/useCartStore';
+import useMounted from '@/hooks/useMounted';
+
+const navItems = [
+  { label: 'Suplementy', href: '/supplements' },
+  { label: 'Vybavení', href: '/equipment' },
+  { label: 'Bazar strojů', href: '/bazaar' },
+  { label: 'Gym / Trenéři', href: '/gym' },
+  { label: 'Blog', href: '/blog' },
+];
 
 export default function Navbar() {
-  const pathname = usePathname();
-  
-  const navLinks = [
-    { name: 'SUPLEMENTY', href: '/shop' },
-    { name: 'VYBAVENÍ', href: '/shop/vybaveni' },
-    { name: 'TRENÉŘI & GYM', href: '/gym' },
-    { name: 'BAZAR', href: '/bazar' },
-    { name: 'BLOG', href: '/blog' },
-  ];
-
-  const handleCartClick = () => {
-    if (typeof window !== 'undefined' && navigator.vibrate) navigator.vibrate(20);
-    console.log("NAVBAR_UNIT_01: ACCESSING CART...");
-  };
+  const totalItems = useCartStore((state) => state.totalItems());
+  const mounted = useMounted();
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-[100] bg-white border-b border-zinc-100 px-6 py-4 flex justify-between items-center font-black uppercase tracking-tighter text-[11px]">
-      {/* BRAND - ESHOP FONT MONOLITH (smrk) */}
-      <Link href="/" className="text-2xl tracking-tighter font-black">
-        FITNESS<span className="text-[#E10600]">77</span>
-      </Link>
-      
-      {/* MENU - PŘESNÉ POŘADÍ DLE JANA LANČARIČE (smrk) */}
-      <div className="hidden md:flex gap-10">
-        {navLinks.map((link) => (
-          <Link 
-            key={link.href} 
-            href={link.href}
-            className={`transition-all relative py-1 font-black ${pathname === link.href ? 'text-[#E10600]' : 'text-zinc-400 hover:text-black'}`}
-          >
-            {link.name}
-            {/* PŮVODNÍ DESIGN PODTRŽENÍ (smrk) */}
-            {pathname === link.href && (
-              <div className="absolute -bottom-1 left-0 w-full h-[3px] bg-[#E10600]"></div>
-            )}
-          </Link>
-        ))}
-      </div>
+    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/95 backdrop-blur-md">
+      <div className="mx-auto flex w-[min(1400px,calc(100%-32px))] items-center justify-between py-4">
+        <Link href="/" className="flex items-center gap-3">
+          <img
+            src="/images/brand/logo-fitness77.png"
+            alt="Fitness 77"
+            className="h-12 w-auto object-contain"
+          />
+          <span className="text-2xl font-black uppercase tracking-[0.14em] text-zinc-900">
+            FITNESS <span className="text-[#E10600]">77</span>
+          </span>
+        </Link>
 
-      {/* IKONY & FUNKČNÍ KOŠÍK */}
-      <div className="flex gap-4 items-center">
-        <button className="p-2.5 bg-zinc-100 rounded-lg hover:bg-zinc-200 transition-all">☀️</button>
-        <button 
-          onClick={handleCartClick}
-          className="relative p-2.5 bg-zinc-100 rounded-lg hover:bg-zinc-200 transition-all cursor-pointer"
-        >
-          <span className="text-lg">🛒</span>
-          <span className="absolute -top-1 -right-1 bg-[#E10600] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-black">1</span>
-        </button>
+        <nav className="hidden items-center gap-6 lg:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-sm font-semibold uppercase tracking-wide text-zinc-800 transition hover:text-[#E10600]"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-3">
+          < ThemeToggle />
+          <Link
+            href="/cart"
+            className="rounded-md bg-[#E10600] px-4 py-2 text-sm font-bold uppercase tracking-wide text-white transition hover:brightness-110"
+          >
+            Košík {mounted && totalItems > 0 ? `(${totalItems})` : ''}
+          </Link>
+        </div>
       </div>
-    </nav>
+    </header>
   );
 }
