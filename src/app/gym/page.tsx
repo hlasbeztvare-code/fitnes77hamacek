@@ -54,7 +54,6 @@ export default function GymPage() {
       <section className="relative h-[1400px] bg-black overflow-hidden flex items-center justify-center">
 
         {sluzby.map((s, i) => {
-
           const x = (i % 2 === 0 ? -1 : 1) * (200 + i * 50);
           const y = (i - sluzby.length / 2) * 140;
           const scale = 1 + (i % 3) * 0.4;
@@ -73,9 +72,9 @@ export default function GymPage() {
               <div
                 className="whitespace-nowrap select-none"
                 style={{
-                  fontSize: `${5 + i * 0.6}vw`,
-                  opacity,
-                  transform: \`scale(\${scale})\`,
+                  fontSize: (5 + i * 0.6) + "vw",
+                  opacity: opacity,
+                  transform: "scale(" + scale + ")",
                 }}
               >
                 {s}
@@ -84,7 +83,6 @@ export default function GymPage() {
           );
         })}
 
-        {/* subtle grain */}
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
 
       </section>
