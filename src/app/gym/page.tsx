@@ -14,8 +14,6 @@ export default function GymPage() {
 
   const { scrollY } = useScroll();
   const yBg = useTransform(scrollY, [0, 800], [0, 120]);
-  const yText = useTransform(scrollY, [0, 800], [0, -80]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0.6]);
 
   const sluzby = [
     { n: "OSOBNÍ TRENÉR", i: "👤" },
@@ -35,47 +33,48 @@ export default function GymPage() {
       {/* HERO */}
       <section className="relative min-h-screen overflow-hidden bg-black">
 
+        {/* BG PARALLAX */}
         <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 opacity-80">
           <Image 
             src="/images/hero/hero_beton_fitness77.png"
             alt="BETON_F77"
             fill
-            className="object-cover object-center scale-[1.05]"
+            className="object-cover object-center"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/40"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,black_90%)]"></div>
         </motion.div>
 
-        <div className="absolute inset-0 z-10 opacity-[0.08] mix-blend-overlay pointer-events-none 
-          bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+        {/* TEXT — FIXED NA OBRAZ */}
+        <div className="absolute inset-0 z-20 pointer-events-none">
+          <h1 className="
+            absolute
+            top-[17%]
+            left-1/2
+            -translate-x-1/2
+            text-[14.5vw] md:text-[11vw]
+            tracking-[-0.05em]
+            whitespace-nowrap
+            mix-blend-overlay
+          ">
+            FITNESS<span className="text-[#FF0000] drop-shadow-[0_0_20px_rgba(255,0,0,0.6)]">77</span>
+          </h1>
 
-        <motion.div style={{ y: yText, opacity }} className="absolute inset-0 z-20 pointer-events-none">
-          
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.95, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="absolute top-[18%] left-1/2 -translate-x-1/2 text-[15vw] md:text-[11.5vw] leading-none text-white tracking-[-0.05em] whitespace-nowrap mix-blend-overlay"
-          >
-            FITNESS
-            <span className="text-[#FF0000] drop-shadow-[0_0_25px_rgba(255,0,0,0.7)]">
-              77
-            </span>
-          </motion.h1>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 0.8, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="absolute top-[33%] left-1/2 -translate-x-1/2 text-[10px] md:text-[11px] tracking-[0.5em] text-white/70 text-center whitespace-nowrap"
-          >
+          <div className="
+            absolute
+            top-[32%]
+            left-1/2
+            -translate-x-1/2
+            text-[10px]
+            tracking-[0.5em]
+            text-white/70
+            text-center
+          ">
             JIRÁSKOVA 1320 // MB NATIVE // NO LIMITS
             <br />
             MLADÁ BOLESLAV
-          </motion.div>
-
-        </motion.div>
+          </div>
+        </div>
 
       </section>
 
@@ -99,27 +98,51 @@ export default function GymPage() {
         </div>
       </section>
 
-      {/* SLUŽBY */}
-      <section className="py-20 px-6 bg-zinc-950 text-center">
-        <h2 className="text-3xl text-[#FF0000] mb-10 tracking-[0.4em]">SLUŽBY</h2>
-        <div className="grid gap-4 max-w-2xl mx-auto">
-          {sluzby.map((s, i) => (
-            <div key={i} className="flex justify-center gap-4 border border-zinc-800 py-3 hover:border-[#FF0000] transition">
-              <span>{s.i}</span>
-              <span>{s.n}</span>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* TRENÉŘI + SLUŽBY + CENÍK */}
+      <section className="py-24 px-4 bg-black">
+        <div className="max-w-[1700px] mx-auto grid lg:grid-cols-3 gap-16">
 
-      {/* GALERIE */}
-      <section className="py-20 bg-black">
-        <div className="flex gap-6 overflow-x-auto px-6">
-          {galleryFiles.map((file, i) => (
-            <div key={i} className="min-w-[300px] h-[200px] relative">
-              <Image src={`/images/gym/gallery/${file}`} alt="F77" fill className="object-cover opacity-40 hover:opacity-100 transition" />
+          {/* HAMÁČEK */}
+          <div>
+            <div className="relative aspect-[4/5]">
+              <Image src="/images/trainers/old_web_1.jpg" alt="HAMÁČEK" fill className="object-cover grayscale hover:grayscale-0" />
             </div>
-          ))}
+            <div className="-mt-16 bg-black p-6 border-t-4 border-[#FF0000]">
+              <h3 className="text-4xl">HAMÁČEK</h3>
+              <p className="text-xs text-zinc-500 mt-2">HLAVNÍ KOUČ</p>
+            </div>
+          </div>
+
+          {/* SLUŽBY + CENÍK */}
+          <div className="text-center space-y-10">
+            <div>
+              <h3 className="text-xl text-[#FF0000] mb-6">SLUŽBY</h3>
+              {sluzby.map((s, i) => (
+                <div key={i} className="py-2 border-b border-zinc-800">{s.n}</div>
+              ))}
+            </div>
+
+            <div>
+              <h3 className="text-xs text-zinc-500 mb-4">CENÍK</h3>
+              <div className="grid grid-cols-3 gap-2">
+                <div>160</div>
+                <div>1490</div>
+                <div>12990</div>
+              </div>
+            </div>
+          </div>
+
+          {/* SOUSTRUŽNÍK */}
+          <div>
+            <div className="relative aspect-[4/5]">
+              <Image src="/images/trainers/old_web_2.jpg" alt="SOUSTRUŽNÍK" fill className="object-cover grayscale hover:grayscale-0" />
+            </div>
+            <div className="-mt-16 bg-black p-6 border-t-4 border-[#FF0000]">
+              <h3 className="text-4xl">SOUSTRUŽNÍK</h3>
+              <p className="text-xs text-zinc-500 mt-2">PRO UNIT</p>
+            </div>
+          </div>
+
         </div>
       </section>
 
