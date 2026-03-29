@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getBazaarItemBySlug } from '@/lib/queries/bazaar';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ slug: string }>;
 };

@@ -1,6 +1,8 @@
 import ConditionBadge from '@/components/bazaar/ConditionBadge';
 import { getAllBazaarItems } from '@/lib/queries/bazaar';
 
+export const dynamic = 'force-dynamic';
+
 export default async function BazaarPage() {
   const items = await getAllBazaarItems();
 

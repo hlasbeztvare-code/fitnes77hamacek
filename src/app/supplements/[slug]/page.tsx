@@ -4,6 +4,8 @@ import { getSupplementBySlug } from "@/lib/queries/products";
 import AddToCartButton from "@/components/shop/AddToCartButton";
 import MobileStickyCTA from "@/components/mobile/MobileStickyCTA";
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: Promise<{ slug: string }> | { slug: string };
 }

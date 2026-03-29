@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getBlogPostBySlug } from '@/lib/queries/blog';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ slug: string }>;
 };

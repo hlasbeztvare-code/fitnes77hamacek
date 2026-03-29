@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getEquipmentBySlug } from '@/lib/queries/equipment';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ slug: string }>;
 };

@@ -57,7 +57,7 @@ async function scrapeFullGallery() {
 
     console.log("\n\n🔥 OPERACE DOKONČENA! Máme plnej zásobník fotek v publicu.");
   } catch (error) {
-    console.error("💀 Chyba při náletu:", error.message);
+    console.error("💀 Chyba při náletu:", error instanceof Error ? error.message : String(error));
   }
 }
 

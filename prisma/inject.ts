@@ -60,7 +60,7 @@ async function startInjection() {
 
     console.log("\n\n🔥 HOTOVO! Texty jsou v DB (model Trainer) a fotky v public/images/gym.");
   } catch (error) {
-    console.error("💀 Chyba:", error.message);
+    console.error("💀 Chyba:", error instanceof Error ? error.message : String(error));
   } finally {
     await prisma.$disconnect();
   }

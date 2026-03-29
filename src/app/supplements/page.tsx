@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import ProductCard from "@/components/shop/ProductCard";
 
+export const dynamic = 'force-dynamic';
+
 export default async function SupplementsPage() {
   // Načtení všech produktů z databáze
   const products = await db.product.findMany();

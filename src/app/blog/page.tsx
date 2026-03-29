@@ -1,6 +1,8 @@
 import BlogCard from '@/components/blog/BlogCard';
 import { getAllBlogPosts } from '@/lib/queries/blog';
 
+export const dynamic = 'force-dynamic';
+
 export default async function BlogPage() {
   const posts = await getAllBlogPosts();
 

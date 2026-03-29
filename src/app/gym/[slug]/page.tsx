@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getTrainerBySlug } from '@/lib/queries/trainers';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
