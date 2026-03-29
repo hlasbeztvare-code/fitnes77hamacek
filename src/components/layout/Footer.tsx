@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-white py-12 font-black uppercase tracking-tighter">
+    <footer className="border-t border-zinc-200 bg-white py-12">
       <div className="mx-auto grid w-[min(1200px,calc(100%-32px))] gap-8 md:grid-cols-4">
         <div>
           <img
@@ -8,45 +8,37 @@ export default function Footer() {
             alt="Fitness 77"
             className="h-20 w-auto object-contain"
           />
-          <p className="mt-4 text-[10px] leading-relaxed text-zinc-500">
-            JIRÁSKOVA 1320, MLADÁ BOLESLAV<br />
-            PO–PÁ: 06:00 – 21:00<br />
-            SO–NE: 09:00 – 20:00
+          <p className="mt-3 text-sm text-zinc-500">
+            Prémiový fitness ekosystém: suplementy, vybavení, bazar, trenéři a obsah.
           </p>
         </div>
 
         <div>
-          <h4 className="text-sm font-black text-zinc-900">Shop</h4>
-          <ul className="mt-4 space-y-2 text-xs text-zinc-400">
-            <li className="hover:text-[#E10600] transition-colors cursor-pointer">Suplementy</li>
-            <li className="hover:text-[#E10600] transition-colors cursor-pointer">Vybavení</li>
-            <li className="hover:text-[#E10600] transition-colors cursor-pointer text-[#E10600]">Bazar strojů</li>
+          <h4 className="font-bold uppercase text-zinc-900">Shop</h4>
+          <ul className="mt-3 space-y-2 text-sm text-zinc-500">
+            <li>Suplementy</li>
+            <li>Vybavení</li>
+            <li>Bazar strojů</li>
           </ul>
         </div>
 
         <div>
-          <h4 className="text-sm font-black text-zinc-900">Služby</h4>
-          <ul className="mt-4 space-y-2 text-xs text-zinc-400">
-            <li className="hover:text-[#E10600] transition-colors cursor-pointer">Gym / Trenéři</li>
-            <li className="hover:text-[#E10600] transition-colors cursor-pointer">Rezervace</li>
-            <li className="hover:text-[#E10600] transition-colors cursor-pointer">Poradenství</li>
+          <h4 className="font-bold uppercase text-zinc-900">Služby</h4>
+          <ul className="mt-3 space-y-2 text-sm text-zinc-500">
+            <li>Gym / Trenéři</li>
+            <li>Rezervace</li>
+            <li>Poradenství</li>
           </ul>
         </div>
 
         <div>
-          <h4 className="text-sm font-black text-zinc-900">Kontakt & Obsah</h4>
-          <ul className="mt-4 space-y-2 text-xs text-zinc-400">
-            <li><a href="tel:+420777105548" className="hover:text-[#E10600] transition-colors font-bold">+420 777 105 548</a></li>
-            <li><a href="mailto:fitness77@post.cz" className="hover:text-[#E10600] transition-colors font-bold lowercase tracking-normal">fitness77@post.cz</a></li>
-            <li className="hover:text-[#E10600] transition-colors cursor-pointer">Blog & Guides</li>
+          <h4 className="font-bold uppercase text-zinc-900">Obsah</h4>
+          <ul className="mt-3 space-y-2 text-sm text-zinc-500">
+            <li>Blog</li>
+            <li>Guides</li>
+            <li>Články</li>
           </ul>
         </div>
-      </div>
-
-      <div className="mx-auto mt-12 w-[min(1200px,calc(100%-32px))] pt-8">
-        <p className="text-[10px] text-zinc-300 tracking-[0.3em]">
-          © 2026 FITNESS77 // MB_ORIGINAL_GYM // UNIT_01
-        </p>
       </div>
     </footer>
   );

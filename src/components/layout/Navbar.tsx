@@ -44,7 +44,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          < ThemeToggle />
+          <ThemeToggle />
           <Link
             href="/cart"
             className="rounded-md bg-[#E10600] px-4 py-2 text-sm font-bold uppercase tracking-wide text-white transition hover:brightness-110"

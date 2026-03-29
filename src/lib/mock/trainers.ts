@@ -1,27 +1,22 @@
-export interface Trainer {
-  id: string;
-  name: string;
-  role: string;
-  specialties: string[];
-  bio: string;
-  image: string;
-}
-
-export const trainers: Trainer[] = [
+export const trainers = [
   {
-    id: "jaroslav-hamacek",
-    name: "Jaroslav Hamáček",
-    role: "Majitel & Osobní trenér",
-    specialties: ["Silový trénink", "Mentoring", "Výsledky"],
-    bio: "Zakladatel Fitness 77. Matador, který klade důraz na disciplínu a reálné výsledky bez výmluv. Specialista na silový rozvoj a vedení k cíli.",
-    image: "/images/trainers/hlavacek.jpg"
+    id: 'tr1',
+    name: 'Marek Novák',
+    slug: 'marek-novak',
+    role: 'Silový trenér',
+    bio: 'Specialista na sílu, hypertrofii a tréninkové plánování.',
+    specialties: ['Síla', 'Objem', 'Technika'],
+    image: 
+'https://images.unsplash.com/photo-1567013127542-490d757e51fc?auto=format&fit=crop&w=1200&q=80',
   },
   {
-    id: "ondrej-soustruznik",
-    name: "Ondřej Soustružník",
-    role: "Osobní trenér (FTVS UK)",
-    specialties: ["Anatomie", "Poúrazové stavy", "Technika"],
-    bio: "Expert na fyziologii a nápravná cvičení. Fitness trenér 1. třídy s důrazem na prevenci zranění a návrat k plné kondici po operacích.",
-    image: "/images/trainers/soustruznik.jpg"
-  }
+    id: 'tr2',
+    name: 'Eva Svobodová',
+    slug: 'eva-svobodova',
+    role: 'Fitness & výživa',
+    bio: 'Pomáhá klientům propojit trénink, výživu a konzistenci.',
+    specialties: ['Výživa', 'Redukce', 'Mobilita'],
+    image: 
+'https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=1200&q=80',
+  },
 ];

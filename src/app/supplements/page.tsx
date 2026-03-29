@@ -1,27 +1,40 @@
-import { db } from "@/lib/db";
-import ProductCard from "@/components/shop/ProductCard";
+import ProductCard from '@/components/shop/ProductCard';
+import { getAllSupplements } from '@/lib/queries/products';
 
 export default async function SupplementsPage() {
-  // Načtení všech produktů z databáze
-  const products = await db.product.findMany();
+  const products = await getAllSupplements();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-zinc-900 dark:text-white">
-          Naše <span className="text-[#E10600]">Suplementy</span>
-        </h1>
-        <p className="mt-4 text-zinc-600 dark:text-zinc-400 max-w-2xl">
-          Prémiová kvalita pro maximální výkon. Vyber si z naší nabídky a posuň své limity na další úroveň.
-        </p>
+    <section className="py-20">
+      <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
+        <div className="max-w-3xl">
+          <div className="inline-block border-l-4 border-[#E10600] pl-3 text-sm font-black uppercase tracking-[0.22em] text-[#E10600]">
+            Top produkty
+          </div>
+
+          <h1 className="mt-4 text-5xl font-black uppercase leading-tight text-zinc-950 md:text-6xl">
+            Bestseller
+            <br />
+            kolekce
+          </h1>
+
+          <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 md:text-lg">
+            Výkon, regenerace a síla. Produkty s jasnou rolí, výraznou prezentací a důrazem na konverzi.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={{
+                ...product,
+                compareAtPrice: product.compareAtPrice ?? 0,
+              }}
+            />
+          ))}
+        </div>
       </div>
-      
-      {/* Využíváme naši novou, naboostovanou ProductCard komponentu */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-    </div>
+    </section>
   );
 }
