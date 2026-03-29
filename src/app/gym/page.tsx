@@ -73,20 +73,23 @@ export default async function GymPage() {
             </div>
           </div>
 
-          {/* STŘED: POVÍDÁNÍ + PERMICE POSUNUTÉ NÍŽ (smrk) */}
-          <div className="flex flex-col gap-12 lg:mt-10">
+          {/* STŘED: POVÍDÁNÍ (NA STŘED + VĚTŠÍ) + PERMICE (smrk) */}
+          <div className="flex flex-col gap-12 lg:mt-10 text-center">
             
-            {/* POVÍDÁNÍ O FITKU */}
-            <div className="relative bg-black/40 backdrop-blur-xl p-8 border border-white/5 shadow-2xl relative overflow-hidden group">
-              <div className="absolute top-0 left-0 w-1 h-full bg-[#E10600]"></div>
-              <h3 className="text-xl font-black uppercase italic text-white mb-4 tracking-widest">NAŠE FILOZOFIE</h3>
+            {/* POVÍDÁNÍ O FITKU - ZAROVNÁNO NA STŘED A VĚTŠÍ PÍSMO */}
+            <div className="relative bg-black/40 backdrop-blur-xl p-10 border border-white/5 shadow-2xl relative overflow-hidden group">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-[#E10600]"></div>
+              <h3 className="text-2xl font-black uppercase italic text-white mb-6 tracking-[0.2em]">NAŠE FILOZOFIE</h3>
+              <p className="text-lg text-white font-bold leading-relaxed mb-6">
+                Naše fitness má rozlohu 220 m², najdete zde 30 posilovacích strojů české značky VITA a profesionální kardio-zónu.
+              </p>
               <p className="text-sm text-zinc-400 leading-relaxed italic">
-                Naše fitness má rozlohu 220 m², najdete zde 30 posilovacích strojů české značky VITA a profesionální kardio-zónu. V našem fitness dbáme na to, aby se u nás klienti cítili co nejlépe a bylo o ně dobře postaráno. (smrk)
+                V našem fitness dbáme na to, aby se u nás klienti cítili co nejlépe a bylo o ně dobře postaráno. Tady se netrénuje pro fotky, tady se dře pro výsledky. (smrk)
               </p>
             </div>
 
-            {/* PERMANENTKY STŘED - POSUNUTO NÍŽ */}
-            <div className="flex flex-col group relative lg:mt-12">
+            {/* PERMANENTKY STŘED */}
+            <div className="flex flex-col group relative lg:mt-12 text-left">
               <div className="bg-black/10 backdrop-blur-md h-32 flex items-center justify-center border-t-2 border-[#E10600]">
                  <span className="text-5xl font-black italic opacity-20 uppercase tracking-[0.3em] text-white">Membership</span>
               </div>
