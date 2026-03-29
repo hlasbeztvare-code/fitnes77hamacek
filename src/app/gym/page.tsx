@@ -1,37 +1,33 @@
 "use client";
 import React, { useState } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import Reveal from "@/components/ui/Reveal";
 
 export default function GymPage() {
   const galleryFiles = Array.from({ length: 39 }, (_, i) => `gym_photo_${i + 1}.jpg`);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const marqueeText = " // HARDCORE MB // RAW_HERITAGE // UNIT_01 // UNIT_02 // ";
 
-  const { scrollYProgress } = useScroll();
-  
-  // Dynamický pohyby pro nápisy - žádná statika! (smrk)
-  const f77X = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
-  const hardcoreX = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
-  const blurValue = useTransform(scrollYProgress, [0.1, 0.4], ["20px", "0px"]);
-  const opacityValue = useTransform(scrollYProgress, [0.1, 0.4], [0, 1]);
-
   return (
     <main className="min-h-screen selection:bg-[#E10600] selection:text-white overflow-x-hidden scroll-smooth bg-white relative">
       
-      {/* 1. HERO - DYNAMICKÁ TYPOGRAFIE V POHYBU (smrk) */}
-      <section className="relative h-[40vh] flex flex-col justify-center px-6 bg-white z-20 border-b border-zinc-100">
+      {/* 1. HERO - DYNAMICKÁ KINETICKÁ TYPOGRAFIE (smrk) */}
+      <section className="relative h-[40vh] flex flex-col justify-center px-6 bg-white z-20 border-b border-zinc-100 overflow-hidden">
         <div className="max-w-[1100px] mx-auto w-full relative">
           
-          <motion.div style={{ x: f77X }} className="relative">
+          {/* FITNESS77 - KINETICKÉ PULZOVÁNÍ (smrk) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: [1, 1.02, 1] }}
+            transition={{ duration: 0.6, times: [0, 0.5, 1], repeat: Infinity, repeatDelay: 10, repeatType: "mirror" }}
+            className="relative"
+          >
             <h1 className="text-[7vw] font-black uppercase italic leading-[0.75] tracking-tighter relative inline-block
                            bg-gradient-to-b from-black via-zinc-800 to-black bg-clip-text text-transparent
                            after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-white/40 after:to-transparent after:animate-textShine"
             >
-              FITNESS<span className="text-[#E10600] drop-shadow-[0_0_15px_rgba(225,6,0,0.5)]">77</span>
-              {/* Efekt stékající vody v CSS animaci v globals.css nebo style tagu */}
+              FITNESS<span className="text-[#E10600]">77</span>
             </h1>
           </motion.div>
 
@@ -50,8 +46,11 @@ export default function GymPage() {
                </div>
              </motion.div>
 
+             {/* HARDCORE - KINETICKÉ VLNĚNÍ */}
              <motion.h2 
-               style={{ x: hardcoreX }}
+               initial={{ opacity: 0, scale: 0.95 }}
+               animate={{ opacity: 0.2, scale: [1, 1.01, 1] }}
+               transition={{ duration: 1.2, times: [0, 0.5, 1], delay: 0.1, repeat: Infinity, repeatDelay: 8, repeatType: "mirror" }}
                className="text-[5vw] font-black uppercase italic leading-[0.75] tracking-tighter"
                style={{ WebkitTextStroke: '1px black', color: 'transparent' }}
              >
@@ -71,68 +70,75 @@ export default function GymPage() {
         </div>
       </section>
 
-      {/* 3. SEKCE TRENÉŘI - OROŠENÉ POZADÍ (smrk) */}
-      <section className="relative py-24 px-4 z-10 min-h-screen">
+      {/* 3. ZBYTEK - SOVEREIGN FROST MASTER (smrk) */}
+      <section className="relative py-16 px-4 z-10 min-h-screen">
         
-        {/* POZADÍ SEKCE - FOTKA CO SE PROČIŠŤUJE SCROLLEM */}
-        <motion.div 
-          style={{ opacity: opacityValue, filter: `blur(${blurValue})` }}
-          className="absolute inset-0 z-0"
-        >
+        {/* SOVEREIGN FROST BACKGROUND: ZABETONOVANÁ FOTKA S MRAZIVÝM SKLEM (smrk) */}
+        <div className="absolute inset-0 z-0">
           <Image 
-            src="/images/gym/gym_old_0.jpg" 
-            alt="Gym Background" 
+            src="/images/hero_revealed.jpg" 
+            alt="F77 Sovereign Frost Background" 
             fill 
-            className="object-cover grayscale opacity-10"
+            className="object-covergrayscale object-[center,20%] opacity-20" // Posunuto níž (20% zshora)
+            priority
           />
-        </motion.div>
+          <div className="absolute inset-0 bg-[#E5E7EB] bg-opacity-30 backdrop-blur-3xl"></div> // Mrazivý sklo
+        </div>
 
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative z-10">
-          {/* TRENÉŘI A PERMICE ZŮSTÁVAJÍ V KOMPAKTNÍM SKLE (smrk) */}
+          
+          {/* TRENÉŘI A PERMICE - KOMPAKTNÍ SKLO (smrk) */}
           <div className="group relative">
             <div className="relative aspect-[4/5] overflow-hidden shadow-xl border border-white/20 scale-95 group-hover:scale-100 transition-transform">
-              <Image src="/images/trainers/old_web_1.jpg" alt="Hamáček" fill className="object-cover object-top" />
+              <Image src="/images/trainers/old_web_1.jpg" alt="Hamáček" fill className="object-cover object-top" priority />
             </div>
-            <div className="relative -mt-16 mx-8 bg-white/80 backdrop-blur-xl p-5 border border-white/40 shadow-xl">
-              <h3 className="text-xl font-black uppercase italic text-black">Hamáček</h3>
-              <p className="text-xs text-zinc-600 mt-2">Unit_01 // Founder</p>
+            <div className="relative -mt-16 mx-8 bg-white/70 backdrop-blur-xl p-5 border border-white/40 shadow-xl">
+              <h3 className="text-xl font-black uppercase italic text-black tracking-tighter">Hamáček</h3>
+              <p className="text-xs text-zinc-600 mt-2leading-tight">Unit_01 // Founder</p>
+              <div className="mt-3 p-2 bg-black/5 border border-black/10 rounded">
+                <p className="text-[9px] font-black text-zinc-400">STACK: ISOLAT + CREAPURE</p>
+              </div>
             </div>
           </div>
 
           <div className="group relative lg:mt-10">
-            <div className="relative bg-white/80 backdrop-blur-xl p-8 border border-white/40 shadow-xl border-t-4 border-t-[#E10600]">
-              <h3 className="text-2xl font-black uppercase italic mb-6 text-black text-center">Vstupy</h3>
-              <div className="space-y-4 text-black">
-                <div className="flex justify-between border-b border-black/5"><span>JEDNORÁZ</span><span className="font-black italic">180</span></div>
-                <div className="flex justify-between border-b border-black/5"><span>MĚSÍČNÍ</span><span className="font-black italic">1290</span></div>
-                <div className="flex justify-between border-b border-black/5"><span>ROČNÍ</span><span className="font-black italic">10900</span></div>
+            <div className="relative bg-white/70 backdrop-blur-xl p-8 border border-white/40 shadow-xl border-t-4 border-t-[#E10600]">
+              <h3 className="text-2xl font-black uppercase italic mb-6 text-black text-center tracking-tighter">Vstupy</h3>
+              <div className="space-y-4 mb-8 text-sm text-black">
+                <div className="flex justify-between border-b border-black/5 pb-1"><span>JEDNORÁZ</span><span className="font-black italic">180</span></div>
+                <div className="flex justify-between border-b border-black/5 pb-1"><span>MĚSÍČNÍ</span><span className="font-black italic">1290</span></div>
+                <div className="flex justify-between border-b border-black/5 pb-1"><span>ROČNÍ</span><span className="font-black italic">10900</span></div>
               </div>
-              <Link href="/shop" className="mt-6 block w-full text-center py-3 bg-[#E10600] text-white text-[10px] font-black uppercase italic hover:bg-black transition-all">KOUPIT_ONLINE</Link>
+              <Link href="/shop" className="block w-full text-center py-3 bg-[#E10600] text-white text-[10px] font-black uppercase italic hover:bg-black transition-all tracking-widest">KOUPIT_ONLINE →</Link>
             </div>
           </div>
 
           <div className="group relative text-right">
             <div className="relative aspect-[4/5] overflow-hidden shadow-xl border border-white/20 scale-95 group-hover:scale-100 transition-transform">
-              <Image src="/images/trainers/old_web_2.jpg" alt="Soustružník" fill className="object-cover object-top" />
+              <Image src="/images/trainers/old_web_2.jpg" alt="Soustružník" fill className="object-cover object-top" priority />
             </div>
-            <div className="relative -mt-16 mx-8 bg-white/80 backdrop-blur-xl p-5 border border-white/40 shadow-xl">
-              <h3 className="text-xl font-black uppercase italic text-black">Soustružník</h3>
-              <p className="text-xs text-zinc-600 mt-2">Unit_02 // Elite</p>
+            <div className="relative -mt-16 mx-8 bg-white/70 backdrop-blur-xl p-5 border border-white/40 shadow-xl flex flex-col items-end">
+              <h3 className="text-xl font-black uppercase italic text-black tracking-tighter">Soustružník</h3>
+              <p className="text-xs text-zinc-600 mt-2 leading-tight">Unit_02 // Elite</p>
+              <div className="mt-3 p-2 bg-black/5 border border-black/10 rounded w-full text-right">
+                <p className="text-[9px] font-black text-zinc-400">STACK: VITAMINS + ZMA</p>
+              </div>
             </div>
           </div>
+
         </div>
 
-        {/* GALERIE SEŘAZENÁ */}
+        {/* 4. GALERIE SEŘAZENÁ */}
         <div className="mt-24 grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-1 px-4 max-w-[1400px] mx-auto relative z-10">
           {galleryFiles.map((file, i) => (
-            <div key={i} className="relative aspect-square cursor-pointer overflow-hidden opacity-70 hover:opacity-100 transition-all" onClick={() => setSelectedImage(`/images/gym/gallery/${file}`)}>
-              <img src={`/images/gym/gallery/${file}`} alt="F77" className="w-full h-full object-cover" />
+            <div key={i} className="relative aspect-square cursor-pointer overflow-hidden opacity-70 hover:opacity-100 transition-all shadow-lg" onClick={() => setSelectedImage(`/images/gym/gallery/${file}`)}>
+              <img src={`/images/gym/gallery/${file}`} alt={`F77 Gallery ${i}`} className="w-full h-full object-cover" />
             </div>
           ))}
         </div>
       </section>
 
-      {/* MODAL (smrk) */}
+      {/* MODAL */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div 
@@ -140,8 +146,8 @@ export default function GymPage() {
             className="fixed inset-0 z-[300] bg-black/95 flex items-center justify-center p-8 cursor-zoom-out"
             onClick={() => setSelectedImage(null)}
           >
-            <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} className="relative max-w-4xl w-full h-[70vh]">
-              <Image src={selectedImage} alt="F77 Zoom" fill className="object-contain" />
+            <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} className="relative max-w-4xl w-full h-[70vh]">
+              <Image src={selectedImage} alt="F77 Vault Zoom" fill className="object-contain" />
             </motion.div>
           </motion.div>
         )}
