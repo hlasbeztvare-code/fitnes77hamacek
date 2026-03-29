@@ -50,7 +50,28 @@ export default async function GymPage() {
         </Reveal>
       </section>
 
-      {/* 2. THE CORE TRINITY - Sjednocený Layout s POVÍDÁNÍM O FITKU */}
+      {/* 2. MEZERA - 4 OBRÁZKY STATS (smrk) */}
+      <section className="bg-black py-10 px-4 border-b border-zinc-100/10 z-20 relative">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { t: "220 m²", d: "ROZLOHA FITKA", i: "/images/gym/gallery/gym_photo_1.jpg" },
+            { t: "30 STROJŮ", d: "ZNAČKA VITA", i: "/images/gym/gallery/gym_photo_2.jpg" },
+            { t: "NEJVĚTŠÍ", d: "V MLADÉ BOLESLAVI", i: "/images/gym/gallery/gym_photo_3.jpg" },
+            { t: "TOP SLUŽBY", d: "HARDCORE PŘÍSTUP", i: "/images/gym/gallery/gym_photo_4.jpg" }
+          ].map((item, idx) => (
+            <div key={idx} className="relative h-64 overflow-hidden group border border-white/10">
+              <Image src={item.i} alt={item.t} fill className="object-cover grayscale opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+              <div className="absolute bottom-6 left-6">
+                <p className="text-3xl font-black italic text-[#E10600] tracking-tighter">{item.t}</p>
+                <p className="text-[10px] font-bold text-white tracking-[0.3em] uppercase">{item.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. THE CORE TRINITY - Sjednocený Layout s POVÍDÁNÍM O FITKU */}
       <section className="relative py-32 px-4 z-10 bg-[#0A0A0A]">
         <div className="max-w-[1700px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-start">
           
@@ -73,10 +94,9 @@ export default async function GymPage() {
             </div>
           </div>
 
-          {/* STŘED: POVÍDÁNÍ (NA STŘED + VĚTŠÍ) + PERMICE (smrk) */}
+          {/* STŘED: POVÍDÁNÍ (NA STŘED + VĚTŠÍ) + PERMICE */}
           <div className="flex flex-col gap-12 lg:mt-10 text-center">
             
-            {/* POVÍDÁNÍ O FITKU - ZAROVNÁNO NA STŘED A VĚTŠÍ PÍSMO */}
             <div className="relative bg-black/40 backdrop-blur-xl p-10 border border-white/5 shadow-2xl relative overflow-hidden group">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-[#E10600]"></div>
               <h3 className="text-2xl font-black uppercase italic text-white mb-6 tracking-[0.2em]">NAŠE FILOZOFIE</h3>
@@ -88,7 +108,6 @@ export default async function GymPage() {
               </p>
             </div>
 
-            {/* PERMANENTKY STŘED */}
             <div className="flex flex-col group relative lg:mt-12 text-left">
               <div className="bg-black/10 backdrop-blur-md h-32 flex items-center justify-center border-t-2 border-[#E10600]">
                  <span className="text-5xl font-black italic opacity-20 uppercase tracking-[0.3em] text-white">Membership</span>
