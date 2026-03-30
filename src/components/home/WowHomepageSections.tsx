@@ -31,7 +31,6 @@ export default async function WowHomepageSections() {
 
   return (
     <>
-      {/* Kategorie - Původní styl a červená barva  */}
       <section className="bg-[#f4f4f5] py-24">
         <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
           <Reveal>
@@ -42,6 +41,9 @@ export default async function WowHomepageSections() {
               <h2 className="mt-4 text-4xl font-black uppercase leading-[0.95] text-zinc-950 md:text-6xl">
                 Naše <span className="text-[#E10600]">kategorie</span>
               </h2>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 md:text-lg">
+                Výkon, vybavení, služby a obsah. Každá sekce webu má vlastní roli v tom, aby návštěvník šel blíž ke konverzi.
+              </p>
             </div>
           </Reveal>
 
@@ -72,7 +74,6 @@ export default async function WowHomepageSections() {
         </div>
       </section>
 
-      {/* Produkty - Původní styl  */}
       <section className="bg-white py-24">
         <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
           <Reveal>
@@ -101,55 +102,54 @@ export default async function WowHomepageSections() {
         </div>
       </section>
 
-      {/* Heritage Section - Moderní struktura, ale ČERVENÁ barva a BAREVNÁ FOTKA  */}
-      <section className="relative overflow-hidden bg-zinc-950 py-24 text-white">
-        <div className="mx-auto flex w-[min(1280px,calc(100%-32px))] flex-col gap-16 md:flex-row md:items-center">
-          <div className="relative aspect-[4/5] w-full max-w-md overflow-hidden [clip-path:polygon(0_0,100%_0,85%_100%,0%_100%)]">
-            <img 
-              src="/images/trainers/hlavacek.jpg" 
-              alt="Jaroslav Hamáček" 
-              className="h-full w-full object-cover" 
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+      <section className="founder" id="onas" aria-label="O zakladateli">
+        <div className="founder-sk"></div>
+        <div className="founder-ct">
+          <div className="founder-img">
+            <img src="/images/trainers/hlavacek.jpg" alt="Jaroslav Hamáček" loading="lazy" />
           </div>
 
-          <div className="flex-1">
-            <div className="text-xs font-black uppercase tracking-[0.4em] text-[#E10600]">
-              Founder / Head Coach
-            </div>
-            <h2 className="mt-6 text-4xl font-black uppercase leading-[0.95] md:text-6xl">
-              Jaroslav Hamáček postavil <span className="text-[#E10600] italic">Fitness 77</span> pro lidi, kteří odmítají průměr
+          <div>
+            <div className="founder-lbl">Founder / Head Coach</div>
+
+            <h2 className="founder-h2">
+              Jaroslav Hamáček postavil <span className="hl">Fitness 77</span> pro lidi, kteří odmítají průměr
             </h2>
-            <blockquote className="mt-8 border-l-2 border-[#E10600] pl-6 text-lg italic leading-8 text-zinc-400">
-              „Fitness 77 jsem postavil pro lidi, kteří nechtějí průměr. Neprodáváme náhodné suplementy ani prázdné řeči. Stavíme výkon, disciplínu a výsledky.“
+
+            <blockquote className="founder-quote">
+              „Fitness 77 jsem postavil pro lidi, kteří nechtějí průměr. Neprodáváme náhodné suplementy ani prázdné řeči. Stavíme výkon, disciplínu a výsledky na produktech, které dávají smysl v reálném tréninku. Pokud má značka nést moje jméno a moji reputaci, musí obstát pod tlakem.“
             </blockquote>
-            
-            <div className="mt-12 grid grid-cols-3 gap-8 border-y border-zinc-800 py-8">
-              <div>
-                <div className="text-3xl font-black text-[#E10600]">15+</div>
-                <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Let zkušeností</div>
+
+            <div className="founder-feats">
+              <div className="founder-feat">
+                <div className="founder-feat-n">15+</div>
+                <div className="founder-feat-l">let zkušeností</div>
               </div>
-              <div>
-                <div className="text-3xl font-black text-[#E10600]">5000+</div>
-                <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Zákazníků</div>
+              <div className="founder-feat">
+                <div className="founder-feat-n">5000+</div>
+                <div className="founder-feat-l">zákazníků</div>
               </div>
-              <div>
-                <div className="text-3xl font-black text-[#E10600]">100%</div>
-                <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Focus na výkon</div>
+              <div className="founder-feat">
+                <div className="founder-feat-n">100%</div>
+                <div className="founder-feat-l">focus na výkon</div>
               </div>
             </div>
+
+            <div className="founder-name">Jaroslav Hamáček</div>
+            <div className="founder-role">Founder & Head Coach</div>
           </div>
         </div>
       </section>
 
-      {/* CTA Banner - Původní styl  */}
       <section className="cta-banner" id="akce" aria-label="Akce">
         <div className="cta-sk"></div>
         <div className="cta-in">
           <div>
             <div className="cta-lbl">⏰ limitovaná nabídka</div>
             <h2 className="cta-h2">
-              Mega sleva <br /> <span className="hl">30% na vše</span>
+              Mega sleva
+              <br />
+              <span className="hl">30% na vše</span>
             </h2>
             <p className="cta-desc">
               Nepromeškej výraznou nabídku na vybrané produkty. Performance setup pro lidi, kteří chtějí víc než běžný standard.
