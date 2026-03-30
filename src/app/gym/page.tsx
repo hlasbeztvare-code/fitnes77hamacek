@@ -127,7 +127,7 @@ export default function GymPage() {
       <section className="relative h-[95vh] w-full flex items-center justify-center overflow-hidden bg-zinc-950">
         <div className="absolute inset-0 w-full h-full z-[0]">
           <video autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover opacity-50">
-            <source src="/image/hero.mp4" type="video/mp4" />
+            <source src="/images/hero.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-black/30" />
         </div>
