@@ -1,16 +1,19 @@
+"use client";
 import React from 'react';
 import ProductCard from './ProductCard';
 
-export default function ProductGrid({ products }: any) {
+const products = [
+  { id: '1', name: 'BCAA AMINO COMPLEX', price: '1 499', image: '/omega3.png' },
+  { id: '2', name: 'WHEY ISOLATE 90', price: '1 890', image: '/omega3.png' },
+];
+
+export default function ProductGrid() {
   return (
-    <section className="bg-black py-16 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Větší gap pro hloubku (smrk) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 items-stretch">
-          {products.map((product: any) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+    <section className="bg-black py-20 px-4">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+        {products.map((p) => (
+          <ProductCard key={p.id} product={p} />
+        ))}
       </div>
     </section>
   );

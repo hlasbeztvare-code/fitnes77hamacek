@@ -1,27 +1,24 @@
-import React from 'react';
-
-const categories = [
-  { id: '01', title: 'SUPLEMENTY', desc: 'Výživa pro maximální výkon.' },
-  { id: '02', title: 'VYBAVENÍ', desc: 'Profi stroje pro tvůj gym.' },
-  { id: '03', title: 'BAZAR', desc: 'Stroje z druhé ruky za top ceny.' },
-  { id: '04', title: 'GYM / TRENÉŘI', desc: 'Coaching od opravdových profíků.' },
-];
-
+"use client";
 export default function CategoriesGrid() {
+  const cats = [
+    { id: '01', title: 'SUPLEMENTY', desc: 'Maximální výkon.' },
+    { id: '02', title: 'VYBAVENÍ', desc: 'Profi stroje.' },
+    { id: '03', title: 'BAZAR', desc: 'Top ceny strojů.' },
+    { id: '04', title: 'GYM / TRENÉŘI', desc: 'Profi coaching.' },
+  ];
   return (
-    <section className="bg-black py-12 px-4 relative z-10">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-stretch">
-        {categories.map((cat) => (
-          <div key={cat.id} className="flex flex-col border border-zinc-800 p-6 bg-zinc-950 hover:border-red-600 transition-all min-h-[160px]">
-            <span className="text-red-600 font-black text-xs mb-2 tracking-widest">{cat.id}</span>
-            <h3 className="text-white font-black italic uppercase text-xl mb-2 tracking-tighter leading-none">
-              {cat.title}
-            </h3>
-            <p className="text-zinc-500 text-xs leading-tight uppercase font-medium">
-              {cat.desc}
-            </p>
-          </div>
-        ))}
+    <section className="bg-white py-20">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="text-black font-[1000] italic uppercase text-5xl mb-12 tracking-tighter">KATEGORIE</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {cats.map(c => (
+            <div key={c.id} className="border border-zinc-100 p-8 flex flex-col bg-white shadow-sm hover:shadow-xl transition-all group min-h-[180px]">
+              <span className="text-zinc-300 font-black mb-4">{c.id}</span>
+              <h3 className="text-black font-[1000] italic text-2xl group-hover:text-red-600 transition-colors leading-none uppercase">{c.title}</h3>
+              <p className="text-zinc-500 text-[10px] uppercase font-bold mt-2">{c.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
