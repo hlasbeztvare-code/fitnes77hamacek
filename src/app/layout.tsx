@@ -1,28 +1,22 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import ThemeProvider from '@/providers/ThemeProvider';
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Fitness 77',
-  description: 'Fitness 77 web',
+  title: "Fitness 77 | Profesionální vybavení a gym",
+  description: "Nejlepší suplementy, vybavení a bazar strojů pro tvůj trénink.",
+  icons: {
+    icon: "/favicon.ico", // Tady musí být tvoje logo v rohu (smrk)
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="cs">
-      <body className="bg-[#f7f7f8] text-zinc-900">
-        <ThemeProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </ThemeProvider>
-      </body>
+      <body className="antialiased bg-black text-white">{children}</body>
     </html>
   );
 }
