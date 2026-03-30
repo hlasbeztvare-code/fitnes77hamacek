@@ -18,7 +18,7 @@ export default async function WowHomepageSections() {
       description: 'Silové vybavení a profesionální stroje.',
     },
     {
-      title: 'Bazar strojů',
+      title: 'Bazar',
       href: '/bazaar',
       description: 'Použité stroje s transparentním stavem a cenou.',
     },

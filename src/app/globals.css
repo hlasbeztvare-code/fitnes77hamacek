@@ -176,11 +176,12 @@ body {
 }
 
 .hero-btn-primary {
-  background: var(--red);
-  color: white;
+  background: white;
+  color: var(--blk);
 }
 
 .hero-btn-secondary {
+  background: var(--blk);
   border: 2px solid white;
   color: white;
 }

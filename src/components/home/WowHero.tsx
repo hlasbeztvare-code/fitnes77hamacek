@@ -109,13 +109,19 @@ export default function WowHero() {
             initial="hidden"
             animate="show"
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="hero-actions"
+            className="hero-actions flex flex-wrap gap-3"
           >
             <Link href="/supplements" className="hero-btn hero-btn-primary">
               <span>🛒 NAKUPOVAT</span>
             </Link>
-            <Link href="/cart" className="hero-btn hero-btn-secondary">
-              <span>🔥 AKCE −30%</span>
+            <Link href="/equipment" className="hero-btn hero-btn-secondary">
+              <span>🏋️ VYBAVENÍ −30%</span>
+            </Link>
+            <Link href="/bazaar" className="hero-btn hero-btn-secondary">
+              <span>♻️ BAZAR −30%</span>
+            </Link>
+            <Link href="/gym" className="hero-btn hero-btn-secondary">
+              <span>� GYM / TRENÉŘI −30%</span>
             </Link>
           </motion.div>
 
