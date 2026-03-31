@@ -26,62 +26,64 @@ export default function ProductCard({ product }: Props) {
       : 0;
 
   return (
-    <article className="group relative overflow-hidden border border-zinc-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#E10600] hover:shadow-2xl [clip-path:polygon(8%_0%,100%_0%,92%_100%,0%_100%)]">
-      <div className="absolute left-0 top-0 h-1 w-full bg-zinc-950 transition group-hover:bg-[#E10600]" />
-
-      <Link href={`/supplements/${product.slug}`} className="block">
-        <div className="relative aspect-square overflow-hidden bg-zinc-100">
+    <article className="group relative flex flex-col overflow-hidden bg-white p-4 transition-all duration-500 hover:z-10">
+      {/* Luxusní hloubka a stín při hoveru */}
+      <div className="absolute inset-0 z-0 bg-white opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.15)] group-hover:ring-1 group-hover:ring-zinc-100" />
+      
+      <Link href={`/supplements/${product.slug}`} className="relative z-10 block">
+        <div className="relative aspect-[4/5] overflow-hidden bg-zinc-50 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02] group-hover:shadow-lg">
+          {/* Odlesk (Shine effect) */}
+          <div className="absolute inset-0 z-20 translate-x-[-100%] bg-linear-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
+          
           {discount > 0 && (
-            <div className="absolute left-4 top-4 z-10 bg-[#E10600] px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-white shadow-lg [clip-path:polygon(10%_0%,100%_0%,90%_100%,0%_100%)]">
+            <div className="absolute left-3 top-3 z-30 bg-[#E10600] px-2 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow-md [clip-path:polygon(10%_0%,100%_0%,90%_100%,0%_100%)]">
               -{discount}%
             </div>
           )}
 
           <div
-            className="h-full w-full bg-cover bg-center transition duration-500 group-hover:scale-105"
+            className="h-full w-full bg-contain bg-center bg-no-repeat p-4 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110"
             style={{ backgroundImage: `url(${product.image})` }}
           />
         </div>
       </Link>
 
-      <div className="p-6">
-        <div className="text-[11px] font-black uppercase tracking-[0.22em] text-[#E10600]">
+      <div className="relative z-10 mt-5 flex flex-1 flex-col px-1">
+        <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[#E10600]">
           Performance Supplement
         </div>
 
-        <h3 className="mt-3 text-2xl font-black uppercase leading-tight text-zinc-950">
+        <h3 className="mt-2 text-lg font-black uppercase leading-tight text-zinc-950 transition-colors duration-300 group-hover:text-[#E10600]">
           {product.name}
         </h3>
 
-        <p className="mt-4 min-h-[54px] text-sm leading-6 text-zinc-600">
+        <p className="mt-3 line-clamp-2 min-h-[40px] text-[13px] leading-relaxed text-zinc-500">
           {product.shortDescription}
         </p>
 
-        <div className="mt-5 flex items-end gap-3">
-          <span className="text-2xl font-black text-[#E10600]">
-            {product.price.toLocaleString('cs-CZ')} Kč
-          </span>
-          {product.compareAtPrice > 0 && (
-            <span className="text-sm text-zinc-400 line-through">
-              {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
+        <div className="mt-auto pt-4">
+          <div className="flex items-center gap-3">
+            <span className="text-xl font-black text-zinc-950">
+              {product.price.toLocaleString('cs-CZ')} Kč
             </span>
-          )}
-        </div>
+            {product.compareAtPrice > 0 && (
+              <span className="text-xs text-zinc-400 line-through">
+                {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
+              </span>
+            )}
+          </div>
 
-        <div className="mt-2 text-[11px] font-black uppercase tracking-[0.18em] text-zinc-500">
-          {product.stock > 0 ? 'Skladem v Praze' : 'Na dotaz'}
-        </div>
-
-        <div className="mt-6">
-          <AddToCartButton
-            product={{
-              id: product.id,
-              name: product.name,
-              slug: product.slug,
-              price: product.price,
-              image: product.image,
-            }}
-          />
+          <div className="mt-4 opacity-80 transition-opacity duration-300 group-hover:opacity-100">
+            <AddToCartButton
+              product={{
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                price: product.price,
+                image: product.image,
+              }}
+            />
+          </div>
         </div>
       </div>
     </article>
