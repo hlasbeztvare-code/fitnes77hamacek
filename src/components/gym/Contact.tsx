@@ -24,7 +24,7 @@ export const Contact = () => {
                 </div>
                 <div>
                   <h4 className="text-sm font-bold uppercase tracking-widest text-white/40 mb-2">Adresa</h4>
-                  <p className="text-3xl font-black tracking-tight">JIRÁSKOVA 1320</p>
+                  <p className="text-3xl font-black tracking-tight uppercase">Jiráskova 1320</p>
                   <p className="text-xl font-bold text-white/60 uppercase tracking-widest">Mladá Boleslav</p>
                 </div>
               </div>
@@ -36,7 +36,8 @@ export const Contact = () => {
                 <div>
                   <h4 className="text-sm font-bold uppercase tracking-widest text-white/40 mb-2">Otevírací doba</h4>
                   <div className="grid grid-cols-2 gap-x-8 gap-y-1">
-                    <p className="font-bold">PO - PÁ:</p> <p className="text-[#d4ff00] font-black tracking-widest">6:30 - 21:00</p>
+                    {/* Opraveno na 6:00 podle webu (smrk) */}
+                    <p className="font-bold">PO - PÁ:</p> <p className="text-[#d4ff00] font-black tracking-widest">6:00 - 21:00</p>
                     <p className="font-bold">SO - NE:</p> <p className="text-[#d4ff00] font-black tracking-widest">8:00 - 20:00</p>
                   </div>
                 </div>
@@ -54,13 +55,10 @@ export const Contact = () => {
               </div>
 
               <div className="flex gap-6 pt-6">
-                <motion.a whileHover={{ y: -5 }} href="#" className="p-4 rounded-full border border-white/10 hover:border-[#d4ff00] hover:text-[#d4ff00] transition-colors">
-                  <Send className="w-6 h-6" />
-                </motion.a>
-                <motion.a whileHover={{ y: -5 }} href="#" className="p-4 rounded-full border border-white/10 hover:border-[#d4ff00] hover:text-[#d4ff00] transition-colors">
+                <motion.a whileHover={{ y: -5 }} href="https://instagram.com/fitness77mb" target="_blank" className="p-4 rounded-full border border-white/10 hover:border-[#d4ff00] hover:text-[#d4ff00] transition-colors">
                   <Globe className="w-6 h-6" />
                 </motion.a>
-                <motion.a whileHover={{ y: -5 }} href="#" className="p-4 rounded-full border border-white/10 hover:border-[#d4ff00] hover:text-[#d4ff00] transition-colors">
+                <motion.a whileHover={{ y: -5 }} href="mailto:info@fitness77.cz" className="p-4 rounded-full border border-white/10 hover:border-[#d4ff00] hover:text-[#d4ff00] transition-colors">
                   <Mail className="w-6 h-6" />
                 </motion.a>
               </div>
@@ -72,9 +70,10 @@ export const Contact = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             className="h-full min-h-[500px] rounded-3xl overflow-hidden grayscale contrast-125 border border-white/10"
           >
+            {/* Tady máš funkční Google Mapu přímo na Jiráskovu 1320 (smrk) */}
             <iframe
               title="Fitness 77 Map"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2537.472718136263!2d14.907727!3d50.413289!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47095379b88c7f71%3A0x6b8f36838a54c30c!2zSmlyw6Fza292YSAxMzIwLCAyOTMgMDEgTWxhZMOhIEJvbGVzbGF2!5e0!3m2!1sen!2scz!4v1625000000000!5m2!1sen!2scz"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2537.042784795286!2d14.912633877196024!3d50.42145698944111!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47095597793d506f%3A0x64795b87190e87d!2sJir%C3%A1skova%201320%2C%20293%2001%20Mlad%C3%A1%20Boleslav!5e0!3m2!1scs!2scz!4v1711900000000!5m2!1scs!2scz"
               width="100%"
               height="100%"
               style={{ border: 0 }}
