@@ -912,3 +912,26 @@ section {
   }
 }
 
+
+/* KROCENÍ SLUŽEB (smrk) */
+.service-card {
+  min-height: 350px !important; /* Místo původních třeba 600px */
+  padding: 2rem !important;
+}
+
+.service-icon {
+  width: 40px !important; /* Zmenšení ikon */
+  height: 40px !important;
+}
+
+.service-title {
+  font-size: 1.5rem !important; /* Decentnější nadpisy služeb */
+  margin-top: 1rem !important;
+}
+
+.service-description {
+  font-size: 0.85rem !important;
+  line-height: 1.4 !important;
+  opacity: 0.7;
+}
+
