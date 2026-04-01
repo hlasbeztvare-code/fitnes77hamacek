@@ -817,3 +817,73 @@ footer {
     width: min(1280px, calc(100% - 32px));
   }
 }
+
+/* --- GYM SECTION - PŘIDANÉ STYLY (smrk) --- */
+
+/* Definice fontů pro Gym sekci */
+@theme {
+  --font-bebas: "Bebas Neue", sans-serif;
+  --font-space: "Space Grotesk", sans-serif;
+}
+
+/* Noise efekt (šum) - tohle přidá ten prémiový look na pozadí */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Specifické třídy pro texty v sekci Gym */
+.text-stroke-black {
+  -webkit-text-stroke: 2px black;
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Nastavení výběru textu v Gym sekci (jedovatá žlutozelená) */
+.gym-section-wrap ::selection {
+  background: #d4ff00;
+  color: #000;
+}
+
+/* Lenis CSS pro hladký scroll - tohle je pro sekci GYM klíčové */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Custom Scrollbar - tohle ti udělá ten hezkej tenkej žlutej proužek */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4ff00;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+
+/* --- KONEC GYM STYLŮ (smrk) --- */
