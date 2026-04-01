@@ -887,3 +887,28 @@ html.lenis {
 }
 
 /* --- KONEC GYM STYLŮ (smrk) --- */
+/* SENIOR OPTIMALIZACE VELIKOSTÍ (smrk) */
+.hero-title {
+  font-size: clamp(3.5rem, 10vw, 7rem) !important;
+  line-height: 0.85 !important;
+  letter-spacing: -0.04em !important;
+}
+
+.hero-description {
+  font-size: 0.9rem !important;
+  max-width: 500px !important;
+  margin-top: 1.5rem !important;
+}
+
+section {
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+
+@media (min-width: 1024px) {
+  section {
+    padding-top: 6rem !important;
+    padding-bottom: 6rem !important;
+  }
+}
+
