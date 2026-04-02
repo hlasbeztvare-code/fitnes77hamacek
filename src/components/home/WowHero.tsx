@@ -109,19 +109,43 @@ export default function WowHero() {
             initial="hidden"
             animate="show"
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="hero-actions flex flex-wrap gap-3"
+            /* OPRAVENO: Grid 2x2 na mobilu, 4 vedle sebe na desktopu, extrémně snížená výška (h-12) */
+            className="hero-actions grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-4xl mt-8"
           >
-            <Link href="/supplements" className="hero-btn hero-btn-primary">
-              <span>🛒 NAKUPOVAT</span>
+            {/* SUPLEMENTY */}
+            <Link 
+              href="/supplements" 
+              className="flex h-12 flex-row items-center justify-center gap-2 bg-[#FF8C00] transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF9D26] hover:shadow-[0_15px_35px_rgba(255,140,0,0.3)] active:scale-95 rounded-xl px-4"
+            >
+              <span className="text-xl">⚡</span>
+              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-black not-italic">SUPLEMENTY</span>
             </Link>
-            <Link href="/equipment" className="hero-btn hero-btn-secondary">
-              <span>🏋️ VYBAVENÍ −30%</span>
+            
+            {/* VYBAVENÍ */}
+            <Link 
+              href="/equipment" 
+              className="flex h-12 flex-row items-center justify-center gap-2 bg-[#FF8C00] transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF9D26] hover:shadow-[0_15px_35px_rgba(255,140,0,0.3)] active:scale-95 rounded-xl px-4"
+            >
+              <span className="text-xl">🏋️</span>
+              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-black not-italic">VYBAVENÍ</span>
             </Link>
-            <Link href="/bazaar" className="hero-btn hero-btn-secondary">
-              <span>♻️ BAZAR −30%</span>
+            
+            {/* BAZAR */}
+            <Link 
+              href="/bazaar" 
+              className="flex h-12 flex-row items-center justify-center gap-2 bg-[#FF8C00] transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF9D26] hover:shadow-[0_15px_35px_rgba(255,140,0,0.3)] active:scale-95 rounded-xl px-4"
+            >
+              <span className="text-xl">♻️</span>
+              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-black not-italic">BAZAR</span>
             </Link>
-            <Link href="/gym" className="hero-btn hero-btn-secondary">
-              <span>� GYM / TRENÉŘI −30%</span>
+
+            {/* GYM */}
+            <Link 
+              href="/gym" 
+              className="flex h-12 flex-row items-center justify-center gap-2 bg-[#FF8C00] transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF9D26] hover:shadow-[0_15px_35px_rgba(255,140,0,0.3)] active:scale-95 rounded-xl px-4"
+            >
+              <span className="text-xl">🏆</span>
+              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-black not-italic">GYM</span>
             </Link>
           </motion.div>
 

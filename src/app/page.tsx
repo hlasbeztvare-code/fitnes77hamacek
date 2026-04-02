@@ -11,10 +11,10 @@ export default function HomePage() {
             DOPRAVA ZDARMA NAD 2000 Kč
           </div>
           <div className="text-center text-xs font-black uppercase tracking-[0.16em] text-white">
-            VÝDEJNÍ MÍSTO ATELIER PRAHA
+            VÝDEJNÍ MÍSTO ATELIER MB
           </div>
           <div className="text-center text-xs font-black uppercase tracking-[0.16em] text-white">
-            SKLADEM V PRAZE
+            SKLADEM V MLADÉ BOLESLAVI
           </div>
           <div className="text-center text-xs font-black uppercase tracking-[0.16em] text-[#E10600]">
             PERFORMANCE STANDARD

@@ -785,9 +785,17 @@ header.sticky {
   transform: translateY(-2px);
 }
 
-.hero-btn-secondary:hover,
-.btn-s:hover {
+.hero-btn-hero-orange {
+  background: #FF8C00;
+  color: white;
+  border: none;
+  box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+}
+
+.hero-btn-hero-orange:hover {
+  background: #E67E00;
   transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
 .founder-quote {

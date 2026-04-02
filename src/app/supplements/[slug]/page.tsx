@@ -1,6 +1,8 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import { products } from '@/lib/mock/products';
 import AddToCartButton from '@/components/shop/AddToCartButton';
-import { getSupplementBySlug } from '@/lib/queries/products';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -8,61 +10,83 @@ type Props = {
 
 export default async function SupplementDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product = await getSupplementBySlug(slug);
+  const product = products.find((p) => p.slug === slug);
 
   if (!product) return notFound();
 
   return (
-    <section className="py-16">
-      <div className="mx-auto grid w-[min(1200px,calc(100%-32px))] gap-10 lg:grid-cols-2">
-        <div className="overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900">
-          <div
-            className="aspect-square w-full bg-cover bg-center"
-            style={{ backgroundImage: `url(${product.image})` }}
-          />
+    <section className="py-24 bg-white min-h-screen">
+      <div className="mx-auto w-[min(1280px,calc(100%-40px))]">
+        {/* Back Button */}
+        <div className="mb-12">
+          <Link 
+            href="/supplements" 
+            className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-zinc-500 transition-colors hover:text-[#E10600] not-italic"
+          >
+            ← ZPĚT NA SUPLEMENTY
+          </Link>
         </div>
 
-        <div className="flex flex-col justify-center">
-          <span className="text-sm font-bold uppercase tracking-[0.2em] text-[#E10600]">
-            Fitness 77 Supplement
-          </span>
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
+          {/* Produktový obrázek s levitací a stínem */}
+          <div className="relative aspect-square flex items-center justify-center bg-zinc-50/50 p-12 group">
+            <div className="relative w-full h-full transition-transform duration-700 group-hover:-translate-y-4">
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
+                priority
+              />
+            </div>
+          </div>
 
-          <h1 className="mt-3 text-5xl font-bold uppercase">{product.name}</h1>
-
-          <p className="mt-6 text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            {product.description}
-          </p>
-
-          <div className="mt-8 flex items-end gap-4">
-            <span className="text-4xl font-bold text-[#E10600]">
-              {product.price.toLocaleString('cs-CZ')} Kč
-            </span>
-            {product.compareAtPrice && (
-              <span className="text-lg text-zinc-400 line-through">
-                {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
+          {/* Detaily produktu */}
+          <div className="flex flex-col justify-center">
+            <div className="inline-block border-l-4 border-[#E10600] pl-4 text-[10px] font-black uppercase tracking-[0.3em] text-[#E10600]">
+              Performance Supplement
+            </div>
+            <h1 className="mt-6 text-5xl font-black uppercase leading-[1.1] text-zinc-950 md:text-6xl lg:text-7xl not-italic tracking-tighter">
+              {product.name}
+            </h1>
+            
+            <div className="mt-8 flex items-center gap-6">
+              <span className="text-4xl font-black text-zinc-950 not-italic">
+                {product.price.toLocaleString('cs-CZ')} Kč
               </span>
-            )}
-          </div>
+              {product.compareAtPrice > 0 && (
+                <span className="text-xl text-zinc-400 line-through not-italic">
+                  {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
+                </span>
+              )}
+            </div>
 
-          <div className="mt-8 flex flex-wrap gap-4">
-            <AddToCartButton
-              product={{
-                id: product.id,
-                name: product.name,
-                slug: product.slug,
-                price: product.price,
-                image: product.image,
-              }}
-            />
-            <button className="rounded-md border border-zinc-300 px-6 py-3 font-bold uppercase tracking-wide transition hover:border-[#E10600] hover:text-[#E10600] dark:border-zinc-700">
-              Zjistit více
-            </button>
-          </div>
+            <p className="mt-8 text-lg leading-relaxed text-zinc-600 max-w-xl">
+              {product.description}
+            </p>
 
-          <div className="mt-8 grid gap-3 text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
-            <div>✓ Skladem v Praze</div>
-            <div>✓ Doprava zdarma nad 2000 Kč</div>
-            <div>✓ Rychlé odbavení objednávky</div>
+            <div className="mt-12 max-w-md">
+              <AddToCartButton
+                product={{
+                  id: product.id,
+                  name: product.name,
+                  slug: product.slug,
+                  price: product.price,
+                  image: product.image,
+                }}
+              />
+            </div>
+
+            <div className="mt-12 grid grid-cols-2 gap-6 border-t border-zinc-100 pt-12 text-[10px] font-black uppercase tracking-[0.15em] text-zinc-400">
+              <div className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#E10600]" />
+                Skladem v Mladé Boleslavi
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#E10600]" />
+                Doprava zdarma nad 2000 Kč
+              </div>
+            </div>
           </div>
         </div>
       </div>
