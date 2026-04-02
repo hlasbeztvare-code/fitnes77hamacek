@@ -6,7 +6,7 @@ export default function GymLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-black min-h-screen">
+    <div className="bg-black min-h-screen relative">
       {children}
     </div>
   );
