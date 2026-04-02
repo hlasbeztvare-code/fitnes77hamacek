@@ -1,15 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* TADY JE TO KOUZLO PRO HAMÁČKŮV HOSTING */
-  output: 'export', 
+  /* SMAZALI JSME OUTPUT EXPORT - VERCEL TO POBORE DYNAMICKY NA 300% */
   
-  /* Tohle tam dej, aby ti fungovaly obrázky, pokud je nemáš přes externí URL */
   images: {
     unoptimized: true,
   },
   
-  /* Tady můžeš mít svoje další věci, pokud tam nějaký máš */
+  /* Tady máš prostor na další boleslavský vylepšováky */
 };
 
 export default nextConfig;
