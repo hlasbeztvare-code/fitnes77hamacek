@@ -26,7 +26,7 @@ function App() {
       <Marquee text="JOIN THE MOVEMENT • F77 • NO LIMITS" speed={25} reverse outline />
       
       <Pricing />
-      
+      <Footer />      
       
     </main>
   );
