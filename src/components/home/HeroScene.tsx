@@ -73,15 +73,15 @@ export default function HeroScene() {
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.45 }}
-            className="mt-10 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 max-w-2xl" 
+            className="mt-10 flex flex-col gap-2 sm:grid sm:grid-cols-4 sm:gap-3 max-w-2xl" 
           >
             {categoryActions.map((action, index) => {
               const Icon = action.icon;
               return (
-                <Link key={index} href={action.href} className="group">
-                  <div className="flex h-12 flex-row items-center justify-center gap-2.5 rounded-lg bg-[#FF8C00] px-3 shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E67E00] hover:shadow-lg active:scale-95">
-                    <Icon className="h-4 w-4 text-black transition-transform duration-300 group-hover:scale-110" />
-                    <span className="text-[10px] font-black uppercase tracking-wider text-black not-italic leading-none">
+                <Link key={index} href={action.href} className="group w-full">
+                  <div className="flex h-[50px] flex-row items-center justify-center gap-2.5 rounded-lg bg-white px-5 shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f0f0f0] hover:shadow-lg active:scale-[0.98] border-none">
+                    <Icon className="h-5 w-5 text-black transition-transform duration-300 group-hover:scale-110 shrink-0" />
+                    <span className="text-base font-extrabold uppercase tracking-wider text-black not-italic leading-none whitespace-nowrap">
                       {action.label}
                     </span>
                   </div>

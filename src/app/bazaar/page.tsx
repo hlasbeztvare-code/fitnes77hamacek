@@ -22,7 +22,7 @@ export default function BazaarPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 sm:gap-6">
           {bazaarItems.map((item) => (
             <article key={item.id} className="group relative flex flex-col overflow-hidden bg-white p-4 transition-all duration-500 hover:z-10 rounded-none not-italic">
               <div className="absolute inset-0 z-0 bg-white opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.15)] group-hover:ring-1 group-hover:ring-zinc-100 rounded-none" />
@@ -43,18 +43,18 @@ export default function BazaarPage() {
                 </div>
               </Link>
 
-              <div className="relative z-10 mt-5 flex flex-1 flex-col px-1">
-                <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[#E10600]">
+              <div className="relative z-10 mt-3 sm:mt-5 flex flex-1 flex-col px-0.5 sm:px-1">
+                <div className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] text-[#E10600]">
                   Bazar / Second Hand
                 </div>
 
-                <h3 className="mt-2 text-lg font-black uppercase leading-tight text-zinc-950 transition-colors duration-300 group-hover:text-[#E10600]">
+                <h3 className="mt-1 sm:mt-2 text-sm sm:text-lg font-black uppercase leading-tight text-zinc-950 transition-colors duration-300 group-hover:text-[#E10600] line-clamp-2 min-h-[2.5em]">
                   {item.name}
                 </h3>
 
-                <div className="mt-auto pt-4">
+                <div className="mt-auto pt-3 sm:pt-4">
                   <div className="flex items-center gap-3">
-                    <span className="text-xl font-black text-zinc-950">
+                    <span className="text-base sm:text-xl font-black text-zinc-950">
                       {item.price.toLocaleString('cs-CZ')} Kč
                     </span>
                   </div>

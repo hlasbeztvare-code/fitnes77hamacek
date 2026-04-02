@@ -20,19 +20,19 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 z-50 w-full">
-      <div className="flex w-full items-center rounded-b-[2.5rem] border-b border-white/20 bg-black/40 py-1 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-12">
-        <div className="flex w-[300px] items-center">
-          <Link href="/" className="flex items-center gap-3">
+      <div className="flex w-full items-center rounded-b-[2.5rem] border-b border-white/20 bg-black/40 py-1 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-4 md:px-12">
+        <div className="flex flex-1 md:w-[300px] items-center">
+          <Link href="/" className="flex items-center gap-2 md:gap-3 px-1 md:px-0">
             <Image
               src="/images/brand/logo-fitness77.png"
               alt="Fitness 77"
               width={120}
               height={30}
-              className="h-7 w-auto object-contain"
+              className="h-10 w-auto md:h-7 object-contain brightness-0 invert"
               priority
             />
-            <span className="text-xl font-black uppercase tracking-[0.14em] text-white">
-              FITNESS <span className="text-[#E10600]">77</span>
+            <span className="text-base md:text-xl font-black uppercase tracking-[0.1em] md:tracking-[0.14em] text-white whitespace-nowrap">
+              FITNESS 77
             </span>
           </Link>
         </div>

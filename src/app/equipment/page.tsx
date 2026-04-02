@@ -38,18 +38,18 @@ export default function EquipmentPage() {
                 </div>
               </Link>
 
-              <div className="relative z-10 mt-5 flex flex-1 flex-col px-1">
-                <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[#E10600]">
+              <div className="relative z-10 mt-3 sm:mt-5 flex flex-1 flex-col px-0.5 sm:px-1">
+                <div className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] text-[#E10600]">
                   Performance Gear
                 </div>
 
-                <h3 className="mt-2 text-lg font-black uppercase leading-tight text-zinc-950 transition-colors duration-300 group-hover:text-[#E10600]">
+                <h3 className="mt-1 sm:mt-2 text-sm sm:text-lg font-black uppercase leading-tight text-zinc-950 transition-colors duration-300 group-hover:text-[#E10600] line-clamp-2 min-h-[2.5em]">
                   {item.name}
                 </h3>
 
-                <div className="mt-auto pt-4">
+                <div className="mt-auto pt-3 sm:pt-4">
                   <div className="flex items-center gap-3">
-                    <span className="text-xl font-black text-zinc-950">
+                    <span className="text-base sm:text-xl font-black text-zinc-950">
                       {item.price.toLocaleString('cs-CZ')} Kč
                     </span>
                   </div>

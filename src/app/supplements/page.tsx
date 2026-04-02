@@ -23,7 +23,7 @@ export default async function SupplementsPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-2 xl:grid-cols-4 sm:gap-6">
           {products.map((product) => (
             <ProductCard
               key={product.id}

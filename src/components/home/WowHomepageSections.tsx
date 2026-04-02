@@ -31,7 +31,7 @@ export default async function WowHomepageSections() {
 
   return (
     <>
-      <section className="bg-[#f4f4f5] py-24">
+      <section className="bg-[#f4f4f5] py-24 hidden md:block">
         <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
           <Reveal>
             <div className="max-w-3xl">
@@ -47,7 +47,7 @@ export default async function WowHomepageSections() {
             </div>
           </Reveal>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-2 xl:grid-cols-4 sm:gap-6">
             {categories.map((item, index) => (
               <Reveal key={item.href} delay={index * 0.06}>
                 <Link
@@ -87,7 +87,7 @@ export default async function WowHomepageSections() {
             </div>
           </Reveal>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-2 xl:grid-cols-4 sm:gap-6">
             {products.slice(0, 4).map((product, index) => (
               <Reveal key={product.id} delay={index * 0.06}>
                 <ProductCard
@@ -141,7 +141,7 @@ export default async function WowHomepageSections() {
         </div>
       </section>
 
-      <section className="cta-banner" id="akce" aria-label="Akce">
+      <section className="cta-banner hidden md:block" id="akce" aria-label="Akce">
         <div className="cta-sk"></div>
         <div className="cta-in">
           <div>

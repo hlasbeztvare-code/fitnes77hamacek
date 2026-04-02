@@ -109,43 +109,43 @@ export default function WowHero() {
             initial="hidden"
             animate="show"
             transition={{ duration: 0.6, delay: 0.6 }}
-            /* OPRAVENO: Grid 2x2 na mobilu, 4 vedle sebe na desktopu, extrémně snížená výška (h-12) */
-            className="hero-actions grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-4xl mt-8"
+            /* OPRAVENO: 1 sloupec na mobilu (lišty), 4 vedle sebe na desktopu */
+            className="hero-actions flex flex-col gap-2 lg:grid lg:grid-cols-4 lg:gap-3 max-w-4xl mt-8"
           >
             {/* SUPLEMENTY */}
             <Link 
               href="/supplements" 
-              className="flex h-12 flex-row items-center justify-center gap-2 bg-[#FF8C00] transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF9D26] hover:shadow-[0_15px_35px_rgba(255,140,0,0.3)] active:scale-95 rounded-xl px-4"
+              className="flex h-[50px] flex-row items-center justify-center gap-2.5 bg-white transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f0] hover:shadow-lg active:scale-[0.98] rounded-lg px-5 border-none"
             >
-              <span className="text-xl">⚡</span>
-              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-black not-italic">SUPLEMENTY</span>
+              <span className="text-xl shrink-0">⚡</span>
+              <span className="text-base font-extrabold uppercase tracking-wider text-black not-italic leading-none whitespace-nowrap">SUPLEMENTY</span>
             </Link>
             
             {/* VYBAVENÍ */}
             <Link 
               href="/equipment" 
-              className="flex h-12 flex-row items-center justify-center gap-2 bg-[#FF8C00] transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF9D26] hover:shadow-[0_15px_35px_rgba(255,140,0,0.3)] active:scale-95 rounded-xl px-4"
+              className="flex h-[50px] flex-row items-center justify-center gap-2.5 bg-white transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f0] hover:shadow-lg active:scale-[0.98] rounded-lg px-5 border-none"
             >
-              <span className="text-xl">🏋️</span>
-              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-black not-italic">VYBAVENÍ</span>
+              <span className="text-xl shrink-0">🏋️</span>
+              <span className="text-base font-extrabold uppercase tracking-wider text-black not-italic leading-none whitespace-nowrap">VYBAVENÍ</span>
             </Link>
             
             {/* BAZAR */}
             <Link 
               href="/bazaar" 
-              className="flex h-12 flex-row items-center justify-center gap-2 bg-[#FF8C00] transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF9D26] hover:shadow-[0_15px_35px_rgba(255,140,0,0.3)] active:scale-95 rounded-xl px-4"
+              className="flex h-[50px] flex-row items-center justify-center gap-2.5 bg-white transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f0] hover:shadow-lg active:scale-[0.98] rounded-lg px-5 border-none"
             >
-              <span className="text-xl">♻️</span>
-              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-black not-italic">BAZAR</span>
+              <span className="text-xl shrink-0">♻️</span>
+              <span className="text-base font-extrabold uppercase tracking-wider text-black not-italic leading-none whitespace-nowrap">BAZAR</span>
             </Link>
 
             {/* GYM */}
             <Link 
               href="/gym" 
-              className="flex h-12 flex-row items-center justify-center gap-2 bg-[#FF8C00] transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF9D26] hover:shadow-[0_15px_35px_rgba(255,140,0,0.3)] active:scale-95 rounded-xl px-4"
+              className="flex h-[50px] flex-row items-center justify-center gap-2.5 bg-white transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f0] hover:shadow-lg active:scale-[0.98] rounded-lg px-5 border-none"
             >
-              <span className="text-xl">🏆</span>
-              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] text-black not-italic">GYM</span>
+              <span className="text-xl shrink-0">🏆</span>
+              <span className="text-base font-extrabold uppercase tracking-wider text-black not-italic leading-none whitespace-nowrap">GYM</span>
             </Link>
           </motion.div>
 
