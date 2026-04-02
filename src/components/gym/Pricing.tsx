@@ -59,27 +59,27 @@ const Pricing = () => {
                 <div className="space-y-16 mt-20">
                     <div className="group cursor-none">
                         <div className="flex items-center gap-10 mb-8">
-                            <div className="w-32 h-32 rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl">
-                                <img src="https://images.unsplash.com/photo-1548690312-e3b507d17a4d?auto=format&fit=crop&q=80" alt="Kačka" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
+                            <div className="w-32 h-32 rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-zinc-900">
+                                <img src="/images/trainers/old_web_2.jpg" alt="Ondřej Soustružník" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
                             </div>
                             <div>
-                               <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-bebas tracking-wider uppercase">KAČKA KLÍMOVÁ</h5>
+                               <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-bebas tracking-wider uppercase leading-none">ONDŘEJ SOUSTRUŽNÍK</h5>
                                <div className="h-1 w-0 group-hover:w-full bg-[#d4ff00] transition-all duration-700 mt-2" />
                             </div>
                         </div>
-                        <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-space max-w-sm group-hover:text-white/80 transition-colors">Dětské fitness / Powerlifting / Formování postavy</p>
+                        <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-space max-w-sm group-hover:text-white/80 transition-colors">HEAD COACH / FYZIO / SÍLA</p>
                     </div>
                     <div className="group cursor-none">
                         <div className="flex items-center gap-10 mb-8">
-                            <div className="w-32 h-32 rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 -rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl">
-                                <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&q=80" alt="Klárka" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
+                            <div className="w-32 h-32 rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 -rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-zinc-900">
+                                <img src="/images/trainers/old_web_1.jpg" alt="Jaroslav Hamáček" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
                             </div>
                             <div>
-                               <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-bebas tracking-wider uppercase">KLÁRKA</h5>
+                               <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-bebas tracking-wider uppercase leading-none">JAROSLAV HAMÁČEK</h5>
                                <div className="h-1 w-0 group-hover:w-full bg-[#d4ff00] transition-all duration-700 mt-2" />
                             </div>
                         </div>
-                        <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-space max-w-sm group-hover:text-white/80 transition-colors">Pilates / Jóga / Kruhové tréninky</p>
+                        <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-space max-w-sm group-hover:text-white/80 transition-colors">MAJITEL / BOX / KOMUNITA</p>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,6 @@ const Pricing = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               className="bg-[#d4ff00] text-black p-20 flex flex-col justify-center relative rounded-[3rem] shadow-[0_0_100px_rgba(212,255,0,0.15)] overflow-hidden"
             >
-                {/* Abstract decorative element */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-black/10 rounded-full blur-3xl" />
                 <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-black/5 rounded-full blur-3xl" />
 
@@ -97,7 +96,7 @@ const Pricing = () => {
                 <p className="text-2xl font-medium text-black/70 mb-12 leading-tight uppercase font-space tracking-tight">
                     Nejsme jen fitko. Jsme komunita, která tě posune za tvoje limity. Přijď se podívat a zjisti, proč jsme jednička v Mladé Boleslavi.
                 </p>
-                <div className="text-[12vw] font-black text-transparent leading-none font-bebas tracking-tighter" style={{ WebkitTextStroke: '2px black' }}>F77.CZ</div>
+                <div className="text-[8vw] font-black text-transparent leading-none font-bebas tracking-tighter px-10" style={{ WebkitTextStroke: '2px black' }}>Fit77.cz</div>
                 <div className="mt-12 flex gap-4">
                    <div className="w-12 h-1 bg-black" />
                    <div className="w-4 h-1 bg-black" />

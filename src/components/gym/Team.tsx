@@ -1,117 +1,111 @@
+"use client";
+
 import { motion } from 'framer-motion';
-import { Link, Zap } from 'lucide-react';
+import { Mail, Zap, Target } from 'lucide-react';
 
 const trainers = [
   {
-    name: 'KLÁRA',
-    surname: 'KLÍMOVÁ',
-    role: 'Osobní trenérka',
-    specialization: 'Silový trénink, Formování postavy',
-    image: 'https://images.unsplash.com/photo-1548691905-57c36cc8d93f?auto=format&fit=crop&q=80&w=800',
-    stats: { strength: 95, endurance: 80, technique: 99 },
-    accent: 'border-[#d4ff00]'
+    firstName: 'ONDŘEJ',
+    lastName: 'SOUSTRUŽNÍK',
+    title: 'HEAD COACH / ELITE TRAINER',
+    image: '/images/trainers/old_web_2.jpg', 
+    skills: [
+      { name: 'STRENGTH & TECH', value: 98 },
+      { name: 'PHYSIOLOGY', value: 92 },
+    ]
   },
   {
-    name: 'KAČKA',
-    surname: 'NOVÁKOVÁ',
-    role: 'Fitness instruktorka',
-    specialization: 'Funkční trénink, Kruháče',
-    image: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&q=80&w=800',
-    stats: { strength: 85, endurance: 95, technique: 90 },
-    accent: 'border-white'
+    firstName: 'JAROSLAV',
+    lastName: 'HAMÁČEK',
+    title: 'OWNER / VISIONARY',
+    image: '/images/trainers/old_web_1.jpg', 
+    skills: [
+      { name: 'STRATEGY', value: 100 },
+      { name: 'COMMUNITY', value: 95 },
+    ]
   }
 ];
 
 export const Team = () => {
   return (
-    <section id="tym" className="py-24 px-4 bg-black relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          className="flex justify-between items-end mb-24"
-        >
-          <h2 className="text-8xl md:text-[12rem] font-bebas font-black tracking-tighter leading-[0.8] m-0 blend-diff">
-            ELITE <br />
-            <span className="text-outline">OPERATORS</span>
+    <section className="py-24 bg-black selection:bg-[#d4ff00] selection:text-black font-bebas">
+      <div className="max-w-[1400px] mx-auto px-6"> {/* Zvětšili jsme max-w kontejneru (smrk) */}
+        
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+          <h2 className="text-[9vw] font-black text-white leading-none tracking-tighter uppercase select-none">
+            POZNEJ <br />
+            <span className="text-transparent" style={{ WebkitTextStroke: '1px #d4ff00' }}>SVOJEHO</span>
           </h2>
-          <div className="hidden lg:block mb-4 text-right">
-            <div className="h-px w-32 bg-[#d4ff00] mb-2 ml-auto" />
-            <p className="text-[10px] font-syne uppercase tracking-widest text-white/40">The human engine</p>
-          </div>
-        </motion.div>
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center gap-3 border border-[#d4ff00]/40 text-[#d4ff00] px-8 py-5 rounded-full font-bold uppercase tracking-widest text-xs font-space cursor-default"
+          >
+            ELITE TEAM MB <Target size={20} className="text-[#d4ff00]"/>
+          </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-          {trainers.map((trainer, index) => (
+        <div className="mb-32">
+          <h2 className="text-[16vw] font-black text-white leading-none tracking-tighter uppercase italic select-none">
+            TRENÉRA<span className="text-[#d4ff00] italic">.</span>
+          </h2>
+        </div>
+
+        {/* Zmenšili jsme mezeru gap z 16 na 8 (smrk) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {trainers.map((trainer, i) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              className="relative group cursor-none strobe-hover"
+              viewport={{ once: true }}
+              className="relative group w-full"
             >
-              <div className="relative aspect-[3/4] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-                <img 
-                  src={trainer.image} 
-                  alt={trainer.name} 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/5 bg-zinc-900 transition-all duration-700 group-hover:border-[#d4ff00]/20">
+                <img
+                  src={trainer.image}
+                  alt={trainer.lastName}
+                  className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
                 />
-                
-                {/* Stats overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-8 flex flex-col justify-end">
-                  <div className="space-y-4 max-w-xs">
-                    <div className="flex justify-between text-[10px] font-syne uppercase tracking-widest text-white/60 mb-1">
-                      <span>Strength</span>
-                      <span>{trainer.stats.strength}%</span>
-                    </div>
-                    <div className="h-0.5 bg-white/10 w-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${trainer.stats.strength}%` }}
-                        className="h-full bg-[#d4ff00]"
-                      />
-                    </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
+              </div>
 
-                    <div className="flex justify-between text-[10px] font-syne uppercase tracking-widest text-white/60 mb-1">
-                      <span>Endurance</span>
-                      <span>{trainer.stats.endurance}%</span>
+              <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
+                <div className="w-full">
+                    {/* Snížili jsme text z 8xl na 6xl/7xl pro jistotu (smrk) */}
+                    <h3 className="text-[12vw] lg:text-[4.5vw] xl:text-[5.5rem] font-black text-white leading-[0.8] tracking-tighter uppercase group-hover:text-[#d4ff00] transition-colors duration-500 whitespace-nowrap">
+                        {trainer.firstName}<br />
+                        <span className="text-[#d4ff00] group-hover:text-white">{trainer.lastName}</span>
+                    </h3>
+                    <p className="text-white/50 text-[10px] font-medium font-space uppercase tracking-[0.5em] mt-6 mb-8">{trainer.title}</p>
+                    
+                    <div className="max-w-[280px] space-y-4 font-space">
+                        {trainer.skills.map((skill, idx) => (
+                            <div key={idx} className="space-y-1.5">
+                                <div className="flex justify-between text-[9px] text-white/40 uppercase tracking-widest font-bold">
+                                    <span>{skill.name}</span>
+                                    <span>{skill.value}%</span>
+                                </div>
+                                <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
+                                    <motion.div 
+                                        initial={{ width: 0 }}
+                                        whileInView={{ width: `${skill.value}%` }}
+                                        transition={{ duration: 1.5, ease: "easeOut" }}
+                                        className="h-full bg-[#d4ff00]"
+                                    />
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                    <div className="h-0.5 bg-white/10 w-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${trainer.stats.endurance}%` }}
-                        className="h-full bg-[#d4ff00]"
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
 
-              <div className="mt-8 flex justify-between items-start">
-                <div>
-                  <h3 className="text-6xl md:text-8xl font-bebas font-black leading-none mb-2">
-                    {trainer.name} <br />
-                    <span className="text-[#d4ff00]">{trainer.surname}</span>
-                  </h3>
-                  <p className="text-white/40 font-syne uppercase tracking-widest text-xs">{trainer.role}</p>
+              <div className="absolute top-8 right-8 flex gap-3">
+                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-black/40 backdrop-blur-md group-hover:border-[#d4ff00]/30 transition-colors">
+                    <Mail size={18} className="text-white group-hover:text-[#d4ff00]" />
                 </div>
-                
-                <div className="flex gap-4">
-                  <motion.div whileHover={{ scale: 1.2 }} className="p-3 border border-white/10 rounded-full hover:bg-[#d4ff00] hover:text-black transition-colors">
-                    <Link size={20} />
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.2 }} className="p-3 border border-white/10 rounded-full hover:bg-white hover:text-black transition-colors">
-                    <Zap size={20} />
-                  </motion.div>
+                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-black/40 backdrop-blur-md group-hover:border-[#d4ff00]/30 transition-colors">
+                    <Zap size={18} className="text-white group-hover:text-[#d4ff00]" />
                 </div>
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-2">
-                {trainer.specialization.split(', ').map((spec, i) => (
-                  <span key={i} className="px-3 py-1 border border-white/10 text-[10px] font-syne uppercase tracking-widest text-white/60">
-                    {spec}
-                  </span>
-                ))}
               </div>
             </motion.div>
           ))}

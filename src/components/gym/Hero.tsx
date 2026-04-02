@@ -74,16 +74,16 @@ const Hero = () => {
            </h2>
            <div className="grid md:grid-cols-2 gap-12 items-end">
              <p className="text-xl md:text-3xl text-white/60 font-medium leading-tight max-w-xl font-space uppercase">
-                1000m² nabitých energií, 
+                220m² nabitých energií, 
                 profesionálním vybavením a komunitou, která tě nenechá stát na místě.
              </p>
              <div className="flex gap-12">
                <div>
-                  <div className="text-[#d4ff00] text-5xl font-bebas">100+</div>
+                  <div className="text-[#d4ff00] text-5xl font-bebas">30+</div>
                   <div className="text-white/40 text-xs uppercase tracking-widest mt-2">Strojů</div>
                </div>
                <div>
-                  <div className="text-[#d4ff00] text-5xl font-bebas">1k+</div>
+                  <div className="text-[#d4ff00] text-5xl font-bebas">220m²</div>
                   <div className="text-white/40 text-xs uppercase tracking-widest mt-2">M² Plochy</div>
                </div>
                <div>

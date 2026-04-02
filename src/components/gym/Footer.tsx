@@ -3,8 +3,7 @@ import { motion } from 'framer-motion';
 
 const Footer = () => {
   return (
-    <footer id="contact" className="bg-[#050505] text-white pt-40 pb-20 px-6 md:px-32 relative overflow-hidden">
-      {/* Massive decorative background text */}
+    <footer id="contact" className="bg-[#050505] text-white pt-40 pb-20 px-6 md:px-32 relative overflow-hidden italic font-space">
       <div className="absolute -bottom-10 -right-20 text-[40vw] font-bebas font-black text-white/[0.01] select-none pointer-events-none uppercase tracking-tighter leading-none">
         F77
       </div>
@@ -15,25 +14,25 @@ const Footer = () => {
              <motion.span 
                initial={{ opacity: 0, x: -20 }}
                whileInView={{ opacity: 1, x: 0 }}
-               className="text-[#d4ff00] text-sm font-bold tracking-[1em] uppercase mb-10 block font-space"
+               className="text-[#d4ff00] text-sm font-bold tracking-[1em] uppercase mb-10 block"
              >
                Ready for the shift?
              </motion.span>
-            <h2 className="text-[12vw] font-black leading-[0.8] tracking-tighter uppercase font-bebas">
+            <h2 className="text-[8vw] font-black leading-[0.9] tracking-tighter uppercase font-bebas">
               KONTAKTUJ<br />
               <span className="text-transparent" style={{ WebkitTextStroke: '2px #d4ff00' }}>NÁS TEĎ</span>
             </h2>
           </div>
           <div className="lg:text-right space-y-12">
-            <div className="group cursor-none">
-              <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] mb-4 font-space">The Location</p>
+            <div className="group cursor-default">
+              <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] mb-4">The Location</p>
               <h4 className="text-6xl font-black uppercase font-bebas tracking-widest group-hover:text-[#d4ff00] transition-colors leading-none">Mladá Boleslav</h4>
-              <p className="text-2xl text-white/40 uppercase font-space font-medium tracking-tighter mt-2">Havlíčkova 77, 293 01</p>
+              <p className="text-2xl text-white/40 uppercase font-medium tracking-tighter mt-2">Jiráskova 1320, 293 01</p>
             </div>
             <div className="space-y-4">
-              <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] mb-4 font-space">Direct Line</p>
-              <p className="text-4xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-colors cursor-none">+420 123 456 789</p>
-              <p className="text-4xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-colors cursor-none">INFO@FITNESS77.CZ</p>
+              <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] mb-4">Direct Line</p>
+              <p className="text-4xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-colors cursor-pointer">+420 777 105 548</p>
+              <p className="text-4xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-colors cursor-pointer uppercase">fitness77@post.cz</p>
             </div>
           </div>
         </div>
@@ -44,12 +43,12 @@ const Footer = () => {
               <h4 className="text-xs font-bold uppercase tracking-[0.6em] mb-10 text-[#d4ff00]">Otevírací Doba</h4>
               <div className="space-y-6 text-2xl uppercase font-black font-bebas tracking-widest">
                 <div className="flex justify-between gap-10 border-b border-white/5 pb-4 group">
-                  <span className="text-white/40 group-hover:text-white transition-colors">PO — PÁ</span> 
-                  <span className="text-white">06:00 — 22:00</span>
+                  <span className="text-white/40 group-hover:text-white transition-colors font-bebas">PO — PÁ</span> 
+                  <span className="text-white font-bebas">06:00 — 22:00</span>
                 </div>
                 <div className="flex justify-between gap-10 border-b border-white/5 pb-4 group">
-                  <span className="text-white/40 group-hover:text-white transition-colors">SO — NE</span> 
-                  <span className="text-white">08:00 — 20:00</span>
+                  <span className="text-white/40 group-hover:text-white transition-colors font-bebas">SO — NE</span> 
+                  <span className="text-white font-bebas">07:00 — 20:00</span>
                 </div>
               </div>
             </div>
@@ -70,7 +69,7 @@ const Footer = () => {
               className="w-full h-[500px] bg-zinc-900/50 rounded-[3rem] overflow-hidden border border-white/5 group relative shadow-2xl"
             >
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2537.126296180637!2d14.908585676831032!3d50.4132223896561!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4709549f9976378f%3A0xe781977799d14ec8!2sHavl%C3%AD%C4%8Dkova%2077%2C%20293%2001%20Mlad%C3%A1%20Boleslav!5e0!3m2!1scs!2scz!4v1714850000000!5m2!1scs!2scz" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2538.0416972744316!2d14.919864777169123!3d50.41235198038318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470955da34914c67%3A0xc3f8319f390d407d!2zSmlyw6Fza292YSAxMzIwLCAyOTMgMDEgTWxhZMOhIEJvbGVzbGF2!5e0!3m2!1scs!2scz!4v1712053700000!5m2!1scs!2scz" 
                 width="100%" 
                 height="100%" 
                 style={{ border: 0, filter: 'grayscale(1) contrast(1.2) invert(1) opacity(0.8)' }} 
@@ -86,21 +85,12 @@ const Footer = () => {
 
         <div className="mt-40 pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
            <div className="flex flex-col items-center md:items-start">
-              <p className="text-[10px] font-bold uppercase tracking-[0.8em] text-white/20 font-space">© 2024 FITNESS 77 MLADÁ BOLESLAV</p>
-              <div className="flex gap-6 mt-6 opacity-20 text-[8px] font-black uppercase tracking-widest font-space">
-                 <a href="#" className="hover:text-white transition-colors">Legal</a>
-                 <a href="#" className="hover:text-white transition-colors">Privacy</a>
-                 <a href="#" className="hover:text-white transition-colors">Cookies</a>
-              </div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.8em] text-white/20">© 2026 FIT77 MLADÁ BOLESLAV</p>
            </div>
            
            <div className="flex gap-10 items-center">
              <div className="flex flex-col items-end">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#d4ff00] font-space italic underline decoration-2 underline-offset-4">Top 3 World Best Design</span>
-                <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest mt-2">Nominated for Site of the Year '24</span>
-             </div>
-             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center p-4">
-                <img src="https://www.vectorlogo.zone/logos/framer/framer-icon.svg" alt="Framer" className="grayscale contrast-200" />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#d4ff00] italic underline decoration-2 underline-offset-4">Top 1 MB Gym</span>
              </div>
            </div>
         </div>
