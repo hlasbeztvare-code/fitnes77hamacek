@@ -26,8 +26,29 @@ export default function ProductCard({ product }: Props) {
       ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
       : 0;
 
+  const isVideo = product.image.toLowerCase().endsWith('.mp4');
+
   return (
-    <article className="group relative flex flex-col overflow-hidden bg-white p-2.5 sm:p-4 transition-all duration-500 hover:z-10 h-full border-none">
+    <article className="group relative flex flex-col overflow-hidden bg-white p-2.5 sm:p-4 transition-all duration-500 hover:z-10 h-full border-none transform-gpu">
+      {/* SEO JSON-LD Microdata (Neviditelné pro uživatele, klíčové pro Google Nákupy) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: product.name,
+            description: product.description,
+            image: product.image,
+            offers: {
+              "@type": "Offer",
+              price: product.price,
+              priceCurrency: "CZK",
+              availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            },
+          }),
+        }}
+      />
       {/* Luxusní hloubka a stín při hoveru */}
       <div className="absolute inset-0 z-0 bg-white opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.15)] group-hover:ring-1 group-hover:ring-zinc-100" />
       
@@ -42,13 +63,24 @@ export default function ProductCard({ product }: Props) {
             </div>
           )}
 
-          <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-2">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)]"
-            />
+          <div className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-2 transform-gpu will-change-transform">
+            {isVideo ? (
+              <video
+                src={product.image}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)]"
+              />
+            ) : (
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                className="object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)]"
+              />
+            )}
           </div>
         </div>
       </Link>

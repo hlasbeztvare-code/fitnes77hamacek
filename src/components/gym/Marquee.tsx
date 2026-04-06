@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 interface MarqueeProps {
   text: string;
@@ -39,7 +40,13 @@ const Marquee: React.FC<MarqueeProps> = ({
         }
       `}} />
 
-      <div className={reverse ? 'marquee-container-reverse' : 'marquee-container'}>
+      <motion.div 
+        initial={{ x: reverse ? '50vw' : '-50vw', opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className={reverse ? 'marquee-container-reverse' : 'marquee-container'}>
         {/* První sada (smrk) */}
         <div className="flex">
           {[...Array(10)].map((_, i) => (
@@ -77,7 +84,8 @@ const Marquee: React.FC<MarqueeProps> = ({
             </span>
           ))}
         </div>
-      </div>
+        </div>
+      </motion.div>
     </div>
   );
 };

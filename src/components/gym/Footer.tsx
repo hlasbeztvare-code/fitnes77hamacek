@@ -18,7 +18,7 @@ const Footer = () => {
              >
                Ready for the shift?
              </motion.span>
-            <h2 className="text-[8vw] font-black leading-[0.9] tracking-tighter uppercase font-bebas">
+           <h2 className="text-[12vw] md:text-[8vw] font-black leading-[0.9] tracking-tighter uppercase font-bebas drop-shadow-[0_0_40px_rgba(212,255,0,0.15)]">
               KONTAKTUJ<br />
               <span className="text-transparent" style={{ WebkitTextStroke: '2px #d4ff00' }}>NÁS TEĎ</span>
             </h2>
@@ -31,8 +31,8 @@ const Footer = () => {
             </div>
             <div className="space-y-4">
               <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] mb-4">Direct Line</p>
-              <p className="text-4xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-colors cursor-pointer">+420 777 105 548</p>
-              <p className="text-4xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-colors cursor-pointer uppercase">fitness77@post.cz</p>
+             <p className="text-4xl md:text-5xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-all duration-300 cursor-pointer hover:scale-105 origin-left lg:origin-right transform-gpu">+420 777 105 548</p>
+             <p className="text-4xl md:text-5xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-all duration-300 cursor-pointer uppercase hover:scale-105 origin-left lg:origin-right transform-gpu">fitness77@post.cz</p>
             </div>
           </div>
         </div>
@@ -42,21 +42,21 @@ const Footer = () => {
             <div>
               <h4 className="text-xs font-bold uppercase tracking-[0.6em] mb-10 text-[#d4ff00]">Otevírací Doba</h4>
               <div className="space-y-6 text-2xl uppercase font-black font-bebas tracking-widest">
-                <div className="flex justify-between gap-10 border-b border-white/5 pb-4 group">
-                  <span className="text-white/40 group-hover:text-white transition-colors font-bebas">PO — PÁ</span> 
-                  <span className="text-white font-bebas">06:00 — 22:00</span>
-                </div>
-                <div className="flex justify-between gap-10 border-b border-white/5 pb-4 group">
-                  <span className="text-white/40 group-hover:text-white transition-colors font-bebas">SO — NE</span> 
-                  <span className="text-white font-bebas">07:00 — 20:00</span>
-                </div>
+               <div className="flex justify-between gap-10 border-b border-white/5 pb-4 group hover:border-[#d4ff00]/40 transition-colors duration-500">
+                 <span className="text-white/40 group-hover:text-[#d4ff00] transition-all duration-500 font-bebas group-hover:translate-x-2 transform-gpu">PO — PÁ</span> 
+                 <span className="text-white font-bebas group-hover:-translate-x-2 transition-transform duration-500 transform-gpu">06:00 — 22:00</span>
+               </div>
+               <div className="flex justify-between gap-10 border-b border-white/5 pb-4 group hover:border-[#d4ff00]/40 transition-colors duration-500">
+                 <span className="text-white/40 group-hover:text-[#d4ff00] transition-all duration-500 font-bebas group-hover:translate-x-2 transform-gpu">SO — NE</span> 
+                 <span className="text-white font-bebas group-hover:-translate-x-2 transition-transform duration-500 transform-gpu">07:00 — 20:00</span>
+               </div>
               </div>
             </div>
             <div className="flex gap-8">
-               <a href="#" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black transition-all duration-500 hover:-rotate-6">
+              <a href="#" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black hover:border-[#d4ff00] transition-all duration-500 hover:-rotate-6 hover:scale-110 active:scale-95 transform-gpu shadow-lg hover:shadow-[0_0_20px_rgba(212,255,0,0.4)]">
                  <Globe size={28} />
                </a>
-               <a href="#" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black transition-all duration-500 hover:rotate-6">
+              <a href="#" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black hover:border-[#d4ff00] transition-all duration-500 hover:rotate-6 hover:scale-110 active:scale-95 transform-gpu shadow-lg hover:shadow-[0_0_20px_rgba(212,255,0,0.4)]">
                  <Share2 size={28} />
                </a>
             </div>
@@ -66,7 +66,7 @@ const Footer = () => {
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.5 }}
-              className="w-full h-[500px] bg-zinc-900/50 rounded-[3rem] overflow-hidden border border-white/5 group relative shadow-2xl"
+             className="w-full h-[500px] bg-zinc-900/50 rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/5 hover:border-[#d4ff00]/40 transition-colors duration-700 group relative shadow-2xl transform-gpu"
             >
               <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2538.0416972744316!2d14.919864777169123!3d50.41235198038318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470955da34914c67%3A0xc3f8319f390d407d!2zSmlyw6Fza292YSAxMzIwLCAyOTMgMDEgTWxhZMOhIEJvbGVzbGF2!5e0!3m2!1scs!2scz!4v1712053700000!5m2!1scs!2scz" 

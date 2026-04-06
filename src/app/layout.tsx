@@ -3,6 +3,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ScrollToTop from "@/components/utils/ScrollToTop";
+import SmoothScrollProvider from "@/providers/SmoothScrollProvider";
+import PageTransition from "@/components/layout/PageTransition";
 
 export const viewport: Viewport = {
   themeColor: "#000000",
@@ -46,12 +48,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="cs">
       <body className="antialiased">
-        <ScrollToTop />
-        <Navbar />
-        <main>{children}</main>
-        <div id="main-global-footer">
-          <Footer />
-        </div>
+        <SmoothScrollProvider>
+          <ScrollToTop />
+          <Navbar />
+          <PageTransition>
+            <main>{children}</main>
+          </PageTransition>
+          <div id="main-global-footer">
+            <Footer />
+          </div>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

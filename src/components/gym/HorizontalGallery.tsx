@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const mbImages = Array.from({ length: 39 }, (_, i) => ({
-  url: `/images/gym/gallery/gym_photo_${i + 1}.jpg`,
+  url: `/images/gym/gallery/gym_photo_${i + 1}.webp`,
   title: `Fitness 77 MB`
 }));
 
@@ -18,7 +18,7 @@ const HorizontalGallery = () => {
   return (
     <section ref={targetRef} className="relative h-[900vh] bg-[#050505] selection:bg-[#d4ff00] selection:text-black">
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-        <motion.div style={{ x }} className="flex gap-12 px-12 items-center">
+        <motion.div style={{ x }} className="flex gap-12 px-12 items-center transform-gpu will-change-transform">
           
           {/* Přidán pr-20, aby se R v PROSTORY/PRO už neřezalo (smrk) */}
           <div className="flex-shrink-0 w-[60vw] h-[80vh] flex flex-col justify-center px-16 pr-20">
@@ -42,16 +42,24 @@ const HorizontalGallery = () => {
           {images.map((img, i) => (
             <div
               key={i}
-              className="gallery-item group relative h-[70vh] w-[80vw] md:w-[60vw] flex-shrink-0 overflow-hidden rounded-3xl bg-zinc-900 border border-white/5"
+              className={`gallery-item group relative h-[60vh] w-[75vw] md:w-[45vw] flex-shrink-0 overflow-hidden rounded-2xl bg-[#050505] border border-white/5 transition-transform duration-700 transform-gpu ${
+                i % 2 === 0 ? '-translate-y-6' : 'translate-y-6'
+              }`}
             >
               <img
                 src={img.url}
                 alt={img.title}
-                className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0"
+                className="w-full h-full object-cover grayscale-[0.8] contrast-[1.2] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:rotate-1 transform-gpu"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
-              <div className="absolute inset-0 flex items-end p-12">
-                <h3 className="text-4xl md:text-5xl font-bold text-white uppercase tracking-tighter font-bebas leading-[0.8]">
+              
+              {/* Obrovské průhledné číslo fotky na pozadí */}
+              <div className="absolute -bottom-4 -right-4 text-[15vw] font-black text-transparent font-bebas transition-all duration-700 group-hover:text-white/5 pointer-events-none select-none" style={{ WebkitTextStroke: '2px rgba(255,255,255,0.1)' }}>
+                {String(i + 1).padStart(2, '0')}
+              </div>
+
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-80 pointer-events-none" />
+              <div className="absolute inset-0 flex items-end p-8 md:p-12 pointer-events-none">
+                <h3 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter font-bebas leading-[0.8] group-hover:text-[#d4ff00] transition-colors duration-500">
                     {img.title}
                 </h3>
               </div>

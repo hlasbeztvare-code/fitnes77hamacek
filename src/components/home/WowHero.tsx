@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const fadeUp = {
@@ -9,57 +8,32 @@ const fadeUp = {
   show: { opacity: 1, y: 0 },
 };
 
-const fadeRight = {
-  hidden: { opacity: 0, x: 30 },
-  show: { opacity: 1, x: 0 },
-};
-
 export default function WowHero() {
-  const heroProdRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const el = heroProdRef.current;
-    if (!el) return;
-
-    const handleMove = (e: MouseEvent) => {
-      const r = el.getBoundingClientRect();
-      const rx = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -5;
-      const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 5;
-      el.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
-      el.style.transition = 'transform 0.08s ease-out';
-    };
-
-    const handleLeave = () => {
-      el.style.transform = '';
-      el.style.transition = 'transform 0.4s ease-out';
-    };
-
-    el.addEventListener('mousemove', handleMove);
-    el.addEventListener('mouseleave', handleLeave);
-
-    return () => {
-      el.removeEventListener('mousemove', handleMove);
-      el.removeEventListener('mouseleave', handleLeave);
-    };
-  }, []);
-
   return (
-    <section className="hero" aria-label="Hlavní banner">
-      <div className="hero-grid"></div>
-      <div className="hero-particles"></div>
-      <div className="hero-dg-ghost"></div>
-      <div className="hero-dg-line"></div>
-      <div className="hero-dg"></div>
+    <section className="relative min-h-[90vh] md:h-[95vh] w-full flex flex-col justify-between overflow-hidden bg-[#050505] pt-24 pb-12" aria-label="Hlavní banner">
+      {/* Celoplošné video v pozadí */}
+      <div className="absolute inset-0 z-0">
+        <video 
+          src="/hero-eshop.mp4" 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="w-full h-full object-cover opacity-80"
+        />
+        {/* Ztmavení nahoře a dole, aby byl text a tlačítka vždy čitelné */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black/90 pointer-events-none" />
+      </div>
 
-      <div className="hero-layout">
-        {/* LEFT */}
-        <div className="hero-left">
+      {/* TOP: Text a Nadpisy */}
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 mt-4 md:mt-8">
+        <div className="max-w-2xl">
           <motion.div
             variants={fadeUp}
             initial="hidden"
             animate="show"
             transition={{ duration: 0.5 }}
-            className="hero-bdg"
+            className="hero-bdg mb-6 inline-block"
           >
             <span>🏆 #1 SUPLEMENTY V ČESKÉ REPUBLICE</span>
           </motion.div>
@@ -70,27 +44,27 @@ export default function WowHero() {
               initial="hidden"
               animate="show"
               transition={{ duration: 0.6, delay: 0.12 }}
-              className="hero-title-main"
+              className="hero-title-main block"
             >
-              PŘEKONÁVEJ
+            FITNESS 77
             </motion.span>
             <motion.span
               variants={fadeUp}
               initial="hidden"
               animate="show"
               transition={{ duration: 0.6, delay: 0.24 }}
-              className="hero-title-sub"
+              className="hero-title-sub block text-[#E10600]"
             >
-              SVÉ
+            E-SHOP
             </motion.span>
             <motion.span
               variants={fadeUp}
               initial="hidden"
               animate="show"
               transition={{ duration: 0.6, delay: 0.36 }}
-              className="hero-title-outline"
+              className="hero-title-outline block"
             >
-              LIMITY
+            PERFORMANCE
             </motion.span>
           </div>
 
@@ -99,143 +73,66 @@ export default function WowHero() {
             initial="hidden"
             animate="show"
             transition={{ duration: 0.6, delay: 0.48 }}
-            className="hero-description"
+            className="mt-6 text-lg md:text-xl text-white/90 font-medium max-w-xl font-space drop-shadow-md"
           >
-            PRÉMIOVÉ SUPLEMENTY A VYBAVENÍ PRO SPARTÁNSKÉ VÁLEČNÍKY. LABORATORNĚ TESTOVÁNO. BRUTÁLNÍ VÝSLEDKY.
+          Vybavení a suplementy pro skutečný progress. Vše, co potřebuješ pro překonání vlastních limitů.
           </motion.p>
-
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            transition={{ duration: 0.6, delay: 0.6 }}
-            /* OPRAVENO: 1 sloupec na mobilu (lišty), 4 vedle sebe na desktopu */
-            className="hero-actions flex flex-col gap-2 lg:grid lg:grid-cols-4 lg:gap-3 max-w-4xl mt-8"
-          >
-            {/* SUPLEMENTY */}
-            <Link 
-              href="/supplements" 
-              className="flex h-[50px] flex-row items-center justify-center gap-2.5 bg-white transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f0] hover:shadow-lg active:scale-[0.98] rounded-lg px-5 border-none"
-            >
-              <span className="text-xl shrink-0">⚡</span>
-              <span className="text-base font-extrabold uppercase tracking-wider text-black not-italic leading-none whitespace-nowrap">SUPLEMENTY</span>
-            </Link>
-            
-            {/* VYBAVENÍ */}
-            <Link 
-              href="/equipment" 
-              className="flex h-[50px] flex-row items-center justify-center gap-2.5 bg-white transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f0] hover:shadow-lg active:scale-[0.98] rounded-lg px-5 border-none"
-            >
-              <span className="text-xl shrink-0">🏋️</span>
-              <span className="text-base font-extrabold uppercase tracking-wider text-black not-italic leading-none whitespace-nowrap">VYBAVENÍ</span>
-            </Link>
-            
-            {/* BAZAR */}
-            <Link 
-              href="/bazaar" 
-              className="flex h-[50px] flex-row items-center justify-center gap-2.5 bg-white transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f0] hover:shadow-lg active:scale-[0.98] rounded-lg px-5 border-none"
-            >
-              <span className="text-xl shrink-0">♻️</span>
-              <span className="text-base font-extrabold uppercase tracking-wider text-black not-italic leading-none whitespace-nowrap">BAZAR</span>
-            </Link>
-
-            {/* GYM */}
-            <Link 
-              href="/gym" 
-              className="flex h-[50px] flex-row items-center justify-center gap-2.5 bg-white transition-all duration-300 hover:scale-[1.02] hover:bg-[#f0f0f0] hover:shadow-lg active:scale-[0.98] rounded-lg px-5 border-none"
-            >
-              <span className="text-xl shrink-0">🏆</span>
-              <span className="text-base font-extrabold uppercase tracking-wider text-black not-italic leading-none whitespace-nowrap">GYM</span>
-            </Link>
-          </motion.div>
-
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            transition={{ duration: 0.6, delay: 0.75 }}
-            className="hero-stats-row"
-          >
-            <div className="hero-stat">
-              <div className="hero-stat-number">5000+</div>
-              <div className="hero-stat-label">spokojených zákazníků</div>
-            </div>
-            <div className="hero-stat">
-              <div className="hero-stat-number">150+</div>
-              <div className="hero-stat-label">produktů v nabídce</div>
-            </div>
-            <div className="hero-stat">
-              <div className="hero-stat-number">4.9/5</div>
-              <div className="hero-stat-label">pozitivních recenzí</div>
-            </div>
-          </motion.div>
         </div>
+      </div>
 
-        {/* RIGHT */}
-        <div className="hero-right">
-          <div className="hero-product-zone">
-            <motion.div
-              className="hero-product-glow"
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.55 }}
-            />
-            <div className="hero-product-floor"></div>
-            <div className="hero-product-shadow"></div>
+      {/* MIDDLE: Prostor pro produkt ve videu (prázdné místo, aby tlačítka a text nepřekážely) */}
+      <div className="flex-1 relative z-0 pointer-events-none"></div>
 
-            <motion.div
-              className="hero-badge-rail hero-badge-1"
-              variants={fadeRight}
-              initial="hidden"
-              animate="show"
-              transition={{ duration: 0.45, delay: 1.0 }}
-            >
-              <span>🔬</span> LAB TESTED <strong>100%</strong>
-            </motion.div>
+      {/* BOTTOM: 4 Tlačítka */}
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 mt-12">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 w-full"
+        >
+          <Link href="/supplements" className="flex h-14 md:h-16 flex-row items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-[#E10600] hover:border-[#E10600] hover:scale-[1.02] active:scale-95 rounded-xl group">
+            <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">⚡</span>
+            <span className="text-sm md:text-lg font-black uppercase tracking-widest text-white whitespace-nowrap">Suplementy</span>
+          </Link>
+          
+          <Link href="/equipment" className="flex h-14 md:h-16 flex-row items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-[#E10600] hover:border-[#E10600] hover:scale-[1.02] active:scale-95 rounded-xl group">
+            <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">🏋️</span>
+            <span className="text-sm md:text-lg font-black uppercase tracking-widest text-white whitespace-nowrap">Vybavení</span>
+          </Link>
+          
+          <Link href="/bazaar" className="flex h-14 md:h-16 flex-row items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-[#E10600] hover:border-[#E10600] hover:scale-[1.02] active:scale-95 rounded-xl group">
+            <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">♻️</span>
+            <span className="text-sm md:text-lg font-black uppercase tracking-widest text-white whitespace-nowrap">Bazar</span>
+          </Link>
 
-            <motion.div
-              className="hero-badge-rail hero-badge-2"
-              variants={fadeRight}
-              initial="hidden"
-              animate="show"
-              transition={{ duration: 0.45, delay: 1.1 }}
-            >
-              <span>🏆</span> BESTSELLER <strong>#1</strong>
-            </motion.div>
+          <Link href="/gym" className="flex h-14 md:h-16 flex-row items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-[#d4ff00] hover:border-[#d4ff00] hover:scale-[1.02] active:scale-95 rounded-xl group">
+            <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">🏆</span>
+            <span className="text-sm md:text-lg font-black uppercase tracking-widest text-white group-hover:text-black transition-colors whitespace-nowrap">Gym</span>
+          </Link>
+        </motion.div>
 
-            <motion.div
-              className="hero-badge-rail hero-badge-3"
-              variants={fadeRight}
-              initial="hidden"
-              animate="show"
-              transition={{ duration: 0.45, delay: 1.2 }}
-            >
-              <span>⭐</span> RATING <strong>4.9/5</strong>
-            </motion.div>
-
-            <motion.div
-              className="hero-product"
-              ref={heroProdRef}
-              initial={{ opacity: 0, y: 28, x: 40, scale: 0.9, rotate: -4 }}
-              animate={{ opacity: 1, y: 0, x: 0, scale: 1, rotate: 0 }}
-              transition={{ duration: 0.85, delay: 0.68 }}
-            >
-              <div className="hero-product-shine"></div>
-              <div className="hero-product-drops"></div>
-              <img src="/images/products/wheyboruvka.png" alt="Whey Protein Borůvka" />
-            </motion.div>
-
-            <motion.button
-              className="hero-product-cta"
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              transition={{ duration: 0.45, delay: 1.28 }}
-            >
-              <span>⚡ PŘIDAT DO KOŠÍKU</span>
-            </motion.button>
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          transition={{ duration: 0.6, delay: 0.75 }}
+          className="hero-stats-row pb-6"
+        >
+          <div className="hero-stat">
+            <div className="hero-stat-number">5000+</div>
+            <div className="hero-stat-label">spokojených zákazníků</div>
           </div>
-        </div>
+          <div className="hero-stat">
+            <div className="hero-stat-number">150+</div>
+            <div className="hero-stat-label">produktů v nabídce</div>
+          </div>
+          <div className="hero-stat">
+            <div className="hero-stat-number">4.9/5</div>
+            <div className="hero-stat-label">pozitivních recenzí</div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

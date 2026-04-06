@@ -2,13 +2,31 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useCartStore } from '@/hooks/useCartStore';
+
+const checkoutSchema = z.object({
+  firstName: z.string().min(2, 'Jméno musí mít alespoň 2 znaky'),
+  lastName: z.string().min(2, 'Příjmení musí mít alespoň 2 znaky'),
+  email: z.string().email('Zadejte platný e-mail'),
+  address: z.string().min(5, 'Zadejte platnou adresu (ulice a č.p.)'),
+  city: z.string().min(2, 'Zadejte platné město'),
+  zip: z.string().regex(/^\d{3}\s?\d{2}$/, 'Zadejte platné PSČ (např. 293 01)'),
+});
+
+type CheckoutForm = z.infer<typeof checkoutSchema>;
 
 export default function CheckoutPage() {
   const router = useRouter();
   const items = useCartStore((state) => state.items);
   const totalPrice = useCartStore((state) => state.totalPrice());
   const clearCart = useCartStore((state) => state.clearCart);
+
+  const { register, handleSubmit, formState: { errors } } = useForm<CheckoutForm>({
+    resolver: zodResolver(checkoutSchema),
+  });
 
   const [loading, setLoading] = useState(false);
 
@@ -25,19 +43,16 @@ export default function CheckoutPage() {
     );
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (data: CheckoutForm) => {
     setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-
     const payload = {
-      firstName: String(formData.get('firstName') || ''),
-      lastName: String(formData.get('lastName') || ''),
-      email: String(formData.get('email') || ''),
-      address: String(formData.get('address') || ''),
-      city: String(formData.get('city') || ''),
-      zip: String(formData.get('zip') || ''),
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      address: data.address,
+      city: data.city,
+      zip: data.zip,
       total: totalPrice,
       items,
     };
@@ -70,18 +85,36 @@ export default function CheckoutPage() {
     <section className="py-16">
       <div className="mx-auto grid w-[min(1200px,calc(100%-32px))] gap-8 lg:grid-cols-[1fr_360px]">
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="rounded-xl border border-zinc-200 bg-white p-8"
         >
           <h1 className="text-4xl font-bold uppercase">Checkout</h1>
 
           <div className="mt-8 grid gap-4 md:grid-cols-2">
-            <input name="firstName" className="rounded-md border border-zinc-300 px-4 py-3" placeholder="Jméno" required />
-            <input name="lastName" className="rounded-md border border-zinc-300 px-4 py-3" placeholder="Příjmení" required />
-            <input name="email" className="rounded-md border border-zinc-300 px-4 py-3 md:col-span-2" placeholder="Email" type="email" required />
-            <input name="address" className="rounded-md border border-zinc-300 px-4 py-3 md:col-span-2" placeholder="Adresa" required />
-            <input name="city" className="rounded-md border border-zinc-300 px-4 py-3" placeholder="Město" required />
-            <input name="zip" className="rounded-md border border-zinc-300 px-4 py-3" placeholder="PSČ" required />
+            <div>
+              <input {...register('firstName')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-[#E10600]/20 transition-all ${errors.firstName ? 'border-[#E10600] bg-[#E10600]/5' : 'border-zinc-300'}`} placeholder="Jméno" />
+              {errors.firstName && <span className="text-[#E10600] text-xs mt-1 block font-semibold">{errors.firstName.message}</span>}
+            </div>
+            <div>
+              <input {...register('lastName')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-[#E10600]/20 transition-all ${errors.lastName ? 'border-[#E10600] bg-[#E10600]/5' : 'border-zinc-300'}`} placeholder="Příjmení" />
+              {errors.lastName && <span className="text-[#E10600] text-xs mt-1 block font-semibold">{errors.lastName.message}</span>}
+            </div>
+            <div className="md:col-span-2">
+              <input {...register('email')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-[#E10600]/20 transition-all ${errors.email ? 'border-[#E10600] bg-[#E10600]/5' : 'border-zinc-300'}`} placeholder="Email" type="email" />
+              {errors.email && <span className="text-[#E10600] text-xs mt-1 block font-semibold">{errors.email.message}</span>}
+            </div>
+            <div className="md:col-span-2">
+              <input {...register('address')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-[#E10600]/20 transition-all ${errors.address ? 'border-[#E10600] bg-[#E10600]/5' : 'border-zinc-300'}`} placeholder="Adresa" />
+              {errors.address && <span className="text-[#E10600] text-xs mt-1 block font-semibold">{errors.address.message}</span>}
+            </div>
+            <div>
+              <input {...register('city')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-[#E10600]/20 transition-all ${errors.city ? 'border-[#E10600] bg-[#E10600]/5' : 'border-zinc-300'}`} placeholder="Město" />
+              {errors.city && <span className="text-[#E10600] text-xs mt-1 block font-semibold">{errors.city.message}</span>}
+            </div>
+            <div>
+              <input {...register('zip')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-[#E10600]/20 transition-all ${errors.zip ? 'border-[#E10600] bg-[#E10600]/5' : 'border-zinc-300'}`} placeholder="PSČ" />
+              {errors.zip && <span className="text-[#E10600] text-xs mt-1 block font-semibold">{errors.zip.message}</span>}
+            </div>
           </div>
 
           <button

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCartStore } from '@/hooks/useCartStore';
 
@@ -11,6 +12,14 @@ export default function CartPage() {
   const increaseItem = useCartStore((state) => state.increaseItem);
   const decreaseItem = useCartStore((state) => state.decreaseItem);
   const totalPrice = useCartStore((state) => state.totalPrice());
+
+  // Ochrana proti React Hydration Mismatch (Server vs Client localStorage)
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
 
   const progress = Math.min((totalPrice / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const missing = Math.max(FREE_SHIPPING_THRESHOLD - totalPrice, 0);
@@ -24,18 +33,18 @@ export default function CartPage() {
         <h1 className="mt-4 text-5xl font-black uppercase text-zinc-950">Košík</h1>
 
         {items.length === 0 ? (
-          <div className="mt-8 border border-zinc-200 bg-white p-8 shadow-sm [clip-path:polygon(4%_0%,100%_0%,96%_100%,0%_100%)]">
+          <div className="mt-8 border border-zinc-200 bg-white py-12 px-8 sm:px-16 shadow-sm [clip-path:polygon(4%_0%,100%_0%,96%_100%,0%_100%)]">
             <p className="text-zinc-600">Košík je zatím prázdný.</p>
             <Link
               href="/supplements"
-              className="mt-4 inline-block bg-[#E10600] px-6 py-3 font-black uppercase tracking-[0.14em] text-white [clip-path:polygon(8%_0%,100%_0%,92%_100%,0%_100%)]"
+              className="mt-6 inline-block bg-[#E10600] px-8 py-4 font-black uppercase tracking-[0.14em] text-white transition hover:brightness-110 [clip-path:polygon(8%_0%,100%_0%,92%_100%,0%_100%)]"
             >
               Jít nakupovat
             </Link>
           </div>
         ) : (
           <>
-            <div className="mt-8 border border-zinc-200 bg-white p-6 shadow-sm [clip-path:polygon(3%_0%,100%_0%,97%_100%,0%_100%)]">
+            <div className="mt-8 border border-zinc-200 bg-white py-6 px-8 sm:px-12 shadow-sm [clip-path:polygon(3%_0%,100%_0%,97%_100%,0%_100%)]">
               <div className="flex items-center justify-between text-sm font-black uppercase tracking-[0.14em]">
                 <span>Doprava zdarma progress</span>
                 <span>{progress >= 100 ? 'Splněno' : `Chybí ${missing.toLocaleString('cs-CZ')} Kč`}</span>
@@ -54,43 +63,43 @@ export default function CartPage() {
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 border border-zinc-200 bg-white p-4 shadow-sm [clip-path:polygon(4%_0%,100%_0%,96%_100%,0%_100%)]"
+                    className="flex flex-col sm:flex-row items-start sm:items-center gap-6 border border-zinc-200 bg-white py-6 px-6 sm:px-10 shadow-sm [clip-path:polygon(4%_0%,100%_0%,96%_100%,0%_100%)]"
                   >
-                    <div
-                      className="h-24 w-24 bg-cover bg-center bg-zinc-100"
-                      style={{ backgroundImage: `url(${item.image})` }}
-                    />
-
-                    <div className="flex-1">
-                      <h2 className="text-xl font-black uppercase">{item.name}</h2>
-                      <p className="mt-1 text-sm text-zinc-500">
-                        {item.price.toLocaleString('cs-CZ')} Kč / ks
-                      </p>
-
-                      <div className="mt-4 flex items-center gap-2">
-                        <button
-                          onClick={() => decreaseItem(item.id)}
-                          className="border border-zinc-300 px-3 py-1 font-black"
-                        >
-                          -
-                        </button>
-                        <span className="min-w-8 text-center font-black">{item.quantity}</span>
-                        <button
-                          onClick={() => increaseItem(item.id)}
-                          className="border border-zinc-300 px-3 py-1 font-black"
-                        >
-                          +
-                        </button>
+                    <div className="flex items-center gap-4 sm:gap-6 flex-1 w-full">
+                      <div
+                        className="h-20 w-20 sm:h-24 sm:w-24 shrink-0 bg-cover bg-center bg-zinc-100"
+                        style={{ backgroundImage: `url(${item.image})` }}
+                      />
+                      <div className="flex-1">
+                        <h2 className="text-lg sm:text-xl font-black uppercase leading-tight">{item.name}</h2>
+                        <p className="mt-1 text-sm text-zinc-500">
+                          {item.price.toLocaleString('cs-CZ')} Kč / ks
+                        </p>
+                        <div className="mt-4 flex items-center gap-2">
+                          <button
+                            onClick={() => decreaseItem(item.id)}
+                            className="border border-zinc-300 px-3 py-1 font-black"
+                          >
+                            -
+                          </button>
+                          <span className="min-w-8 text-center font-black">{item.quantity}</span>
+                          <button
+                            onClick={() => increaseItem(item.id)}
+                            className="border border-zinc-300 px-3 py-1 font-black"
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="text-right">
+                    <div className="flex sm:flex-col w-full sm:w-auto items-center sm:items-end justify-between pt-4 sm:pt-0 border-t border-zinc-100 sm:border-none">
                       <div className="text-lg font-black text-[#E10600]">
                         {(item.price * item.quantity).toLocaleString('cs-CZ')} Kč
                       </div>
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="mt-3 text-sm font-black uppercase tracking-[0.12em] text-zinc-500 hover:text-[#E10600]"
+                        className="sm:mt-3 text-sm font-black uppercase tracking-[0.12em] text-zinc-500 hover:text-[#E10600]"
                       >
                         Odstranit
                       </button>
@@ -99,7 +108,7 @@ export default function CartPage() {
                 ))}
               </div>
 
-              <aside className="h-fit border border-zinc-200 bg-white p-6 shadow-sm [clip-path:polygon(5%_0%,100%_0%,95%_100%,0%_100%)]">
+              <aside className="h-fit border border-zinc-200 bg-white py-8 px-8 sm:px-12 shadow-sm [clip-path:polygon(5%_0%,100%_0%,95%_100%,0%_100%)]">
                 <h2 className="text-2xl font-black uppercase">Shrnutí</h2>
 
                 <div className="mt-6 flex items-center justify-between text-sm text-zinc-500">
