@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { triggerHaptic } from '@/lib/utils/haptics';
+import { triggerHaptic } from '@/components/home/haptics';
 
 export default function Gateway() {
   const [show, setShow] = useState(true);
