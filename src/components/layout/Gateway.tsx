@@ -11,20 +11,17 @@ export default function Gateway() {
   const router = useRouter();
 
   useEffect(() => {
-    // Zkontrolujeme, jestli už uživatel tímto rozcestníkem prošel (uloženo v aktuálním okně)
-    const hasChosen = sessionStorage.getItem('f77-gateway-chosen');
-    if (hasChosen) {
-      setShow(false);
-    }
     setIsLoaded(true);
-    // Prefetching pro absolutně okamžitý proklik
-    router.prefetch('/gym');
-    router.prefetch('/');
-  }, []);
+    // Odložíme prefetching o 2 vteřiny, aby nekradl pásmo načítajícím se videím
+    const timer = setTimeout(() => {
+      router.prefetch('/gym');
+      router.prefetch('/');
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [router]);
 
   const handleChoice = (target: 'gym' | 'eshop') => {
     triggerHaptic('heavy');
-    sessionStorage.setItem('f77-gateway-chosen', 'true');
     setShow(false); // Okamžitě spustí odjezdovou animaci (fade-out)
     if (target === 'gym') {
       router.push('/gym');
@@ -47,77 +44,65 @@ export default function Gateway() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col md:flex-row overflow-hidden font-space text-white"
+          className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col md:flex-row overflow-hidden font-sans text-white uppercase italic"
         >
-          {/* GYM SEKCE */}
-          <div 
-            onClick={() => handleChoice('gym')}
-            className="relative flex-1 cursor-pointer group border-b md:border-b-0 md:border-r border-white/10 overflow-hidden active:scale-[0.98] transition-transform duration-500"
-          >
-            <div className="absolute inset-0 bg-[url('/images/gym/gallery/gym_photo_2.webp')] bg-cover bg-center opacity-30 grayscale-[0.8] group-hover:grayscale-0 group-hover:scale-105 group-hover:opacity-60 transition-all duration-1000" />
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-1000" />
-            
-            <div className="relative h-full flex flex-col items-center justify-center p-8 text-center z-10">
-              <motion.h2 
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="text-7xl md:text-[10vw] font-black uppercase font-bebas tracking-tighter text-transparent transition-all duration-500 group-hover:text-[#d4ff00]"
-                style={{ WebkitTextStroke: '2px white' }}
-              >
-                GYM
-              </motion.h2>
-              <div className="mt-6 md:mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -translate-y-4 group-hover:translate-y-0 text-sm md:text-lg font-bold uppercase tracking-[0.3em] text-white">
-                Vstoupit do gymu
-              </div>
-            </div>
+          {/* EFEKTY POZADÍ */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            {/* Radiální gradient (vinětace) */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1a1a1a_0%,_#050505_100%)]"></div>
+            {/* Texture efekt (prach/poškrábání) */}
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-screen"></div>
+            {/* Energický blesk na pozadí */}
+            <div className="absolute top-1/2 left-[-10%] w-[120%] h-[2px] bg-white blur-[2px] rotate-[-15deg] opacity-20"></div>
+            <div className="absolute top-1/2 left-[-10%] w-[120%] h-[1px] bg-white rotate-[-15deg] opacity-40"></div>
           </div>
 
-          {/* E-SHOP SEKCE */}
+          {/* CENTRÁLNÍ PRVKY: HEXAGON A KULTURISTA */}
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none">
+            {/* Číslo v pozadí */}
+            <div className="absolute top-[5%] md:top-[-5%] text-[20vw] font-black text-white/5 tracking-tighter z-0">
+              100
+            </div>
+            
+            {/* Hexagon za postavou */}
+            <div 
+              className="absolute h-64 w-64 md:h-[500px] md:w-[500px] border-4 border-white/10 bg-white/5 backdrop-blur-sm z-10"
+              style={{ clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)' }}
+            ></div>
+
+            {/* Svalovec */}
+            <img 
+              src="https://i.postimg.cc/m2fXvGvM/borec.png" 
+              alt="Bodybuilder" 
+              className="relative z-20 h-[50vh] md:h-[80vh] object-contain grayscale contrast-125 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+            />
+          </div>
+
+          {/* LEVÁ STRANA: E-SHOP */}
           <div 
             onClick={() => handleChoice('eshop')}
-            className="relative flex-1 cursor-pointer group overflow-hidden active:scale-[0.98] transition-transform duration-500"
+            className="relative z-30 flex-1 flex flex-col items-center justify-center cursor-pointer group border-b md:border-b-0 md:border-r border-white/10 hover:bg-white/5 transition-all duration-500"
           >
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-30 grayscale-[0.8] group-hover:grayscale-0 group-hover:scale-105 group-hover:opacity-60 transition-all duration-1000" />
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-1000" />
-            
-            <div className="relative h-full flex flex-col items-center justify-center p-8 text-center z-10">
-              <motion.h2 
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="text-7xl md:text-[10vw] font-black uppercase font-bebas tracking-tighter text-transparent transition-all duration-500 group-hover:text-[#E10600]"
-                style={{ WebkitTextStroke: '2px white' }}
-              >
-                E-SHOP
-              </motion.h2>
-              <div className="mt-6 md:mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -translate-y-4 group-hover:translate-y-0 text-sm md:text-lg font-bold uppercase tracking-[0.3em] text-white">
-                Nakoupit výbavu
-              </div>
-            </div>
+            <svg className="w-8 h-8 md:w-12 md:h-12 mb-4 opacity-50 group-hover:opacity-100 transition-opacity duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white group-hover:scale-105 transition-transform duration-500 drop-shadow-lg">
+              E-SHOP
+            </h2>
           </div>
 
-          {/* OVERLAY S TEXTEM UPROSTŘED */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.6, duration: 1 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] md:w-[50vw] max-w-2xl pointer-events-none z-20 text-center bg-black/60 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-12 shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+          {/* PRAVÁ STRANA: GYM MB */}
+          <div 
+            onClick={() => handleChoice('gym')}
+            className="relative z-30 flex-1 flex flex-col items-center justify-center cursor-pointer group hover:bg-[#CCFF00]/5 transition-all duration-500"
           >
-            <div className="flex justify-center gap-4 mb-6 md:mb-8">
-               <div className="w-8 md:w-12 h-1 bg-[#d4ff00]" />
-               <div className="w-8 md:w-12 h-1 bg-[#E10600]" />
-            </div>
-            
-            <h1 className="text-3xl md:text-5xl font-black uppercase font-bebas tracking-widest text-white mb-6 leading-tight">
-              Fitness 77 – místo,<br className="hidden md:block" /> kde vznikají výsledky
-            </h1>
-            
-            <div className="space-y-2 text-sm md:text-lg text-white/80 font-medium font-space">
-              <p>Moderní vybavení, tvrdý trénink a prostředí, které tě posune dál.</p>
-              <p>Ať začínáš nebo chceš maximum – tady to dokážeš.</p>
-            </div>
-          </motion.div>
+            <svg className="w-8 h-8 md:w-12 md:h-12 mb-4 text-[#CCFF00] opacity-50 group-hover:opacity-100 transition-opacity duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-[#CCFF00] group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_0_20px_rgba(204,255,0,0.4)]">
+              GYM MB
+            </h2>
+          </div>
 
         </motion.div>
       )}

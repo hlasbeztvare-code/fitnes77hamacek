@@ -1,5 +1,3 @@
-// @ts-nocheck
-// @ts-nocheck
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -34,7 +32,7 @@ async function main() {
         price: 1499,
         compareAtPrice: 1999,
         image: '/images/products/bcaa.webp',
-        stock: 90,
+        stock: 100,
         category: 'supplement',
         featured: true,
       },
@@ -46,9 +44,9 @@ async function main() {
         price: 1499,
         compareAtPrice: 1999,
         image: '/images/products/deadpump.webp',
-        stock: 75,
         category: 'supplement',
         featured: true,
+        stock: 80,
       },
       {
         name: 'Black Dead - Pre workout',

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { products } from '@/lib/mock/products';
+import { getProductBySlug } from '@/lib/queries/products';
 import AddToCartButton from '@/components/shop/AddToCartButton';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 
 export default async function SupplementDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) return notFound();
 
@@ -28,17 +28,28 @@ export default async function SupplementDetailPage({ params }: Props) {
         </div>
 
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-          {/* Produktový obrázek s levitací a stínem */}
-          <div className="relative aspect-square flex items-center justify-center bg-zinc-50/50 p-12 group">
-            <div className="relative w-full h-full transition-transform duration-700 group-hover:-translate-y-4">
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
-                priority
+          {/* Produktový obrázek / Video */}
+          <div className="relative aspect-square flex items-center justify-center bg-zinc-50/50 p-12 group overflow-hidden">
+            {product.videoUrl ? (
+              <video
+                src={product.videoUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
               />
-            </div>
+            ) : (
+              <div className="relative w-full h-full transition-transform duration-700 group-hover:-translate-y-4">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
+                  priority
+                />
+              </div>
+            )}
           </div>
 
           {/* Detaily produktu */}
@@ -54,14 +65,14 @@ export default async function SupplementDetailPage({ params }: Props) {
               <span className="text-4xl font-black text-zinc-950 not-italic">
                 {product.price.toLocaleString('cs-CZ')} Kč
               </span>
-              {product.compareAtPrice > 0 && (
+              {product.compareAtPrice && product.compareAtPrice > 0 && (
                 <span className="text-xl text-zinc-400 line-through not-italic">
                   {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
                 </span>
               )}
             </div>
 
-            <p className="mt-8 text-lg leading-relaxed text-zinc-600 max-w-xl">
+            <p className="mt-8 text-lg leading-relaxed text-zinc-600 max-w-xl whitespace-pre-wrap">
               {product.description}
             </p>
 

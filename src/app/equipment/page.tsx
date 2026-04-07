@@ -1,8 +1,10 @@
 import Link from 'next/link';
-import { equipmentItems } from '@/lib/mock/equipment';
+import { getAllEquipment } from '@/lib/queries/equipment';
 import AddToCartButton from '@/components/shop/AddToCartButton';
 
-export default function EquipmentPage() {
+export default async function EquipmentPage() {
+  const equipmentItems = await getAllEquipment();
+
   return (
     <section className="py-20 bg-white">
       <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
@@ -22,17 +24,13 @@ export default function EquipmentPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-0 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 border-t border-l border-zinc-100">
           {equipmentItems.map((item) => (
-            <article key={item.id} className="group relative flex flex-col overflow-hidden bg-white p-4 transition-all duration-500 hover:z-10 rounded-none not-italic">
-              <div className="absolute inset-0 z-0 bg-white opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.15)] group-hover:ring-1 group-hover:ring-zinc-100 rounded-none" />
-              
+            <article key={item.id} className="group relative flex flex-col overflow-hidden bg-white p-4 transition-all duration-500 border-r border-b border-zinc-100 rounded-none not-italic">
               <Link href={`/equipment/${item.slug}`} className="relative z-10 block">
-                <div className="relative aspect-[4/5] overflow-hidden bg-white transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:shadow-lg rounded-none p-6 transition-transform duration-500 group-hover:-translate-y-2">
-                  <div className="absolute inset-0 z-20 translate-x-[-100%] bg-linear-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
-                  
+                <div className="relative aspect-[4/5] overflow-hidden bg-white transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] rounded-none p-6">
                   <div
-                    className="h-full w-full bg-contain bg-center bg-no-repeat p-4 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)]"
+                    className="h-full w-full bg-contain bg-center bg-no-repeat p-4 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] drop-shadow-[0_10px_20px_rgba(0,0,0,0.1)] group-hover:scale-105"
                     style={{ backgroundImage: `url(${item.image})` }}
                   />
                 </div>

@@ -11,16 +11,19 @@ type Product = {
   price: number;
   compareAtPrice: number;
   image: string;
+  videoUrl?: string | null;
   stock: number;
+  salesCount: number;
   category: string;
   featured: boolean;
 };
 
 type Props = {
   product: Product;
+  rank?: number;
 };
 
-export default function ProductCard({ product }: Props) {
+export default function ProductCard({ product, rank }: Props) {
   const discount =
     product.compareAtPrice > 0
       ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
@@ -28,9 +31,17 @@ export default function ProductCard({ product }: Props) {
 
   const isVideo = product.image.toLowerCase().endsWith('.mp4');
 
+  // Určení štítku podle prodejů
+  let badge = null;
+  if (rank && rank <= 5) {
+    badge = `TOP ${rank}`;
+  } else if (product.salesCount >= 10) {
+    badge = "BESTSELLER";
+  }
+
   return (
-    <article className="group relative flex flex-col overflow-hidden bg-white p-2.5 sm:p-4 transition-all duration-500 hover:z-10 h-full border-none transform-gpu">
-      {/* SEO JSON-LD Microdata (Neviditelné pro uživatele, klíčové pro Google Nákupy) */}
+    <article className="group relative flex flex-col overflow-hidden bg-white p-2.5 sm:p-4 transition-all duration-500 h-full border-r border-b border-zinc-100 transform-gpu">
+      {/* SEO JSON-LD Microdata */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -49,21 +60,23 @@ export default function ProductCard({ product }: Props) {
           }),
         }}
       />
-      {/* Luxusní hloubka a stín při hoveru */}
-      <div className="absolute inset-0 z-0 bg-white opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.15)] group-hover:ring-1 group-hover:ring-zinc-100" />
       
       <Link href={`/${product.category === 'supplement' ? 'supplements' : product.category === 'equipment' ? 'equipment' : 'bazaar'}/${product.slug}`} className="relative z-10 block">
-        <div className="relative aspect-square overflow-hidden bg-zinc-50/50 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:shadow-lg flex items-center justify-center p-3 sm:p-8">
-          {/* Odlesk (Shine effect) */}
-          <div className="absolute inset-0 z-20 translate-x-[-100%] bg-linear-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
+        <div className="relative aspect-square overflow-visible bg-white transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex items-center justify-center p-3 sm:p-10 rounded-none group/img perspective-1000">
           
           {discount > 0 && (
-            <div className="absolute left-1.5 top-1.5 sm:left-3 sm:top-3 z-30 bg-[#E10600] px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-md">
+            <div className="absolute left-1.5 top-1.5 sm:left-4 sm:top-4 z-30 bg-[#E10600] px-2 py-1 text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-white">
               -{discount}%
             </div>
           )}
 
-          <div className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-2 transform-gpu will-change-transform">
+          {badge && (
+            <div className="absolute right-1.5 top-1.5 sm:right-4 sm:top-4 z-30 bg-zinc-950 px-2 py-1 text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-white border border-white/10 shadow-xl">
+              {badge}
+            </div>
+          )}
+
+          <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105 transform-gpu will-change-transform z-10">
             {isVideo ? (
               <video
                 src={product.image}
@@ -71,15 +84,18 @@ export default function ProductCard({ product }: Props) {
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)]"
+                className="w-full h-full object-contain"
               />
             ) : (
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                className="object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)]"
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-contain transition-all duration-700"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </div>
             )}
           </div>
         </div>
@@ -110,7 +126,7 @@ export default function ProductCard({ product }: Props) {
             )}
           </div>
 
-          <div className="mt-4 opacity-90 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="mt-4">
             <AddToCartButton
               product={{
                 id: product.id,

@@ -1,5 +1,3 @@
-"use client";
-
 import Hero from '@/components/gym/Hero';
 import Marquee from '@/components/gym/Marquee';
 import Services from '@/components/gym/Services';
@@ -9,8 +7,9 @@ import Footer from '@/components/gym/Footer';
 import CustomCursor from '@/components/gym/CustomCursor';
 import SmoothScroll from '@/components/gym/SmoothScroll';
 import FloatingPhotos from '@/components/gym/FloatingPhotos';
+import { TrainersList } from '@/components/gym/TrainersList';
 
-function App() {
+export default function App() {
   return (
     <main className="bg-black min-h-screen text-white font-space">
       <SmoothScroll />
@@ -26,6 +25,8 @@ function App() {
       <HorizontalGallery />
       
       <Marquee text="JOIN THE MOVEMENT • F77 • NO LIMITS" speed={50} reverse outline />
+
+      <TrainersList />
       
       <Pricing />
       
@@ -33,5 +34,3 @@ function App() {
     </main>
   );
 }
-
-export default App;

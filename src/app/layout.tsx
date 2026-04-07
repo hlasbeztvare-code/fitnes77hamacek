@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 import SmoothScrollProvider from "@/providers/SmoothScrollProvider";
 import PageTransition from "@/components/layout/PageTransition";
+import BrutePreloader from "@/components/ui/MonolithPreloader";
 
 export const viewport: Viewport = {
   themeColor: "#000000",
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="cs">
       <body className="antialiased">
+        <BrutePreloader />
         <SmoothScrollProvider>
           <ScrollToTop />
           <Navbar />

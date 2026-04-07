@@ -3,6 +3,9 @@ import { getProducts } from '@/lib/queries/products';
 
 export default async function SupplementsPage() {
   const products = await getProducts();
+  
+  // Seřazení produktů podle salesCount pro určení TOP pozic
+  const sortedProducts = [...products].sort((a, b) => b.salesCount - a.salesCount);
 
   return (
     <section className="py-20">
@@ -23,16 +26,22 @@ export default async function SupplementsPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-2 xl:grid-cols-4 sm:gap-6">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={{
-                ...product,
-                compareAtPrice: product.compareAtPrice ?? 0,
-              }}
-            />
-          ))}
+        <div className="mt-12 grid grid-cols-2 gap-0 md:grid-cols-2 xl:grid-cols-4 border-t border-l border-zinc-100">
+          {products.map((product) => {
+            // Najdeme pozici v seřazeném poli pro určení ranku
+            const rank = sortedProducts.findIndex(p => p.id === product.id) + 1;
+            
+            return (
+              <ProductCard
+                key={product.id}
+                product={{
+                  ...product,
+                  compareAtPrice: product.compareAtPrice ?? 0,
+                }}
+                rank={rank}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
