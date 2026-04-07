@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 const services = [
-  { title: 'OSOBNÍ TRENÉR', desc: 'Individuální přístup a trénink pod dohledem profesionálů.', icon: <UserCheck className="w-10 h-10 text-[#d4ff00]" />, img: 'https://fitness77.cz/wp-content/uploads/2023/05/pohled-do-fitka.jpg' },
+  { title: 'OSOBNÍ TRENÉR', desc: 'Individuální přístup a trénink pod dohledem profesionálů.', icon: <UserCheck className="w- h-10 text-[#d4ff00]" />, img: 'https://fitness77.cz/wp-content/uploads/2023/05/pohled-do-fitka.jpg' },
   { title: 'POSILOVÁNÍ SVALŮ', desc: 'Formování postavy a budování síly na strojích Hammer Strength.', icon: <Dumbbell className="w-10 h-10" />, img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80' },
   { title: 'REHABILITAČNÍ CVIČENÍ', desc: 'Po úrazové a pooperační stavy – bezpečný návrat do kondice.', icon: <Activity className="w-10 h-10 text-[#d4ff00]" />, img: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80' },
   { title: 'REDUKCE HMOTNOSTI', desc: 'Efektivní spalování tuků a úprava životního stylu.', icon: <TrendingDown className="w-10 h-10" />, img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80' },

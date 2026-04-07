@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
 
 const mbImages = Array.from({ length: 39 }, (_, i) => ({
   url: `/images/gym/gallery/gym_photo_${i + 1}.webp`,
@@ -28,7 +29,7 @@ const HorizontalGallery = () => {
                viewport={{ once: true }}
                className="text-[#d4ff00] text-sm font-bold tracking-[0.8em] uppercase mb-8 font-space"
              >
-               Galeria
+               Galerie
              </motion.span>
              <h2 className="text-[10vw] font-black text-[#d4ff00] leading-[0.85] tracking-tighter uppercase font-bebas italic">
                PROSTORY<br />
@@ -46,10 +47,12 @@ const HorizontalGallery = () => {
                 i % 2 === 0 ? '-translate-y-6' : 'translate-y-6'
               }`}
             >
-              <img
+              <Image
                 src={img.url}
                 alt={img.title}
-                className="w-full h-full object-cover grayscale-[0.8] contrast-[1.2] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:rotate-1 transform-gpu"
+                fill
+                sizes="(max-width: 768px) 75vw, 45vw"
+                className="object-cover grayscale-[0.8] contrast-[1.2] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:rotate-1 transform-gpu"
               />
               
               {/* Obrovské průhledné číslo fotky na pozadí */}
