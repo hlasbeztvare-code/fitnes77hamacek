@@ -2,15 +2,17 @@
   "name": "fitness77-gpt",
   "version": "0.1.0",
   "private": true,
+  
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
     "seed": "tsx prisma/seed.ts",
     "postinstall": "prisma generate"
   },
+  
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.19.3",
