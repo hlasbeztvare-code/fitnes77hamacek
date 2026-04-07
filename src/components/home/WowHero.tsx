@@ -101,11 +101,18 @@ export default function WowHero() {
 
           {/* RIGHT: Massive Spatial Product Advertisement - 75% Hero Height */}
           <motion.div
-            initial={{ opacity: 0, x: 200, scale: 0.8 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="relative lg:w-[500px] w-full flex-shrink-0 mt-4 lg:mt-0 perspective-2000"
-            style={{ height: 'calc(90vh * 0.6)' }}
+            initial={{ opacity: 0, x: 300, scale: 0.5, rotate: 15 }}
+            animate={{ opacity: 1, x: 0, scale: 1, rotate: 0 }}
+            transition={{ 
+              duration: 0.8, 
+              delay: 0.3, 
+              ease: [0.34, 1.56, 0.64, 1],
+              type: "spring",
+              stiffness: 200,
+              damping: 15
+            }}
+            className="relative lg:w-[550px] w-full flex-shrink-0 mt-4 lg:mt-0 perspective-2000"
+            style={{ height: '75vh' }}
           >
             <div className="relative w-full h-full group cursor-pointer">
               {/* Massive Floor Shadow */}
@@ -121,13 +128,14 @@ export default function WowHero() {
                   {/* Realistic Product Shadow */}
                   <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[60%] h-16 bg-black/50 blur-2xl rounded-[100%]" />
                   
-                  {/* Product Image - Massive */}
+                  {/* Product Image - Massive 75% Hero Height */}
                   <Image 
                     src="/images/products/deadpump.webp" 
                     alt="Black Dead Pre-Workout"
-                    width={400}
-                    height={600}
-                    className="relative z-10 h-[85%] w-auto object-contain drop-shadow-[0_60px_80px_rgba(0,0,0,0.7)] transition-transform duration-700 group-hover:scale-110 group-hover:-translate-y-6"
+                    width={500}
+                    height={700}
+                    className="relative z-10 h-[90%] w-auto object-contain drop-shadow-[0_80px_100px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-115 group-hover:-translate-y-8"
+                    priority
                   />
                 </motion.div>
 
