@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.postimg.cc',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

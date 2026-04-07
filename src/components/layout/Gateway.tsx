@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { triggerHaptic } from '@/components/home/haptics';
 
 export default function Gateway() {
@@ -71,10 +72,13 @@ export default function Gateway() {
             ></div>
 
             {/* Svalovec */}
-            <img 
+            <Image 
               src="https://i.postimg.cc/m2fXvGvM/borec.png" 
               alt="Bodybuilder" 
-              className="relative z-20 h-[50vh] md:h-[80vh] object-contain grayscale contrast-125 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+              width={500}
+              height={700}
+              className="relative z-20 h-[50vh] md:h-[80vh] w-auto object-contain grayscale contrast-125 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+              priority
             />
           </div>
 
