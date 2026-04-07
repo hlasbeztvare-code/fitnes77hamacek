@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { equipmentItems } from '@/lib/mock/equipment';
+import { getEquipmentBySlug } from '@/lib/queries/equipment';
 import AddToCartButton from '@/components/shop/AddToCartButton';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 
 export default async function EquipmentDetailPage({ params }: Props) {
   const { slug } = await params;
-  const item = equipmentItems.find((p) => p.slug === slug);
+  const item = await getEquipmentBySlug(slug);
 
   if (!item) return notFound();
 

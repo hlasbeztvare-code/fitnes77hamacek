@@ -11,7 +11,7 @@ const Hero = () => {
 
   useEffect(() => {
     // Zpomalení videa na 75 % pro dramatický "cinematic" vzhled
-    if (mainVideoRef.current) mainVideoRef.current.playbackRate = 0.75;
+    if (mainVideoRef.current) mainVideoRef.current.playbackRate = 0.75 ;
     if (blurVideoRef.current) blurVideoRef.current.playbackRate = 0.75;
   }, []);
 
