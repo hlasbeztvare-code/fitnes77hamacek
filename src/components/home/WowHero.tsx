@@ -4,9 +4,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0 },
+// Definice animací pro postupné skládání (staggered)
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15, // Mezera mezi animacemi jednotlivých dětí
+      delayChildren: 0.3,   // Celkový delay před začátkem sekvence
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 20 } },
 };
 
 const slideLeft = {
@@ -21,8 +33,8 @@ const slideRight = {
 
 export default function WowHero() {
   return (
-    <section className="relative min-h-[90vh] md:h-[95vh] w-full flex flex-col justify-between overflow-hidden bg-[#050505] pt-24 pb-12" aria-label="Hlavní banner">
-      {/* Celoplošné video v pozadí s prémiovými efekty */}
+    <section className="relative min-h-[100vh] w-full flex flex-col justify-between overflow-hidden bg-[#050505] pt-24 pb-12">
+      {/* Pozadí */}
       <div className="absolute inset-0 z-0">
         <video 
           src="/hero-eshop.mp4" 
@@ -30,199 +42,119 @@ export default function WowHero() {
           loop 
           muted 
           playsInline 
-          className="w-full h-full object-cover opacity-90 brightness-[0.7] contrast-[1.1] saturate-[1.2]"
+          className="w-full h-full object-cover opacity-90 brightness-[0.75] contrast-[1.1]"
         />
-        
-        {/* Luxusní vinětace a gradace */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-transparent to-black/95 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)] pointer-events-none" />
-        
-        {/* Dynamický efekt odlesku (Lens Flare) pro prémiový feel */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(225,6,0,0.15)_0%,transparent_50%)] pointer-events-none mix-blend-screen" />
-        
-        {/* Jemný šum (Grain) pro texturu jako ve filmu */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none" />
       </div>
 
-      {/* TOP: Text a Nadpisy */}
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 mt-4 md:mt-8">
-        <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
-          <div className="max-w-2xl overflow-hidden flex-1">
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 mt-8 flex flex-col lg:flex-row items-center justify-between gap-12">
+        
+        {/* LEVÁ STRANA: Nadpisy (Původní animace) */}
+        <div className="max-w-2xl flex-1 text-left">
+          <motion.div
+            variants={itemVariants}
+            initial="hidden"
+            animate="show"
+            className="mb-6 inline-block bg-[#E10600] px-4 py-1 text-xs font-black tracking-tighter text-white not-italic"
+          >
+            #1 SUPLEMENTY V ČESKÉ REPUBLICE
+          </motion.div>
+
+          <div className="hero-title select-none">
+            <motion.span variants={slideLeft} initial="hidden" animate="show" transition={{ delay: 0.2 }} className="block text-[12vw] md:text-[7rem] font-black leading-[0.8] tracking-tighter text-white uppercase not-italic">
+              FITNESS 77
+            </motion.span>
+            <motion.span variants={slideRight} initial="hidden" animate="show" transition={{ delay: 0.4 }} className="block text-[#E10600] text-[10vw] md:text-[5.5rem] font-black leading-[0.8] tracking-tighter uppercase not-italic">
+              E-SHOP
+            </motion.span>
+            <motion.span variants={slideLeft} initial="hidden" animate="show" transition={{ delay: 0.6 }} className="block text-[8vw] md:text-[4.5rem] font-black leading-[0.8] tracking-tighter text-transparent uppercase not-italic" style={{ WebkitTextStroke: '2px white' }}>
+              PERFORMANCE
+            </motion.span>
+          </div>
+
+          <motion.p variants={itemVariants} initial="hidden" animate="show" transition={{ delay: 0.8 }} className="mt-8 text-lg md:text-xl text-white/70 font-medium max-w-lg leading-tight not-italic">
+            Vybavení a suplementy pro skutečný progress. Vše, co potřebuješ pro překonání vlastních limitů.
+          </motion.p>
+        </div>
+
+        {/* PRAVÁ STRANA: Produktová sekce s postupnou animací */}
+        <motion.div 
+          className="relative flex-1 flex flex-col items-center lg:items-end justify-center w-full min-h-[500px]"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
+          
+          {/* Plechovka - První v pořadí */}
+          <motion.div
+            variants={itemVariants}
+            className="relative z-10 w-[350px] md:w-[550px]"
+          >
+            {/* Vznášení se a brutální stín */}
             <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              transition={{ duration: 0.8 }}
-              className="hero-bdg mb-6 inline-block"
+              animate={{ y: [0, -25, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="drop-shadow-[0_40px_120px_rgba(225,6,0,0.7)]" // Zvýšený, temně rudý stín
             >
-              <span> #1 SUPLEMENTY V ČESKÉ REPUBLICE</span>
+              <Image 
+                src="/images/products/blackdead.png" 
+                alt="Black Dead"
+                width={600}
+                height={800}
+                className="w-full h-auto object-contain"
+                priority
+              />
+            </motion.div>
+          </motion.div>
+
+          {/* Info cluster - Následuje postupně */}
+          <div className="relative lg:absolute lg:right-0 lg:bottom-4 flex flex-col items-center lg:items-end gap-6 mt-12 lg:mt-0 z-20 w-full md:w-auto">
+            
+            {/* Tagy - Transparentní tmavé */}
+            <motion.div variants={itemVariants} className="flex gap-3">
+              <div className="bg-black/60 border border-white/20 px-4 py-2 rounded-sm shadow-xl not-italic backdrop-blur-sm">
+                <span className="block text-[10px] text-[#d4ff00] font-black uppercase tracking-widest text-center">Top Produkt</span>
+              </div>
+              <div className="bg-black/60 border border-white/20 px-4 py-2 rounded-sm shadow-xl not-italic backdrop-blur-sm">
+                <span className="block text-[10px] text-white font-black uppercase tracking-widest text-center">Vlajková loď</span>
+              </div>
             </motion.div>
 
-            <div className="hero-title">
-              <motion.span
-                variants={slideLeft}
-                initial="hidden"
-                animate="show"
-                transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                className="hero-title-main block text-[12vw] md:text-[6.5rem] leading-[0.8]"
-              >
-              FITNESS 77
-              </motion.span>
-              <motion.span
-                variants={slideRight}
-                initial="hidden"
-                animate="show"
-                transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                className="hero-title-sub block text-[#E10600] text-[10vw] md:text-[5rem] leading-[0.8]"
-              >
-              E-SHOP
-              </motion.span>
-              <motion.span
-                variants={slideLeft}
-                initial="hidden"
-                animate="show"
-                transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-                className="hero-title-outline block text-[8vw] md:text-[4rem] leading-[0.8]"
-              >
-              PERFORMANCE
-              </motion.span>
-            </div>
+            {/* Nadpis a Cena - Rovně, bez slevy */}
+            <motion.div variants={itemVariants} className="text-center lg:text-right">
+               <h3 className="text-white text-6xl md:text-8xl font-black tracking-tighter uppercase leading-none drop-shadow-2xl not-italic">BLACK DEAD</h3>
+               <div className="flex items-center justify-center lg:justify-end gap-4 mt-2">
+                 <span className="text-5xl md:text-7xl font-black text-white tracking-tighter not-italic">499 Kč</span>
+                 {/* Sleva smazána */}
+               </div>
+            </motion.div>
 
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="mt-6 text-lg md:text-xl text-white/90 font-medium max-w-xl font-space drop-shadow-md"
+            {/* Brutal Button - Transparentní */}
+            <motion.button 
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full md:w-[450px] h-24 bg-black/60 border border-white/20 backdrop-blur-sm flex items-center justify-center relative overflow-hidden group shadow-[0_30px_60px_rgba(0,0,0,0.8)] not-italic"
             >
-            Vybavení a suplementy pro skutečný progress. Vše, co potřebuješ pro překonání vlastních limitů.
-            </motion.p>
+              <div className="absolute inset-0 bg-[#E10600] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+              <span className="relative z-10 text-white text-3xl font-black uppercase tracking-[0.2em] group-hover:text-white transition-colors not-italic">
+                Přidat do košíku
+              </span>
+            </motion.button>
           </div>
+        </motion.div>
 
-          {/* RIGHT: Massive Spatial Product Advertisement - 75% Hero Height */}
-          <motion.div
-            initial={{ opacity: 0, x: 300, scale: 0.5, rotate: 15 }}
-            animate={{ opacity: 1, x: 0, scale: 1, rotate: 0 }}
-            transition={{ 
-              duration: 0.8, 
-              delay: 0.3, 
-              ease: [0.34, 1.56, 0.64, 1],
-              type: "spring",
-              stiffness: 200,
-              damping: 15
-            }}
-            className="relative lg:w-[550px] w-full flex-shrink-0 mt-4 lg:mt-0 perspective-2000"
-            style={{ height: '75vh' }}
-          >
-            <div className="relative w-full h-full group cursor-pointer">
-              {/* Massive Floor Shadow */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[120%] h-24 bg-black/60 blur-3xl rounded-[100%] transition-all duration-700 group-hover:w-[140%] group-hover:h-32 group-hover:bg-black/70" />
-              
-              {/* Product - Massive & Transparent Background */}
-              <div className="relative w-full h-full flex items-center justify-center">
-                <motion.div
-                  animate={{ y: [0, -15, 0], rotateZ: [0, 1, -1, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative w-full h-full flex items-center justify-center"
-                >
-                  {/* Realistic Product Shadow */}
-                  <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[60%] h-16 bg-black/50 blur-2xl rounded-[100%]" />
-                  
-                  {/* Product Image - Massive 75% Hero Height */}
-                  <Image 
-                    src="/images/products/deadpump.webp" 
-                    alt="Black Dead Pre-Workout"
-                    width={500}
-                    height={700}
-                    className="relative z-10 h-[90%] w-auto object-contain drop-shadow-[0_80px_100px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-115 group-hover:-translate-y-8"
-                    priority
-                  />
-                </motion.div>
-
-                {/* Floating Product Info - Minimal & Elegant */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 1.2 }}
-                  className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 text-center w-full px-6"
-                >
-                  <div className="inline-block bg-black/60 backdrop-blur-xl px-6 py-4 rounded-2xl border border-white/10 shadow-2xl">
-                    <div className="text-[#d4ff00] text-[10px] font-black tracking-[0.4em] uppercase mb-2">Top Produkt</div>
-                    <h3 className="text-white text-2xl font-black font-bebas uppercase leading-tight mb-2">BLACK DEAD</h3>
-                    
-                    <div className="flex items-center justify-center gap-4 mb-4">
-                      <span className="text-4xl font-black text-white">1 499 Kč</span>
-                      <span className="text-sm text-white/40 line-through">1 999 Kč</span>
-                      <span className="bg-[#E10600] text-white text-xs font-black px-3 py-1 rounded-full">-25%</span>
-                    </div>
-
-                    <button className="w-full bg-white text-black font-black uppercase tracking-widest py-4 rounded-xl hover:bg-[#E10600] hover:text-white transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-xl hover:shadow-[0_0_40px_rgba(225,6,0,0.6)] text-sm">
-                      Přidat do košíku
-                    </button>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
       </div>
 
-      {/* MIDDLE: Prostor pro produkt ve videu (prázdné místo, aby tlačítka a text nepřekážely) */}
-      <div className="flex-1 relative z-0 pointer-events-none"></div>
-
-      {/* BOTTOM: 4 Tlačítka - na mobilu posunuto níž */}
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 mt-auto pt-32 md:pt-20 pb-6 md:pb-12">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 w-full"
-        >
-          <Link href="/supplements" className="flex h-14 md:h-16 flex-row items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-[#E10600] hover:border-[#E10600] hover:scale-[1.02] active:scale-95 rounded-xl group">
-            <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">⚡</span>
-            <span className="text-sm md:text-lg font-black uppercase tracking-widest text-white whitespace-nowrap">Suplementy</span>
-          </Link>
-          
-          <Link href="/equipment" className="flex h-14 md:h-16 flex-row items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-[#E10600] hover:border-[#E10600] hover:scale-[1.02] active:scale-95 rounded-xl group">
-            <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">🏋️</span>
-            <span className="text-sm md:text-lg font-black uppercase tracking-widest text-white whitespace-nowrap">Vybavení</span>
-          </Link>
-          
-          <Link href="/bazaar" className="flex h-14 md:h-16 flex-row items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-[#E10600] hover:border-[#E10600] hover:scale-[1.02] active:scale-95 rounded-xl group">
-            <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">♻️</span>
-            <span className="text-sm md:text-lg font-black uppercase tracking-widest text-white whitespace-nowrap">Bazar</span>
-          </Link>
-
-          <Link href="/gym" className="flex h-14 md:h-16 flex-row items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-[#d4ff00] hover:border-[#d4ff00] hover:scale-[1.02] active:scale-95 rounded-xl group">
-            <span className="text-xl md:text-2xl group-hover:scale-110 transition-transform">🏆</span>
-            <span className="text-sm md:text-lg font-black uppercase tracking-widest text-white group-hover:text-black transition-colors whitespace-nowrap">Gym</span>
-          </Link>
-        </motion.div>
-
-        {/* Stats - na mobilu vedle sebe v řádku, na desktopu původní layout */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          transition={{ duration: 0.6, delay: 0.75 }}
-          className="flex flex-row justify-center items-center gap-4 md:gap-8 mt-6 md:mt-8 pb-4"
-        >
-          <div className="text-center">
-            <div className="text-xl md:text-3xl font-black text-[#E10600]">5000+</div>
-            <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/70">zákazníků</div>
-          </div>
-          <div className="w-px h-8 bg-white/20" />
-          <div className="text-center">
-            <div className="text-xl md:text-3xl font-black text-[#E10600]">150+</div>
-            <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/70">produktů</div>
-          </div>
-          <div className="w-px h-8 bg-white/20" />
-          <div className="text-center">
-            <div className="text-xl md:text-3xl font-black text-[#E10600]">4.9/5</div>
-            <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/70">recenzí</div>
-          </div>
-        </motion.div>
+      {/* Navigace dole - Posunuta výš */}
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 mt-8 pb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {['Suplementy', 'Vybavení', 'Bazar', 'Gym'].map((item) => (
+            <Link key={item} href={`/${item.toLowerCase()}`} className="h-16 bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#E10600] transition-all group not-italic">
+               <span className="text-white font-black uppercase tracking-widest text-sm group-hover:scale-110 transition-transform">{item}</span>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
