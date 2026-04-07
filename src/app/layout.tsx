@@ -6,6 +6,10 @@ import ScrollToTop from "@/components/utils/ScrollToTop";
 import SmoothScrollProvider from "@/providers/SmoothScrollProvider";
 import PageTransition from "@/components/layout/PageTransition";
 import BrutePreloader from "@/components/ui/MonolithPreloader";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
+// SpeedInsights component will be rendered in the layout body
+
 
 export const viewport: Viewport = {
   themeColor: "#000000",
@@ -51,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased">
         <BrutePreloader />
         <SmoothScrollProvider>
+          <SpeedInsights />
           <ScrollToTop />
           <Navbar />
           <PageTransition>
