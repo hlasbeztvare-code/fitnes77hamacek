@@ -27,19 +27,19 @@ export const Services = () => {
   return (
     <section id="sluzby" className="bg-[#050505] py-40">
       <div className="max-w-[1400px] mx-auto px-6 text-center">
-        <h2 className="text-[12vw] font-bebas font-black leading-none mb-32 tracking-tighter uppercase">
+        <h2 className="text-[6vw] font-bebas font-black leading-none mb-16 tracking-tighter uppercase">
             HLAVNÍ <span className="text-transparent" style={{ WebkitTextStroke: '2px white' }}>SLUŽBY</span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((s, i) => (
             <motion.div 
               key={i}
               whileHover={{ y: -10 }}
-              className="bg-zinc-900/50 p-10 rounded-3xl border border-white/5 hover:border-[#d4ff00]/50 transition-all text-left group"
+              className="bg-zinc-900/50 p-6 rounded-2xl border border-white/5 hover:border-[#d4ff00]/50 transition-all text-left group"
             >
               <div className="mb-6">{s.icon}</div>
-              <h3 className="text-3xl font-bebas font-bold mb-4 group-hover:text-[#d4ff00] transition-colors">{s.title}</h3>
-              <p className="text-white/40 font-space uppercase text-sm leading-relaxed">{s.desc}</p>
+              <h3 className="text-2xl font-bebas font-bold mb-3 group-hover:text-[#d4ff00] transition-colors">{s.title}</h3>
+              <p className="text-white/40 font-space uppercase text-xs leading-relaxed">{s.desc}</p>
             </motion.div>
           ))}
         </div>
