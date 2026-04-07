@@ -8,9 +8,6 @@ import PageTransition from "@/components/layout/PageTransition";
 import BrutePreloader from "@/components/ui/MonolithPreloader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-// SpeedInsights component will be rendered in the layout body
-
-
 export const viewport: Viewport = {
   themeColor: "#000000",
   width: "device-width",
