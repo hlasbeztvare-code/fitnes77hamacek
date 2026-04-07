@@ -9,7 +9,7 @@ export async function getProducts() {
       },
     });
     return products;
-  } catch (error) {
+  } catch (_error) {
     console.error("❌ Chyba při tahání produktů z DB:", error);
     return []; // Fallback, ať web neumře
   }
@@ -24,7 +24,7 @@ export async function getProductBySlug(slug: string) {
       },
     });
     return product;
-  } catch (error) {
+  } catch (_error) {
     console.error(`❌ Produkt se slugem ${slug} nenalezen:`, error);
     return null;
   }
@@ -36,7 +36,7 @@ export async function getProductById(id: string) {
     return await db.product.findUnique({
       where: { id },
     });
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 }
@@ -53,7 +53,7 @@ export async function getProductsByCategory(category: string) {
       },
     });
     return products;
-  } catch (error) {
+  } catch (_error) {
     console.error("❌ Chyba při filtraci kategorie:", error);
     return [];
   }

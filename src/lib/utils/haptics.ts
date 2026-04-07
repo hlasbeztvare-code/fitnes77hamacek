@@ -6,5 +6,5 @@ export const triggerHaptic = (type: 'light' | 'medium' | 'heavy' | 'success' = '
     heavy: 50, 
     success: [10, 50, 20] 
   };
-  try { window.navigator.vibrate(patterns[type]); } catch (e) {}
+  try { window.navigator.vibrate(patterns[type]); } catch (_e) {}
 };
