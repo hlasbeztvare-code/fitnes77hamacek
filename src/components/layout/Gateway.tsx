@@ -73,7 +73,7 @@ export default function Gateway() {
 
             {/* Svalovec */}
             <Image 
-              src="https://i.postimg.cc/m2fXvGvM/borec.png" 
+              src="/images/borec.png" 
               alt="Bodybuilder" 
               width={500}
               height={700}
