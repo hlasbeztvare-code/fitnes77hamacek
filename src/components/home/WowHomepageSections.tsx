@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { getAllSupplements } from '@/lib/queries/products';
+import { getProducts } from '@/lib/queries/products';
 import ProductCard from '@/components/shop/ProductCard';
 import Reveal from '@/components/ui/Reveal';
 
 export default async function WowHomepageSections() {
-  const products = await getAllSupplements();
+  const products = await getProducts();
 
   const categories = [
     {

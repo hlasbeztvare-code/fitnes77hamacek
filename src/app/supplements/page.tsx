@@ -1,8 +1,8 @@
 import ProductCard from '@/components/shop/ProductCard';
-import { getAllSupplements } from '@/lib/queries/products';
+import { getProducts } from '@/lib/queries/products';
 
 export default async function SupplementsPage() {
-  const products = await getAllSupplements();
+  const products = await getProducts();
 
   return (
     <section className="py-20">
