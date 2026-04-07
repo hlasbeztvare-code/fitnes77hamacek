@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getProducts } from '@/lib/queries/products';
 import ProductCard from '@/components/shop/ProductCard';
 import Reveal from '@/components/ui/Reveal';
@@ -106,7 +107,7 @@ export default async function WowHomepageSections() {
         <div className="founder-sk"></div>
         <div className="founder-ct">
           <div className="founder-img">
-            <img src="/images/trainers/hlavacek.jpg" alt="Jaroslav Hamáček" loading="lazy" />
+            <Image src="/images/trainers/hlavacek.jpg" alt="Jaroslav Hamáček" width={400} height={500} className="object-cover" priority />
           </div>
 
           <div>
