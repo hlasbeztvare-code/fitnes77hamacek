@@ -97,7 +97,7 @@ export default function WowHero() {
               className="drop-shadow-[0_40px_120px_rgba(225,6,0,0.7)]" // Zvýšený, temně rudý stín
             >
               <Image 
-                src="/images/products/deadpump.webp" 
+                src="/images/products/blackdead.png" 
                 alt="Black Dead"
                 width={600}
                 height={800}
