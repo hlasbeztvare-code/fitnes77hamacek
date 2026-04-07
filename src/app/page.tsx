@@ -11,7 +11,7 @@ export default function HomePage() {
             DOPRAVA ZDARMA NAD 2000 Kč
           </div>
           <div className="text-center text-xs font-black uppercase tracking-[0.16em] text-white">
-            VÝDEJNÍ MÍSTO ATELIER MB
+            VÝDEJNÍ MÍSTO MB
           </div>
           <div className="text-center text-xs font-black uppercase tracking-[0.16em] text-white">
             SKLADEM V MLADÉ BOLESLAVI

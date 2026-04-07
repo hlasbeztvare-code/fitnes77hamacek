@@ -1,3 +1,4 @@
+"use client"
 import Hero from '@/components/gym/Hero';
 import Marquee from '@/components/gym/Marquee';
 import Services from '@/components/gym/Services';
