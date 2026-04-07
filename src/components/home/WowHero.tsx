@@ -170,8 +170,8 @@ export default function WowHero() {
       {/* MIDDLE: Prostor pro produkt ve videu (prázdné místo, aby tlačítka a text nepřekážely) */}
       <div className="flex-1 relative z-0 pointer-events-none"></div>
 
-      {/* BOTTOM: 4 Tlačítka */}
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 mt-20 pb-12">
+      {/* BOTTOM: 4 Tlačítka - na mobilu posunuto níž */}
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 mt-auto pt-32 md:pt-20 pb-6 md:pb-12">
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -200,24 +200,27 @@ export default function WowHero() {
           </Link>
         </motion.div>
 
+        {/* Stats - na mobilu vedle sebe v řádku, na desktopu původní layout */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           animate="show"
           transition={{ duration: 0.6, delay: 0.75 }}
-          className="hero-stats-row pb-6"
+          className="flex flex-row justify-center items-center gap-4 md:gap-8 mt-6 md:mt-8 pb-4"
         >
-          <div className="hero-stat">
-            <div className="hero-stat-number">5000+</div>
-            <div className="hero-stat-label">spokojených zákazníků</div>
+          <div className="text-center">
+            <div className="text-xl md:text-3xl font-black text-[#E10600]">5000+</div>
+            <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/70">zákazníků</div>
           </div>
-          <div className="hero-stat">
-            <div className="hero-stat-number">150+</div>
-            <div className="hero-stat-label">produktů v nabídce</div>
+          <div className="w-px h-8 bg-white/20" />
+          <div className="text-center">
+            <div className="text-xl md:text-3xl font-black text-[#E10600]">150+</div>
+            <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/70">produktů</div>
           </div>
-          <div className="hero-stat">
-            <div className="hero-stat-number">4.9/5</div>
-            <div className="hero-stat-label">pozitivních recenzí</div>
+          <div className="w-px h-8 bg-white/20" />
+          <div className="text-center">
+            <div className="text-xl md:text-3xl font-black text-[#E10600]">4.9/5</div>
+            <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/70">recenzí</div>
           </div>
         </motion.div>
       </div>
