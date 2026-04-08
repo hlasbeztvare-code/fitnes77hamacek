@@ -25,7 +25,7 @@ export default function Footer() {
             <ul className="mt-3 space-y-1.5 text-[10px] text-white/30">
               <li><Link href="/supplements" className="hover:text-white transition-colors">SUPLE</Link></li>
               <li><Link href="/equipment" className="hover:text-white transition-colors">GEAR</Link></li>
-              <li><Link href="/bazaar" className="hover:text-white transition-colors">BAZAR</Link></li>
+              <li><Link href="/bazar" className="hover:text-white transition-colors">BAZAR</Link></li>
             </ul>
           </div>
 

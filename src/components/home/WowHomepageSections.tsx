@@ -8,6 +8,11 @@ export default async function WowHomepageSections() {
 
   const categories = [
     {
+      title: 'Gym / Trenéři',
+      href: '/gym',
+      description: 'Osobní vedení, rezervace a služby.',
+    },
+    {
       title: 'Suplementy',
       href: '/supplements',
       description: 'Protein, kreatin, pre-workout a amino produkty.',
@@ -19,13 +24,8 @@ export default async function WowHomepageSections() {
     },
     {
       title: 'Bazar',
-      href: '/bazaar',
+      href: '/bazar',
       description: 'Použité stroje s transparentním stavem a cenou.',
-    },
-    {
-      title: 'Gym / Trenéři',
-      href: '/gym',
-      description: 'Osobní vedení, rezervace a služby.',
     },
   ];
 

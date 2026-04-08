@@ -1,16 +1,62 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { products } from '@/lib/mock/products';
 import AddToCartButton from '@/components/shop/AddToCartButton';
+import { PrismaClient } from '@prisma/client';
+import { Metadata } from 'next';
+
+const prisma = new PrismaClient();
 
 type Props = {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 };
 
+// Funkce pro generování metadat (SEO)
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = params;
+  const product = await prisma.product.findUnique({
+    where: { slug, category: 'supplement' },
+  });
+
+  if (!product) {
+    return {
+      title: 'Produkt nenalezen',
+    };
+  }
+
+  return {
+    title: `${product.name} | Fitness 77`,
+    description: product.shortDescription,
+  };
+}
+
+// Funkce pro generování statických stránek (lepší performance)
+export async function generateStaticParams() {
+  const supplements = await prisma.product.findMany({
+    where: { category: 'supplement' },
+  });
+
+  return supplements.map((supplement) => ({
+    slug: supplement.slug,
+  }));
+}
+
 export default async function SupplementDetailPage({ params }: Props) {
-  const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
+  const { slug } = params;
+  const product = await prisma.product.findUnique({
+    where: { slug, category: 'supplement' },
+  });
+
+  // Fetch related products
+  const relatedProducts = await prisma.product.findMany({
+    where: {
+      category: 'supplement',
+      NOT: {
+        slug: slug,
+      },
+    },
+    take: 3,
+  });
 
   if (!product) return notFound();
 
@@ -50,32 +96,43 @@ export default async function SupplementDetailPage({ params }: Props) {
               {product.name}
             </h1>
             
-            <div className="mt-8 flex items-center gap-6">
-              <span className="text-4xl font-black text-zinc-950 not-italic">
-                {product.price.toLocaleString('cs-CZ')} Kč
-              </span>
-              {product.compareAtPrice > 0 && (
-                <span className="text-xl text-zinc-400 line-through not-italic">
-                  {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
+            {product.price > 0 ? (
+              <div className="mt-8 flex items-center gap-6">
+                <span className="text-4xl font-black text-zinc-950 not-italic">
+                  {product.price.toLocaleString('cs-CZ')} Kč
                 </span>
-              )}
-            </div>
+                {product.compareAtPrice && product.compareAtPrice > 0 && (
+                  <span className="text-xl text-zinc-400 line-through not-italic">
+                    {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div className="mt-8">
+                <span className="text-3xl font-black uppercase tracking-wider text-zinc-500 not-italic">
+                  Připravujeme
+                </span>
+              </div>
+            )}
 
             <p className="mt-8 text-lg leading-relaxed text-zinc-600 max-w-xl">
               {product.description}
             </p>
 
-            <div className="mt-12 max-w-md">
-              <AddToCartButton
-                product={{
-                  id: product.id,
-                  name: product.name,
-                  slug: product.slug,
-                  price: product.price,
-                  image: product.image,
-                }}
-              />
-            </div>
+            {product.price > 0 ? (
+              <div className="mt-12 max-w-md">
+                <AddToCartButton product={{ id: product.id, name: product.name, slug: product.slug, price: product.price, image: product.image }} />
+              </div>
+            ) : (
+              <div className="mt-12 max-w-md">
+                <button
+                  disabled
+                  className="w-full cursor-not-allowed bg-zinc-200 px-6 py-4 font-bold uppercase tracking-wider text-zinc-500"
+                >
+                  Již brzy v prodeji
+                </button>
+              </div>
+            )}
 
             <div className="mt-12 grid grid-cols-2 gap-6 border-t border-zinc-100 pt-12 text-[10px] font-black uppercase tracking-[0.15em] text-zinc-400">
               <div className="flex items-center gap-3">
@@ -90,6 +147,44 @@ export default async function SupplementDetailPage({ params }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Related Products Section */}
+      {relatedProducts.length > 0 && (
+        <div className="mt-24 border-t border-zinc-100">
+          <div className="mx-auto w-[min(1280px,calc(100%-40px))] py-24">
+            <h2 className="text-3xl font-black uppercase tracking-tighter text-zinc-950">
+              Mohlo by se ti líbit
+            </h2>
+            <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedProducts.map((relatedProduct) => (
+                <Link key={relatedProduct.id} href={`/supplements/${relatedProduct.slug}`} className="group block">
+                  <div className="relative aspect-square flex items-center justify-center overflow-hidden bg-zinc-50 p-8 transition-colors group-hover:bg-zinc-100">
+                    <Image
+                      src={relatedProduct.image}
+                      alt={relatedProduct.name}
+                      width={400}
+                      height={400}
+                      className="object-contain transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="mt-4 text-center">
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900">{relatedProduct.name}</h3>
+                    {relatedProduct.price > 0 ? (
+                      <p className="mt-2 text-lg font-black text-zinc-900">
+                        {relatedProduct.price.toLocaleString('cs-CZ')} Kč
+                      </p>
+                    ) : (
+                      <p className="mt-2 text-base font-bold uppercase tracking-wider text-zinc-500">
+                        Připravujeme
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

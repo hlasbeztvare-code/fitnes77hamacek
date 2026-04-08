@@ -3,6 +3,73 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Zap, Dumbbell, Package, Trophy } from 'lucide-react'; // Přidána Trophy pro GYM
+import React from 'react';
+
+export const HeroSection = () => {
+  return (
+    <section className="relative min-h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden pt-20">
+      {/* Background lebka/oheň - optimalizovaný pro mobile */}
+      <div className="absolute inset-0 z-0 opacity-60">
+        {/* Tady máš ten svůj obrázek s lebkou */}
+        <img 
+          src="/path-to-your-skull-bg.jpg" 
+          className="w-full h-full object-cover object-center"
+          alt="Fitness 77 Background"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-7xl px-4 sm:px-6 flex flex-col items-center text-center">
+        
+        {/* 1. Horní staty - na mobilu pod sebou, na desktopu v řadě (fialová čmáranice) */}
+        <div className="flex flex-col md:flex-row gap-6 md:gap-12 mb-8 uppercase tracking-widest text-sm font-bold">
+          <div className="flex flex-col">
+            <span className="text-red-600 text-2xl">5000+</span>
+            <span className="text-white/70">Zákazníků</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-red-600 text-2xl">150+</span>
+            <span className="text-white/70">Produktů</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-red-600 text-2xl">4.9/5</span>
+            <span className="text-white/70">Recenzí</span>
+          </div>
+        </div>
+
+        {/* 2. Hlavní nadpis - ošetřený pro přetečení (bílá čmáranice) */}
+        <div className="mb-12">
+          <span className="bg-red-600 text-white px-3 py-1 text-xs font-black uppercase mb-4 inline-block">
+            #1 Suplementy v ČR
+          </span>
+          <h1 className="text-5xl md:text-8xl font-black text-white leading-none uppercase">
+            FITNESS 77<br />
+            <span className="text-red-600">E-SHOP</span>
+          </h1>
+          {/* Performance text - na mobilu menší a s efektem, ať nezavazí */}
+          <p className="text-3xl md:text-6xl font-black text-transparent stroke-white/20 uppercase mt-[-10px] md:mt-[-20px]" 
+             style={{ WebkitTextStroke: '1px rgba(255,255,255,0.3)' }}>
+            PERFORMANCE
+          </p>
+        </div>
+
+        {/* 3. Grid buttonů - na mobilu jeden sloupec, na desktopu dva (ta spodní mřížka) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl mt-8">
+          {['GYM', 'SUPLEMENTY', 'VYBAVENÍ', 'BAZAR'].map((item) => (
+            <button 
+              key={item}
+              className="group relative bg-white/5 border border-white/10 hover:border-red-600 transition-all duration-300 py-6 px-4 text-xl font-bold text-white overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-red-600/0 group-hover:bg-red-600/10 transition-colors" />
+              {item}
+            </button>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+};
 
 const trustItems = [
   'Doprava zdarma',
@@ -12,10 +79,10 @@ const trustItems = [
 
 // Data pro ty čtyři ORANŽOVÉ dlaždice - TEĎ I S GYMEM!
 const categoryActions = [
+  { href: '/gym', label: 'GYM', icon: Trophy }, // Tady je ten tvůj GYM!
   { href: '/supplements', label: 'SUPLEMENTY', icon: Zap },
   { href: '/equipment', label: 'VYBAVENÍ', icon: Dumbbell },
   { href: '/bazar', label: 'BAZAR', icon: Package },
-  { href: '/gym', label: 'GYM', icon: Trophy }, // Tady je ten tvůj GYM!
 ];
 
 export default function HeroScene() {
