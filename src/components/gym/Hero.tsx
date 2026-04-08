@@ -21,16 +21,16 @@ const Hero = () => {
 
   // Fotky pro vertikální nekonečné pruhy
   const leftImages = [
-    '/images/gym/gallery/gym_photo_1.webp',
-    '/images/gym/gallery/gym_photo_3.webp',
-    '/images/gym/gallery/gym_photo_5.webp',
-    '/images/gym/gallery/gym_photo_7.webp',
+    '/images/gym/gym01.webp',
+    '/images/gym/gym03.webp',
+    '/images/gym/gym05.webp',
+    '/images/gym/gym07.webp',
   ];
   const rightImages = [
-    '/images/gym/gallery/gym_photo_2.webp',
-    '/images/gym/gallery/gym_photo_4.webp',
-    '/images/gym/gallery/gym_photo_6.webp',
-    '/images/gym/gallery/gym_photo_8.webp',
+    '/images/gym/gym02.webp',
+    '/images/gym/gym04.webp',
+    '/images/gym/gym06.webp',
+    '/images/gym/gym08.webp',
   ];
 
   return (
@@ -156,10 +156,6 @@ const Hero = () => {
                <div>
                   <div className="text-[#d4ff00] text-5xl font-bebas">220m²</div>
                   <div className="text-white/40 text-xs uppercase tracking-widest mt-2">M² Plochy</div>
-               </div>
-               <div>
-                  <div className="text-[#d4ff00] text-5xl font-bebas">24/7</div>
-                  <div className="text-white/40 text-xs uppercase tracking-widest mt-2">Přístup</div>
                </div>
              </div>
            </div>

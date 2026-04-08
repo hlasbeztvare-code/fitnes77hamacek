@@ -1,4 +1,4 @@
-import { Globe, Share2 } from 'lucide-react';
+import { Instagram, Facebook } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Footer = () => {
@@ -26,13 +26,13 @@ const Footer = () => {
           <div className="lg:text-right space-y-12">
             <div className="group cursor-default">
               <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] mb-4">The Location</p>
-              <h4 className="text-6xl font-black uppercase font-bebas tracking-widest group-hover:text-[#d4ff00] transition-colors leading-none">Mladá Boleslav</h4>
-              <p className="text-2xl text-white/40 uppercase font-medium tracking-tighter mt-2">Jiráskova 1320, 293 01</p>
+              <h4 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase font-bebas tracking-widest group-hover:text-[#d4ff00] transition-colors leading-none">Mladá Boleslav</h4>
+              <p className="text-xl md:text-2xl text-white/40 uppercase font-medium tracking-tighter mt-2">Jiráskova 1320, 293 01</p>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 max-w-full overflow-hidden">
               <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] mb-4">Direct Line</p>
-             <p className="text-4xl md:text-5xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-all duration-300 cursor-pointer hover:scale-105 origin-left lg:origin-right transform-gpu">+420 777 105 548</p>
-             <p className="text-4xl md:text-5xl font-black font-bebas tracking-[0.1em] hover:text-[#d4ff00] transition-all duration-300 cursor-pointer uppercase hover:scale-105 origin-left lg:origin-right transform-gpu">fitness77@post.cz</p>
+             <p className="text-3xl md:text-4xl xl:text-5xl font-black font-bebas tracking-[0.1em] lg:tracking-[0.05em] hover:text-[#d4ff00] transition-all duration-300 cursor-pointer lg:hover:scale-105 origin-left lg:origin-right transform-gpu whitespace-nowrap">+420 777 105 548</p>
+             <p className="text-3xl md:text-4xl xl:text-5xl font-black font-bebas tracking-[0.1em] lg:tracking-[0.05em] hover:text-[#d4ff00] transition-all duration-300 cursor-pointer uppercase lg:hover:scale-105 origin-left lg:origin-right transform-gpu w-full break-normal lg:whitespace-nowrap">fitness77@post.cz</p>
             </div>
           </div>
         </div>
@@ -44,20 +44,20 @@ const Footer = () => {
               <div className="space-y-6 text-2xl uppercase font-black font-bebas tracking-widest">
                <div className="flex justify-between gap-10 border-b border-white/5 pb-4 group hover:border-[#d4ff00]/40 transition-colors duration-500">
                  <span className="text-white/40 group-hover:text-[#d4ff00] transition-all duration-500 font-bebas group-hover:translate-x-2 transform-gpu">PO — PÁ</span> 
-                 <span className="text-white font-bebas group-hover:-translate-x-2 transition-transform duration-500 transform-gpu">06:00 — 22:00</span>
+                 <span className="text-white font-bebas group-hover:-translate-x-2 transition-transform duration-500 transform-gpu">06:00 — 21:00</span>
                </div>
                <div className="flex justify-between gap-10 border-b border-white/5 pb-4 group hover:border-[#d4ff00]/40 transition-colors duration-500">
                  <span className="text-white/40 group-hover:text-[#d4ff00] transition-all duration-500 font-bebas group-hover:translate-x-2 transform-gpu">SO — NE</span> 
-                 <span className="text-white font-bebas group-hover:-translate-x-2 transition-transform duration-500 transform-gpu">07:00 — 20:00</span>
+                 <span className="text-white font-bebas group-hover:-translate-x-2 transition-transform duration-500 transform-gpu">08:00 — 20:00</span>
                </div>
               </div>
             </div>
             <div className="flex gap-8">
               <a href="#" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black hover:border-[#d4ff00] transition-all duration-500 hover:-rotate-6 hover:scale-110 active:scale-95 transform-gpu shadow-lg hover:shadow-[0_0_20px_rgba(212,255,0,0.4)]">
-                 <Globe size={28} />
+                 <Instagram size={28} />
                </a>
               <a href="#" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black hover:border-[#d4ff00] transition-all duration-500 hover:rotate-6 hover:scale-110 active:scale-95 transform-gpu shadow-lg hover:shadow-[0_0_20px_rgba(212,255,0,0.4)]">
-                 <Share2 size={28} />
+                 <Facebook size={28} />
                </a>
             </div>
           </div>

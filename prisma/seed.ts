@@ -57,7 +57,7 @@ async function main() {
         description: 'Black Dead je ultimátní předtréninkovka, která tě připraví i na ty nejtvrdší tréninky bez kompromisů.',
         price: 0,
         compareAtPrice: 0,
-        image: '/images/products/blackdead.webp',
+        image: '/images/products/blackdead.jpg',
         stock: 50,
         category: 'supplement',
         featured: true,

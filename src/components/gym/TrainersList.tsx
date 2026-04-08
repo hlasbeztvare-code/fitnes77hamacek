@@ -6,12 +6,12 @@ const miniTrainers = [
   {
     name: "ONDŘEJ SOUSTRUŽNÍK",
     tags: "STRENGTH / POWERLIFTING / PHYSIO",
-    image: "/images/trainers/old_web_2.jpg"
+    image: "/images/trainers/soustruznik.webp"
   },
   {
     name: "JAROSLAV HAMÁČEK",
     tags: "COMMUNITY / BOX / STRATEGY",
-    image: "/images/trainers/old_web_1.jpg"
+    image: "/images/trainers/hamacek.webp"
   }
 ];
 

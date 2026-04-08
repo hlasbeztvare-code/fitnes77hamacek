@@ -2,10 +2,14 @@ import { motion } from 'framer-motion';
 
 const Pricing = () => {
   const plans = [
-    { title: 'JEDNORÁZOVÝ VSTUP', price: '160 Kč', sub: 'STUDENTI 140 Kč' },
-    { title: 'MĚSÍČNÍ ČLENSTVÍ', price: '1 250 Kč', sub: 'STUDENTI 1 050 Kč' },
-    { title: '10 VSTUPŮ\n(PERMANENTKA)', price: '1 400 Kč', sub: 'STUDENTI 1 200 Kč' },
-    { title: 'ROČNÍ ČLENSTVÍ', price: '12 500 Kč', sub: 'DVA MĚSÍCE ZDARMA' },
+    { title: 'ZÁKLADNÍ VSTUPNÉ', price: '160 Kč', sub: 'STUDENT* 130 Kč', highlight: false },
+    { title: '10 VSTUPŮ\n(PERMANENTKA)', price: '1 380 Kč', sub: 'STUDENT* 1 150 Kč\nPlatnost 2 měsíce', highlight: false },
+    { title: '20 VSTUPŮ\n(PERMANENTKA)', price: '2 490 Kč', sub: '125 Kč za vstup\nPlatnost 3 měsíce', highlight: false },
+    { title: '30 VSTUPŮ\n(PERMANENTKA)', price: '3 650 Kč', sub: '122 Kč za vstup\nPlatnost 6 měsíců', highlight: false },
+    { title: '1 MĚSÍČNÍ ČLENSTVÍ', price: '1 490 Kč', sub: 'STUDENT* 1 190 Kč', highlight: false },
+    { title: '3 MĚSÍČNÍ ČLENSTVÍ', price: '3 990 Kč', sub: '1 330 Kč / měsíc', highlight: false },
+    { title: '6 MĚSÍČNÍ ČLENSTVÍ', price: '6 990 Kč', sub: '1 165 Kč / měsíc', highlight: false },
+    { title: 'ROČNÍ ČLENSTVÍ', price: '12 990 Kč', sub: '1 083 Kč / měsíc', highlight: true },
   ];
 
   return (
@@ -15,7 +19,7 @@ const Pricing = () => {
       </div>
 
       <div className="max-w-[1400px] mx-auto relative z-10">
-        <div className="flex flex-col mb-32">
+        <div className="flex flex-col mb-20">
            <motion.span 
              initial={{ opacity: 0, x: -20 }}
              whileInView={{ opacity: 1, x: 0 }}
@@ -23,19 +27,20 @@ const Pricing = () => {
            >
              Membership Structure
            </motion.span>
-           <h2 className="text-[12vw] font-black leading-[0.8] tracking-tighter uppercase font-bebas mb-12">
+           <h2 className="text-[12vw] font-black leading-[0.8] tracking-tighter uppercase font-bebas mb-6">
              CENÍK<span className="text-[#d4ff00]">.</span>
            </h2>
+           <p className="text-white/40 uppercase font-space text-xs tracking-widest">*PLATÍ PRO STUDENTY DO 26 LET, KTEŘÍ SE PROKÁŽÍ STUDENTSKOU KARTOU ISIC</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {plans.map((plan, i) => {
-            const isAnnual = i === 3;
+            const isAnnual = plan.highlight;
             
             return (
             <div
               key={i}
-              className={`relative bg-[#050505] p-6 lg:p-8 xl:p-10 flex flex-col justify-between h-[500px] transition-all duration-500 border ${
+              className={`relative bg-[#050505] p-6 lg:p-8 flex flex-col justify-between h-[450px] transition-all duration-500 border ${
                 isAnnual 
                   ? 'border-[#d4ff00] shadow-[0_0_40px_rgba(212,255,0,0.15)] lg:-translate-y-4' 
                   : 'border-white/10 hover:border-white/30'
@@ -47,13 +52,13 @@ const Pricing = () => {
                 </div>
               )}
               <div>
-                <span className={`text-xs font-bold uppercase tracking-[0.4em] block mb-8 xl:mb-10 font-space ${isAnnual ? 'text-[#d4ff00]' : 'text-white/40'}`}>Option 0{i+1}</span>
-                <h3 className="text-3xl xl:text-4xl font-black leading-tight uppercase mb-6 font-bebas tracking-wider whitespace-pre-line break-words">{plan.title}</h3>
-                <p className="text-sm font-bold opacity-50 uppercase tracking-widest font-space">{plan.sub}</p>
+                <span className={`text-xs font-bold uppercase tracking-[0.4em] block mb-6 font-space ${isAnnual ? 'text-[#d4ff00]' : 'text-white/40'}`}>Option 0{i+1}</span>
+                <h3 className="text-3xl font-black leading-tight uppercase mb-4 font-bebas tracking-wider whitespace-pre-line break-words">{plan.title}</h3>
+                <p className="text-xs font-bold opacity-50 uppercase tracking-widest font-space whitespace-pre-line">{plan.sub}</p>
               </div>
               <div>
-                <div className={`text-5xl xl:text-6xl font-black mb-8 xl:mb-10 tracking-tighter font-bebas ${isAnnual ? 'text-[#d4ff00]' : ''}`}>{plan.price}</div>
-                <button className={`w-full py-5 border font-black uppercase font-bebas tracking-widest text-xl transition-all duration-500 hover:scale-105 active:scale-95 ${
+                <div className={`text-5xl font-black mb-8 tracking-tighter font-bebas ${isAnnual ? 'text-[#d4ff00]' : ''}`}>{plan.price}</div>
+                <button className={`w-full py-4 border font-black uppercase font-bebas tracking-widest text-xl transition-all duration-500 hover:scale-105 active:scale-95 ${
                   isAnnual 
                     ? 'bg-[#d4ff00] text-black border-[#d4ff00] hover:bg-white hover:border-white' 
                     : 'border-white/20 hover:bg-white hover:text-black hover:border-white'
@@ -76,19 +81,22 @@ const Pricing = () => {
                     <div className="group cursor-none">
                         <div className="flex items-center gap-10 mb-8">
                             <div className="w-32 h-32 rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-zinc-900">
-                                <img src="/images/trainers/old_web_2.webp" alt="Ondřej Soustružník" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
+                                <img src="/images/trainers/soustruznik.webp" alt="Ondřej Soustružník" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
                             </div>
                             <div>
                                <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-bebas tracking-wider uppercase leading-none">ONDŘEJ SOUSTRUŽNÍK</h5>
                                <div className="h-1 w-0 group-hover:w-full bg-[#d4ff00] transition-all duration-700 mt-2" />
                             </div>
                         </div>
-                        <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-space max-w-sm group-hover:text-white/80 transition-colors">HEAD COACH / FYZIO / SÍLA</p>
+                        <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-space max-w-sm group-hover:text-white/80 transition-colors mb-4">HEAD COACH / FYZIO / SÍLA</p>
+                        <a href="tel:+420777105548" className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
+                            Kontaktovat: +420 777 105 548
+                        </a>
                     </div>
                     <div className="group cursor-none">
                         <div className="flex items-center gap-10 mb-8">
                             <div className="w-32 h-32 rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 -rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-zinc-900">
-                                <img src="/images/trainers/old_web_1.webp" alt="Jaroslav Hamáček" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
+                                <img src="/images/trainers/hamacek.webp" alt="Jaroslav Hamáček" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
                             </div>
                             <div>
                                <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-bebas tracking-wider uppercase leading-none">JAROSLAV HAMÁČEK</h5>

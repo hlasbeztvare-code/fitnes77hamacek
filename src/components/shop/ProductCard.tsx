@@ -99,14 +99,22 @@ export default function ProductCard({ product }: Props) {
         </p>
 
         <div className="mt-auto pt-3 sm:pt-4">
-          <div className="flex flex-wrap items-baseline gap-1 sm:gap-3">
-            <span className="text-[0.95rem] sm:text-xl font-black text-zinc-950 not-italic">
-              {product.price.toLocaleString('cs-CZ')} Kč
-            </span>
-            {product.compareAtPrice > 0 && (
-              <span className="text-[9px] sm:text-xs text-zinc-400 line-through not-italic">
-                {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
+          <div className="flex flex-wrap items-baseline gap-1 sm:gap-3 lg:min-h-[28px]">
+            {product.category === 'supplement' ? (
+              <span className="text-[0.95rem] sm:text-xl font-black text-zinc-400 uppercase tracking-widest not-italic">
+                Připravujeme
               </span>
+            ) : (
+              <>
+                <span className="text-[0.95rem] sm:text-xl font-black text-zinc-950 not-italic">
+                  {product.price.toLocaleString('cs-CZ')} Kč
+                </span>
+                {product.compareAtPrice > 0 && (
+                  <span className="text-[9px] sm:text-xs text-zinc-400 line-through not-italic">
+                    {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
+                  </span>
+                )}
+              </>
             )}
           </div>
 

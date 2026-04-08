@@ -106,7 +106,7 @@ export default async function WowHomepageSections() {
         <div className="founder-sk"></div>
         <div className="founder-ct">
           <div className="founder-img">
-            <img src="/images/trainers/hlavacek.jpg" alt="Jaroslav Hamáček" loading="lazy" />
+            <img src="/images/trainers/hamacek.webp" alt="Jaroslav Hamáček" loading="lazy" />
           </div>
 
           <div>
@@ -141,6 +141,7 @@ export default async function WowHomepageSections() {
         </div>
       </section>
 
+      {/* 
       <section className="cta-banner hidden md:block" id="akce" aria-label="Akce">
         <div className="cta-sk"></div>
         <div className="cta-in">
@@ -175,6 +176,7 @@ export default async function WowHomepageSections() {
           </div>
         </div>
       </section>
+      */}
     </>
   );
 }

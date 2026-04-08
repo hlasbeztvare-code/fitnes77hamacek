@@ -3,8 +3,8 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-const mbImages = Array.from({ length: 39 }, (_, i) => ({
-  url: `/images/gym/gallery/gym_photo_${i + 1}.webp`,
+const mbImages = Array.from({ length: 8 }, (_, i) => ({
+  url: `/images/gym/gym0${i + 1}.webp`,
   title: `Fitness 77 MB`
 }));
 
@@ -12,11 +12,14 @@ const images = [...mbImages];
 
 const HorizontalGallery = () => {
   const targetRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: targetRef });
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-97%']);
+  const { scrollYProgress } = useScroll({ 
+    target: targetRef,
+    offset: ["start start", "end end"]
+  });
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', 'calc(-100% + 100vw)']);
 
   return (
-    <section ref={targetRef} className="relative h-[900vh] bg-[#050505] selection:bg-[#d4ff00] selection:text-black">
+    <section ref={targetRef} className="relative h-[300vh] bg-[#050505] selection:bg-[#d4ff00] selection:text-black">
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         <motion.div style={{ x }} className="flex gap-12 px-12 items-center transform-gpu will-change-transform">
           

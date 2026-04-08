@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 
@@ -12,7 +14,8 @@ const images = [
 export const Gallery = () => {
   const targetRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
-    target: targetRef
+    target: targetRef,
+    offset: ["start start", "end end"]
   });
 
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-80%"]);

@@ -8,10 +8,10 @@ import { useCartStore } from '@/hooks/useCartStore';
 import useMounted from '@/hooks/useMounted';
 
 const navItems = [
+  { label: 'GYM', href: '/gym' },
   { label: 'SUPLEMENTY', href: '/supplements' },
   { label: 'VYBAVENÍ', href: '/equipment' },
   { label: 'BAZAR', href: '/bazaar' },
-  { label: 'GYM / TRENÉŘI', href: '/gym' },
 ];
 
 export default function Navbar() {

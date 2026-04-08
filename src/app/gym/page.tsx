@@ -14,18 +14,18 @@ function App() {
   return (
     <main className="bg-black min-h-screen text-white font-space">
       <SmoothScroll />
-      <CustomCursor />
-      <FloatingPhotos />
+        <CustomCursor />
+        <FloatingPhotos />
+        
+        <Hero />
       
-      <Hero />
-      
-      <Marquee text="PRÉMIOVÝ GYM V MLADÉ BOLESLAVI • BEZ KOMPROMISŮ" speed={30} />
+      <Marquee text="PRÉMIOVÝ GYM V MLADÉ BOLESLAVI • BEZ KOMPROMISŮ" speed={15} />
       
       <Services />
       
       <HorizontalGallery />
       
-      <Marquee text="JOIN THE MOVEMENT • F77 • NO LIMITS" speed={50} reverse outline />
+      <Marquee text="JOIN THE MOVEMENT • F77 • NO LIMITS" speed={25} reverse outline />
       
       <Pricing />
       
