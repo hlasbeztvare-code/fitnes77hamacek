@@ -16,10 +16,10 @@ export const trainerStacks: Record<string, {
     headline: 'Ondřejův stack',
     subline: 'Produkty, které používám každý trénink. Bez kompromisů.',
     productSlugs: [
+      'deadpump-v2-pump-formula',
       'creatine-monohydrate',
       'bcaa-amino-complex',
-      'deadpump-pre-workout',
-      'whey-protein-isolate',
+      'black-dead-pre-workout',
     ],
   },
   'jaroslav-hamacek': {
@@ -27,19 +27,19 @@ export const trainerStacks: Record<string, {
     subline: 'To, co doopravdy funguje. Testováno na vlastní kůži.',
     productSlugs: [
       'black-dead-pre-workout',
-      'creatine-monohydrate',
-      'eaa-essential-amino',
       'deadpump-v2-pump-formula',
+      'creatine-monohydrate',
+      'bcaa-amino-complex',
     ],
   },
   'beata-cejnarova': {
     headline: 'Beátin stack',
     subline: 'Produkty, které doopravdy používám. Pro výsledky i zdraví.',
     productSlugs: [
-      'whey-protein-isolate',
       'bcaa-amino-complex',
-      'magnesium-recovery-complex',
-      'eaa-essential-amino',
+      'creatine-monohydrate',
+      'deadpump-v2-pump-formula',
+      'black-dead-pre-workout',
     ],
   },
 };
