@@ -58,34 +58,15 @@ export default async function BazaarPage() {
 
                 <div className="mt-auto pt-3 sm:pt-4">
                   <div className="flex items-center gap-3 flex-wrap">
-                    {item.price > 0 ? (
-                      <>
-                        <span className="text-base sm:text-xl font-black text-zinc-950">
-                          {item.price.toLocaleString('cs-CZ')} Kč
-                        </span>
-                        {item.originalPrice && item.originalPrice > 0 && (
-                          <span className="text-xs text-zinc-400 line-through">
-                            {item.originalPrice.toLocaleString('cs-CZ')} Kč
-                          </span>
-                        )}
-                      </>
-                    ) : (
-                      <span className="text-sm font-black uppercase tracking-widest text-zinc-400">
-                        Připravujeme
-                      </span>
-                    )}
+                    <span className="text-sm font-black uppercase tracking-widest text-zinc-400">
+                      Připravujeme
+                    </span>
                   </div>
 
-                  <div className="mt-4 opacity-80 transition-opacity duration-300 group-hover:opacity-100">
-                    <AddToCartButton
-                      product={{
-                        id: item.id,
-                        name: `[BAZAR] ${item.title}`,
-                        slug: item.slug,
-                        price: item.price,
-                        image: item.image,
-                      }}
-                    />
+                  <div className="mt-4 opacity-50 cursor-not-allowed">
+                    <div className="w-full bg-zinc-100 px-6 py-3 font-black uppercase tracking-[0.14em] text-zinc-400 text-center text-[10px] [clip-path:polygon(8%_0%,100%_0%,92%_100%,0%_100%)]">
+                      Připravujeme
+                    </div>
                   </div>
                 </div>
               </div>

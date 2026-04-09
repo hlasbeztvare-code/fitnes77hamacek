@@ -29,7 +29,7 @@ export default async function WowHomepageSections({ hideCategories }: WowHomepag
     {
       title: 'Bazar',
       href: '/bazar',
-      description: 'Použité stroje s transparentním stavem a cenou.',
+      description: 'Použité stroje s transparentním stavem.',
     },
   ];
 

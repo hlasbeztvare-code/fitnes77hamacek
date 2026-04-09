@@ -162,34 +162,15 @@ export default function ProductCard({ product }: Props) {
 
         <div className="mt-auto pt-3 sm:pt-4">
           <div className="flex flex-wrap items-baseline gap-1 sm:gap-3 lg:min-h-[28px]">
-            {product.price > 0 ? (
-              <>
-                <span className="text-[1.1rem] sm:text-2xl font-black text-zinc-950 not-italic">
-                  {product.price.toLocaleString('cs-CZ')} Kč
-                </span>
-                {product.compareAtPrice > 0 && (
-                  <span className="text-[10px] sm:text-sm text-zinc-400 line-through not-italic font-bold">
-                    {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
-                  </span>
-                )}
-              </>
-            ) : (
-              <span className="text-[0.95rem] sm:text-xl font-black text-zinc-400 uppercase tracking-widest not-italic">
-                Již brzy
-              </span>
-            )}
+            <span className="text-[0.95rem] sm:text-xl font-black text-zinc-400 uppercase tracking-widest not-italic">
+              Připravujeme
+            </span>
           </div>
 
-          <div className="mt-4 opacity-90 transition-opacity duration-300 group-hover:opacity-100">
-            <AddToCartButton
-              product={{
-                id: product.id,
-                name: product.name,
-                slug: product.slug,
-                price: product.price,
-                image: product.image,
-              }}
-            />
+          <div className="mt-4 opacity-50 cursor-not-allowed">
+            <div className="w-full bg-zinc-200 px-6 py-3 font-black uppercase tracking-[0.14em] text-zinc-400 text-center text-xs [clip-path:polygon(8%_0%,100%_0%,92%_100%,0%_100%)]">
+              Připravujeme
+            </div>
           </div>
         </div>
       </div>

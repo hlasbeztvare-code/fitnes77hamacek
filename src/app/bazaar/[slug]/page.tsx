@@ -64,22 +64,9 @@ export default async function BazaarDetailPage({ params }: Props) {
               {item.title}
             </h1>
 
-            {item.price > 0 ? (
-              <div className="mt-8 flex items-center gap-6">
-                <span className="text-4xl font-black text-zinc-950 not-italic">
-                  {item.price.toLocaleString('cs-CZ')} Kč
-                </span>
-                {item.originalPrice && item.originalPrice > 0 && (
-                  <span className="text-xl text-zinc-400 line-through not-italic">
-                    {item.originalPrice.toLocaleString('cs-CZ')} Kč
-                  </span>
-                )}
-              </div>
-            ) : (
-              <div className="mt-8">
-                <span className="text-3xl font-black uppercase tracking-wider text-zinc-500 not-italic">Připravujeme</span>
-              </div>
-            )}
+            <div className="mt-8">
+              <span className="text-3xl font-black uppercase tracking-wider text-zinc-500 not-italic">Připravujeme</span>
+            </div>
 
             <div className="mt-4 text-[10px] font-black uppercase tracking-widest text-zinc-400">
               Lokalita: {item.location}
@@ -87,25 +74,11 @@ export default async function BazaarDetailPage({ params }: Props) {
 
             <p className="mt-8 text-lg leading-relaxed text-zinc-600 max-w-xl">{item.description}</p>
 
-            {item.price > 0 ? (
-              <div className="mt-12 max-w-md">
-                <AddToCartButton
-                  product={{
-                    id: item.id,
-                    name: `[BAZAR] ${item.title}`,
-                    slug: item.slug,
-                    price: item.price,
-                    image: item.image,
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="mt-12 max-w-md">
-                <button disabled className="w-full cursor-not-allowed bg-zinc-200 px-6 py-4 font-bold uppercase tracking-wider text-zinc-500">
-                  Přijde brzy
-                </button>
-              </div>
-            )}
+            <div className="mt-12 max-w-md">
+              <button disabled className="w-full cursor-not-allowed bg-zinc-200 px-6 py-4 font-black uppercase tracking-widest text-zinc-400">
+                Připravujeme
+              </button>
+            </div>
 
             <div className="mt-12 grid grid-cols-2 gap-6 border-t border-zinc-100 pt-12 text-[10px] font-black uppercase tracking-[0.15em] text-zinc-400">
               <div className="flex items-center gap-3">
@@ -148,10 +121,7 @@ export default async function BazaarDetailPage({ params }: Props) {
                   </div>
                   <div className="mt-4 text-center">
                     <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900">{rel.title}</h3>
-                    <p className="mt-2 text-lg font-black text-zinc-900">{rel.price.toLocaleString('cs-CZ')} Kč</p>
-                    {rel.originalPrice && rel.originalPrice > 0 && (
-                      <p className="text-xs text-zinc-400 line-through">{rel.originalPrice.toLocaleString('cs-CZ')} Kč</p>
-                    )}
+                    <p className="mt-2 text-base font-bold uppercase tracking-wider text-zinc-500">Připravujeme</p>
                   </div>
                 </Link>
               ))}

@@ -85,43 +85,24 @@ export default async function SupplementDetailPage({ params }: Props) {
               {product.name}
             </h1>
             
-            {product.price > 0 ? (
-              <div className="mt-8 flex items-center gap-6">
-                <span className="text-4xl font-black text-zinc-950 not-italic">
-                  {product.price.toLocaleString('cs-CZ')} Kč
-                </span>
-                {product.compareAtPrice && product.compareAtPrice > 0 && (
-                  <span className="text-xl text-zinc-400 line-through not-italic">
-                    {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
-                  </span>
-                )}
-              </div>
-            ) : (
-              <div className="mt-8">
-                <span className="text-3xl font-black uppercase tracking-wider text-zinc-500 not-italic">
-                  Připravujeme
-                </span>
-              </div>
-            )}
+            <div className="mt-8">
+              <span className="text-3xl font-black uppercase tracking-wider text-zinc-500 not-italic">
+                Připravujeme
+              </span>
+            </div>
 
             <p className="mt-8 text-lg leading-relaxed text-zinc-600 max-w-xl">
               {product.description}
             </p>
 
-            {product.price > 0 ? (
-              <div className="mt-12 max-w-md">
-                <AddToCartButton product={{ id: product.id, name: product.name, slug: product.slug, price: product.price, image: product.image }} />
-              </div>
-            ) : (
-              <div className="mt-12 max-w-md">
-                <button
-                  disabled
-                  className="w-full cursor-not-allowed bg-zinc-200 px-6 py-4 font-bold uppercase tracking-wider text-zinc-500"
-                >
-                  Již brzy v prodeji
-                </button>
-              </div>
-            )}
+            <div className="mt-12 max-w-md">
+              <button
+                disabled
+                className="w-full cursor-not-allowed bg-zinc-200 px-6 py-4 font-black uppercase tracking-widest text-zinc-400"
+              >
+                Připravujeme
+              </button>
+            </div>
 
             <div className="mt-12 grid grid-cols-2 gap-6 border-t border-zinc-100 pt-12 text-[10px] font-black uppercase tracking-[0.15em] text-zinc-400">
               <div className="flex items-center gap-3">
@@ -156,18 +137,12 @@ export default async function SupplementDetailPage({ params }: Props) {
                       className="object-contain transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="mt-4 text-center">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900">{relatedProduct.name}</h3>
-                    {relatedProduct.price > 0 ? (
-                      <p className="mt-2 text-lg font-black text-zinc-900">
-                        {relatedProduct.price.toLocaleString('cs-CZ')} Kč
-                      </p>
-                    ) : (
+                    <div className="mt-4 text-center">
+                      <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900">{relatedProduct.name}</h3>
                       <p className="mt-2 text-base font-bold uppercase tracking-wider text-zinc-500">
                         Připravujeme
                       </p>
-                    )}
-                  </div>
+                    </div>
                 </Link>
               ))}
             </div>
@@ -175,10 +150,7 @@ export default async function SupplementDetailPage({ params }: Props) {
         </div>
       )}
 
-      {/* Sticky mobilní tlačítko KOUPIT */}
-      {product.price > 0 && (
-        <StickyMobileBuy product={{ id: product.id, name: product.name, slug: product.slug, price: product.price, image: product.image }} />
-      )}
+      {/* Sticky mobile button removed as prices are hidden */}
     </section>
   );
 }
