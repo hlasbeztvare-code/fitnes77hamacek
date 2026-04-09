@@ -86,7 +86,7 @@ const Pricing = () => {
           })}
         </div>
 
-        <div className="mt-48 grid grid-cols-1 lg:grid-cols-2 gap-32">
+        <div id="trainers" className="mt-48 grid grid-cols-1 lg:grid-cols-2 gap-32">
             <div className="space-y-16">
                 <div>
                    <span className="text-[#d4ff00] text-sm font-bold tracking-[0.8em] uppercase mb-10 block font-space">The Mentors</span>
