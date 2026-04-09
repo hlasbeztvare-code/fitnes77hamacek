@@ -1,5 +1,6 @@
 import { Instagram, Facebook } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { socialLinks } from '@/lib/social';
 
 const Footer = () => {
   return (
@@ -52,13 +53,18 @@ const Footer = () => {
                </div>
               </div>
             </div>
-            <div className="flex gap-8">
-              <a href="#" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black hover:border-[#d4ff00] transition-all duration-500 hover:-rotate-6 hover:scale-110 active:scale-95 transform-gpu shadow-lg hover:shadow-[0_0_20px_rgba(212,255,0,0.4)]">
-                 <Instagram size={28} />
-               </a>
-              <a href="#" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black hover:border-[#d4ff00] transition-all duration-500 hover:rotate-6 hover:scale-110 active:scale-95 transform-gpu shadow-lg hover:shadow-[0_0_20px_rgba(212,255,0,0.4)]">
-                 <Facebook size={28} />
-               </a>
+            <div className="flex gap-6">
+              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black hover:border-[#d4ff00] transition-all duration-500 hover:-rotate-6 hover:scale-110 active:scale-95 transform-gpu shadow-lg hover:shadow-[0_0_20px_rgba(212,255,0,0.4)]">
+                <Instagram size={28} />
+              </a>
+              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black hover:border-[#d4ff00] transition-all duration-500 hover:rotate-6 hover:scale-110 active:scale-95 transform-gpu shadow-lg hover:shadow-[0_0_20px_rgba(212,255,0,0.4)]">
+                <Facebook size={28} />
+              </a>
+              <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-16 h-16 border border-white/10 rounded-2xl flex items-center justify-center hover:bg-[#d4ff00] hover:text-black hover:border-[#d4ff00] transition-all duration-500 hover:-rotate-6 hover:scale-110 active:scale-95 transform-gpu shadow-lg hover:shadow-[0_0_20px_rgba(212,255,0,0.4)]">
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.69a8.18 8.18 0 0 0 4.77 1.52V6.76a4.85 4.85 0 0 1-1-.07z"/>
+                </svg>
+              </a>
             </div>
           </div>
           <div className="lg:col-span-8">

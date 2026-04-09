@@ -2,10 +2,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import AddToCartButton from '@/components/shop/AddToCartButton';
-import { PrismaClient } from '@prisma/client';
+import StickyMobileBuy from '@/components/shop/StickyMobileBuy';
+import { db } from '@/lib/db';
 import { Metadata } from 'next';
-
-const prisma = new PrismaClient();
 
 type Props = {
   params: { slug: string };
@@ -14,7 +13,7 @@ type Props = {
 // Funkce pro generování metadat (SEO)
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
-  const product = await prisma.product.findUnique({
+  const product = await db.product.findFirst({
     where: { slug, category: 'supplement' },
   });
 
@@ -32,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // Funkce pro generování statických stránek (lepší performance)
 export async function generateStaticParams() {
-  const supplements = await prisma.product.findMany({
+  const supplements = await db.product.findMany({
     where: { category: 'supplement' },
   });
 
@@ -43,12 +42,12 @@ export async function generateStaticParams() {
 
 export default async function SupplementDetailPage({ params }: Props) {
   const { slug } = params;
-  const product = await prisma.product.findUnique({
+  const product = await db.product.findFirst({
     where: { slug, category: 'supplement' },
   });
 
   // Fetch related products
-  const relatedProducts = await prisma.product.findMany({
+  const relatedProducts = await db.product.findMany({
     where: {
       category: 'supplement',
       NOT: {
@@ -184,6 +183,11 @@ export default async function SupplementDetailPage({ params }: Props) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Sticky mobilní tlačítko KOUPIT */}
+      {product.price > 0 && (
+        <StickyMobileBuy product={{ id: product.id, name: product.name, slug: product.slug, price: product.price, image: product.image }} />
       )}
     </section>
   );

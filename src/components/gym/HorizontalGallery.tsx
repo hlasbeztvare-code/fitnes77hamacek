@@ -1,10 +1,11 @@
 "use client";
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { useEffect } from 'react';
 
-const mbImages = Array.from({ length: 8 }, (_, i) => ({
-  url: `/images/gym/gym0${i + 1}.webp`,
+const mbImages = Array.from({ length: 27 }, (_, i) => ({
+  url: `/images/gym/gym${String(i + 1).padStart(2, '0')}.webp`,
   title: `Fitness 77 MB`
 }));
 
@@ -12,16 +13,49 @@ const images = [...mbImages];
 
 const HorizontalGallery = () => {
   const targetRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ 
-    target: targetRef,
-    offset: ["start start", "end end"]
+  
+  // Manuální motionValue pro scroll progress – nezávislé na Framer Motion useScroll
+  const scrollProgress = useMotionValue(0);
+  
+  // Vyhlazení pohybu
+  const smoothProgress = useSpring(scrollProgress, {
+    stiffness: 80,
+    damping: 20,
+    restDelta: 0.001,
   });
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', 'calc(-100% + 100vw)']);
+
+  const x = useTransform(smoothProgress, [0, 1], ['0%', '-85%']);
+
+  useEffect(() => {
+    const section = targetRef.current;
+    if (!section) return;
+
+    const updateProgress = () => {
+      const rect = section.getBoundingClientRect();
+      const sectionHeight = section.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      // Jak daleko jsme v sekci: 0 = začátek, 1 = konec
+      const scrolled = -rect.top;
+      const total = sectionHeight - viewportHeight;
+      const progress = Math.min(Math.max(scrolled / total, 0), 1);
+
+      scrollProgress.set(progress);
+    };
+
+    // Napojit na nativní scroll (funguje i s Lenis – Lenis emituje scroll event na window)
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress(); // Inicializace
+
+    return () => {
+      window.removeEventListener('scroll', updateProgress);
+    };
+  }, [scrollProgress]);
 
   return (
     <section ref={targetRef} className="relative h-[300vh] bg-[#050505] selection:bg-[#d4ff00] selection:text-black">
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-        <motion.div style={{ x }} className="flex gap-12 px-12 items-center transform-gpu will-change-transform">
+        <motion.div style={{ x }} className="flex gap-12 px-12 items-center will-change-transform">
           
           {/* Přidán pr-20, aby se R v PROSTORY/PRO už neřezalo (smrk) */}
           <div className="flex-shrink-0 w-[60vw] h-[80vh] flex flex-col justify-center px-16 pr-20">

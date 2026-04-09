@@ -47,7 +47,7 @@ export default async function WowHomepageSections() {
             </div>
           </Reveal>
 
-          <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-2 xl:grid-cols-4 sm:gap-6">
+          <div className="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-4 sm:gap-6">
             {categories.map((item, index) => (
               <Reveal key={item.href} delay={index * 0.06}>
                 <Link
@@ -87,8 +87,8 @@ export default async function WowHomepageSections() {
             </div>
           </Reveal>
 
-          <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-2 xl:grid-cols-4 sm:gap-6">
-            {products.slice(0, 4).map((product, index) => (
+          <div className="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-4 sm:gap-6">
+            {products.slice(0, 8).map((product, index) => (
               <Reveal key={product.id} delay={index * 0.06}>
                 <ProductCard
                   product={{
