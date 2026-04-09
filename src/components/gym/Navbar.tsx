@@ -17,11 +17,11 @@ export const Navbar = () => {
   });
 
   const navLinks = [
-    { name: 'HOME', href: '#' },
-    { name: 'SLUŽBY', href: '#sluzby' },
-    { name: 'CENÍK', href: '#cenik' },
-    { name: 'TÝM', href: '#tym' },
-    { name: 'KONTAKT', href: '#kontakt' }
+    { name: 'HOME',    href: '#' },
+    { name: 'SLUŽBY',  href: '#sluzby' },
+    { name: 'CENÍK',   href: '#pricing' },
+    { name: 'TRENÉŘI', href: '#trainers' },
+    { name: 'KONTAKT', href: '#contact' },
   ];
 
   return (
@@ -66,7 +66,7 @@ export const Navbar = () => {
             <motion.a 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="#kontakt" 
+              href="#contact" 
               className="hidden md:block px-6 py-2 bg-[#d4ff00] text-black font-bebas text-lg font-black tracking-widest"
             >
               JOIN NOW
