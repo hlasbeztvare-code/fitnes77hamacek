@@ -39,7 +39,9 @@ export const Gallery = () => {
             <div key={index} className="relative w-[80vw] md:w-[600px] aspect-[4/5] md:aspect-[16/9] shrink-0 group overflow-hidden">
               <img 
                 src={src} 
-                alt={`Arena ${index}`} 
+                alt={`Fitness 77 gym ${index + 1}`}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 ease-out"
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500" />

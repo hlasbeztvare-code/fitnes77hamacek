@@ -38,7 +38,7 @@ export const Trainers = () => {
                 className="flex items-center gap-6 group cursor-default"
               >
                 <div className="w-24 h-24 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/10 group-hover:border-[#d4ff00]/50 bg-zinc-900">
-                  <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
+                  <img src={t.image} alt={t.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h3 className="text-3xl font-bold text-white font-bebas tracking-tight group-hover:text-[#d4ff00] transition-colors uppercase">

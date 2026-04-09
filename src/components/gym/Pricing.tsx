@@ -96,7 +96,7 @@ const Pricing = () => {
                     <Link href="/gym/ondrej-soustruznik" className="block group cursor-pointer">
                         <div className="flex items-center gap-10 mb-8">
                             <div className="w-32 h-32 rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-zinc-900">
-                                <img src="/images/trainers/soustruznik.webp" alt="Ondřej Soustružník" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
+                                <img src="/images/trainers/soustruznik.webp" alt="Ondřej Soustružník" loading="lazy" decoding="async" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
                             </div>
                             <div>
                                <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-bebas tracking-wider uppercase leading-none">ONDŘEJ SOUSTRUŽNÍK</h5>
@@ -116,7 +116,7 @@ const Pricing = () => {
                     <Link href="/gym/jaroslav-hamacek" className="block group cursor-pointer">
                         <div className="flex items-center gap-10 mb-8">
                             <div className="w-32 h-32 rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 -rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-zinc-900">
-                                <img src="/images/trainers/hamacek.webp" alt="Jaroslav Hamáček" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
+                                <img src="/images/trainers/hamacek.webp" alt="Jaroslav Hamáček" loading="lazy" decoding="async" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
                             </div>
                             <div>
                                <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-bebas tracking-wider uppercase leading-none">JAROSLAV HAMÁČEK</h5>
@@ -136,7 +136,7 @@ const Pricing = () => {
                     <Link href="/gym/beata-cejnarova" className="block group cursor-pointer">
                         <div className="flex items-center gap-10 mb-8">
                             <div className="w-32 h-32 rounded-3xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 rotate-2 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-zinc-900">
-                                <img src="/images/trainers/cejnarova.jpg" alt="Beata Cejnarová" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
+                                <img src="/images/trainers/cejnarova.jpg" alt="Beata Cejnarová" loading="lazy" decoding="async" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-1000" />
                             </div>
                             <div>
                                <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-bebas tracking-wider uppercase leading-none">BEATA CEJNAROVÁ</h5>
