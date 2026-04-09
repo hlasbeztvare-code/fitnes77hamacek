@@ -8,7 +8,7 @@ const trainers = [
     firstName: 'ONDŘEJ',
     lastName: 'SOUSTRUŽNÍK',
     title: 'HEAD COACH / ELITE TRAINER',
-    image: '/images/trainers/old_web_2.jpg', 
+    image: '/images/trainers/soustruznik.webp', 
     skills: [
       { name: 'STRENGTH & TECH', value: 98 },
       { name: 'PHYSIOLOGY', value: 92 },
@@ -18,10 +18,20 @@ const trainers = [
     firstName: 'JAROSLAV',
     lastName: 'HAMÁČEK',
     title: 'OWNER / VISIONARY',
-    image: '/images/trainers/old_web_1.jpg', 
+    image: '/images/trainers/hamacek.webp', 
     skills: [
       { name: 'STRATEGY', value: 100 },
       { name: 'COMMUNITY', value: 95 },
+    ]
+  },
+  {
+    firstName: 'BEATA',
+    lastName: 'CEJNAROVÁ',
+    title: 'ELITE TRAINER / NUTRI COACH',
+    image: '/images/trainers/cejnarova.jpg', 
+    skills: [
+      { name: 'STRENGTH', value: 94 },
+      { name: 'NUTRITION', value: 98 },
     ]
   }
 ];

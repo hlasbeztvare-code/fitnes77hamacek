@@ -12,6 +12,11 @@ const miniTrainers = [
     name: "JAROSLAV HAMÁČEK",
     tags: "COMMUNITY / BOX / STRATEGY",
     image: "/images/trainers/hamacek.webp"
+  },
+  {
+    name: "BEATA CEJNAROVÁ",
+    tags: "FITNESS / NUTRITION / STRENGTH",
+    image: "/images/trainers/cejnarova.jpg"
   }
 ];
 
