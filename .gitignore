@@ -45,3 +45,5 @@ fitness77-bootstrap.sh
 fitness77-phase3-commerce.sh
 fitness77-phase4-commerce.sh
 install_polish.sh
+.vercel
+.env*.local

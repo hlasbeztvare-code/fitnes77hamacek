@@ -70,8 +70,15 @@ export default async function TrainerDetailPage({ params }: Props) {
 
       {/* ── HERO ── */}
       <div className="relative h-screen flex items-end overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src={trainer.image} alt={trainer.name} fill className="object-cover object-top grayscale-[0.3]" priority />
+        <div className="absolute inset-0" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+          <Image
+            src={trainer.image}
+            alt={trainer.name}
+            fill
+            sizes="100vw"
+            className="object-cover object-top grayscale-[0.3]"
+            priority
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/80 via-transparent to-transparent" />
         </div>

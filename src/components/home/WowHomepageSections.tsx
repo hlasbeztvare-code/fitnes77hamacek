@@ -9,7 +9,7 @@ export default async function WowHomepageSections() {
   const categories = [
     {
       title: 'Gym / Trenéři',
-      href: '/gym',
+      href: '/#trainers',
       description: 'Osobní vedení, rezervace a služby.',
     },
     {

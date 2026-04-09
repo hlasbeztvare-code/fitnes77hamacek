@@ -60,6 +60,7 @@ export default async function EquipmentDetailPage({ params }: Props) {
                   src={item.image}
                   alt={item.name}
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
                   priority
                 />
