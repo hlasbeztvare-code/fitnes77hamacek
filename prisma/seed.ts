@@ -39,18 +39,6 @@ async function main() {
         featured: true,
       },
       {
-        name: 'Deadpump Pre-Workout',
-        slug: 'deadpump-pre-workout',
-        shortDescription: 'Extrémní energie, focus a brutální prokrvení.',
-        description: 'Deadpump je nekompromisní předtréninkovka navržená pro ty nejtvrdší tréninky. Kombinuje vysoké dávky citrulinu, beta-alaninu a stimulantů pro maximální výkon.',
-        price: 1290,
-        compareAtPrice: 1590,
-        image: '/images/products/Deadpump.webp',
-        stock: 75,
-        category: 'supplement',
-        featured: true,
-      },
-      {
         name: 'BLACK DEAD – PRE WORKOUT',
         slug: 'black-dead-pre-workout',
         shortDescription: 'Explozivní energie. Brutální pumpa. Maximální fokus.',
@@ -63,30 +51,6 @@ async function main() {
         featured: true,
       },
       {
-        name: 'Whey Protein Isolate',
-        slug: 'whey-protein-isolate',
-        shortDescription: 'Rychlá regenerace a budování svalové hmoty.',
-        description: 'Prémiový syrovátkový protein s vysokým obsahem bílkovin pro maximální regeneraci a růst svalů.',
-        price: 0,
-        compareAtPrice: 0,
-        image: '/images/products/creatine.webp',
-        stock: 80,
-        category: 'supplement',
-        featured: false,
-      },
-      {
-        name: 'EAA Essential Amino',
-        slug: 'eaa-essential-amino',
-        shortDescription: 'Kompletní aminokyselinový profil pro výkon a regeneraci.',
-        description: 'Esenciální aminokyseliny pro podporu anabolismu, rychlejší regeneraci a zachování svalové hmoty.',
-        price: 0,
-        compareAtPrice: 0,
-        image: '/images/products/bcaa.webp',
-        stock: 60,
-        category: 'supplement',
-        featured: false,
-      },
-      {
         name: 'DEAD PUMP – STIM FREE',
         slug: 'deadpump-v2-pump-formula',
         shortDescription: 'Extrémní pumpa. Čistý výkon. Bez kofeinu.',
@@ -96,7 +60,7 @@ async function main() {
         image: '/images/products/Deadpump.webp',
         stock: 45,
         category: 'supplement',
-        featured: false,
+        featured: true,
       },
     ],
   });
@@ -115,8 +79,8 @@ async function main() {
         slug: 'heavy-duty-powerlifting-opasek',
         shortDescription: 'Nekompromisní opora pro ty nejtvrdší lifty.',
         description: 'Profesionální vzpěračský opasek navržený speciálně pro liftery, kteří zvedají fakt těžké váhy. Poskytuje maximální zpevnění středu těla při těžkých dřepech a mrtvých tazích.',
-        price: 0,
-        compareAtPrice: 0,
+        price: 1890,
+        compareAtPrice: 2290,
         image: '/images/products/pasek.mp4',
         stock: 15,
         category: 'equipment',
@@ -127,31 +91,6 @@ async function main() {
 
   // Bazaar
   await prisma.bazaarListing.deleteMany();
-
-  await prisma.bazaarListing.createMany({
-    data: [
-      {
-        title: 'Použitý Concept2 RowErg',
-        slug: 'pouzity-concept2-rowerg',
-        description: 'Použitý veslařský trenažér v dobrém stavu.',
-        price: 0,
-        originalPrice: 0,
-        condition: 'A',
-        location: 'Praha',
-        image: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=1200&q=80',
-      },
-      {
-        title: 'Leg Press Machine',
-        slug: 'leg-press-machine',
-        description: 'Použitý leg press se stabilní konstrukcí.',
-        price: 0,
-        originalPrice: 0,
-        condition: 'B',
-        location: 'Praha 7',
-        image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1200&q=80',
-      },
-    ],
-  });
 
   // Trainers
   await prisma.trainer.deleteMany();
@@ -187,25 +126,6 @@ async function main() {
 
   // Blog
   await prisma.blogPost.deleteMany();
-
-  await prisma.blogPost.createMany({
-    data: [
-      {
-        title: 'Jak vybrat správný kreatin',
-        slug: 'jak-vybrat-spravny-kreatin',
-        excerpt: 'Kreatin není jen jeden. Podívej se, jak vybrat správnou variantu.',
-        category: 'Suplementy',
-        image: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=1200&q=80',
-      },
-      {
-        title: 'Kdy dává smysl pre-workout',
-        slug: 'kdy-dava-smysl-pre-workout',
-        excerpt: 'Pre-workout může pomoct, pokud víš, kdy a proč ho použít.',
-        category: 'Performance',
-        image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1200&q=80',
-      },
-    ],
-  });
 
   console.log('✅ Seed hotov');
 }

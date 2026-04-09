@@ -4,7 +4,7 @@ export const products = [
     name: 'CREATINE MONOHYDRATE – FITNESS 77',
     slug: 'creatine-monohydrate',
     shortDescription: 'Čistá forma výkonu. Bez kompromisů.',
-    description: 'Prémiový kreatin pro sílu, výkon a explozivitu.',
+    description: 'Creatine Monohydrate od Fitness 77 představuje základ, na kterém stojí skutečný výkon.',
     price: 590,
     compareAtPrice: 790,
     image: '/images/products/creatine.webp',
@@ -27,19 +27,6 @@ export const products = [
   },
   {
     id: '3',
-    name: 'Deadpump Pre-Workout',
-    slug: 'deadpump-pre-workout',
-    shortDescription: '300g | Extrémní energie a focus před tréninkem.',
-    description: 'Výbušný pre-workout pro maximální fokus, energii a intenzitu.',
-    price: 1290,
-    compareAtPrice: 1590,
-    image: '/images/products/Deadpump.webp',
-    stock: 64,
-    category: 'supplement',
-    featured: true
-  },
-  {
-    id: '5',
     name: 'BLACK DEAD – PRE WORKOUT',
     slug: 'black-dead-pre-workout',
     shortDescription: 'Explozivní energie. Brutální pumpa. Maximální fokus.',
@@ -52,28 +39,15 @@ export const products = [
     featured: true
   },
   {
-    id: '6',
+    id: '4',
     name: 'DEAD PUMP – STIM FREE',
     slug: 'deadpump-v2-pump-formula',
     shortDescription: 'Extrémní pumpa. Čistý výkon. Bez kofeinu.',
-    description: 'DEAD PUMP je čistý výkon bez stimulantů. Pumpa, která tě drží od první do poslední série.',
+    description: 'DEAD PUMP je čistý výkon bez stimulantů.',
     price: 1190,
     compareAtPrice: 1390,
     image: '/images/products/Deadpump.webp',
     stock: 55,
-    category: 'supplement',
-    featured: false
-  },
-  {
-    id: '4',
-    name: 'BCAA Amino Complex',
-    slug: 'bcaa-amino-complex',
-    shortDescription: '400g | Regenerace a ochrana svalové hmoty.',
-    description: 'BCAA komplex pro regeneraci a ochranu svalů.',
-    price: 890,
-    compareAtPrice: 1190,
-    image: '/images/products/bcaa.webp',
-    stock: 93,
     category: 'supplement',
     featured: true
   }
