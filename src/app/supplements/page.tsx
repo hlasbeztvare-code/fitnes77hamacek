@@ -21,7 +21,7 @@ export default function SupplementsPage() {
           </div>
         </div>
       </section>
-      <WowHomepageSections />
+      <WowHomepageSections hideCategories={true} />
     </>
   );
 }
