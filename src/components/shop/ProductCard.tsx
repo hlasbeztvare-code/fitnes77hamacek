@@ -63,8 +63,8 @@ export default function ProductCard({ product }: Props) {
             </div>
           )}
 
-          {/* Hlavní obrázek / video */}
-          <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-2 group-hover:opacity-0 transform-gpu will-change-transform">
+          {/* Hlavní obrázek / video (Bottle) */}
+          <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-90 group-hover:opacity-0 group-hover:blur-sm transform-gpu will-change-transform">
             {isVideo ? (
               <video
                 src={product.image}
@@ -85,43 +85,35 @@ export default function ProductCard({ product }: Props) {
             )}
           </div>
 
-          {/* ── LASER PROJECTION hover image ── */}
+          {/* ── LASER PROJECTION hover image (Složení) ── */}
           {!isVideo && (
-            <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
+            <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
               {/* Scanline laser efekt */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
                 {/* Hlavní laser scanner linka */}
                 <div
-                  className="absolute left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100"
+                  className="absolute left-0 right-0 h-[3px] opacity-0 group-hover:opacity-100"
                   style={{
                     background: 'linear-gradient(90deg, transparent 0%, #00ffe7 20%, #00ffe7 50%, #7fff00 80%, transparent 100%)',
-                    boxShadow: '0 0 8px 2px #00ffe7, 0 0 20px 4px rgba(0,255,231,0.4)',
-                    animation: 'laserScan 0.6s ease-out forwards',
+                    boxShadow: '0 0 12px 3px #00ffe7, 0 0 25px 5px rgba(0,255,231,0.5)',
+                    animation: 'laserScan 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                     top: 0,
                   }}
                 />
                 {/* Subtilní scanlines overlay */}
                 <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-[0.06] transition-opacity duration-700"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-[0.08] transition-opacity duration-700"
                   style={{
                     backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,231,0.5) 2px, rgba(0,255,231,0.5) 4px)',
-                  }}
-                />
-                {/* Cyan glow rám */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    boxShadow: 'inset 0 0 20px rgba(0,255,231,0.15)',
                   }}
                 />
               </div>
 
               {/* Druhý obrázek – složení produktu */}
               <div
-                className="relative w-full h-full transform scale-95 group-hover:scale-100 transition-transform duration-500"
-                style={{ filter: 'drop-shadow(0 0 12px rgba(0,255,231,0.4)) drop-shadow(0 0 4px rgba(127,255,0,0.3))' }}
+                className="relative w-full h-full transform scale-110 group-hover:scale-100 transition-all duration-700 ease-out opacity-0 group-hover:opacity-100"
+                style={{ filter: 'drop-shadow(0 0 15px rgba(0,255,231,0.3))' }}
               >
-                {/* Zkoušíme různé varianty názvů pro složení */}
                 <Image
                   src={`/images/products/slozeni${product.slug.split('-')[0]}.webp`}
                   alt={`${product.name} – složení`}
@@ -130,15 +122,19 @@ export default function ProductCard({ product }: Props) {
                   className="object-contain"
                   onError={(e) => {
                     const img = e.currentTarget as HTMLImageElement;
-                    // Try next: slozeni[slug_without_dashes]
-                    if (!img.src.includes('1.webp') && !img.src.includes('slozeni' + product.slug.replace(/-/g, ''))) {
-                      img.src = `/images/products/slozeni${product.slug.replace(/-/g, '')}.webp`;
-                    } 
-                    // Try next: [slug]1.webp
-                    else if (!img.src.includes('1.webp')) {
+                    const slug = product.slug;
+                    const slugNoDashes = slug.replace(/-/g, '');
+                    const firstWord = slug.split('-')[0];
+                    const currentSrc = img.src;
+
+                    if (currentSrc.includes('slozeni' + firstWord) && !currentSrc.includes(slugNoDashes)) {
+                      img.src = `/images/products/slozeni${slugNoDashes}.webp`;
+                    } else if (!currentSrc.includes('1.webp') && (currentSrc.includes('slozeni') || currentSrc.includes(slugNoDashes))) {
                       img.src = product.image.replace(/(\.\w+)$/, '1$1');
-                    }
-                    else {
+                    } else if (!currentSrc.includes('fallback')) {
+                      // Mark as fallback to avoid loops
+                      img.src = product.image + '?v=fallback'; 
+                    } else {
                       img.style.display = 'none';
                     }
                   }}

@@ -73,64 +73,48 @@ export default async function SupplementDetailPage({ params }: Props) {
         </div>
 
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-          {/* Produktový obrázek s laser hover efektem (odhalení složení) */}
+          {/* Produktový obrázek – Primary is Složení (as per user request "misto hlavního obrázku") */}
           <div className="relative aspect-square flex items-center justify-center bg-zinc-50/50 p-12 group overflow-hidden">
-            <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-4 group-hover:opacity-0 transform-gpu">
+            {/* Technický obraz složení (Primary v detailu) */}
+            <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:opacity-0 transform-gpu z-10">
               <Image
+                src={`/images/products/slozeni${product.slug.split('-')[0]}.webp`}
+                alt={`${product.name} – složení`}
+                fill
+                className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.1)]"
+                priority
+                onError={(e) => {
+                    const img = e.currentTarget as HTMLImageElement;
+                    const slug = product.slug;
+                    const slugNoDashes = slug.replace(/-/g, '');
+                    const firstWord = slug.split('-')[0];
+                    const currentSrc = img.src;
+
+                    if (currentSrc.includes('slozeni' + firstWord) && !currentSrc.includes(slugNoDashes)) {
+                      img.src = `/images/products/slozeni${slugNoDashes}.webp`;
+                    } else if (!currentSrc.includes('1.webp') && (currentSrc.includes('slozeni') || currentSrc.includes(slugNoDashes))) {
+                      img.src = product.image.replace(/(\.\w+)$/, '1$1');
+                    } else {
+                      // Pokud vůbec nic není, ukaž hlavní láhev jako default
+                      img.src = product.image;
+                    }
+                }}
+              />
+              <div className="absolute bottom-4 left-4 bg-black/5 px-3 py-1 text-[8px] font-black uppercase tracking-widest text-zinc-500 rounded-full border border-black/5">
+                Technical View / Nutriční hodnoty
+              </div>
+            </div>
+
+            {/* Hlavní láhev produktu (Hover reveal v detailu) */}
+            <div className="absolute inset-0 flex items-center justify-center p-12 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
+               <Image
                 src={product.image}
                 alt={product.name}
                 fill
                 className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
-                priority
               />
-            </div>
-
-            {/* ── LASER PROJECTION hover image (Složení) ── */}
-            <div className="absolute inset-0 flex items-center justify-center p-12 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
-              {/* Scanline laser efekt */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
-                <div
-                  className="absolute left-0 right-0 h-[3px] opacity-0 group-hover:opacity-100"
-                  style={{
-                    background: 'linear-gradient(90deg, transparent 0%, #00ffe7 20%, #00ffe7 50%, #7fff00 80%, transparent 100%)',
-                    boxShadow: '0 0 15px 3px #00ffe7, 0 0 30px 6px rgba(0,255,231,0.4)',
-                    animation: 'laserScan 0.8s ease-out forwards',
-                    top: 0,
-                  }}
-                />
-                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,231,0.3) 2px, rgba(0,255,231,0.3) 4px)' }} />
-              </div>
-
-              {/* Ingredient Image */}
-              <div 
-                className="relative w-full h-full transform scale-95 group-hover:scale-100 transition-transform duration-500"
-                style={{ filter: 'drop-shadow(0 0 20px rgba(0,255,231,0.3))' }}
-              >
-                <Image
-                  src={`/images/products/slozeni${product.slug.split('-')[0]}.webp`}
-                  alt={`${product.name} – složení`}
-                  fill
-                  className="object-contain"
-                  onError={(e) => {
-                    const img = e.currentTarget as HTMLImageElement;
-                    // Try next: slozeni[slug_without_dashes]
-                    if (!img.src.includes('1.webp') && !img.src.includes('slozeni' + product.slug.replace(/-/g, ''))) {
-                      img.src = `/images/products/slozeni${product.slug.replace(/-/g, '')}.webp`;
-                    } 
-                    // Try next: [slug]1.webp
-                    else if (!img.src.includes('1.webp')) {
-                      img.src = product.image.replace(/(\.\w+)$/, '1$1');
-                    }
-                    else {
-                      img.style.display = 'none';
-                    }
-                  }}
-                />
-              </div>
-              
-              {/* Info Label */}
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur px-4 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-[#00ffe7] border border-[#00ffe7]/30 z-30">
-                Nutriční hodnoty / Složení
+               <div className="absolute bottom-4 right-4 bg-white px-3 py-1 text-[8px] font-black uppercase tracking-widest text-black rounded-full border border-zinc-100 shadow-sm">
+                Product View
               </div>
             </div>
           </div>
