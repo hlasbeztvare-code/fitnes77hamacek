@@ -10,7 +10,7 @@ interface MarqueeProps {
 
 const Marquee: React.FC<MarqueeProps> = ({ 
   text, 
-  speed = 30, 
+  speed = 50, 
   reverse = false, 
   outline = false 
 }) => {

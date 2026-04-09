@@ -178,7 +178,7 @@ async function main() {
         name: 'Beata Cejnarová',
         slug: 'beata-cejnarova',
         role: 'Fitness trenérka / Nutriční koučka',
-        bio: 'Profesionální trenérka se specializací na silový trénink, kondici a nutriční coaching. Její tréninky nejsou jen o drině, ale o chytrém pohybu a dlouhodobých výsledcích. Pracuje se začátečníky i pokročilými sportovci.',
+        bio: 'Profesionální trenérka se specializací na silový trénink, kondici a nutriční coaching. Její tréninky nejsou jen o dřině, ale o chytrém pohybu a dlouhodobých výsledcích. Pracuje se začátečníky i pokročilými sportovci.',
         image: '/images/trainers/cejnarova.jpg',
         specialties: ['Silový trénink', 'Kondice', 'Zdravý pohyb', 'Výživa', 'Začátečníci'],
       },

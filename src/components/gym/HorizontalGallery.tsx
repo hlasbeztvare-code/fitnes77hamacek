@@ -53,7 +53,7 @@ const HorizontalGallery = () => {
   }, [scrollProgress]);
 
   return (
-    <section ref={targetRef} className="relative h-[300vh] bg-[#050505] selection:bg-[#d4ff00] selection:text-black">
+    <section ref={targetRef} className="relative h-[600vh] bg-[#050505] selection:bg-[#d4ff00] selection:text-black">
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         <motion.div style={{ x }} className="flex gap-12 px-12 items-center will-change-transform">
           
