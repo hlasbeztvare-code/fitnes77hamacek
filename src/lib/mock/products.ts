@@ -40,7 +40,7 @@ export const products = [
   },
   {
     id: '5',
-    name: 'Black Dead Label',
+    name: 'BLACK DEAD – PRE WORKOUT',
     slug: 'black-dead-pre-workout',
     shortDescription: 'Explozivní energie. Brutální pumpa. Maximální fokus.',
     description: 'Ultimátní složení pro ty, co chtějí jen to nejlepší.',

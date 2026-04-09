@@ -51,10 +51,10 @@ async function main() {
         featured: true,
       },
       {
-        name: 'Black Dead - Pre workout',
+        name: 'BLACK DEAD – PRE WORKOUT',
         slug: 'black-dead-pre-workout',
         shortDescription: 'Explozivní energie. Brutální pumpa. Maximální fokus.',
-        description: 'Black Dead představuje vrchol naší nabídky. Maximální koncentrace účinných látek v exkluzivním balení.',
+        description: 'BLACK DEAD je nejsilnější český pre-workout pro ty, co v gymu nechávají všechno. Žádný kompromis. Žádná slabost. Jen výkon, který tě přepne do režimu, kde se neptáš – jen jedeš. Přináší masivní pumpu, explozivní energii a absolutní fokus, který vás posune za hranici komfortu. Tohle není pro začátečníky. Tohle je pro ty, co chtějí víc než jen "dobrý trénink". Tvůj limit neexistuje. Jen jsi ho ještě nepřekročil.',
         price: 1490,
         compareAtPrice: 1790,
         image: '/images/products/Blackdead.webp',
