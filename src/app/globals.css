@@ -948,3 +948,15 @@ section {
   line-height: 1.4 !important;
   opacity: 0.7;
 }
+
+/* ── Laser Projection Scan Animation ────────────────────── */
+@keyframes laserScan {
+  0% {
+    top: 0%;
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.6;
+  }
+}

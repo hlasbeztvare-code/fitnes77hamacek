@@ -63,7 +63,8 @@ export default function ProductCard({ product }: Props) {
             </div>
           )}
 
-          <div className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-2 transform-gpu will-change-transform">
+          {/* Hlavní obrázek / video */}
+          <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-2 group-hover:opacity-0 transform-gpu will-change-transform">
             {isVideo ? (
               <video
                 src={product.image}
@@ -83,6 +84,54 @@ export default function ProductCard({ product }: Props) {
               />
             )}
           </div>
+
+          {/* ── LASER PROJECTION hover image ── */}
+          {!isVideo && (
+            <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
+              {/* Scanline laser efekt */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
+                {/* Hlavní laser scanner linka */}
+                <div
+                  className="absolute left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100"
+                  style={{
+                    background: 'linear-gradient(90deg, transparent 0%, #00ffe7 20%, #00ffe7 50%, #7fff00 80%, transparent 100%)',
+                    boxShadow: '0 0 8px 2px #00ffe7, 0 0 20px 4px rgba(0,255,231,0.4)',
+                    animation: 'laserScan 0.6s ease-out forwards',
+                    top: 0,
+                  }}
+                />
+                {/* Subtilní scanlines overlay */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-[0.06] transition-opacity duration-700"
+                  style={{
+                    backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,231,0.5) 2px, rgba(0,255,231,0.5) 4px)',
+                  }}
+                />
+                {/* Cyan glow rám */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    boxShadow: 'inset 0 0 20px rgba(0,255,231,0.15)',
+                  }}
+                />
+              </div>
+
+              {/* Druhý obrázek – složení produktu */}
+              <div
+                className="relative w-full h-full transform scale-95 group-hover:scale-100 transition-transform duration-500"
+                style={{ filter: 'drop-shadow(0 0 12px rgba(0,255,231,0.4)) drop-shadow(0 0 4px rgba(127,255,0,0.3))' }}
+              >
+                <Image
+                  src={product.image.replace(/(\.\w+)$/, '1$1')}
+                  alt={`${product.name} – složení`}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="object-contain"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </Link>
 
