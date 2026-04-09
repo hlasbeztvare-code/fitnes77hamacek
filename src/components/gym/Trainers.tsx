@@ -1,23 +1,32 @@
 "use client";
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const miniTrainers = [
   {
     name: "ONDŘEJ SOUSTRUŽNÍK",
+    slug: "ondrej-soustruznik",
     tags: "HEAD COACH / FYZIO / SÍLA",
-    image: "/images/trainers/old_web_2.jpg"
+    image: "/images/trainers/soustruznik.webp"
   },
   {
     name: "JAROSLAV HAMÁČEK",
+    slug: "jaroslav-hamacek",
     tags: "MAJITEL / BOX / KOMUNITA",
-    image: "/images/trainers/old_web_1.jpg"
+    image: "/images/trainers/hamacek.webp"
+  },
+  {
+    name: "BEATA CEJNAROVÁ",
+    slug: "beata-cejnarova",
+    tags: "TRENÉRKA / NUTRI / SÍLA",
+    image: "/images/trainers/cejnarova.jpg"
   }
 ];
 
 export const Trainers = () => {
   return (
-    <div className="bg-black py-24 px-6 border-t border-white/5">
+    <div className="bg-black py-24 px-6 border-t border-white/5" id="trainers">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
         
         {/* Levá strana (smrk) */}
@@ -32,23 +41,24 @@ export const Trainers = () => {
           
           <div className="space-y-12">
             {miniTrainers.map((t, i) => (
-              <motion.div 
-                key={i}
-                whileHover={{ x: 10 }}
-                className="flex items-center gap-6 group cursor-default"
-              >
-                <div className="w-24 h-24 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/10 group-hover:border-[#d4ff00]/50 bg-zinc-900">
-                  <img src={t.image} alt={t.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold text-white font-bebas tracking-tight group-hover:text-[#d4ff00] transition-colors uppercase">
-                    {t.name}
-                  </h3>
-                  <p className="text-white/30 text-[10px] font-space tracking-[0.3em] mt-2 uppercase">
-                    {t.tags}
-                  </p>
-                </div>
-              </motion.div>
+              <Link key={i} href={`/gym/${t.slug}`}>
+                <motion.div 
+                  whileHover={{ x: 10 }}
+                  className="flex items-center gap-6 group cursor-pointer mb-8 last:mb-0"
+                >
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/10 group-hover:border-[#d4ff00]/50 bg-zinc-900">
+                    <img src={t.image} alt={t.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold text-white font-bebas tracking-tight group-hover:text-[#d4ff00] transition-colors uppercase">
+                      {t.name}
+                    </h3>
+                    <p className="text-white/30 text-[10px] font-space tracking-[0.3em] mt-2 uppercase">
+                      {t.tags}
+                    </p>
+                  </div>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>

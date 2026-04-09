@@ -33,8 +33,8 @@ export const trainerStacks: Record<string, {
     ],
   },
   'beata-cejnarova': {
-    headline: 'Beatěin stack',
-    subline: 'Produkty, které doopravdy používám. Pro výsledky i zdravi.',
+    headline: 'Beátin stack',
+    subline: 'Produkty, které doopravdy používám. Pro výsledky i zdraví.',
     productSlugs: [
       'whey-protein-isolate',
       'bcaa-amino-complex',

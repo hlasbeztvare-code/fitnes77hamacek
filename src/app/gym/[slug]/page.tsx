@@ -116,7 +116,7 @@ export default async function TrainerDetailPage({ params }: Props) {
           {/* Levý sloupec */}
           <div>
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-8 block font-space">
-              O trenérce
+              {trainer.slug === 'beata-cejnarova' ? 'O trenérce' : 'O trenérovi'}
             </span>
             <p className="text-2xl md:text-3xl text-white/70 leading-relaxed font-space font-medium">
               {trainer.bio}

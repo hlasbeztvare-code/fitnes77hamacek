@@ -163,7 +163,7 @@ async function main() {
         slug: 'jaroslav-hamacek',
         role: 'Founder & Head Coach',
         bio: 'Hlavní tvář značky Fitness 77. Zaměřuje se na sílu, disciplínu, výkon a reálný progres bez kompromisu.',
-        image: '/images/trainers/hlavacek.webp',
+        image: '/images/trainers/hamacek.webp',
         specialties: ['Síla', 'Performance', 'Disciplína'],
       },
       {
