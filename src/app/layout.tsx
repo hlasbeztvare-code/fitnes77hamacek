@@ -6,6 +6,7 @@ import ScrollToTop from "@/components/utils/ScrollToTop";
 import SmoothScrollProvider from "@/providers/SmoothScrollProvider";
 import PageTransition from "@/components/layout/PageTransition";
 import Preloader from "@/components/ui/Preloader";
+import { Analytics } from '@vercel/analytics/next';
 
 export const viewport: Viewport = {
   themeColor: "#000000",
@@ -109,6 +110,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </div>
         </SmoothScrollProvider>
+        <Analytics />
       </body>
     </html>
   );
