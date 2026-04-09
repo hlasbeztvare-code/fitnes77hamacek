@@ -72,7 +72,7 @@ export default async function TrainerDetailPage({ params }: Props) {
       <div className="relative h-screen flex items-end overflow-hidden">
         <div className="absolute inset-0" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
           <Image
-            src={trainer.image}
+            src={trainer.image === '/images/trainers/hlavacek.webp' ? '/images/trainers/hamacek.webp' : trainer.image}
             alt={trainer.name}
             fill
             sizes="100vw"
