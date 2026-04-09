@@ -55,7 +55,7 @@ export default function ProductCard({ product }: Props) {
       <div className="absolute inset-x-4 bottom-10 z-0 h-4 bg-black/40 blur-2xl opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:scale-x-110" />
       
       <Link href={`/${product.category === 'supplement' ? 'supplements' : product.category === 'equipment' ? 'equipment' : 'bazaar'}/${product.slug}`} className="relative z-10 block">
-        <div className="relative aspect-square overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex items-center justify-center p-1 sm:p-2">
+        <div className="relative h-[220px] sm:h-[320px] lg:h-[380px] w-full overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex items-center justify-center p-1 sm:p-2">
           {/* Odlesk (Shine effect) */}
           <div className="absolute inset-0 z-20 translate-x-[-100%] bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
           
@@ -162,21 +162,21 @@ export default function ProductCard({ product }: Props) {
 
         <div className="mt-auto pt-3 sm:pt-4">
           <div className="flex flex-wrap items-baseline gap-1 sm:gap-3 lg:min-h-[28px]">
-            {product.category === 'supplement' ? (
-              <span className="text-[0.95rem] sm:text-xl font-black text-zinc-400 uppercase tracking-widest not-italic">
-                Připravujeme
-              </span>
-            ) : (
+            {product.price > 0 ? (
               <>
-                <span className="text-[0.95rem] sm:text-xl font-black text-zinc-950 not-italic">
+                <span className="text-[1.1rem] sm:text-2xl font-black text-zinc-950 not-italic">
                   {product.price.toLocaleString('cs-CZ')} Kč
                 </span>
                 {product.compareAtPrice > 0 && (
-                  <span className="text-[9px] sm:text-xs text-zinc-400 line-through not-italic">
+                  <span className="text-[10px] sm:text-sm text-zinc-400 line-through not-italic font-bold">
                     {product.compareAtPrice.toLocaleString('cs-CZ')} Kč
                   </span>
                 )}
               </>
+            ) : (
+              <span className="text-[0.95rem] sm:text-xl font-black text-zinc-400 uppercase tracking-widest not-italic">
+                Již brzy
+              </span>
             )}
           </div>
 
