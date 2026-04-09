@@ -1,21 +1,25 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import Image from 'next/image';
 
 export default function WowHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load();
-    }
-  }, []);
-
   return (
     <section className="relative h-[80vh] md:h-[90vh] w-full flex items-center justify-center overflow-hidden bg-[#050505]" aria-label="Supplements Hero">
-      {/* Background Video */}
+      {/* Background Video & Poster Optimization */}
       <div className="absolute inset-0 z-0">
+        {/* Poster Image - High Priority for bleskové načtení (LCP Fix) */}
+        <Image
+          src="/images/hero/hero.webp" 
+          alt="Fitness 77 Hero"
+          fill
+          priority
+          className="object-cover opacity-60"
+        />
+
         <video 
           ref={videoRef}
           src="/hero-eshop.mp4" 
@@ -23,8 +27,12 @@ export default function WowHero() {
           loop 
           muted 
           playsInline 
-          preload="auto"
-          className="w-full h-full object-cover opacity-60"
+          preload="metadata" // Změna na metadata, aby neblokovalo render
+          className="absolute inset-0 w-full h-full object-cover opacity-60 transition-opacity duration-1000"
+          onCanPlay={(e) => {
+             // Jakmile video může hrát, zajistíme plynulé zobrazení přes poster
+             (e.target as HTMLVideoElement).classList.add('opacity-60');
+          }}
         />
         <div className="absolute inset-0 bg-linear-to-b from-black/60 via-transparent to-[#050505]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]" />

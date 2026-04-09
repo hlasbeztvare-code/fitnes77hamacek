@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -36,11 +37,22 @@ const Hero = () => {
   return (
     <section ref={containerRef} className="relative h-[250vh] bg-[#050505] overflow-clip">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        {/* Background Video */}
+        {/* Background Video & LCP Optimization */}
         <motion.div 
           style={{ scale: videoScale, opacity: videoOpacity }}
           className="absolute inset-0 w-full h-full bg-black"
         >
+          {/* Poster Image - High Priority for bleskové načtení (LCP Fix) */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/hero/hero.webp" 
+              alt="Fitness 77 Gymnastics"
+              fill
+              priority
+              className="object-cover opacity-30"
+            />
+          </div>
+
           {/* Dynamické podsvícení (rozmazané pozadí pro široké obrazovky) */}
           <video
             ref={blurVideoRef}
@@ -48,7 +60,9 @@ const Hero = () => {
             muted
             loop
             playsInline
-            className="hidden md:block absolute inset-0 w-full h-full object-cover blur-[80px] opacity-30 scale-125 pointer-events-none rotate-6 transform-gpu"
+            preload="metadata"
+            className="hidden md:block absolute inset-0 w-full h-full object-cover blur-[80px] opacity-0 scale-125 pointer-events-none rotate-6 transform-gpu transition-opacity duration-1000"
+            onCanPlayThrough={(e) => (e.currentTarget.style.opacity = '0.3')}
           >
             <source src="/TVE_NOVE_VIDEO_9_16.mp4" type="video/mp4" />
           </video>
@@ -60,14 +74,15 @@ const Hero = () => {
             muted
             loop
             playsInline
-            className="relative z-10 w-full h-full object-cover md:object-contain grayscale-[0.6] brightness-[0.55] contrast-[1.2] rotate-6 scale-[1.05] transform-gpu"
+            preload="metadata"
+            className="relative z-10 w-full h-full object-cover md:object-contain grayscale-[0.6] brightness-[0.55] contrast-[1.2] rotate-6 scale-[1.05] transform-gpu opacity-0 transition-opacity duration-700"
+            onCanPlayThrough={(e) => (e.currentTarget.style.opacity = '1')}
           >
             <source src="/TVE_NOVE_VIDEO_9_16.mp4" type="video/mp4" />
           </video>
           
-          {/* Pohyblivé postranní pruhy s fotkami (z-0 zajistí, že jsou za hlavním videem) */}
+          {/* Pohyblivé postranní pruhy s fotkami */}
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex justify-between items-center">
-            {/* Levý pruh - jede nahoru */}
             <div className="w-[35vw] md:w-[22vw] rotate-6 opacity-25 -translate-x-2 md:translate-x-24 lg:translate-x-32 scale-[1.15]">
               <motion.div 
                 animate={{ y: ['0%', '0%', '-12.5%', '-12.5%', '-25%', '-25%', '-37.5%', '-37.5%', '-50%'] }} 
@@ -75,13 +90,12 @@ const Hero = () => {
                 className="flex flex-col transform-gpu will-change-transform"
               >
                 {[...leftImages, ...leftImages].map((src, i) => (
-                  <div key={`l-${i}`} className="pb-4 md:pb-6">
-                    <img src={src} alt="" className="w-full aspect-[9/16] object-cover rounded-xl grayscale-[0.8] contrast-125" />
+                  <div key={`l-${i}`} className="pb-4 md:pb-6 relative aspect-[9/16]">
+                    <Image src={src} alt="" fill className="object-cover rounded-xl grayscale-[0.8] contrast-125" loading="lazy" />
                   </div>
                 ))}
               </motion.div>
             </div>
-            {/* Pravý pruh - jede dolů */}
             <div className="w-[35vw] md:w-[22vw] rotate-6 opacity-25 translate-x-2 md:-translate-x-24 lg:-translate-x-32 scale-[1.15]">
               <motion.div 
                 animate={{ y: ['-50%', '-50%', '-37.5%', '-37.5%', '-25%', '-25%', '-12.5%', '-12.5%', '0%'] }} 
@@ -89,15 +103,15 @@ const Hero = () => {
                 className="flex flex-col transform-gpu will-change-transform"
               >
                 {[...rightImages, ...rightImages].map((src, i) => (
-                  <div key={`r-${i}`} className="pb-4 md:pb-6">
-                    <img src={src} alt="" className="w-full aspect-[9/16] object-cover rounded-xl grayscale-[0.8] contrast-125" />
+                  <div key={`r-${i}`} className="pb-4 md:pb-6 relative aspect-[9/16]">
+                    <Image src={src} alt="" fill className="object-cover rounded-xl grayscale-[0.8] contrast-125" loading="lazy" />
                   </div>
                 ))}
               </motion.div>
             </div>
           </div>
 
-          {/* Cinematic překryvy (Ztmavení okrajů a plynulý přechod do černé nahoře i dole) */}
+          {/* Cinematic překryvy */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] z-20 pointer-events-none" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)] z-20 pointer-events-none opacity-60" />
         </motion.div>
