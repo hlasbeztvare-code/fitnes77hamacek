@@ -73,9 +73,9 @@ export default async function SupplementDetailPage({ params }: Props) {
         </div>
 
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-          {/* Produktový obrázek s levitací a stínem */}
-          <div className="relative aspect-square flex items-center justify-center bg-zinc-50/50 p-12 group">
-            <div className="relative w-full h-full transition-transform duration-700 group-hover:-translate-y-4">
+          {/* Produktový obrázek s laser hover efektem (odhalení složení) */}
+          <div className="relative aspect-square flex items-center justify-center bg-zinc-50/50 p-12 group overflow-hidden">
+            <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-4 group-hover:opacity-0 transform-gpu">
               <Image
                 src={product.image}
                 alt={product.name}
@@ -83,6 +83,55 @@ export default async function SupplementDetailPage({ params }: Props) {
                 className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
                 priority
               />
+            </div>
+
+            {/* ── LASER PROJECTION hover image (Složení) ── */}
+            <div className="absolute inset-0 flex items-center justify-center p-12 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
+              {/* Scanline laser efekt */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
+                <div
+                  className="absolute left-0 right-0 h-[3px] opacity-0 group-hover:opacity-100"
+                  style={{
+                    background: 'linear-gradient(90deg, transparent 0%, #00ffe7 20%, #00ffe7 50%, #7fff00 80%, transparent 100%)',
+                    boxShadow: '0 0 15px 3px #00ffe7, 0 0 30px 6px rgba(0,255,231,0.4)',
+                    animation: 'laserScan 0.8s ease-out forwards',
+                    top: 0,
+                  }}
+                />
+                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,231,0.3) 2px, rgba(0,255,231,0.3) 4px)' }} />
+              </div>
+
+              {/* Ingredient Image */}
+              <div 
+                className="relative w-full h-full transform scale-95 group-hover:scale-100 transition-transform duration-500"
+                style={{ filter: 'drop-shadow(0 0 20px rgba(0,255,231,0.3))' }}
+              >
+                <Image
+                  src={`/images/products/slozeni${product.slug.split('-')[0]}.webp`}
+                  alt={`${product.name} – složení`}
+                  fill
+                  className="object-contain"
+                  onError={(e) => {
+                    const img = e.currentTarget as HTMLImageElement;
+                    // Try next: slozeni[slug_without_dashes]
+                    if (!img.src.includes('1.webp') && !img.src.includes('slozeni' + product.slug.replace(/-/g, ''))) {
+                      img.src = `/images/products/slozeni${product.slug.replace(/-/g, '')}.webp`;
+                    } 
+                    // Try next: [slug]1.webp
+                    else if (!img.src.includes('1.webp')) {
+                      img.src = product.image.replace(/(\.\w+)$/, '1$1');
+                    }
+                    else {
+                      img.style.display = 'none';
+                    }
+                  }}
+                />
+              </div>
+              
+              {/* Info Label */}
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur px-4 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-[#00ffe7] border border-[#00ffe7]/30 z-30">
+                Nutriční hodnoty / Složení
+              </div>
             </div>
           </div>
 

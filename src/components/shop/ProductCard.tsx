@@ -121,13 +121,27 @@ export default function ProductCard({ product }: Props) {
                 className="relative w-full h-full transform scale-95 group-hover:scale-100 transition-transform duration-500"
                 style={{ filter: 'drop-shadow(0 0 12px rgba(0,255,231,0.4)) drop-shadow(0 0 4px rgba(127,255,0,0.3))' }}
               >
+                {/* Zkoušíme různé varianty názvů pro složení */}
                 <Image
-                  src={product.image.replace(/(\.\w+)$/, '1$1')}
+                  src={`/images/products/slozeni${product.slug.split('-')[0]}.webp`}
                   alt={`${product.name} – složení`}
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className="object-contain"
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                  onError={(e) => {
+                    const img = e.currentTarget as HTMLImageElement;
+                    // Try next: slozeni[slug_without_dashes]
+                    if (!img.src.includes('1.webp') && !img.src.includes('slozeni' + product.slug.replace(/-/g, ''))) {
+                      img.src = `/images/products/slozeni${product.slug.replace(/-/g, '')}.webp`;
+                    } 
+                    // Try next: [slug]1.webp
+                    else if (!img.src.includes('1.webp')) {
+                      img.src = product.image.replace(/(\.\w+)$/, '1$1');
+                    }
+                    else {
+                      img.style.display = 'none';
+                    }
+                  }}
                 />
               </div>
             </div>
