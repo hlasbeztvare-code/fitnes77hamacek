@@ -12,14 +12,14 @@ type Props = {
 
 export default function ProductDetailImage({ product }: Props) {
   return (
-    <div className="relative aspect-square flex items-center justify-center bg-zinc-50/50 p-12 group overflow-hidden">
+    <div className="relative aspect-square flex items-center justify-center p-2 sm:p-4 group overflow-hidden">
       {/* Technický obraz složení (Primary v detailu) */}
       <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:opacity-0 transform-gpu z-10">
         <Image
           src={`/images/products/slozeni${product.slug.split('-')[0]}.webp`}
           alt={`${product.name} – složení`}
           fill
-          className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.1)]"
+          className="object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.5)]"
           priority
           onError={(e) => {
             const img = e.currentTarget as HTMLImageElement;
@@ -44,14 +44,14 @@ export default function ProductDetailImage({ product }: Props) {
       </div>
 
       {/* Hlavní láhev produktu (Hover reveal v detailu) */}
-      <div className="absolute inset-0 flex items-center justify-center p-12 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
+      <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
+          className="object-contain drop-shadow-[0_45px_100px_rgba(0,0,0,0.6)]"
         />
-        <div className="absolute bottom-4 right-4 bg-white px-3 py-1 text-[8px] font-black uppercase tracking-widest text-black rounded-full border border-zinc-100 shadow-sm">
+        <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md px-3 py-1 text-[8px] font-black uppercase tracking-widest text-white rounded-full border border-white/20 shadow-sm">
           Product View
         </div>
       </div>

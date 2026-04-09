@@ -31,7 +31,7 @@ export default function ProductCard({ product }: Props) {
   const isVideo = product.image.toLowerCase().endsWith('.mp4');
 
   return (
-    <article className="group relative flex flex-col overflow-hidden bg-white p-2.5 sm:p-4 transition-all duration-500 hover:z-10 h-full border-none transform-gpu">
+    <article className="group relative flex flex-col overflow-hidden p-2.5 sm:p-4 transition-all duration-500 hover:z-10 h-full border-none transform-gpu">
       {/* SEO JSON-LD Microdata (Neviditelné pro uživatele, klíčové pro Google Nákupy) */}
       <script
         type="application/ld+json"
@@ -51,13 +51,13 @@ export default function ProductCard({ product }: Props) {
           }),
         }}
       />
-      {/* Luxusní hloubka a stín při hoveru */}
-      <div className="absolute inset-0 z-0 bg-white opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.15)] group-hover:ring-1 group-hover:ring-zinc-100" />
+      {/* Luxusní hloubka při hoveru (pouze stín, bez bg) */}
+      <div className="absolute inset-x-4 bottom-10 z-0 h-4 bg-black/40 blur-2xl opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:scale-x-110" />
       
       <Link href={`/${product.category === 'supplement' ? 'supplements' : product.category === 'equipment' ? 'equipment' : 'bazaar'}/${product.slug}`} className="relative z-10 block">
-        <div className="relative aspect-square overflow-hidden bg-zinc-50/50 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:shadow-lg flex items-center justify-center p-3 sm:p-8">
+        <div className="relative aspect-square overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex items-center justify-center p-1 sm:p-2">
           {/* Odlesk (Shine effect) */}
-          <div className="absolute inset-0 z-20 translate-x-[-100%] bg-linear-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
+          <div className="absolute inset-0 z-20 translate-x-[-100%] bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
           
           {discount > 0 && (
             <div className="absolute left-1.5 top-1.5 sm:left-3 sm:top-3 z-30 bg-[#E10600] px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-md">
@@ -66,7 +66,7 @@ export default function ProductCard({ product }: Props) {
           )}
 
           {/* Hlavní obrázek / video (Bottle) */}
-          <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-90 group-hover:opacity-0 group-hover:blur-sm transform-gpu will-change-transform">
+          <div className="relative w-full h-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:opacity-0 group-hover:blur-sm transform-gpu will-change-transform">
             {isVideo ? (
               <video
                 src={product.image}
@@ -74,7 +74,7 @@ export default function ProductCard({ product }: Props) {
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)]"
+                className="w-full h-full object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)]"
               />
             ) : (
               <Image
@@ -82,7 +82,7 @@ export default function ProductCard({ product }: Props) {
                 alt={product.name}
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                className="object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.15)]"
+                className="object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)]"
               />
             )}
           </div>
