@@ -1,0 +1,117 @@
+/**
+ * Kompletní profily trenérů – Fitness 77
+ * ========================================
+ * Veškerý obsah detail stránek trenérů.
+ * Přidání/editace: jen zde, propaguje se automaticky.
+ */
+
+export type TrainerProfile = {
+  philosophy: string;          // Krátký motto / filozofie
+  focus: {                     // Oblasti zaměření s popisem
+    icon: string;
+    title: string;
+    description: string;
+  }[];
+  forWhom: string;             // Pro koho jsou tréninky vhodné
+  achievements?: string[];     // Certifikáty, tituly, úspěchy
+};
+
+export const trainerProfiles: Record<string, TrainerProfile> = {
+
+  'ondrej-soustruznik': {
+    philosophy: 'Správná technika je základ všeho. Bez ní je každé kilo navíc jen zbytečné riziko.',
+    focus: [
+      {
+        icon: '🏋️',
+        title: 'Silový trénink',
+        description: 'Dřep, bench, mrtvý tah. Základní pohyby provedené perfektně.',
+      },
+      {
+        icon: '🧬',
+        title: 'Fyzioterapie',
+        description: 'Náprava dysbalancí, rehabilitace po zranění, prevence bolestí.',
+      },
+      {
+        icon: '📈',
+        title: 'Pokročilý progres',
+        description: 'Peridozace, periodický trénink a sledování výkonu v čase.',
+      },
+      {
+        icon: '🥗',
+        title: 'Výživa ke sportovci',
+        description: 'Základní nutriční poradenství pro podporu výkonu a regenerace.',
+      },
+    ],
+    forWhom: 'Ideální pro každého, kdo chce budovat skutečnou sílu se správnou technikou. Od začátečníků, kteří chtějí začít správně, až po zkušené liftery hledající nový level.',
+    achievements: [
+      'Certifikovaný osobní trenér',
+      'Fyzioterapeutická praxe',
+      '10+ let zkušeností',
+    ],
+  },
+
+  'jaroslav-hamacek': {
+    philosophy: 'Fitness77 není jen posilovna. Je to komunita lidí, kteří chtějí být lepší. Každý den.',
+    focus: [
+      {
+        icon: '🥊',
+        title: 'Box a bojová umění',
+        description: 'Techniky boxu, koordinace, rychlost a kondice ve stylu bojovníka.',
+      },
+      {
+        icon: '💪',
+        title: 'Funkční trénink',
+        description: 'Pohyby, které má tělo skutečně zvládat v reálném životě.',
+      },
+      {
+        icon: '🔥',
+        title: 'Hardcore kondice',
+        description: 'Tréninky, které tě posunou za hranice pohodlí. Výsledky jsou za ní.',
+      },
+      {
+        icon: '🤝',
+        title: 'Budování komunity',
+        description: 'Motivační prostředí, kde si navzájem pomáháme a táhneme za jeden provaz.',
+      },
+    ],
+    forWhom: 'Pro ty, kteří chtějí víc než jen cvičit. Pro lidi, kteří hledají komunitu, motivaci a trenéra, který to s nimi myslí vážně.',
+    achievements: [
+      'Majitel Fitness 77',
+      'Aktivní boxer',
+      '15+ let v fitness průmyslu',
+    ],
+  },
+
+  'beata-cejnarova': {
+    philosophy: 'Tréninky nejsou jen o drině, ale o chytrém pohybu a dlouhodobých výsledcích.',
+    focus: [
+      {
+        icon: '🏋️',
+        title: 'Silový trénink',
+        description: 'Efektivní budování síly a svalové hmoty s důrazem na techniku.',
+      },
+      {
+        icon: '🫀',
+        title: 'Zlepšení kondice',
+        description: 'Zvýšení fyzické vytrvalosti a celkové vitality.',
+      },
+      {
+        icon: '🧘',
+        title: 'Zdravý pohyb',
+        description: 'Náprava držení těla a kompenzace sedavého zaměstnání.',
+      },
+      {
+        icon: '🥗',
+        title: 'Nutriční coaching',
+        description: 'Cesta k lepšímu stravování, které podpoří vaše výsledky.',
+      },
+    ],
+    forWhom: 'Ať už jste v posilovně naprostý začátečník, který hledá správný směr, nebo pokročilý sportovec s jasným cílem (redukce váhy, nabírání hmoty), Beata vás bezpečně provede celým procesem tak, abyste se ve svém těle cítili skvěle.',
+    achievements: [
+      'Certifikovaná fitness trenérka',
+      'Nutriční koučka',
+      'Specializace na začátečníky i pokročilé',
+    ],
+  },
+
+};

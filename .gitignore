@@ -1,0 +1,51 @@
+# ─── Dependencies ──────────────────────────────
+node_modules/
+package-lock.json
+
+# ─── Next.js ───────────────────────────────────
+.next/
+out/
+build/
+dist/
+
+# ─── Environment (NIKDY necommitovat!) ─────────
+.env
+.env.local
+.env.*.local
+.env.production
+
+# ─── Prisma generated ──────────────────────────
+prisma/migrations/dev/
+
+# ─── Logs ──────────────────────────────────────
+*.log
+dev.log
+npm-debug.log*
+
+# ─── OS ────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ─── Vercel ────────────────────────────────────
+.vercel/
+
+# ─── Build artefakty ───────────────────────────
+tsconfig.tsbuildinfo
+
+# ─── IDE ───────────────────────────────────────
+.vscode/
+.idea/
+
+# ─── Telegram bot env ──────────────────────────
+bottelegraf/.env
+bottelegraf/node_modules/
+
+# ─── Shell scripty (nepatří do produkce) ───────
+fitness77-bootstrap.sh
+fitness77-phase3-commerce.sh
+fitness77-phase4-commerce.sh
+install_polish.sh
+.vercel
+.env*.local

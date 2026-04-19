@@ -1,0 +1,134 @@
+import { db } from '@/lib/db';
+import https from 'https';
+import { products as frontendContent } from "@/lib/mock/products";
+
+/**
+ * Pomocná funkce pro stahování dat přes https (náhrada za node-fetch)
+ */
+function fetchXml(url: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      let data = '';
+      res.on('data', (chunk) => { data += chunk; });
+      res.on('end', () => resolve(data));
+    }).on('error', (err) => reject(err));
+  });
+}
+
+/**
+ * Super-lehký XML parser pro Shoptet (náhrada za fast-xml-parser)
+ */
+function parseShoptetXml(xml: string) {
+  const items: any[] = [];
+  const itemRegex = /<SHOPITEM>([\s\S]*?)<\/SHOPITEM>/g;
+  let match;
+
+  while ((match = itemRegex.exec(xml)) !== null) {
+    const content = match[1];
+    const getTag = (tag: string) => {
+      const tagMatch = new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`).exec(content);
+      return tagMatch ? tagMatch[1].trim() : '';
+    };
+
+    items.push({
+      PRODUCTNO: getTag('PRODUCTNO'),
+      PRODUCT: getTag('PRODUCT'),
+      DESCRIPTION: getTag('DESCRIPTION'),
+      PRICE_VAT: getTag('PRICE_VAT'),
+      PRICE_BEFORE_DISCOUNT: getTag('PRICE_BEFORE_DISCOUNT'),
+      IMGURL: getTag('IMGURL'),
+      URL: getTag('URL'),
+      CATEGORYTEXT: getTag('CATEGORYTEXT'),
+      STOCK_AMOUNT: getTag('AMOUNT'),
+    });
+  }
+  return items;
+}
+
+// Pomocná funkce na slug
+const createSlug = (str: string) => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
+/**
+ * GOLIÁŠ | Sovereign Sync Engine v1.0
+ * Seskupuje varianty (příchutě) pod jeden produkt pro čisté UI.
+ */
+export async function syncProductsFromShoptet() {
+  const XML_URL = 'https://obchod.fit77.cz/universal.xml';
+  
+  try {
+    console.log("🚀 Sovereign Sync Start: Iniciuji Goliáš Parser...");
+    const xmlData = await fetchXml(XML_URL);
+    const items = parseShoptetXml(xmlData);
+    
+    const grouped: Record<string, any> = {};
+
+    for (const item of items) {
+      // 1. Vysekni název bez příchutě: "Kaše (Čokoláda)" -> "Kaše"
+      const rawName = item.PRODUCT;
+      const baseName = rawName.split('(')[0].trim();
+      const flavor = rawName.match(/\((.*?)\)/)?.[1] || null;
+      const slug = createSlug(baseName);
+
+      if (!grouped[slug]) {
+        const manual = frontendContent.find(p => p.slug === slug);
+        grouped[slug] = {
+          name: manual?.name || baseName,
+          slug: slug,
+          price: parseFloat(item.PRICE_VAT || '0'),
+          oldPrice: item.PRICE_BEFORE_DISCOUNT ? parseFloat(item.PRICE_BEFORE_DISCOUNT) : null,
+          image: manual?.image || item.IMGURL,
+          description: manual?.description || item.DESCRIPTION,
+          category: item.CATEGORYTEXT || "Suplementy",
+          totalStock: 0,
+          variants: []
+        };
+      }
+
+      // 2. Přidej variantu (Borůvka, Slaný karamel...)
+      const stock = parseInt(item.STOCK_AMOUNT || '0');
+      grouped[slug].totalStock += stock;
+      
+      if (flavor) {
+        grouped[slug].variants.push({
+          name: flavor,
+          stock: stock,
+          code: item.PRODUCTNO,
+          price: parseFloat(item.PRICE_VAT || '0')
+        });
+      }
+    }
+
+    // 3. Upsert do databáze na 300 %
+    for (const slug in grouped) {
+      const p = grouped[slug];
+      await db.product.upsert({
+        where: { slug: p.slug },
+        update: {
+          price: p.price,
+          oldPrice: p.oldPrice,
+          stock: p.totalStock,
+          variants: p.variants as any,
+          updatedAt: new Date(),
+        },
+        create: {
+          slug: p.slug,
+          name: p.name,
+          price: p.price,
+          oldPrice: p.oldPrice,
+          image: p.image,
+          description: p.description,
+          category: p.category,
+          stock: p.totalStock,
+          variants: p.variants as any
+        }
+      });
+    }
+    
+    console.log("✅ Sovereign Sync Complete: Všechny příchutě jsou doma!");
+    return { success: true, count: Object.keys(grouped).length };
+    
+  } catch (error) {
+    console.error("❌ Sovereign Sync Error:", error);
+    return { success: false, error: (error as Error).message };
+  }
+}
