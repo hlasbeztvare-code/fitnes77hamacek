@@ -10,48 +10,42 @@ const nextConfig: NextConfig = {
   
   compress: true,
   poweredByHeader: false,
-  reactStrictMode: true,
+  reactStrictMode: false, // Performance increase: disable strict mode in production-like env
   
   images: {
     formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 86400, // 24 hours caching for stability
-    deviceSizes: [640, 750, 828, 1080, 1280, 1920],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    minimumCacheTTL: 31536000, // 1 year for maximum performance
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    remotePatterns: [
-      { protocol: 'https', hostname: 'obchod.fit77.cz' },
-      { protocol: 'https', hostname: 'cdn.myshoptet.com' },
-      { protocol: 'https', hostname: 'obchod.myshoptet.com' }
-    ],
   },
   
+  experimental: {
+    optimizePackageImports: [
+      'framer-motion', 
+      'lucide-react', 
+      'lenis', 
+      '@framer-motion',
+      'clsx',
+      'tailwind-merge'
+    ],
+  },
+
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
+          { key: 'X-DNS-Prefetch-Control', value: 'on' },
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
-          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.telegram.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.telegram.org https://obchod.fit77.cz;" }
         ],
       },
-    ]
-  },
-
-  experimental: {
-    optimizePackageImports: ['framer-motion', 'lucide-react', 'lenis'],
-  },
-
-  async redirects() {
-    return [
       {
-        source: '/wp-sitemap.xml',
-        destination: '/sitemap.xml',
-        permanent: true,
+        source: '/fonts/(.*)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
     ]
   },
