@@ -194,10 +194,7 @@ export default function ProductCard({ product, showFrame = false, index }: Props
           <div className="mt-3">
             <button onClick={handleAction} className="w-full cursor-pointer focus:outline-none focus:ring-0">
               <div className="flex justify-between items-center group/btn pointer-events-auto">
-                <div className={`w-full bg-zinc-950 ${buttonTextColor} py-2.5 px-3 [clip-path:polygon(0%_0%,100%_0%,90%_100%,0%_100%)] flex items-center justify-between transition-all duration-300`} style={{ '--hover-bg': accentColor } as any}>
-                  <style jsx>{`
-                    div:hover { background-color: ${accentColor} !important; color: ${isDark ? '#000' : '#fff'} !important; }
-                  `}</style>
+                <div className={`w-full bg-zinc-950 ${buttonTextColor} py-2.5 px-3 [clip-path:polygon(0%_0%,100%_0%,90%_100%,0%_100%)] flex items-center justify-between transition-all duration-300 ${isDark ? 'group-hover/btn:bg-[#d4ff00] group-hover/btn:text-black' : 'group-hover/btn:bg-[#E10600] group-hover/btn:text-white'}`}>
                   <span className="text-[9px] font-black uppercase tracking-[0.2em]">
                     DO KOŠÍKU
                   </span>
