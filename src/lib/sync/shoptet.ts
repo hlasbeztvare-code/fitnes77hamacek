@@ -103,6 +103,15 @@ export async function syncWithShoptet() {
           category = 'equipment';
         }
 
+        // Heuristika: Pokusíme se vytáhnout složení z popisu, pokud není v manualu
+        let extractedIngredients = (manual as any)?.ingredients || null;
+        if (!extractedIngredients && item.DESCRIPTION) {
+          const match = /Složení[:\s]+(.*?)(?:\.|\n|<br|Tabulka|$)/i.exec(item.DESCRIPTION);
+          if (match && match[1]) {
+            extractedIngredients = match[1].trim();
+          }
+        }
+
         grouped[slug] = {
           name: manual?.name || baseName,
           slug: slug,
@@ -110,7 +119,7 @@ export async function syncWithShoptet() {
           oldPrice: item.PRICE_BEFORE_DISCOUNT ? parseFloat(item.PRICE_BEFORE_DISCOUNT) : null,
           image: finalImage,
           description: manual?.description || item.DESCRIPTION,
-          ingredients: (manual as any)?.ingredients || null,
+          ingredients: extractedIngredients,
           nutrition: (manual as any)?.nutrition || null,
           category: category,
           totalStock: 0,

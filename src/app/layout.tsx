@@ -8,8 +8,7 @@ import Footer from "@/components/layout/Footer";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 import dynamic from 'next/dynamic';
 
-const SmoothScrollProvider = dynamic(() => import("@/providers/SmoothScrollProvider"), { ssr: false });
-const PageTransition = dynamic(() => import("@/components/layout/PageTransition"), { ssr: false });
+import { PerformanceProviders } from '@/providers/PerformanceProviders';
 import { GoliasShield } from "@/lib/guardian/GoliasShield";
 import { Golias } from "@/lib/guardian/Golias";
 
@@ -127,17 +126,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.className} antialiased`}>
         <SecurityKernel>
           <GoliasShield>
-            <SmoothScrollProvider>
-              {/* <Preloader /> - Removed for performance, GlobalPreloader is enough */}
+            <PerformanceProviders>
               <ScrollToTop />
               <Navbar />
-              <PageTransition>
-                <main><GlobalPreloader>{children}</GlobalPreloader></main>
-              </PageTransition>
+              <main><GlobalPreloader>{children}</GlobalPreloader></main>
               <div id="main-global-footer">
                 <Footer />
               </div>
-            </SmoothScrollProvider>
+            </PerformanceProviders>
           </GoliasShield>
         </SecurityKernel>
       </body>

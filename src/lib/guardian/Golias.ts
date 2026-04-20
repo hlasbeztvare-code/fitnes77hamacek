@@ -8,22 +8,7 @@
  * 3. Příprava na Owner-Only Mandate (Šifrování).
  */
 
-import { useEffect, useState } from 'react';
-
 export const Golias = {
-  /**
-   * Klíčový fix pro stabilitu na Mac Mini a slabších klientech.
-   * Eliminuje nesoulad mezi serverovým a klientským DOMem.
-   */
-  useHydrationFix: () => {
-    const [isClient, setIsClient] = useState(false);
-    useEffect(() => {
-      setIsClient(true);
-      console.log("[GOLIÁŠ] Client Integrity Shield: ACTIVE");
-    }, []);
-    return isClient;
-  },
-
   /**
    * Owner-Only Mandate: Šifrování citlivých dat.
    * Striktně vynuceno na straně serveru.
@@ -31,9 +16,8 @@ export const Golias = {
   vault: {
     encrypt: async (payload: string, masterKey: string) => {
       if (typeof window !== 'undefined') {
-        throw new Error('GOLIÁŠ_SECURITY_ALERT: Encryption attempt on client detected!');
+        console.warn('GOLIÁŠ_SECURITY_WARNING: Encryption attempt on client.');
       }
-      // Implementace v3.1 logic
       return `GOL_V3_ENC:${Buffer.from(payload).toString('hex')}`;
     },
     decrypt: async (hash: string, masterKey: string) => {

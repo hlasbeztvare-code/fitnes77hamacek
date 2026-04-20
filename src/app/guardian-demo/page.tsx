@@ -1,16 +1,9 @@
 "use client";
 
-/**
- * L-CODE Dynamics | GUARDIAN v1.0
- * Demo stránka splňující standard:
- * - Žádné externí UI knihovny.
- * - Hydration Fix (Error #418).
- * - SecurityKernel integrace.
- */
-import { Golias } from '@/lib/guardian/Golias';
+import { useHydrationFix } from '@/lib/guardian/GoliasClient';
 
 export default function GuardianDemoPage() {
-  const isReady = Golias.useHydrationFix();
+  const isReady = useHydrationFix();
 
   // Doomsday Ready: Pokud není klient připraven, nic nevykreslujeme (prevence hydratačních chyb)
   if (!isReady) return null;

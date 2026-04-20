@@ -47,8 +47,8 @@ export const products = [
     id: '3',
     name: 'BLACK DEAD – PRE WORKOUT',
     slug: 'black-dead-pre-workout',
-    shortDescription: 'Explozivní energie. Brutální pumpa. Maximální fokus.',
-    description: 'BLACK DEAD je vytvořen pro ty, kteří neznají hranice. Kombinace vysokých dávek stimulantů a látek pro prokrvení ti zajistí nejlepší trénink tvého života.',
+    shortDescription: 'NEJSILNĚJŠÍ STIMULAČNÍ PRE-WORKOUT NA TRHU. Explozivní energie. Brutální pumpa.',
+    description: 'BLACK DEAD není jen další nakopávač. Je to legální zbraň pro tvůj trénink. Nejsilnější složení na trhu vytvořené pro elitní atlety, kteří neznají hranice. Kombinace extrémních dávek stimulantů (225mg kofeinu), 11g Citrulinu a 4.5g Beta-Alaninu ti zajistí nejlepší trénink tvého života.\n\n• EXTRÉMNÍ ENERGIE: Okamžitý nástup síly a fokus, který tě nepustí.\n• BRUTÁLNÍ PROKRVENÍ: Maximální transport živin do svalů.\n• TUNELOVÉ VIDĚNÍ: Naprostá koncentrace na každé opakování.\n• ŽÁDNÝ CRASH EFEKT: Stabilní výkon po celou dobu tréninku.',
     ingredients: 'L-Citrulin (PURE), Beta-Alanin, Betain Anhydrous, L-Tyrosin, L-Taurin, Acetyl-L-Karnitin, Extrakt ze zeleného čaje, Himálajská sůl, Kofein bezvodý, Bioperine®.',
     nutrition: {
       "Dávka": "26 g",
@@ -74,8 +74,8 @@ export const products = [
     id: '4',
     name: 'DEAD PUMP – STIM FREE',
     slug: 'deadpump-v2-pump-formula',
-    shortDescription: 'Extrémní pumpa. Čistý výkon. Bez kofeinu.',
-    description: 'DEAD PUMP je ultimátní pre-workout bez stimulantů. Nekompromisní dávky pro maximální prokrvení, mentální fokus a oddálení únavy.',
+    shortDescription: 'NEJSILNĚJŠÍ STIM-FREE PUMPA NA TRHU. Extrémní prokrvení. Bez kofeinu.',
+    description: 'DEAD PUMP je ultimátní pre-workout bez stimulantů s nejčistším a nejsilnějším složením pro maximální napumpování. Ideální pro večerní tréninky nebo pro ty, kteří chtějí brutální prokrvení bez kofeinu. Obsahuje rekordních 13g Citrulinu v dávce!\n\n• MAXIMÁLNÍ VAZODILATACE: Svaly tvrdé jako kámen už po první sérii.\n• KOGNITIVNÍ VÝKON: Citicoline CDP pro dokonalé propojení hlavy se svaly.\n• ODDÁLENÍ ÚNAVY: Trénuj déle a s větší intenzitou.\n• BEZ KOFEINU: Žádné bušení srdce, žádné problémy se spánkem.',
     ingredients: 'L-Citrulin (PURE), Betain Anhydrous, L-Tyrosin, L-Taurin, Himálajská sůl, Citicoline CDP, Bioperine®.',
     nutrition: {
       "Dávka": "26 g",

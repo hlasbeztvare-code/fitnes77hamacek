@@ -1,6 +1,6 @@
 "use client";
 
-import { Golias } from './Golias';
+import { useHydrationFix } from './GoliasClient';
 import { ReactNode } from 'react';
 
 /**
@@ -10,7 +10,7 @@ import { ReactNode } from 'react';
  * Zajišťuje, že klientská logika se spustí až ve chvíli, kdy je DOM stabilizován.
  */
 export function GoliasShield({ children }: { children: ReactNode }) {
-  const isReady = Golias.useHydrationFix();
+  const isReady = useHydrationFix();
 
   // Během prvního renderu na serveru nebo před hydratací na klientovi
   // zachováváme strukturu, ale můžeme potlačit interaktivní části pokud je to nutné.
