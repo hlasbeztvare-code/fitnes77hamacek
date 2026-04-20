@@ -72,11 +72,12 @@ const Footer = () => {
           <a href={socialLinks.facebook} target="_blank" className="p-2 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all"><Facebook size={14} /></a>
         </div>
 
-      <div className="mt-6 pt-4 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-[7px] font-black uppercase tracking-[0.3em] text-white/20">
-        <div>© {new Date().getFullYear()} FITNESS 77 MLADÁ BOLESLAV</div>
-        <div className="flex gap-4">
-          <span>JAN LANČARIČ</span>
-          <span className="text-[#d4ff00]">L-CODE DYNAMICS</span>
+        <div className="mt-6 pt-4 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-[7px] font-black uppercase tracking-[0.3em] text-white/20">
+          <div>© {new Date().getFullYear()} FITNESS 77 MLADÁ BOLESLAV</div>
+          <div className="flex gap-4">
+            <span>JAN LANČARIČ</span>
+            <span className="text-[#d4ff00]">L-CODE DYNAMICS</span>
+          </div>
         </div>
       </div>
     </footer>
