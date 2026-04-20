@@ -121,6 +121,7 @@ export async function syncWithShoptet() {
         }
 
         grouped[slug] = {
+          shoptetId: item.PRODUCTNO, // FIX: Ukládáme Shoptet PRODUCTNO pro bridge v košíku
           name: manual?.name || baseName,
           slug: slug,
           price: parseFloat(item.PRICE_VAT || '0'),
@@ -155,6 +156,7 @@ export async function syncWithShoptet() {
       await db.product.upsert({
         where: { slug: p.slug },
         update: {
+          shoptetId: p.shoptetId, // FIX: Aktualizujeme i ID pro jednoduché produkty
           price: p.price,
           oldPrice: p.oldPrice,
           stock: p.totalStock,
@@ -164,6 +166,7 @@ export async function syncWithShoptet() {
           updatedAt: new Date(),
         },
         create: {
+          shoptetId: p.shoptetId, // FIX
           slug: p.slug,
           name: p.name,
           price: p.price,
