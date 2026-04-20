@@ -16,32 +16,24 @@ const Marquee: React.FC<MarqueeProps> = ({
   reverse = false, 
   outline = false 
 }) => {
+  const animId = `marquee-flow-${speed}-${reverse ? 'rev' : 'fwd'}`;
+  
   return (
     <div className="relative flex overflow-x-hidden border-y border-white/10 bg-black py-6 md:py-10 w-full">
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes marquee-flow {
-          0% { transform: translate3d(0, 0, 0); }
-          100% { transform: translate3d(-50%, 0, 0); }
+        @keyframes ${animId} {
+          0% { transform: translate3d(${reverse ? '-50%' : '0'}, 0, 0); }
+          100% { transform: translate3d(${reverse ? '0' : '-50%'}, 0, 0); }
         }
-        @keyframes marquee-flow-reverse {
-          0% { transform: translate3d(-50%, 0, 0); }
-          100% { transform: translate3d(0, 0, 0); }
-        }
-        .marquee-container {
+        .marquee-inner-${speed} {
           display: flex;
           white-space: nowrap;
-          animation: marquee-flow ${speed}s linear infinite;
-          will-change: transform;
-        }
-        .marquee-container-reverse {
-          display: flex;
-          white-space: nowrap;
-          animation: marquee-flow-reverse ${speed}s linear infinite;
+          animation: ${animId} ${speed}s linear infinite;
           will-change: transform;
         }
       `}} />
 
-      <div className={reverse ? 'marquee-container-reverse' : 'marquee-container'}>
+      <div className={`marquee-inner-${speed}`}>
         {[...Array(4)].map((_, i) => (
           <div key={i} className="flex flex-nowrap items-center">
             <span

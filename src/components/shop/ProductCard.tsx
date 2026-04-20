@@ -31,7 +31,7 @@ type Props = {
   isDark?: boolean;
 };
 
-export default function ProductCard({ product, showFrame = false, index }: Props) {
+export default function ProductCard({ product, showFrame = false, index, isDark = false }: Props) {
   const cardRef = useRef(null);
   const [mounted, setMounted] = useState(false);
 

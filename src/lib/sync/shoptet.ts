@@ -57,11 +57,19 @@ export async function syncWithShoptet() {
   
   try {
     console.log("🚀 Sovereign Sync Start: Iniciuji Goliáš Parser...");
-    console.log("🧹 GOLIÁŠ Totální Očista: Mažu staré záznamy pro integritu...");
-    await db.product.deleteMany({}); // Smažeme všechno, ať tam nemáme zombíky
     
     const xmlData = await fetchXml(XML_URL);
+    if (!xmlData || xmlData.length < 100) {
+      throw new Error("Kritická chyba: XML feed ze Shoptetu je prázdný nebo nečitelný.");
+    }
+
     const items = parseShoptetXml(xmlData);
+    if (items.length === 0) {
+      throw new Error("Kritická chyba: Parser nenašel v XML žádné produkty.");
+    }
+
+    console.log(`🧹 GOLIÁŠ Integrity Shield: Staženo ${items.length} položek. Provádím očistu a re-import...`);
+    await db.product.deleteMany({}); // Smažeme až teď, když víme, že máme čím nahrazovat
     
     const grouped: Record<string, any> = {};
 

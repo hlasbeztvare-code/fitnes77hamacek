@@ -164,8 +164,15 @@ bot.catch((err, ctx) => {
 
 // --- GLOBÁLNÍ ZABEZPEČENÍ (Middleware) ---
 bot.use(async (ctx, next) => {
-    if (userId !== HAMACEK_ID && userId !== ADMIN_ID && userId !== HONZA_ID) return; // Pustíme Jardu, tebe i Honzu
-    return next();});
+    const userId = ctx.from?.id ? String(ctx.from.id) : null;
+    if (!userId) return;
+
+    if (userId !== String(HAMACEK_ID) && userId !== HONZA_ID) {
+        console.warn(`[GOLIÁŠ] Unauthorized access attempt by ID: ${userId}`);
+        return; 
+    }
+    return next();
+});
 
 const stage = new Scenes.Stage([addProductWizard, updateStockWizard, deleteProductWizard]);
 bot.use(session());

@@ -14,12 +14,20 @@ const nextConfig: NextConfig = {
   
   images: {
     formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256],
-    minimumCacheTTL: 31536000, // 1 year for maximum performance
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 31536000, 
     dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    remotePatterns: [
+      { protocol: 'https', hostname: 'obchod.fit77.cz' },
+      { protocol: 'https', hostname: 'fitness77.cz' },
+    ],
   },
   
+  // L-CODE Performance Mandate: Standalone output for Mac Mini optimization
+  output: 'standalone',
+
   experimental: {
     optimizePackageImports: [
       'framer-motion', 
@@ -27,7 +35,8 @@ const nextConfig: NextConfig = {
       'lenis', 
       '@framer-motion',
       'clsx',
-      'tailwind-merge'
+      'tailwind-merge',
+      'lucide-react'
     ],
   },
 

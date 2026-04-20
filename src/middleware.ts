@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
   // }
 
   const response = NextResponse.next();
-  const country = request.geo?.country || 'CZ';
+  const country = (request as any).geo?.country || 'CZ';
   
   // Pokud uživatel nemá nastavenou měnu v cookie, nastavíme ji podle země
   if (!request.cookies.has('NEXT_CURRENCY')) {
