@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 import AddToCartButton from '@/components/shop/AddToCartButton';
 import { Metadata } from 'next';
 import TrustBadges from '@/components/shop/TrustBadges';
+import ProductCard from '@/components/shop/ProductCard';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -156,26 +157,10 @@ export default async function EquipmentDetailPage({ params }: Props) {
             <h2 className="text-3xl font-black uppercase tracking-tighter text-zinc-950 mb-12">
               Mohlo by se Vám líbit
             </h2>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {related.map((rel) => {
-                const relIsVideo = rel.image?.toLowerCase().match(/.(mp4|webm)$/i);
-                return (
-                  <Link key={rel.id} href={`/equipment/${rel.slug}`} className="group block">
-                    <div className="relative aspect-square flex items-center justify-center overflow-hidden bg-zinc-50 p-8 transition-colors group-hover:bg-zinc-100">
-                      {relIsVideo ? (
-                        <video src={rel.image || ''} autoPlay loop muted playsInline className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
-                      ) : (
-                        <Image src={rel.image || '/images/products/placeholder.webp'} alt={rel.name} width={400} height={400} className="object-contain transition-transform duration-500 group-hover:scale-105" />
-                      )}
-                    </div>
-                    <div className="mt-4 text-center">
-                        <div className="text-[10px] font-black uppercase tracking-widest text-[#E10600]">{rel.category}</div>
-                        <h3 className="text-lg font-black uppercase tracking-tight text-zinc-900 group-hover:text-[#E10600] transition-colors">{rel.name}</h3>
-                        <div className="mt-1 font-black text-zinc-950">{rel.price.toLocaleString('cs-CZ')} Kč</div>
-                    </div>
-                  </Link>
-                );
-              })}
+            <div className="grid grid-cols-2 gap-4 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {related.map((rel, index) => (
+                <ProductCard key={rel.id} product={rel as any} index={index} />
+              ))}
             </div>
           </div>
         </div>

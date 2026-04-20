@@ -104,7 +104,7 @@ export default async function BazaarDetailPage({ params }: Props) {
             <h2 className="text-3xl font-black uppercase tracking-tighter text-zinc-950 mb-12">
               Mohlo by se Vám líbit
             </h2>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((rel) => (
                 <Link key={rel.id} href={`/bazaar/${rel.slug}`} className="group block">
                   <div className="relative aspect-square flex items-center justify-center overflow-hidden bg-zinc-50 p-8 transition-colors group-hover:bg-zinc-100">

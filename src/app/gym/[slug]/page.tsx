@@ -48,6 +48,15 @@ export default async function TrainerDetailPage({ params }: Props) {
 
   // Profil obsahu
   const profile = trainerProfiles[trainer.slug];
+  
+  // ── TITULEK STACKU (GOLIÁŠ MANUAL OVERRIDE) ──
+  const stackHeadlineMap: Record<string, string> = {
+    'beata-cejnarova': 'BEATIN STACK',
+    'jaroslav-hamacek': 'JARDŮV STACK',
+    'ondrej-soustruznik': 'ONDROV STACK',
+  };
+  const stackHeadline = stackHeadlineMap[trainer.slug] || `${trainer.name.split(' ')[0].toUpperCase()} STACK`;
+  const stackSubline = "PRODUKTY, KTERÉ DOOPRAVDY POUŽÍVÁM. PRO VÝSLEDKY I ZDRAVÍ.";
 
   // ── DYNAMICKÝ STACK (NÁHODNÝ VÝBĚR) ──
   const allProducts = await db.product.findMany({
@@ -60,10 +69,6 @@ export default async function TrainerDetailPage({ params }: Props) {
   const stackProducts = allProducts
     .sort(() => Math.random() - 0.5)
     .slice(0, 4);
-
-  // Titulek stacku podle trenéra
-  const stackHeadline = `${trainer.name.split(' ')[0].toUpperCase()}IN STACK`;
-  const stackSubline = "PRODUKTY, KTERÉ DOOPRAVDY POUŽÍVÁM. PRO VÝSLEDKY I ZDRAVÍ.";
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">

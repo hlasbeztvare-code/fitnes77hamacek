@@ -105,7 +105,7 @@ export default function ProductCard({ product, showFrame = false, index }: Props
   return (
     <article 
       ref={cardRef} 
-      className="group relative flex flex-col overflow-visible transition-all duration-500 hover:z-10 h-full border-none transform-gpu bg-transparent p-2.5 sm:p-4"
+      className="group relative flex flex-col overflow-visible transition-all duration-500 hover:z-10 h-full border-none transform-gpu bg-transparent p-1 sm:p-4"
     >
       <script
         type="application/ld+json"
@@ -130,12 +130,12 @@ export default function ProductCard({ product, showFrame = false, index }: Props
         <div className="relative h-[150px] sm:h-[220px] lg:h-[260px] w-full overflow-visible transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex items-center justify-center p-3">
           {/* Shine effect */}
           <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 translate-x-[-100%] bg-linear-to-r from-transparent via-[#E10600]/5 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
+            <div className="absolute inset-0 translate-x-[-100%] bg-linear-to-r from-transparent via-[#d4ff00]/5 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
           </div>
           
           <div className="absolute left-1 top-1 z-30 flex flex-col gap-1">
             {product.featured && (
-              <div className="bg-[#E10600] text-[8px] sm:text-[9px] font-black text-white px-1.5 py-0.5 uppercase tracking-[0.2em] shadow-2xl">
+              <div className="bg-[#d4ff00] text-[8px] sm:text-[9px] font-black text-black px-1.5 py-0.5 uppercase tracking-[0.2em] shadow-2xl">
                 BESTSELLER
               </div>
             )}
@@ -143,19 +143,19 @@ export default function ProductCard({ product, showFrame = false, index }: Props
           
           <motion.div 
             style={{ y }}
-            whileHover={{ scale: 1.08 }}
+            whileHover={{ scale: 1.15 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="relative w-full h-[92%] transform-gpu will-change-transform z-10"
+            className="relative w-full h-[110%] transform-gpu will-change-transform z-10"
           >
             {isVideo ? (
-              <video src={finalImage} autoPlay loop muted playsInline className="w-full h-full object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)]" />
+              <video src={finalImage} autoPlay loop muted playsInline className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]" />
             ) : (
               <Image 
                 src={finalImage} 
                 alt={product.name} 
                 fill 
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" 
-                className="object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.18)]"
+                className="object-contain drop-shadow-[0_30px_70px_rgba(0,0,0,0.4)]"
                 style={{ objectPosition: 'center center' }}
                 priority={product.featured || (typeof index === 'number' && index < 4)}
               />
@@ -165,41 +165,32 @@ export default function ProductCard({ product, showFrame = false, index }: Props
       </Link>
 
       <div className="relative z-10 mt-2 sm:mt-3 flex flex-1 flex-col px-0.5 sm:px-1">
-        <div className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] text-[#E10600]">
+        <div className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] text-[#d4ff00]">
           {product.category.toUpperCase()} 
         </div>
 
-        <h3 className="mt-1 sm:mt-2 text-[0.85rem] sm:text-lg font-black uppercase leading-tight text-zinc-950 transition-colors duration-300 group-hover:text-[#E10600] line-clamp-2 h-[2.4em]">
+        <h3 className="mt-1 sm:mt-2 text-[0.85rem] sm:text-lg font-black uppercase leading-tight text-zinc-950 transition-colors duration-300 group-hover:text-[#d4ff00] line-clamp-2 h-[2.5em] tracking-tight">
           {product.name}
         </h3>
 
-        <p className="mt-2 sm:mt-3 line-clamp-2 min-h-[32px] sm:min-h-[40px] text-[12px] sm:text-[14px] leading-relaxed text-zinc-500">
-          {product.shortDescription}
-        </p>
-
-        <div className="mt-auto pt-3 sm:pt-4">
-          <div className="flex flex-wrap items-center gap-1 sm:gap-3 lg:min-h-[28px]">
+        <div className="mt-auto pt-2">
+          <div className="flex flex-wrap items-center gap-1 sm:gap-3">
             <span className="text-xl font-black tracking-tighter text-zinc-950">
               {product.price.toLocaleString('cs-CZ')} Kč
             </span>
-            {product.oldPrice && product.oldPrice > product.price && (
-              <span className="text-xs font-medium text-zinc-400 line-through decoration-red-600">
-                {product.oldPrice.toLocaleString('cs-CZ')} Kč
-              </span>
-            )}
           </div>
-          <div className="mt-1 text-[10px] font-black uppercase tracking-widest text-zinc-400">
-            DOPRAVA ZDARMA NAD 2500 KČ
+          <div className="mt-1 text-[8px] font-black uppercase tracking-widest text-[#d4ff00] opacity-80">
+            DOPRAVA ZDARMA
           </div>
 
-          <div className="mt-4">
+          <div className="mt-3">
             <button onClick={handleAction} className="w-full cursor-pointer focus:outline-none focus:ring-0">
               <div className="flex justify-between items-center group/btn pointer-events-auto">
-                <div className="w-full bg-zinc-950 text-white py-3 px-4 [clip-path:polygon(0%_0%,100%_0%,90%_100%,0%_100%)] flex items-center justify-between transition-all duration-300 group-hover/btn:bg-[#E10600]">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">
-                    {product.variants && (product.variants as any[]).length > 0 ? 'Vybrat Příchuť' : 'Do Košíku'}
+                <div className="w-full bg-zinc-950 text-white py-2.5 px-3 [clip-path:polygon(0%_0%,100%_0%,90%_100%,0%_100%)] flex items-center justify-between transition-all duration-300 group-hover/btn:bg-[#d4ff00] group-hover/btn:text-black">
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em]">
+                    DO KOŠÍKU
                   </span>
-                  <span className="transform translate-x-0 group-hover/btn:translate-x-2 transition-transform duration-300">→</span>
+                  <span className="transform translate-x-0 group-hover/btn:translate-x-1 transition-transform duration-300">→</span>
                 </div>
               </div>
             </button>

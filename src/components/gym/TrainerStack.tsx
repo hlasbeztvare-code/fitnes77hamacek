@@ -31,19 +31,19 @@ export default function TrainerStack({ products, headline, subline }: Props) {
     <section className="px-6 md:px-16 pb-32 max-w-[1400px] mx-auto">
       {/* Sekce header */}
       <div className="border-t border-white/5 pt-24 mb-16">
-        <span className="text-[#d4ff00] text-[12px] font-black tracking-[0.8em] uppercase mb-4 block font-medium">
+        <span className="text-[#d4ff00] text-[14px] font-black tracking-[0.6em] uppercase mb-6 block font-medium">
           Doporučený stack
         </span>
-        <h2 className="text-[8vw] md:text-[5vw] font-black uppercase leading-[0.85] tracking-tighter font-black">
+        <h2 className="text-[12vw] md:text-[7vw] font-black uppercase leading-[0.8] tracking-tighter font-black break-words lg:break-normal">
           {headline.split(' ').map((word, i) =>
             i === 0 ? (
               <span key={i} className="text-[#d4ff00]">{word} </span>
             ) : (
-              <span key={i}>{word} </span>
+              <span key={i} className="text-white">{word} </span>
             )
           )}
         </h2>
-        <p className="text-white/40 font-black text-base uppercase tracking-[0.2em] mt-4 max-w-lg">
+        <p className="text-white/60 font-black text-sm sm:text-lg uppercase tracking-[0.15em] mt-8 max-w-2xl leading-tight">
           {subline}
         </p>
       </div>
