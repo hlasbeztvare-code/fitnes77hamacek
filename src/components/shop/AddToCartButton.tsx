@@ -15,8 +15,11 @@ type Props = {
   disabled?: boolean;
 };
 
+import { useRouter } from 'next/navigation';
+
 export default function AddToCartButton({ product, disabled }: Props) {
   const addItem = useCartStore((state) => state.addItem);
+  const router = useRouter();
 
   const handleAdd = () => {
     if (disabled) return;
@@ -30,6 +33,9 @@ export default function AddToCartButton({ product, disabled }: Props) {
       variantName: product.variantName,
       variantCode: product.variantCode,
     });
+
+    // OKAMŽITÝ PŘESUN DO KOŠÍKU (GOLIÁŠ CONVERSION)
+    router.push('/cart');
   };
 
   return (
