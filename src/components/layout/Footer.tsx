@@ -24,106 +24,52 @@ const TikTokIcon = ({ size = 20 }: { size?: number }) => (
 
 const Footer = () => {
   return (
-    <footer id="contact" className="bg-[#000000] text-white pt-24 pb-12 px-6 md:px-16 lg:px-32 relative overflow-hidden border-t border-white/5">
-      <div className="max-w-[1400px] mx-auto relative z-10">
+    <footer id="contact" className="bg-[#000000] text-white/40 pt-6 pb-6 px-6 md:px-12 lg:px-20 relative overflow-hidden border-t border-white/5">
+      <div className="max-w-[1500px] mx-auto relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-4 text-[9px] font-black uppercase tracking-[0.15em]">
 
-        <div className="flex flex-col lg:flex-row items-start justify-between gap-16 lg:gap-20">
-
-          {/* 1. Velké Logo vlevo - zachována velikost dle zadání */}
-          <div className="relative w-80 h-32 md:w-[450px] md:h-44 -ml-6 lg:ml-0">
-            <Image
-              src="/images/brand/logo-fitness77.png"
-              alt="Fitness 77"
-              fill
-              className="object-contain brightness-0 invert"
-              priority
-            />
+        {/* 1. Logo Section */}
+        <div className="flex-shrink-0">
+          <div className="relative w-32 h-10">
+            <Image src="/images/brand/logo-fitness77.png" alt="Fitness 77" fill className="object-contain brightness-0 invert opacity-80" />
           </div>
-
-          {/* 2. Menu sekce */}
-          <div className="flex flex-col gap-4 pt-4">
-            <span className="text-[#e10600] text-[10px] font-black uppercase tracking-[0.4em] mb-2 block">Menu</span>
-            {[
-              { label: 'SUPLEMENTY', href: '/supplements' },
-              { label: 'VYBAVENÍ', href: '/equipment' },
-              { label: 'BAZAR', href: '/bazaar' },
-              { label: 'GYM', href: '/' },
-            ].map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="text-lg font-black uppercase tracking-tighter text-white hover:text-[#d4ff00] transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* 3. Location & Connect */}
-          <div className="flex flex-col gap-8 pt-4">
-            <div className="space-y-2">
-              <span className="text-[#e10600] text-[10px] font-black uppercase tracking-[0.4em]">Location</span>
-              <h4 className="text-2xl lg:text-3xl font-black uppercase tracking-tighter leading-none text-white whitespace-nowrap">Fitness77 MB</h4>
-              <p className="text-white/60 text-sm font-bold uppercase tracking-widest mt-2">Jiráskova 1320, 293 01</p>
-            </div>
-            <div className="space-y-2">
-              <span className="text-[#e10600] text-[10px] font-black uppercase tracking-[0.4em]">Connect</span>
-              <Link href="mailto:fitness77@post.cz" className="text-xl lg:text-2xl font-black uppercase tracking-tighter text-white hover:text-[#d4ff00] transition-colors block">
-                fitness77@post.cz
-              </Link>
-            </div>
-          </div>
-
-          {/* 4. Contact & Social Green Buttons */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[#d4ff00] text-[10px] font-black uppercase tracking-[0.4em] mb-2 block">
-              Direct Performance Line
-            </span>
-            <Link href="tel:+420777105548" className="text-4xl lg:text-5xl font-black tracking-tighter text-white hover:text-[#e10600] transition-colors block">
-              +420 777 105 548
-            </Link>
-
-            {/* Zelená High-End sociální tlačítka */}
-            <div className="flex gap-3 mt-8">
-              <a
-                href={socialLinks.tiktok || "#"}
-                target="_blank"
-                className="flex items-center justify-center w-12 h-12 bg-[#d4ff00] text-black rounded-xl hover:scale-110 hover:bg-white transition-all shadow-lg shadow-[#d4ff00]/20"
-                title="TikTok"
-              >
-                <TikTokIcon size={24} />
-              </a>
-              <a
-                href={socialLinks.instagram}
-                target="_blank"
-                className="flex items-center justify-center w-12 h-12 bg-[#d4ff00] text-black rounded-xl hover:scale-110 hover:bg-white transition-all shadow-lg shadow-[#d4ff00]/20"
-                title="Instagram"
-              >
-                <Instagram size={24} />
-              </a>
-              <a
-                href={socialLinks.facebook}
-                target="_blank"
-                className="flex items-center justify-center w-12 h-12 bg-[#d4ff00] text-black rounded-xl hover:scale-110 hover:bg-white transition-all shadow-lg shadow-[#d4ff00]/20"
-                title="Facebook"
-              >
-                <Facebook size={24} />
-              </a>
-            </div>
-          </div>
-
         </div>
 
-        {/* Footer Bottom - Copyright Update */}
-        <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30">
-            © 2026 L-Code Dynamics - Jan Lančarič
-          </p>
+        {/* 2. Menu Links */}
+        <div className="hidden xl:flex gap-4 border-l border-white/10 pl-6 h-4 items-center">
+          <Link href="/supplements" className="hover:text-[#d4ff00]">SUPLEMENTY</Link>
+          <Link href="/equipment" className="hover:text-[#d4ff00]">VYBAVENÍ</Link>
+          <Link href="/bazaar" className="hover:text-[#d4ff00]">BAZAR</Link>
+        </div>
+
+        {/* 3. Shipping Info */}
+        <div className="flex flex-col gap-0.5 border-l border-white/10 pl-6">
+          <span className="text-white/20 text-[7px]">SHIPPING</span>
           <div className="flex gap-2">
-            <div className="w-1.5 h-1.5 bg-[#e10600]" />
-            <div className="w-1.5 h-1.5 bg-[#d4ff00]" />
-            <div className="w-1.5 h-1.5 bg-white/20" />
+            <span>PPL/DPD/ZÁSILKOVNA</span>
+            <span className="text-[#d4ff00]">OSOBNÍ ODBĚR MB</span>
           </div>
+        </div>
+
+        {/* 4. Support Contact */}
+        <div className="flex flex-col gap-0.5 border-l border-white/10 pl-6">
+          <span className="text-white/20 text-[7px]">CONTACT</span>
+          <div className="flex gap-3">
+            <Link href="tel:+420777105548" className="hover:text-white">+420 777 105 548</Link>
+            <Link href="mailto:fitness77@post.cz" className="hover:text-white">FITNESS77@POST.CZ</Link>
+          </div>
+        </div>
+
+        {/* 5. Base Location */}
+        <div className="flex flex-col gap-0.5 border-l border-white/10 pl-6">
+          <span className="text-white/20 text-[7px]">LOCATION</span>
+          <span>JIRÁSKOVA 1320, 293 01 MB</span>
+        </div>
+
+        {/* 6. Social Master Icons */}
+        <div className="flex items-center gap-2 border-l border-white/10 pl-6">
+          <a href={socialLinks.tiktok || "#"} target="_blank" className="p-2 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all"><TikTokIcon size={14} /></a>
+          <a href={socialLinks.instagram} target="_blank" className="p-2 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all"><Instagram size={14} /></a>
+          <a href={socialLinks.facebook} target="_blank" className="p-2 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all"><Facebook size={14} /></a>
         </div>
 
       </div>

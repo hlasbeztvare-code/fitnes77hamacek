@@ -11,12 +11,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       select: { slug: true, updatedAt: true, category: true }
     })
     
-    productEntries = products.map((product) => ({
-      url: `${baseUrl}/${product.category.toLowerCase()}/${product.slug}`,
-      lastModified: product.updatedAt,
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    }))
+    productEntries = products.map((product) => {
+      const isEquipment = product.category.toLowerCase() === 'equipment' || 
+                         product.category.toLowerCase().includes('vybavení') ||
+                         product.slug.toLowerCase().includes('opasek');
+      
+      const route = isEquipment ? 'equipment' : 'supplements';
+      
+      return {
+        url: `${baseUrl}/${route}/${product.slug}`,
+        lastModified: product.updatedAt,
+        changeFrequency: 'weekly',
+        priority: 0.7,
+      };
+    })
   } catch (error) {
     console.error('Failed to fetch products for sitemap:', error)
   }

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
 const messages = [
-  "DOPRAVA ZDARMA NAD 1500 KČ",
+  "DOPRAVA ZDARMA NAD 2500 KČ",
   "DNES OBJEDNÁŠ – ZÍTRA TRÉNUJEŠ",
   "PRÉMIOVÁ KVALITA Z MLADÉ BOLESLAVI",
   "TESTOVÁNO ELITNÍMI ATLETY",

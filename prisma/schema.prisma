@@ -10,16 +10,20 @@ datasource db {
 
 model Product {
   id               String   @id @default(cuid())
+  shoptetId        String?  @unique
   slug             String   @unique
   name             String
   description      String?  @db.Text
   shortDescription String?  @db.Text
+  ingredients      String?  @db.Text
+  nutrition        Json?    // Nutritional facts: { protein: "80g", carbs: "10g", ... }
   image            String?
   category         String?
   price            Float    // Aktuální (akční) cena
   oldPrice         Float?   // Původní vysoká cena z PRICE_BEFORE_DISCOUNT
   stock            Int      @default(0)
-  variants         Json?    // Tady budou ty příchutě: [{name: "Borůvka", stock: 10, code: "BCAA-BOR"}, ...]
+  featured         Boolean  @default(false)
+  variants         Json?    // Varianty: [{name: "Borůvka", stock: 10, code: "BCAA-BOR"}, ...]
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }

@@ -52,33 +52,67 @@ const createSlug = (str: string) => str.toLowerCase().normalize('NFD').replace(/
  * GOLIÁŠ | Sovereign Sync Engine v1.0
  * Seskupuje varianty (příchutě) pod jeden produkt pro čisté UI.
  */
-export async function syncProductsFromShoptet() {
+export async function syncWithShoptet() {
   const XML_URL = 'https://obchod.fit77.cz/universal.xml';
   
   try {
     console.log("🚀 Sovereign Sync Start: Iniciuji Goliáš Parser...");
+    console.log("🧹 GOLIÁŠ Totální Očista: Mažu staré záznamy pro integritu...");
+    await db.product.deleteMany({}); // Smažeme všechno, ať tam nemáme zombíky
+    
     const xmlData = await fetchXml(XML_URL);
     const items = parseShoptetXml(xmlData);
     
     const grouped: Record<string, any> = {};
 
     for (const item of items) {
-      // 1. Vysekni název bez příchutě: "Kaše (Čokoláda)" -> "Kaše"
+      // 1. Vysekni název a příchuť (Podporuje "PŘÍCHUŤ:" i závorky)
       const rawName = item.PRODUCT;
-      const baseName = rawName.split('(')[0].trim();
-      const flavor = rawName.match(/\((.*?)\)/)?.[1] || null;
+      
+      // Agresivní detekce základu názvu - dělíme podle všech možných Shoptet oddělovačů
+      let baseName = rawName
+        .split('PŘÍCHUŤ:')[0]
+        .split('(')[0]
+        .split(' - ')[0] // Častý Shoptet formát: PRODUKT - PŘÍCHUŤ
+        .split(' / ')[0]
+        .split(': ')[0]
+        .trim();
+
+      // Pokud by baseName zůstalo prázdné nebo moc krátké (chyba v XML), bereme celý název
+      if (baseName.length < 3) baseName = rawName;
+
+      let flavor = null;
+      // Pokusíme se vyndat příchuť z toho zbytku
+      if (rawName !== baseName) {
+        flavor = rawName.replace(baseName, '').replace(/^[ \-/:()]+/, '').replace(/[()]+$/, '').trim();
+      }
+
       const slug = createSlug(baseName);
 
       if (!grouped[slug]) {
         const manual = frontendContent.find(p => p.slug === slug);
+        
+        // Inteligentní volba fotky (Priorita: Manual -> BCAA Fix -> Shoptet)
+        let finalImage = manual?.image || item.IMGURL || '/images/products/placeholder.webp';
+        if (!manual?.image && slug.includes('bcaa')) {
+          finalImage = '/images/products/bcaa411.webp';
+        }
+
+        let category = item.CATEGORYTEXT || "Suplementy";
+        if (baseName.toLowerCase().includes('opasek')) {
+          category = 'equipment';
+        }
+
         grouped[slug] = {
           name: manual?.name || baseName,
           slug: slug,
           price: parseFloat(item.PRICE_VAT || '0'),
           oldPrice: item.PRICE_BEFORE_DISCOUNT ? parseFloat(item.PRICE_BEFORE_DISCOUNT) : null,
-          image: manual?.image || item.IMGURL,
+          image: finalImage,
           description: manual?.description || item.DESCRIPTION,
-          category: item.CATEGORYTEXT || "Suplementy",
+          ingredients: (manual as any)?.ingredients || null,
+          nutrition: (manual as any)?.nutrition || null,
+          category: category,
           totalStock: 0,
           variants: []
         };
@@ -108,6 +142,8 @@ export async function syncProductsFromShoptet() {
           oldPrice: p.oldPrice,
           stock: p.totalStock,
           variants: p.variants as any,
+          ingredients: p.ingredients,
+          nutrition: p.nutrition as any,
           updatedAt: new Date(),
         },
         create: {
@@ -117,6 +153,8 @@ export async function syncProductsFromShoptet() {
           oldPrice: p.oldPrice,
           image: p.image,
           description: p.description,
+          ingredients: p.ingredients,
+          nutrition: p.nutrition as any,
           category: p.category,
           stock: p.totalStock,
           variants: p.variants as any

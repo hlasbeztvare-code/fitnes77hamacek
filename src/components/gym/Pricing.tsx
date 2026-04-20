@@ -88,7 +88,8 @@ const Pricing = () => {
               <h4 className="text-[6vw] font-black uppercase font-black leading-[0.8] tracking-tighter">NAŠI<br /><span className="text-transparent" style={{ WebkitTextStroke: '2px white' }}>TRENÉŘI</span></h4>
             </div>
             <div className="space-y-16 mt-20">
-              <Link href="/gym/ondrej-soustruznik" className="block group cursor-pointer">
+              <div className="block group cursor-pointer relative">
+                <Link href="/gym/ondrej-soustruznik" className="absolute inset-0 z-10" aria-label="Ondřej Soustružník Profil"></Link>
                 <div className="flex items-center gap-10 mb-8">
                   <div className="w-32 h-32 rounded-3xl overflow-hidden transition-all duration-700 rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative">
                     <Image 
@@ -106,16 +107,17 @@ const Pricing = () => {
                   </div>
                 </div>
                 <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-medium max-w-sm group-hover:text-white/80 transition-colors mb-4">HEAD COACH / FYZIO / SÍLA</p>
-                <div className="flex items-center gap-6 flex-wrap">
-                  <a href="tel:+420773688076" onClick={(e) => e.stopPropagation()} className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
+                <div className="flex items-center gap-6 flex-wrap relative z-20">
+                  <a href="tel:+420773688076" className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
                     Kontaktovat: +420 773 688 076
                   </a>
                   <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20 group-hover:text-white/60 transition-colors">
                     Detail profilu →
                   </span>
                 </div>
-              </Link>
-              <Link href="/gym/jaroslav-hamacek" className="block group cursor-pointer">
+              </div>
+              <div className="block group cursor-pointer relative">
+                <Link href="/gym/jaroslav-hamacek" className="absolute inset-0 z-10" aria-label="Jaroslav Hamáček Profil"></Link>
                 <div className="flex items-center gap-10 mb-8">
                   <div className="w-32 h-32 rounded-3xl overflow-hidden transition-all duration-700 -rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative">
                     <Image 
@@ -133,16 +135,17 @@ const Pricing = () => {
                   </div>
                 </div>
                 <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-medium max-w-sm group-hover:text-white/80 transition-colors mb-4">MAJITEL / BOX / KOMUNITA</p>
-                <div className="flex items-center gap-6 flex-wrap">
-                  <a href="tel:+420777105548" onClick={(e) => e.stopPropagation()} className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
+                <div className="flex items-center gap-6 flex-wrap relative z-20">
+                  <a href="tel:+420777105548" className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
                     Kontaktovat: +420 777 105 548
                   </a>
                   <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20 group-hover:text-white/60 transition-colors">
                     Detail profilu →
                   </span>
                 </div>
-              </Link>
-              <Link href="/gym/beata-cejnarova" className="block group cursor-pointer">
+              </div>
+              <div className="block group cursor-pointer relative">
+                <Link href="/gym/beata-cejnarova" className="absolute inset-0 z-10" aria-label="Beata Cejnarová Profil"></Link>
                 <div className="flex items-center gap-10 mb-8">
                   <div className="w-32 h-32 rounded-3xl overflow-hidden transition-all duration-700 rotate-2 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative">
                     <Image 
@@ -160,15 +163,15 @@ const Pricing = () => {
                   </div>
                 </div>
                 <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-medium max-w-sm group-hover:text-white/80 transition-colors mb-4">FITNESS TRENÉRKA / NUTRIČNÍ KOUČKA</p>
-                <div className="flex items-center gap-6 flex-wrap">
-                  <a href="https://www.instagram.com/beatacejnarova" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
+                <div className="flex items-center gap-6 flex-wrap relative z-20">
+                  <a href="https://www.instagram.com/beatacejnarova" target="_blank" rel="noopener noreferrer" className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
                     @beatacejnarova
                   </a>
                   <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20 group-hover:text-white/60 transition-colors">
                     Detail profilu →
                   </span>
                 </div>
-              </Link>
+              </div>
             </div>
           </div>
 

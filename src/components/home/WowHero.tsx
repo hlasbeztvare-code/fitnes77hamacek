@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 
@@ -15,7 +15,7 @@ export default function WowHero() {
   }, []);
 
   return (
-    <section className="relative h-[80vh] md:h-[90vh] w-full flex items-center justify-center overflow-hidden bg-[#050505]" aria-label="Supplements Hero">
+    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#050505]" aria-label="Supplements Hero">
       {/* Background Video & Poster Optimization */}
       <div className="absolute inset-0 z-0">
         {/* Poster Image - High Priority for bleskové načtení (LCP Fix) */}
@@ -45,7 +45,7 @@ export default function WowHero() {
       </div>
 
       {/* Floating High-End Typography */}
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-between py-12 md:py-20 pointer-events-none">
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-between py-8 md:py-12 pointer-events-none">
 
         {/* Top Section */}
         <motion.div
@@ -59,42 +59,29 @@ export default function WowHero() {
           </span>
         </motion.div>
 
-        {/* Center Section: E-SHOP */}
-        <AnimatePresence>
-          {!isLoaded && (
-            <div className="flex-1 flex flex-col items-center justify-center w-full px-4">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.1, filter: 'blur(20px)' }}
-                transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-                className="flex flex-col items-center"
-              >
-                <h1 className="text-[22vw] md:text-[14vw] font-black uppercase leading-[0.7] text-[#E10600] tracking-tighter mix-blend-screen drop-shadow-[0_0_30px_rgba(225,6,0,0.4)] md:drop-shadow-[0_0_50px_rgba(225,6,0,0.55)]">
-                  E-SHOP
-                </h1>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
+        {/* Top-Left Section: E-SHOP & PERFORMANCE Label */}
+        <div className="absolute left-6 top-8 md:left-12 md:top-12 flex flex-col gap-1 items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+          >
+            <h1 className="text-4xl md:text-6xl font-black uppercase leading-[0.7] text-[#E10600] tracking-tighter drop-shadow-[0_0_15px_rgba(225,6,0,0.4)]">
+              E-SHOP
+            </h1>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.2, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
+          >
+            <span className="text-[12px] md:text-lg font-black uppercase tracking-[0.4em] text-white opacity-80">
+              PERFORMANCE
+            </span>
+          </motion.div>
+        </div>
 
-        {/* Bottom Section: Performance */}
-        <AnimatePresence>
-          {!isLoaded && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-              transition={{ duration: 1, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
-              className="text-center px-4"
-            >
-              <span className="text-white text-[clamp(1.5rem,8vw,5rem)] font-black uppercase tracking-tighter leading-none italic opacity-60 md:opacity-80"
-                style={{ WebkitTextStroke: '1px rgba(255,255,255,0.4)' }}>
-                PERFORMANCE
-              </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="flex-1" />
 
         {/* Technical Labels (Sides) */}
         <div className="absolute left-10 top-1/2 -rotate-90 origin-left hidden lg:flex items-center gap-4 opacity-30">

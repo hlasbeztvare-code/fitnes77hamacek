@@ -3,10 +3,30 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { db } from '@/lib/db';
 import AddToCartButton from '@/components/shop/AddToCartButton';
+import { Metadata } from 'next';
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await db.product.findFirst({
+    where: { slug },
+  });
+
+  if (!product) return { title: 'Vybavení | Fitness 77' };
+
+  return {
+    title: `${product.name} | Vybavení | Fitness 77`,
+    description: product.shortDescription,
+    openGraph: {
+      title: product.name,
+      description: product.shortDescription,
+      images: [{ url: product.image ?? '/images/brand/og-image.png' }],
+    },
+  };
+}
 
 export async function generateStaticParams() {
   const items = await db.product.findMany({ where: { category: 'equipment' } });

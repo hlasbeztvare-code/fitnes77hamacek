@@ -24,8 +24,8 @@ export default function CartPage() {
     const params = new URLSearchParams();
     
     items.forEach((item) => {
-      // Prioritně použijeme Shoptet ID (číslo jako 43), pokud není, tak slug
-      const productCode = item.shoptetId || item.slug;
+      // GOLIÁŠ Bridge: Prioritně použijeme variantCode (specifická příchuť), pak shoptetId nebo slug
+      const productCode = item.variantCode || item.shoptetId || item.slug;
       params.append(`products[${productCode}]`, item.quantity.toString());
     });
 

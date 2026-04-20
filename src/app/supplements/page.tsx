@@ -2,89 +2,69 @@ import Image from 'next/image';
 import WowHero from '@/components/home/WowHero';
 import ProductCard from '@/components/shop/ProductCard';
 import Reveal from '@/components/ui/Reveal';
-import { getProductsByCategory } from '@/lib/queries/products';
+import { getProducts, getProductBySlug } from '@/lib/queries/products';
+import { notFound } from 'next/navigation';
 
 export const revalidate = 60; // Revalidate items from DB every minute (ISR)
 
 export default async function SupplementsPage() {
-  const allSupplements = await getProductsByCategory('supplement');
-  
-  // Bestsellers are featured supplements
-  const bestsellers = allSupplements.filter(p => p.featured).slice(0, 4);
-  // All others
-  const otherSupplements = allSupplements.filter(p => !p.featured).slice(0, 16);
+  const allSupplements = (await getProducts()).filter(p => 
+    p.category.toLowerCase() !== 'equipment' && 
+    !p.category.toLowerCase().includes('vybavení') &&
+    !p.name.toLowerCase().includes('opasek')
+  );
 
   return (
     <>
       <WowHero />
       
-      {/* Dynamic Info Lišta - Bílá verze */}
+      {/* Dynamic Info Lišta - Bílá verze - ULTRA NARROW */}
       <section className="border-y border-zinc-100 bg-white text-zinc-950">
-        <div className="mx-auto grid w-[min(1200px,calc(100%-32px))] grid-cols-2 md:grid-cols-4 gap-y-1 gap-x-4 py-2 md:py-1.5">
-          <div className="text-center text-[8px] md:text-[10px] font-black uppercase tracking-[0.16em]">
+        <div className="mx-auto grid w-[min(1200px,calc(100%-32px))] grid-cols-2 md:grid-cols-4 gap-y-0.5 gap-x-4 py-0.5">
+          <div className="text-center text-[10px] font-black uppercase tracking-[0.16em]">
             DOPRAVA ZDARMA
           </div>
-          <div className="text-center text-[8px] md:text-[10px] font-black uppercase tracking-[0.16em]">
-            FITNESS 77 MB
+          <div className="text-center text-[10px] font-black uppercase tracking-[0.16em]">
+            PPL / ZÁSILKOVNA / DPD
           </div>
-          <div className="text-center text-[8px] md:text-[10px] font-black uppercase tracking-[0.16em]">
+          <div className="text-center text-[10px] font-black uppercase tracking-[0.16em]">
+            OSOBNÍ ODBĚR MB
+          </div>
+          <div className="text-center text-[10px] font-black uppercase tracking-[0.16em] text-[#E10600]">
             SKLADEM
           </div>
-          <div className="text-center text-[8px] md:text-[10px] font-black uppercase tracking-[0.16em] text-[#E10600]">
-            PERFORMANCE
-          </div>
         </div>
       </section>
 
-      {/* Bestsellers Section (White Background) */}
-      <section className="bg-white py-24">
+      {/* Main Grid (White Background) - MOVED IMMEDIATELY UNDER HERO/INFO */}
+      <section className="bg-white pt-2 pb-12">
         <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
           <Reveal>
-            <div className="max-w-3xl mb-14">
-              <div className="inline-block border-l-4 border-[#E10600] pl-3 text-sm font-black uppercase tracking-[0.22em] text-[#E10600]">
-                Top Selection
-              </div>
-              <h2 className="mt-4 text-4xl font-black uppercase leading-[0.95] text-zinc-950 md:text-6xl">
-                Bestseller <span className="text-[#E10600]">Produkty</span>
-              </h2>
-            </div>
-          </Reveal>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 lg:gap-20">
-            {bestsellers.map((product, index) => (
-              <Reveal key={product.id} delay={index * 0.1}>
-                <ProductCard product={{ ...product, compareAtPrice: product.compareAtPrice ?? 0 }} />
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Main Grid (White Background) */}
-      <section className="bg-white py-24 border-t border-zinc-100">
-        <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
-          <Reveal>
-            <div className="max-w-3xl mb-14">
+            <div className="max-w-3xl mb-8">
               <div className="inline-block border-l-4 border-zinc-200 pl-3 text-sm font-black uppercase tracking-[0.22em] text-zinc-400">
                 Premium Catalog
               </div>
-              <h2 className="mt-4 text-4xl font-black uppercase leading-[0.95] text-zinc-950 md:text-6xl">
-                Všechny <span className="text-zinc-400">Suplementy</span>
+              <h2 className="mt-1 text-4xl font-black uppercase leading-[0.95] text-zinc-950 md:text-6xl">
+                Všechny <span className="text-[#E10600]">Suplementy</span>
               </h2>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 lg:gap-20">
-            {otherSupplements.map((product, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-10 gap-y-6 md:gap-y-8">
+            {allSupplements.slice(0, 40).map((product, index) => (
               <Reveal key={product.id} delay={(index % 4) * 0.1}>
-                <ProductCard product={{ ...product, compareAtPrice: product.compareAtPrice ?? 0 }} />
+                <ProductCard 
+                  product={{ ...product, compareAtPrice: product.compareAtPrice ?? 0 }} 
+                  index={index}
+                />
               </Reveal>
             ))}
           </div>
         </div>
       </section>
+
       {/* Founder Story Section (Restore Absolute Black) */}
-      <section className="bg-zinc-950 py-32 overflow-hidden relative">
+      <section className="bg-zinc-950 py-16 md:py-24 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
           <div className="absolute inset-0 bg-linear-to-l from-transparent to-zinc-950 z-10" />
           <Image 

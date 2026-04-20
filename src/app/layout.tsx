@@ -6,8 +6,10 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ScrollToTop from "@/components/utils/ScrollToTop";
-import SmoothScrollProvider from "@/providers/SmoothScrollProvider";
-import PageTransition from "@/components/layout/PageTransition";
+import dynamic from 'next/dynamic';
+
+const SmoothScrollProvider = dynamic(() => import("@/providers/SmoothScrollProvider"), { ssr: false });
+const PageTransition = dynamic(() => import("@/components/layout/PageTransition"), { ssr: false });
 import { GoliasShield } from "@/lib/guardian/GoliasShield";
 import { Golias } from "@/lib/guardian/Golias";
 
@@ -111,6 +113,8 @@ const jsonLd = {
   image: "https://fitness77.cz/images/brand/og-image.png",
 };
 
+import { SecurityKernel } from '@/components/security/SecurityKernel';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="cs" className={`${inter.variable} ${bebas.variable} ${spaceGrotesk.variable}`}>
@@ -121,19 +125,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <GoliasShield>
-          <SmoothScrollProvider>
-            {/* <Preloader /> - Removed for performance, GlobalPreloader is enough */}
-            <ScrollToTop />
-            <Navbar />
-            <PageTransition>
-              <main><GlobalPreloader>{children}</GlobalPreloader></main>
-            </PageTransition>
-            <div id="main-global-footer">
-              <Footer />
-            </div>
-          </SmoothScrollProvider>
-        </GoliasShield>
+        <SecurityKernel>
+          <GoliasShield>
+            <SmoothScrollProvider>
+              {/* <Preloader /> - Removed for performance, GlobalPreloader is enough */}
+              <ScrollToTop />
+              <Navbar />
+              <PageTransition>
+                <main><GlobalPreloader>{children}</GlobalPreloader></main>
+              </PageTransition>
+              <div id="main-global-footer">
+                <Footer />
+              </div>
+            </SmoothScrollProvider>
+          </GoliasShield>
+        </SecurityKernel>
       </body>
     </html>
   );

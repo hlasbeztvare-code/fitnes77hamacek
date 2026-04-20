@@ -19,6 +19,16 @@ const orderSchema = z.object({
   })).min(1),
 });
 
+/**
+ * GOLIÁŠ | Shoptet Order Bridge
+ * Push objednávky do Shoptet systému pro fakturaci.
+ */
+async function sendToShoptet(orderData: any) {
+  // TODO: Připojit Shoptet API v3.1
+  console.log("🛠️ GOLIÁŠ Bridge: Pushing to Shoptet...", orderData.items.length, "items");
+  return { success: true };
+}
+
 async function sendToTelegram(orderData: any) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.HAMACEK_CHAT_ID;

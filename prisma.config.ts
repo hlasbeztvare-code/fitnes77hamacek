@@ -1,5 +1,5 @@
-// Prisma CLI automaticky načítá .env, manuální import dotenv/config může způsobovat chyby při migraci
-// import 'dotenv/config'; 
+// Prisma CLI v přítomnosti configu vyžaduje explicitní načtení .env
+import 'dotenv/config'; 
 import { defineConfig } from '@prisma/config';
 
 export default defineConfig({

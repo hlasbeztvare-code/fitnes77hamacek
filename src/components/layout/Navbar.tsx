@@ -45,13 +45,13 @@ export default function Navbar() {
             </div>
 
             {/* Desktop nav */}
-            <nav className="hidden lg:flex flex-1 justify-center items-center">
-              <div className="flex gap-12 uppercase font-bold tracking-wide text-white text-sm">
+            <nav className="hidden lg:flex flex-[2] justify-start items-center px-12">
+              <div className="flex w-full max-w-3xl items-center justify-between uppercase font-black tracking-[0.1em] text-white text-[1.1rem]">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="transition-colors hover:text-[#E10600]"
+                    className="transition-all hover:text-[#E10600] whitespace-nowrap hover:scale-110 duration-300"
                   >
                     {item.label}
                   </Link>

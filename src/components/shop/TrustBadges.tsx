@@ -26,10 +26,10 @@ export default function TrustBadges() {
             {badge.icon}
           </div>
           <div>
-            <div className="text-[10px] font-black uppercase tracking-widest text-zinc-900 leading-none mb-1">
+            <div className="text-[12px] font-black uppercase tracking-widest text-zinc-950 leading-none mb-1">
               {badge.label}
             </div>
-            <div className="text-[9px] font-medium text-zinc-400 uppercase tracking-wider">
+            <div className="text-[10px] font-black text-zinc-400 uppercase tracking-wider">
               {badge.sub}
             </div>
           </div>

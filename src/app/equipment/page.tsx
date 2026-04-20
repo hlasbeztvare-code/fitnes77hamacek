@@ -6,7 +6,13 @@ export const revalidate = 60;
 
 export default async function EquipmentPage() {
   const items = await db.product.findMany({
-    where: { category: 'equipment' },
+    where: { 
+      OR: [
+        { category: 'equipment' },
+        { category: { contains: 'Vybavení', mode: 'insensitive' } },
+        { name: { contains: 'Opasek', mode: 'insensitive' } }
+      ]
+    },
     orderBy: { createdAt: 'desc' },
   });
 

@@ -3,7 +3,14 @@ import { syncWithShoptet } from '@/lib/sync/shoptet';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const token = searchParams.get('token');
+
+  if (token !== process.env.SYNC_SECRET) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
   const result = await syncWithShoptet();
   
   if (result.success) {

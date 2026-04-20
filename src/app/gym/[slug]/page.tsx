@@ -49,14 +49,21 @@ export default async function TrainerDetailPage({ params }: Props) {
   // Profil obsahu
   const profile = trainerProfiles[trainer.slug];
 
-  // Doporučený stack
-  const stack = trainerStacks[trainer.slug];
-  const stackProducts = stack
-    ? await db.product.findMany({ where: { slug: { in: stack.productSlugs } } })
-        .then((products) =>
-          stack.productSlugs.map((s) => products.find((p) => p.slug === s)).filter(Boolean)
-        )
-    : [];
+  // ── DYNAMICKÝ STACK (NÁHODNÝ VÝBĚR) ──
+  const allProducts = await db.product.findMany({
+    where: {
+      image: { not: '/images/products/placeholder.webp' } // Chceme jen ty s fotkou
+    }
+  });
+  
+  // Zamícháme a vybereme 4 náhodné kousky (Master Random)
+  const stackProducts = allProducts
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 4);
+
+  // Titulek stacku podle trenéra
+  const stackHeadline = `${trainer.name.split(' ')[0].toUpperCase()}IN STACK`;
+  const stackSubline = "PRODUKTY, KTERÉ DOOPRAVDY POUŽÍVÁM. PRO VÝSLEDKY I ZDRAVÍ.";
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">
@@ -245,12 +252,12 @@ export default async function TrainerDetailPage({ params }: Props) {
         </div>
       )}
 
-      {/* ── DOPORUČENÝ STACK ── */}
-      {stack && stackProducts.length > 0 && (
+      {/* ── DYNAMICKÝ DOPORUČENÝ STACK ── */}
+      {stackProducts.length > 0 && (
         <TrainerStack
           products={stackProducts as any}
-          headline={stack.headline}
-          subline={stack.subline}
+          headline={stackHeadline}
+          subline={stackSubline}
         />
       )}
 

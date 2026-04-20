@@ -11,6 +11,8 @@ type CartItem = {
   price: number;
   image: string;
   quantity: number;
+  variantName?: string;
+  variantCode?: string;
 };
 
 type CartStore = {
@@ -18,9 +20,9 @@ type CartStore = {
   _hasHydrated: boolean;
   setHasHydrated: (state: boolean) => void;
   addItem: (item: Omit<CartItem, 'quantity'>) => void;
-  removeItem: (id: string) => void;
-  increaseItem: (id: string) => void;
-  decreaseItem: (id: string) => void;
+  removeItem: (id: string, variantCode?: string) => void;
+  increaseItem: (id: string, variantCode?: string) => void;
+  decreaseItem: (id: string, variantCode?: string) => void;
   clearCart: () => void;
   totalItems: () => number;
   totalPrice: () => number;
@@ -39,12 +41,15 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (item) =>
         set((state) => {
-          const existing = state.items.find((i) => i.id === item.id);
+          const itemKey = `${item.id}-${item.variantCode || 'base'}`;
+          const existing = state.items.find((i) => `${i.id}-${i.variantCode || 'base'}` === itemKey);
 
           if (existing) {
             return {
               items: state.items.map((i) =>
-                i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+                `${i.id}-${i.variantCode || 'base'}` === itemKey 
+                  ? { ...i, quantity: i.quantity + 1 } 
+                  : i
               ),
             };
           }
@@ -54,23 +59,29 @@ export const useCartStore = create<CartStore>()(
           };
         }),
 
-      removeItem: (id) =>
+      removeItem: (id, variantCode) =>
         set((state) => ({
-          items: state.items.filter((item) => item.id !== id),
-        })),
-
-      increaseItem: (id) =>
-        set((state) => ({
-          items: state.items.map((item) =>
-            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+          items: state.items.filter((item) => 
+            !(item.id === id && item.variantCode === variantCode)
           ),
         })),
 
-      decreaseItem: (id) =>
+      increaseItem: (id, variantCode) =>
+        set((state) => ({
+          items: state.items.map((item) =>
+            (item.id === id && item.variantCode === variantCode) 
+              ? { ...item, quantity: item.quantity + 1 } 
+              : item
+          ),
+        })),
+
+      decreaseItem: (id, variantCode) =>
         set((state) => ({
           items: state.items
             .map((item) =>
-              item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+              (item.id === id && item.variantCode === variantCode) 
+                ? { ...item, quantity: item.quantity - 1 } 
+                : item
             )
             .filter((item) => item.quantity > 0),
         })),
