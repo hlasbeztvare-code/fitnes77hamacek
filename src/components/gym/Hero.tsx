@@ -40,18 +40,7 @@ const Hero = () => {
   return (
     <section ref={containerRef} className="relative h-[250vh] bg-transparent overflow-clip">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        {/* LCP Optimization: Preload the poster image and SHOW it immediately */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/gym/pozadi.webp"
-            alt="Fitness 77 Mladá Boleslav"
-            fill
-            priority
-            fetchPriority="high"
-            className="object-cover opacity-60"
-            sizes="100vw"
-          />
-        </div>
+        {/* LCP Optimization: Background is pure black by default now */}
 
         {/* Video Overlay Layer */}
         <motion.div
@@ -60,7 +49,6 @@ const Hero = () => {
         >
           {/* Hlavní ostré video uprostřed - OPTIMALIZOVÁNO */}
           <video
-            poster="/images/gym/pozadi.webp"
             ref={mainVideoRef}
             autoPlay
             muted
