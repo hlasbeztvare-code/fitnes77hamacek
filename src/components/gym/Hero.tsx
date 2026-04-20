@@ -42,10 +42,10 @@ const Hero = () => {
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         {/* LCP Optimization: Background is pure black by default now */}
 
-        {/* Video Overlay Layer - HIDDEN ON MOBILE FOR 90+ PERFORMANCE */}
+        {/* Video Overlay Layer - FULL VERSION RESTORED */}
         <motion.div
           style={{ scale: videoScale, opacity: videoOpacity }}
-          className="absolute inset-0 w-full h-full flex items-center justify-center transform-gpu hidden md:flex"
+          className="absolute inset-0 w-full h-full flex items-center justify-center transform-gpu"
         >
           {/* Hlavní ostré video uprostřed - OPTIMALIZOVÁNO */}
           <video
@@ -55,7 +55,7 @@ const Hero = () => {
             loop
             playsInline
             preload="metadata"
-            className="relative z-10 w-full h-full object-cover grayscale-[0.2] brightness-[0.7] contrast-[1.1] rotate-6 scale-[1.05] transform-gpu will-change-transform"
+            className="relative z-10 w-full h-full object-cover md:object-contain grayscale-[0.2] brightness-[0.7] contrast-[1.1] rotate-6 scale-[1.05] transform-gpu will-change-transform"
           >
             <source src="/videos/TVE_NOVE_VIDEO_9_16.webm" type="video/webm" />
           </video>
@@ -63,44 +63,43 @@ const Hero = () => {
           {/* Blend Overlay */}
           <div className="absolute inset-0 bg-[#050505]/40 z-11 pointer-events-none mix-blend-multiply" />
 
-          {/* Pohyblivé postranní pruhy - GPU ACCELERATED */}
-          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex justify-between items-center sm:px-12">
-            {/* Same strips, but only on desktop/tablet to save core performance */}
-            <div className="w-[18vw] rotate-6 opacity-30 scale-[1.15] hidden md:block">
+          {/* Pohyblivé postranní pruhy - GPU ACCELERATED (All devices) */}
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex justify-between items-center px-2 md:px-12">
+            <div className="w-[30vw] md:w-[18vw] rotate-6 opacity-25 scale-[1.15] opacity-30">
               <motion.div
                 animate={{ y: ['0%', '-50%'] }}
                 transition={{ duration: 25, ease: 'linear', repeat: Infinity }}
                 className="flex flex-col transform-gpu will-change-transform"
               >
                 {[...lImages, ...lImages].map((src, i) => (
-                  <div key={`l-${i}`} className="pb-6 relative aspect-[9/16]">
+                  <div key={`l-${i}`} className="pb-4 md:pb-6 relative aspect-[9/16]">
                     <Image
                       src={src}
                       alt=""
                       fill
                       className="object-cover rounded-xl grayscale contrast-125"
                       loading="lazy"
-                      sizes="20vw"
+                      sizes="(max-width: 768px) 30vw, 18vw"
                     />
                   </div>
                 ))}
               </motion.div>
             </div>
-            <div className="w-[18vw] rotate-6 opacity-30 scale-[1.15] hidden md:block">
+            <div className="w-[30vw] md:w-[18vw] rotate-6 opacity-25 scale-[1.15] opacity-30">
               <motion.div
                 animate={{ y: ['-50%', '0%'] }}
                 transition={{ duration: 25, ease: 'linear', repeat: Infinity }}
                 className="flex flex-col transform-gpu will-change-transform"
               >
                 {[...rImages, ...rImages].map((src, i) => (
-                  <div key={`r-${i}`} className="pb-6 relative aspect-[9/16]">
+                  <div key={`r-${i}`} className="pb-4 md:pb-6 relative aspect-[9/16]">
                     <Image
                       src={src}
                       alt=""
                       fill
                       className="object-cover rounded-xl grayscale contrast-125"
                       loading="lazy"
-                      sizes="20vw"
+                      sizes="(max-width: 768px) 30vw, 18vw"
                     />
                   </div>
                 ))}
@@ -113,21 +112,16 @@ const Hero = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000000_100%)] z-20 pointer-events-none opacity-80" />
         </motion.div>
 
-        {/* Mobile Static Background for high LCP */}
-        <div className="absolute inset-0 md:hidden bg-black z-0">
-           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,255,0,0.1)_0%,transparent_70%)]" />
-        </div>
-
         {/* Initial Big Typography - LCP TARGET */}
         <div className="relative z-30 text-center px-4">
           <motion.div
             style={{ scale: textScale, opacity: textOpacity }}
             className="pointer-events-none transform-gpu"
           >
-            <h1 className="text-[18vw] md:text-[22vw] font-black leading-none tracking-tighter text-[#d4ff00] select-none">
+            <h1 className="text-[18vw] md:text-[22vw] font-black leading-none tracking-tighter text-[#d4ff00] select-none filter drop-shadow-[0_0_40px_rgba(212,255,0,0.3)]">
               F77<span className="text-white italic">.</span>
             </h1>
-            <p className="text-xl md:text-3xl font-bold text-white tracking-[0.8em] uppercase mt-[-3vw] opacity-90">
+            <p className="text-xl md:text-3xl font-bold text-white tracking-[0.8em] uppercase mt-[-3vw] opacity-90 text-outline-sm">
               Mladá Boleslav
             </p>
           </motion.div>
