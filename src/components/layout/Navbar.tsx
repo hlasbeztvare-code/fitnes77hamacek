@@ -23,7 +23,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="fixed top-0 z-50 w-full">
+      <div className="fixed top-0 z-[10000] w-full">
         <NavbarTopBar />
         <header className="w-full">
           <div className="flex w-full items-center rounded-b-[2.5rem] border-b border-white/20 bg-black/40 py-1 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-4 md:px-12">
@@ -60,35 +60,22 @@ export default function Navbar() {
             </nav>
 
             {/* Right side icons */}
-            <div className="flex items-center justify-end gap-4 md:gap-5 relative z-50 md:w-[300px]">
+            <div className="flex items-center justify-end gap-2 sm:gap-4 md:gap-5 relative z-[10002] flex-none md:w-[300px]">
               <Link href="/cart" className="relative group p-2">
                 <ShoppingCart className="h-6 w-6 text-white group-hover:text-[#E10600] transition-colors" />
                 {mounted && totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#E10600] text-[10px] font-black text-white ring-2 ring-black animate-in zoom-in duration-300">
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#E10600] text-[9px] font-black text-white ring-1 ring-black animate-in zoom-in duration-300">
                     {totalItems}
                   </span>
                 )}
               </Link>
 
-              <motion.div
-                className="hidden md:block"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <div
-                  className="w-9 h-9 bg-white rounded-full flex items-center justify-center cursor-pointer hover:bg-[#E10600] transition-colors group"
-                  title="Můj účet (připravujeme)"
-                >
-                  <User className="h-5 w-5 text-black group-hover:text-white transition-colors" />
-                </div>
-              </motion.div>
-
               <button
-                className="lg:hidden p-2 text-white"
+                className="lg:hidden p-2 text-[#d4ff00]"
                 onClick={() => setMobileOpen((v) => !v)}
                 aria-label="Otevřít menu"
               >
-                {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {mobileOpen ? <X className="h-8 w-8 text-white" /> : <Menu className="h-8 w-8 text-[#d4ff00]" />}
               </button>
             </div>
           </div>

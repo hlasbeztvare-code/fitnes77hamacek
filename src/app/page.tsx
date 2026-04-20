@@ -14,8 +14,6 @@ const Footer = dynamic(() => import('@/components/gym/Footer'), { ssr: true });
 export default function HomePage() {
   return (
     <main className="bg-black min-h-screen text-white font-space relative">
-      <style dangerouslySetInnerHTML={{ __html: '#main-global-footer { display: none !important; }' }} />
-      
       <ClientOverlays />
       
       <Hero />
@@ -29,8 +27,6 @@ export default function HomePage() {
       <Marquee text="JOIN THE MOVEMENT • F77 • NO LIMITS" speed={25} reverse outline />
       
       <Pricing />
-      
-      <Footer />
     </main>
   );
 }

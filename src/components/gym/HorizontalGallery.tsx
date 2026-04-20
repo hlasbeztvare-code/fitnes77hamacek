@@ -7,8 +7,6 @@ import Image from 'next/image';
 // Pročištěný seznam – vyhozeny podezřelé malé soubory (produkty) a č. 2 (smrk)
 const galleryImages = [
   { url: '/images/gym/gym01.webp' },
-  { url: '/images/gym/gym04.webp' },
-  { url: '/images/gym/gym05.webp' },
   { url: '/images/gym/gym06.webp' },
   { url: '/images/gym/gym07.webp' },
   { url: '/images/gym/gym08.webp' },
