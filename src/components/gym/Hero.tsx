@@ -54,7 +54,7 @@ const Hero = () => {
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             className="relative z-10 w-full h-full object-cover md:object-contain grayscale-[0.2] brightness-[0.7] contrast-[1.1] rotate-6 scale-[1.05] transform-gpu will-change-transform"
           >
             <source src="/videos/TVE_NOVE_VIDEO_9_16.webm" type="video/webm" />
@@ -118,7 +118,7 @@ const Hero = () => {
             style={{ scale: textScale, opacity: textOpacity }}
             className="pointer-events-none transform-gpu"
           >
-            <h1 className="text-[18vw] md:text-[22vw] font-black leading-none tracking-tighter text-[#d4ff00] select-none filter drop-shadow-[0_0_40px_rgba(212,255,0,0.3)]">
+            <h1 className="text-[18vw] md:text-[22vw] font-black leading-none tracking-tighter text-[#d4ff00] select-none">
               F77<span className="text-white italic">.</span>
             </h1>
             <p className="text-xl md:text-3xl font-bold text-white tracking-[0.8em] uppercase mt-[-3vw] opacity-90">
