@@ -11,7 +11,8 @@ import {
   Trash2, 
   ChevronRight,
   Sparkles,
-  Maximize
+  Maximize,
+  Hash
 } from 'lucide-react';
 
 /**
@@ -620,7 +621,7 @@ export default function SocialDashboard() {
                        Shop Now
                      </motion.button>
                    )}
-                   <div className="w-full flex justify-between items-end">
+                <div className="w-full flex justify-between items-end">
                       <div className="space-y-1">
                         <div className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Net Weight: 500 g</div>
                         <div className="text-[14px] font-black text-white uppercase tracking-tighter italic">{footer}</div>
@@ -642,12 +643,6 @@ export default function SocialDashboard() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
-    </div>
-  );
-}
-::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
     </div>
