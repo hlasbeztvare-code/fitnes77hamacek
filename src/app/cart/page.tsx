@@ -11,10 +11,14 @@ import { motion } from 'framer-motion';
 export default function CartPage() {
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
+  const hasHydrated = useCartStore((state) => state._hasHydrated);
 
   useEffect(() => {
+    // GOLIÁŠ GUARD: Počkáme, až se Zustand nahydratuje z localStorage
+    if (!hasHydrated) return;
+
     if (items.length === 0) {
-      window.location.href = '/supplements'; // Pokud je košík prázdný, jdeme zpět
+      window.location.href = '/supplements'; 
       return;
     }
 

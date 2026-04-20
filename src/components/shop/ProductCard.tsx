@@ -92,6 +92,7 @@ export default function ProductCard({ product, showFrame = false, index }: Props
     } else {
       addItem({
         id: product.id,
+        shoptetId: product.shoptetId || undefined,
         name: product.name,
         slug: product.slug,
         price: product.price,

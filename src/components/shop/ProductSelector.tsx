@@ -18,6 +18,7 @@ interface Variant {
 interface ProductSelectorProps {
   product: {
     id: string;
+    shoptetId?: string | null;
     name: string;
     slug: string;
     price: number;
@@ -91,6 +92,7 @@ export default function ProductSelector({ product }: ProductSelectorProps) {
         <AddToCartButton 
           product={{
             ...product,
+            shoptetId: product.shoptetId,
             price: currentPrice,
             variantName: selectedVariant?.name,
             variantCode: selectedVariant?.code,

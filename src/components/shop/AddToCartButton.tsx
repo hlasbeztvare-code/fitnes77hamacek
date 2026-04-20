@@ -5,6 +5,7 @@ import { useCartStore } from '@/hooks/useCartStore';
 type Props = {
   product: {
     id: string;
+    shoptetId?: string | null;
     name: string;
     slug: string;
     price: number;
@@ -26,6 +27,7 @@ export default function AddToCartButton({ product, disabled }: Props) {
     
     addItem({
       id: product.id,
+      shoptetId: product.shoptetId || undefined,
       name: product.name,
       slug: product.slug,
       price: product.price,

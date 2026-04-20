@@ -91,18 +91,18 @@ export default function Navbar() {
         {mobileOpen && (
           <motion.div
             key="mobile-menu"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-lg flex flex-col items-center justify-center gap-10 lg:hidden"
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[10005] bg-black/98 backdrop-blur-xl flex flex-col items-center justify-start pt-32 gap-8 lg:hidden"
           >
             <button
-              className="absolute top-6 right-6 text-white"
+              className="absolute top-8 right-8 text-[#d4ff00] p-2"
               onClick={() => setMobileOpen(false)}
               aria-label="Zavřít menu"
             >
-              <X className="h-8 w-8" />
+              <X className="h-10 w-10" />
             </button>
 
             <Link href="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 mb-4">
