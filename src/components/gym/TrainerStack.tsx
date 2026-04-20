@@ -35,7 +35,7 @@ export default function TrainerStack({ products, headline, subline }: Props) {
           Doporučený stack
         </span>
         <h2 className="text-[12vw] md:text-[7vw] font-black uppercase leading-[0.8] tracking-tighter font-black break-words lg:break-normal">
-          {headline.split(' ').map((word, i) =>
+          {(headline || '').split(' ').map((word, i) =>
             i === 0 ? (
               <span key={i} className="text-[#d4ff00]">{word} </span>
             ) : (

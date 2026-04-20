@@ -174,17 +174,17 @@ export default function ProductCard({ product, showFrame = false, index }: Props
 
       <div className="relative z-10 mt-2 sm:mt-3 flex flex-1 flex-col px-0.5 sm:px-1">
         <div className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em]" style={{ color: accentColor }}>
-          {product.category.toUpperCase()} 
+          {product.category?.toUpperCase() || 'SUPLEMENT'} 
         </div>
 
         <h3 className="mt-1 sm:mt-2 text-[0.85rem] sm:text-lg font-black uppercase leading-tight transition-colors duration-300 line-clamp-2 h-[2.5em] tracking-tight" style={{ color: accentColor }}>
-          {product.name}
+          {product.name || 'Produkt'}
         </h3>
 
         <div className="mt-auto pt-2">
           <div className="flex flex-wrap items-center gap-1 sm:gap-3">
             <span className="text-xl font-black tracking-tighter text-zinc-950">
-              {product.price.toLocaleString('cs-CZ')} Kč
+              {(product.price || 0).toLocaleString('cs-CZ')} Kč
             </span>
           </div>
           <div className="mt-1 text-[8px] font-black uppercase tracking-widest opacity-80" style={{ color: accentColor }}>
