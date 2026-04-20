@@ -27,7 +27,10 @@ export default function Navbar() {
         <div className="pointer-events-auto">
           <NavbarTopBar />
         </div>
-        <header className="w-full pointer-events-auto pt-[safe-area-inset-top] px-2 sm:px-0">
+        <header 
+          className="w-full pointer-events-auto px-2 sm:px-0"
+          style={{ paddingTop: 'env(safe-area-inset-top)' }}
+        >
           <div className="flex w-full items-center rounded-b-[2.5rem] border-b border-white/20 bg-black/40 py-1 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-4 md:px-12">
             {/* Logo */}
             <div className="flex flex-1 md:w-[300px] items-center">
