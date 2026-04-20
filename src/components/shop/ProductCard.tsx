@@ -46,24 +46,24 @@ export default function ProductCard({ product, showFrame = false, index }: Props
 
   const y = useTransform(scrollYProgress, [0, 1], [15, -15]);
 
-  const nameUpper = product.name.toUpperCase();
-  const slugLower = product.slug.toLowerCase();
+  const nameUpper = product.name?.toUpperCase() || '';
+  const slugLower = product.slug?.toLowerCase() || '';
   
   // Robustní Image Path Resolver s prioritou pro Master Assety
   const getProductImage = () => {
     // 0. PRIORITA: VIDEO ZE SHOPTETU
-    const isShoptetVideo = product.image.toLowerCase().match(/.(mp4|webm)$/i);
+    const isShoptetVideo = product.image?.toLowerCase()?.match(/.(mp4|webm)$/i);
     if (isShoptetVideo) return product.image;
 
     // 0.5 PRIORITA: MASTER VIDEO (Např. OPASEK)
-    if (nameUpper.includes('OPASEK')) return '/videos/pasek.webm';
+    if (nameUpper?.includes('OPASEK')) return '/videos/pasek.webm';
 
     // 1. MASTER ASSETS (Vždy přednost před statickým Shoptetem)
-    if (nameUpper.includes('BCA') || slugLower.includes('bca')) return '/images/products/bcaa.png';
-    if (nameUpper.includes('CREATINE') || slugLower.includes('kreatin')) return '/images/products/creatine-pure.png';
-    if (nameUpper.includes('PUMP') || slugLower.includes('deadpump')) return '/images/products/Deadpump.webp';
-    if (nameUpper.includes('DEAD') || slugLower.includes('blackdead')) return '/images/products/Blackdead.webp';
-    if (nameUpper.includes('KAŠE') || nameUpper.includes('RICE')) return '/images/products/kase1.png';
+    if (nameUpper?.includes('BCA') || slugLower?.includes('bca')) return '/images/products/bcaa.png';
+    if (nameUpper?.includes('CREATINE') || slugLower?.includes('kreatin')) return '/images/products/creatine-pure.png';
+    if (nameUpper?.includes('PUMP') || slugLower?.includes('deadpump')) return '/images/products/Deadpump.webp';
+    if (nameUpper?.includes('DEAD') || slugLower?.includes('blackdead')) return '/images/products/Blackdead.webp';
+    if (nameUpper?.includes('KAŠE') || nameUpper?.includes('RICE')) return '/images/products/kase1.png';
 
     // 2. SHOPTET / DB FALLBACK
     const img = product.image;
@@ -78,7 +78,11 @@ export default function ProductCard({ product, showFrame = false, index }: Props
   const addItem = useCartStore((state) => state.addItem);
   const router = useRouter();
 
-  const detailUrl = nameUpper.includes('OPASEK') || product.category === 'equipment' || (typeof product.category === 'string' && product.category.toLowerCase().includes('vybavení'))
+  const isEquipment = nameUpper?.includes('OPASEK') || 
+                     product.category === 'equipment' || 
+                     (typeof product.category === 'string' && product.category?.toLowerCase()?.includes('vybavení'));
+
+  const detailUrl = isEquipment
     ? `/equipment/${product.slug}`
     : `/supplements/${product.slug}`;
 
@@ -86,7 +90,7 @@ export default function ProductCard({ product, showFrame = false, index }: Props
     e.preventDefault();
     e.stopPropagation();
 
-    const hasVariants = product.variants && (product.variants as any[]).length > 0;
+    const hasVariants = product.variants && Array.isArray(product.variants) && product.variants.length > 0;
 
     if (hasVariants) {
       router.push(detailUrl);
