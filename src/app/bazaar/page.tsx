@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { db } from '@/lib/db';
-import AddToCartButton from '@/components/shop/AddToCartButton';
 
 export const revalidate = 60;
 

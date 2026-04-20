@@ -28,6 +28,7 @@ type Props = {
   product: Product;
   showFrame?: boolean;
   index?: number;
+  isDark?: boolean;
 };
 
 export default function ProductCard({ product, showFrame = false, index }: Props) {
@@ -102,6 +103,9 @@ export default function ProductCard({ product, showFrame = false, index }: Props
     }
   };
 
+  const accentColor = isDark ? '#d4ff00' : '#E10600';
+  const buttonTextColor = isDark ? 'text-black' : 'text-white';
+
   return (
     <article 
       ref={cardRef} 
@@ -130,12 +134,12 @@ export default function ProductCard({ product, showFrame = false, index }: Props
         <div className="relative h-[150px] sm:h-[220px] lg:h-[260px] w-full overflow-visible transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex items-center justify-center p-3">
           {/* Shine effect */}
           <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 translate-x-[-100%] bg-linear-to-r from-transparent via-[#d4ff00]/5 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" />
+            <div className="absolute inset-0 translate-x-[-100%] transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" style={{ backgroundImage: `linear-gradient(to right, transparent, ${accentColor}10, transparent)` }} />
           </div>
           
           <div className="absolute left-1 top-1 z-30 flex flex-col gap-1">
             {product.featured && (
-              <div className="bg-[#d4ff00] text-[8px] sm:text-[9px] font-black text-black px-1.5 py-0.5 uppercase tracking-[0.2em] shadow-2xl">
+              <div className="text-[8px] sm:text-[9px] font-black px-1.5 py-0.5 uppercase tracking-[0.2em] shadow-2xl" style={{ backgroundColor: accentColor, color: isDark ? '#000' : '#fff' }}>
                 BESTSELLER
               </div>
             )}
@@ -165,11 +169,11 @@ export default function ProductCard({ product, showFrame = false, index }: Props
       </Link>
 
       <div className="relative z-10 mt-2 sm:mt-3 flex flex-1 flex-col px-0.5 sm:px-1">
-        <div className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] text-[#d4ff00]">
+        <div className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em]" style={{ color: accentColor }}>
           {product.category.toUpperCase()} 
         </div>
 
-        <h3 className="mt-1 sm:mt-2 text-[0.85rem] sm:text-lg font-black uppercase leading-tight text-zinc-950 transition-colors duration-300 group-hover:text-[#d4ff00] line-clamp-2 h-[2.5em] tracking-tight">
+        <h3 className="mt-1 sm:mt-2 text-[0.85rem] sm:text-lg font-black uppercase leading-tight transition-colors duration-300 line-clamp-2 h-[2.5em] tracking-tight" style={{ color: accentColor }}>
           {product.name}
         </h3>
 
@@ -179,14 +183,17 @@ export default function ProductCard({ product, showFrame = false, index }: Props
               {product.price.toLocaleString('cs-CZ')} Kč
             </span>
           </div>
-          <div className="mt-1 text-[8px] font-black uppercase tracking-widest text-[#d4ff00] opacity-80">
+          <div className="mt-1 text-[8px] font-black uppercase tracking-widest opacity-80" style={{ color: accentColor }}>
             DOPRAVA ZDARMA
           </div>
 
           <div className="mt-3">
             <button onClick={handleAction} className="w-full cursor-pointer focus:outline-none focus:ring-0">
               <div className="flex justify-between items-center group/btn pointer-events-auto">
-                <div className="w-full bg-zinc-950 text-white py-2.5 px-3 [clip-path:polygon(0%_0%,100%_0%,90%_100%,0%_100%)] flex items-center justify-between transition-all duration-300 group-hover/btn:bg-[#d4ff00] group-hover/btn:text-black">
+                <div className={`w-full bg-zinc-950 ${buttonTextColor} py-2.5 px-3 [clip-path:polygon(0%_0%,100%_0%,90%_100%,0%_100%)] flex items-center justify-between transition-all duration-300`} style={{ '--hover-bg': accentColor } as any}>
+                  <style jsx>{`
+                    div:hover { background-color: ${accentColor} !important; color: ${isDark ? '#000' : '#fff'} !important; }
+                  `}</style>
                   <span className="text-[9px] font-black uppercase tracking-[0.2em]">
                     DO KOŠÍKU
                   </span>

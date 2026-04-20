@@ -13,7 +13,7 @@ import Reveal from '@/components/ui/Reveal';
 import ProductCard from '@/components/shop/ProductCard';
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 // Funkce pro generování metadat (SEO)
@@ -88,7 +88,7 @@ export default async function SupplementDetailPage({ params }: Props) {
         <div className="mb-12">
           <Link 
             href="/supplements" 
-            className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-[#E10600] not-italic"
+            className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-zinc-400 transition-colors hover:text-[#d4ff00] not-italic"
           >
             ← ZPĚT NA SUPLEMENTY
           </Link>
@@ -104,7 +104,7 @@ export default async function SupplementDetailPage({ params }: Props) {
 
           {/* Detaily produktu */}
           <div className="flex flex-col justify-center">
-            <div className="inline-block border-l-4 border-[#E10600] pl-4 text-[12px] font-black uppercase tracking-[0.3em] text-[#E10600]">
+            <div className="inline-block border-l-4 border-[#d4ff00] pl-4 text-[12px] font-black uppercase tracking-[0.3em] text-[#d4ff00]">
               Performance Supplement
             </div>
             <h1 className="mt-6 text-5xl font-black uppercase leading-[1.1] text-zinc-950 md:text-6xl lg:text-7xl tracking-tighter">
@@ -128,7 +128,7 @@ export default async function SupplementDetailPage({ params }: Props) {
 
             {product.ingredients && (
               <div className="mt-12 pt-8 border-t border-zinc-100">
-                <h3 className="text-[12px] font-black uppercase tracking-[0.22em] text-[#E10600] mb-3">Složení produktu</h3>
+                <h3 className="text-[12px] font-black uppercase tracking-[0.22em] text-[#d4ff00] mb-3">Složení produktu</h3>
                 <div className="text-[14px] leading-relaxed text-zinc-400 font-bold uppercase tracking-tight md:columns-2 gap-12">
                   {product.ingredients}
                 </div>
@@ -158,7 +158,7 @@ export default async function SupplementDetailPage({ params }: Props) {
                     />
                   </div>
                   <div className="absolute bottom-10 left-10 z-20">
-                    <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#E10600] mb-2">Sovereign Performance</div>
+                    <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#d4ff00] mb-2">Sovereign Performance</div>
                     <h3 className="text-3xl md:text-5xl font-black uppercase text-white tracking-tighter leading-none">
                       Maximum <br /> <span className="text-zinc-400">Impact.</span>
                     </h3>

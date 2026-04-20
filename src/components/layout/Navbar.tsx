@@ -95,10 +95,10 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[10005] bg-black/98 backdrop-blur-xl flex flex-col items-center justify-start pt-32 gap-8 lg:hidden"
+            className="fixed inset-0 z-[10005] bg-black/98 backdrop-blur-xl flex flex-col items-center justify-start pt-12 gap-6 lg:hidden overflow-y-auto"
           >
             <button
-              className="absolute top-8 right-8 text-[#d4ff00] p-2"
+              className="absolute top-6 right-6 text-[#d4ff00] p-4"
               onClick={() => setMobileOpen(false)}
               aria-label="Zavřít menu"
             >
