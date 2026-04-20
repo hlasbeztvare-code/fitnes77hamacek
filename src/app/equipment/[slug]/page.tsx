@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { db } from '@/lib/db';
 import AddToCartButton from '@/components/shop/AddToCartButton';
 import { Metadata } from 'next';
+import TrustBadges from '@/components/shop/TrustBadges';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -48,9 +49,8 @@ export default async function EquipmentDetailPage({ params }: Props) {
     orderBy: { createdAt: 'desc' },
   });
 
-  // override pro konkrétní produkt "Opasek" podle požadavku
   const displayImage = item.name.toLowerCase().includes('opasek') ? '/videos/pasek.webm' : item.image;
-  const isVideo = displayImage.toLowerCase().match(/.(mp4|webm)$/i);
+  const isVideo = displayImage?.toLowerCase().match(/.(mp4|webm)$/i);
 
   return (
     <section className="py-24 bg-white min-h-screen">
@@ -70,7 +70,7 @@ export default async function EquipmentDetailPage({ params }: Props) {
             <div className="relative w-full h-full transition-transform duration-700 group-hover:-translate-y-4">
               {isVideo ? (
                 <video
-                  src={displayImage}
+                  src={displayImage || ''}
                   autoPlay
                   loop
                   muted
@@ -79,7 +79,7 @@ export default async function EquipmentDetailPage({ params }: Props) {
                 />
               ) : (
                 <Image
-                  src={displayImage}
+                  src={displayImage || '/images/products/placeholder.webp'}
                   alt={item.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -90,35 +90,56 @@ export default async function EquipmentDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Detaily */}
+          {/* Detaily - Synchronizace s GOLIÁŠ standardem */}
           <div className="flex flex-col justify-center">
-            <div className="inline-block border-l-4 border-[#E10600] pl-4 text-[10px] font-black uppercase tracking-[0.3em] text-[#E10600]">
+            <div className="inline-block border-l-4 border-[#E10600] pl-4 text-[12px] font-black uppercase tracking-[0.3em] text-[#E10600]">
               Performance Gear
             </div>
             <h1 className="mt-6 text-5xl font-black uppercase leading-[1.1] text-zinc-950 md:text-6xl lg:text-7xl not-italic tracking-tighter">
               {item.name}
             </h1>
 
-            <div className="mt-8">
-              <span className="text-3xl font-black uppercase tracking-wider text-zinc-500 not-italic">Připravujeme</span>
+            <div className="mt-8 flex items-baseline gap-4">
+               <span className="text-4xl font-black tracking-tighter text-zinc-950 uppercase">
+                {item.price.toLocaleString('cs-CZ')} Kč
+               </span>
+               {item.oldPrice && (
+                <span className="text-xl font-black text-zinc-400 line-through decoration-red-600 decoration-2 uppercase">
+                  {item.oldPrice.toLocaleString('cs-CZ')} Kč
+                </span>
+               )}
             </div>
 
-            <p className="mt-8 text-lg leading-relaxed text-zinc-600 max-w-xl">{item.description}</p>
-
-            <div className="mt-12 max-w-md">
-              <button disabled className="w-full cursor-not-allowed bg-zinc-200 px-6 py-4 font-black uppercase tracking-widest text-zinc-400">
-                Připravujeme
-              </button>
+            <div className="mt-8 max-w-md">
+                <AddToCartButton 
+                    product={{
+                      ...item,
+                      image: item.image,
+                      variants: []
+                    } as any}
+                    disabled={item.stock <= 0}
+                />
             </div>
 
-            <div className="mt-12 grid grid-cols-2 gap-6 border-t border-zinc-100 pt-12 text-[10px] font-black uppercase tracking-[0.15em] text-zinc-400">
+            {/* Doomsday Two-Column Layout */}
+            <div className="mt-12 md:columns-2 gap-12 text-zinc-500 leading-relaxed text-lg font-medium [column-rule:1px_solid_#f4f4f5] border-t border-zinc-100 pt-8">
+              <div className="break-inside-avoid-column whitespace-pre-wrap">
+                {item.description}
+              </div>
+            </div>
+
+            <div className="mt-8 pt-0">
+              <TrustBadges />
+            </div>
+
+            <div className="mt-8 grid grid-cols-2 gap-6 border-t border-zinc-100 pt-8 text-[10px] font-black uppercase tracking-[0.15em] text-zinc-400">
               <div className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#E10600]" />
                 Skladem v Mladé Boleslavi
               </div>
               <div className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#E10600]" />
-                Záruka kvality
+                Záruka kvality GOLIÁŠ
               </div>
             </div>
           </div>
@@ -137,19 +158,20 @@ export default async function EquipmentDetailPage({ params }: Props) {
             </h2>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((rel) => {
-                const relIsVideo = rel.image.toLowerCase().match(/.(mp4|webm)$/i);
+                const relIsVideo = rel.image?.toLowerCase().match(/.(mp4|webm)$/i);
                 return (
                   <Link key={rel.id} href={`/equipment/${rel.slug}`} className="group block">
                     <div className="relative aspect-square flex items-center justify-center overflow-hidden bg-zinc-50 p-8 transition-colors group-hover:bg-zinc-100">
                       {relIsVideo ? (
-                        <video src={rel.image} autoPlay loop muted playsInline className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
+                        <video src={rel.image || ''} autoPlay loop muted playsInline className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" />
                       ) : (
-                        <Image src={rel.image} alt={rel.name} width={400} height={400} className="object-contain transition-transform duration-500 group-hover:scale-105" />
+                        <Image src={rel.image || '/images/products/placeholder.webp'} alt={rel.name} width={400} height={400} className="object-contain transition-transform duration-500 group-hover:scale-105" />
                       )}
                     </div>
                     <div className="mt-4 text-center">
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900">{rel.name}</h3>
-                      <p className="mt-2 text-base font-bold uppercase tracking-wider text-zinc-500">Připravujeme</p>
+                        <div className="text-[10px] font-black uppercase tracking-widest text-[#E10600]">{rel.category}</div>
+                        <h3 className="text-lg font-black uppercase tracking-tight text-zinc-900 group-hover:text-[#E10600] transition-colors">{rel.name}</h3>
+                        <div className="mt-1 font-black text-zinc-950">{rel.price.toLocaleString('cs-CZ')} Kč</div>
                     </div>
                   </Link>
                 );
