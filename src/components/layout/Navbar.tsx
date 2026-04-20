@@ -23,9 +23,11 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="fixed top-0 z-[10000] w-full">
-        <NavbarTopBar />
-        <header className="w-full">
+      <div className="fixed top-0 left-0 right-0 z-[10001] w-full flex flex-col pointer-events-none">
+        <div className="pointer-events-auto">
+          <NavbarTopBar />
+        </div>
+        <header className="w-full pointer-events-auto pt-[safe-area-inset-top] px-2 sm:px-0">
           <div className="flex w-full items-center rounded-b-[2.5rem] border-b border-white/20 bg-black/40 py-1 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-4 md:px-12">
             {/* Logo */}
             <div className="flex flex-1 md:w-[300px] items-center">
