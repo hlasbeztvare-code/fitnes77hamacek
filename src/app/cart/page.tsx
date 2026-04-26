@@ -45,16 +45,17 @@ export default function CartPage() {
       
       const finalUrl = `${shoptetBaseUrl}?${query}`;
 
-      // Přesměrování po vizuální pauze (HIDDEN FORM BRIDGE LOGIC)
+      // Přesměrování po vizuální pauze (HIDDEN FORM BRIDGE LOGIC v3.1)
       timer = setTimeout(() => {
         if (!hasTriggered.current) {
             hasTriggered.current = true;
             
             try {
-              // Vytvoření neviditelného formuláře pro korektní předání cookies a session
+              // Striktní URL bez lomítka
+              const cleanUrl = shoptetBaseUrl.replace(/\/$/, "");
               const form = document.createElement('form');
               form.method = 'POST';
-              form.action = shoptetBaseUrl;
+              form.action = cleanUrl;
               form.style.display = 'none';
 
               const params = new URLSearchParams(query);
@@ -65,6 +66,13 @@ export default function CartPage() {
                 input.value = value;
                 form.appendChild(input);
               });
+
+              // Explicitní akce
+              const actionInput = document.createElement('input');
+              actionInput.type = 'hidden';
+              actionInput.name = 'action';
+              actionInput.value = 'addBatch';
+              form.appendChild(actionInput);
 
               document.body.appendChild(form);
               form.submit();

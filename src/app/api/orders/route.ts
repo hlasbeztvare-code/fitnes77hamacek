@@ -138,12 +138,17 @@ export async function POST(req: Request) {
     }
 
     // 4. GENERATE SHOPTET PAYMENT LINK (Bridge)
-    // DŮLEŽITÉ: Shoptet potřebuje KÓD produktu (ne naše DB ID), a URL nesmí mít trailing slash před otazníkem.
+    // STRIKTNÍ: Žádné lomítko na konci, Shoptet by nás hodil na 404.
     const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch';
+    
     const query = items.map(i => {
-      // Prioritizujeme kód varianty z payloadu, pak shoptetId z DB
       const dbProduct = dbProducts.find(p => p.id === i.id);
-      const code = i.variantCode || dbProduct?.shoptetId || i.id; 
+      // Kód produktu pro Shoptet: 
+      // 1. Kód varianty (příchuť)
+      // 2. Shoptet ID z DB
+      // 3. Slug (někdy se používá jako kód)
+      // 4. Naše ID (poslední záchrana)
+      const code = i.variantCode || dbProduct?.shoptetId || dbProduct?.slug || i.id; 
       
       return `products[${encodeURIComponent(code)}]=${i.quantity}`;
     }).join('&');

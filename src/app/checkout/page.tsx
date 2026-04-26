@@ -64,9 +64,8 @@ export default function CheckoutPage() {
         // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME PŘES HIDDEN FORM BRIDGE
         if (resData.redirectUrl) {
           try {
-            // FLASH LOGIKA: Místo fetche (který nepředá cookies) použijeme HIDDEN FORM.
-            // To zajistí, že se Shoptet session správně spáruje a košík se naplní.
-            const shoptetUrl = resData.redirectUrl.split('?')[0];
+            // FLASH LOGIKA v3.1: Totální eliminace lomítek a striktní POST
+            const shoptetUrl = resData.redirectUrl.split('?')[0].replace(/\/$/, "");
             const params = new URLSearchParams(resData.redirectUrl.split('?')[1]);
             
             const form = document.createElement('form');
@@ -74,6 +73,7 @@ export default function CheckoutPage() {
             form.action = shoptetUrl;
             form.style.display = 'none';
 
+            // Přidáme produkty
             params.forEach((value, key) => {
               const input = document.createElement('input');
               input.type = 'hidden';
@@ -81,6 +81,13 @@ export default function CheckoutPage() {
               input.value = value;
               form.appendChild(input);
             });
+
+            // Explicitní informace o akci pro Shoptet engine
+            const actionInput = document.createElement('input');
+            actionInput.type = 'hidden';
+            actionInput.name = 'action';
+            actionInput.value = 'addBatch';
+            form.appendChild(actionInput);
 
             document.body.appendChild(form);
             form.submit();
