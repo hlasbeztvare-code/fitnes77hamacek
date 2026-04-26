@@ -45,20 +45,23 @@ export default function CartPage() {
       
       const finalUrl = `${shoptetBaseUrl}?${query}`;
 
-      // Přesměrování po vizuální pauze (HIDDEN FORM BRIDGE LOGIC v3.1)
+      // Přesměrování po vizuální pauze (HIDDEN FORM BRIDGE LOGIC v4.0)
       timer = setTimeout(() => {
         if (!hasTriggered.current) {
             hasTriggered.current = true;
             
             try {
-              // Striktní URL bez lomítka
-              const cleanUrl = shoptetBaseUrl.replace(/\/$/, "");
+              // Vynucení lomítka, aby se předešlo redirectu a ztrátě POST dat
+              const cleanUrl = shoptetBaseUrl.endsWith('/') ? shoptetBaseUrl : shoptetBaseUrl + '/';
               const form = document.createElement('form');
               form.method = 'POST';
               form.action = cleanUrl;
               form.style.display = 'none';
 
               const params = new URLSearchParams(query);
+              // Přidáme explicitní akci
+              params.set('action', 'Cart:addBatch');
+
               params.forEach((value, key) => {
                 const input = document.createElement('input');
                 input.type = 'hidden';
@@ -66,13 +69,6 @@ export default function CartPage() {
                 input.value = value;
                 form.appendChild(input);
               });
-
-              // Explicitní akce
-              const actionInput = document.createElement('input');
-              actionInput.type = 'hidden';
-              actionInput.name = 'action';
-              actionInput.value = 'addBatch';
-              form.appendChild(actionInput);
 
               document.body.appendChild(form);
               form.submit();

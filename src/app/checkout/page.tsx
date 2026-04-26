@@ -64,8 +64,10 @@ export default function CheckoutPage() {
         // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME PŘES HIDDEN FORM BRIDGE
         if (resData.redirectUrl) {
           try {
-            // FLASH LOGIKA v3.1: Totální eliminace lomítek a striktní POST
-            const shoptetUrl = resData.redirectUrl.split('?')[0].replace(/\/$/, "");
+            // FLASH LOGIKA v4.0: Použijeme URL s lomítkem přímo, abychom se vyhnuli redirectu
+            const shoptetUrl = resData.redirectUrl.split('?')[0];
+            if (!shoptetUrl.endsWith('/')) shoptetUrl += '/';
+            
             const params = new URLSearchParams(resData.redirectUrl.split('?')[1]);
             
             const form = document.createElement('form');
@@ -73,7 +75,7 @@ export default function CheckoutPage() {
             form.action = shoptetUrl;
             form.style.display = 'none';
 
-            // Přidáme produkty
+            // Přidáme produkty a akci
             params.forEach((value, key) => {
               const input = document.createElement('input');
               input.type = 'hidden';
@@ -82,19 +84,21 @@ export default function CheckoutPage() {
               form.appendChild(input);
             });
 
-            // Explicitní informace o akci pro Shoptet engine
-            const actionInput = document.createElement('input');
-            actionInput.type = 'hidden';
-            actionInput.name = 'action';
-            actionInput.value = 'addBatch';
-            form.appendChild(actionInput);
+            // Pokud v params není action, přidáme ji (pro jistotu)
+            if (!params.has('action')) {
+              const actionInput = document.createElement('input');
+              actionInput.type = 'hidden';
+              actionInput.name = 'action';
+              actionInput.value = 'Cart:addBatch';
+              form.appendChild(actionInput);
+            }
 
             document.body.appendChild(form);
             form.submit();
             return;
           } catch (err) {
             console.error('Shoptet Bridge Error:', err);
-            window.location.href = resData.redirectUrl; // Poslední záchrana
+            window.location.href = resData.redirectUrl; 
             return;
           }
         }

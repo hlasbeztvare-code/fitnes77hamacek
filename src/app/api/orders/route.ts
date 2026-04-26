@@ -138,22 +138,19 @@ export async function POST(req: Request) {
     }
 
     // 4. GENERATE SHOPTET PAYMENT LINK (Bridge)
-    // STRIKTNÍ: Žádné lomítko na konci, Shoptet by nás hodil na 404.
-    const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch';
+    // GOLIÁŠ v4.0: Shoptet nás na lomítko přesměrovává, tak tam půjdeme rovnou, aby se neztratil POST.
+    const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
     
-    const query = items.map(i => {
+    const queryParams = new URLSearchParams();
+    queryParams.append('action', 'Cart:addBatch'); // Plný název akce
+    
+    items.forEach(i => {
       const dbProduct = dbProducts.find(p => p.id === i.id);
-      // Kód produktu pro Shoptet: 
-      // 1. Kód varianty (příchuť)
-      // 2. Shoptet ID z DB
-      // 3. Slug (někdy se používá jako kód)
-      // 4. Naše ID (poslední záchrana)
       const code = i.variantCode || dbProduct?.shoptetId || dbProduct?.slug || i.id; 
-      
-      return `products[${encodeURIComponent(code)}]=${i.quantity}`;
-    }).join('&');
+      queryParams.append(`products[${code}]`, i.quantity.toString());
+    });
     
-    const paymentRedirectUrl = `${shoptetBaseUrl}?${query}`;
+    const paymentRedirectUrl = `${shoptetBaseUrl}?${queryParams.toString()}`;
 
     return NextResponse.json({ 
         success: true, 
