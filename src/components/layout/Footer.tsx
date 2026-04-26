@@ -54,8 +54,8 @@ const Footer = () => {
         <div className="flex flex-col gap-0.5 border-l border-white/10 pl-6">
           <span className="text-white/20 text-[7px]">CONTACT</span>
           <div className="flex gap-3">
-            <Link href="tel:+420777105548" className="hover:text-white">+420 777 105 548</Link>
-            <Link href="mailto:fitness77@post.cz" className="hover:text-white">FITNESS77@POST.CZ</Link>
+            <Link href="tel:+420777105548" className="hover:text-white whitespace-nowrap">+420 777 105 548</Link>
+            <Link href="mailto:fitness77@post.cz" className="hover:text-white whitespace-nowrap">FITNESS77@POST.CZ</Link>
           </div>
         </div>
 
