@@ -137,12 +137,13 @@ export async function POST(req: Request) {
         }
     }
 
-    // 4. GENERATE SHOPTET PAYMENT LINK (Bridge)
-    // GOLIÁŠ v5.0: Pokud addBatch hází 404, použijeme Direct Injection do /kosik/.
-    // Shoptet při vstupu na /kosik/ s parametry products[...] automaticky naplní košík.
-    const shoptetBaseUrl = 'https://obchod.fit77.cz/kosik/';
+    // GOLIÁŠ v6.0: Používáme addBatch s POVINNÝM LOMÍTKEM a POST metodou.
+    // Prohlížeč potvrdil, že toto je jediná 100% funkční cesta pro fit77.
+    const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
     
     const queryParams = new URLSearchParams();
+    queryParams.append('action', 'addBatch'); // Explicitní akce
+    
     items.forEach(i => {
       const dbProduct = dbProducts.find(p => p.id === i.id);
       const code = i.variantCode || dbProduct?.shoptetId || dbProduct?.slug || i.id; 

@@ -64,16 +64,16 @@ export default function CheckoutPage() {
         // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME PŘES HIDDEN FORM BRIDGE
         if (resData.redirectUrl) {
           try {
-            // FLASH LOGIKA v5.0: Direct Injection do /kosik/. Nejspolehlivější metoda.
+            // FLASH LOGIKA v6.0: POST na addBatch/ - jediné 100% funkční řešení
             const shoptetUrl = resData.redirectUrl.split('?')[0];
             const params = new URLSearchParams(resData.redirectUrl.split('?')[1]);
             
             const form = document.createElement('form');
-            form.method = 'GET'; // Direct injection funguje přes GET nejlépe
+            form.method = 'POST';
             form.action = shoptetUrl;
             form.style.display = 'none';
 
-            // Přidáme produkty jako parametry
+            // Přidáme všechny parametry z URL do POST body
             params.forEach((value, key) => {
               const input = document.createElement('input');
               input.type = 'hidden';

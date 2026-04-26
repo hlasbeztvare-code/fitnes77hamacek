@@ -45,20 +45,22 @@ export default function CartPage() {
       
       const finalUrl = `${shoptetBaseUrl}?${query}`;
 
-      // Přesměrování po vizuální pauze (HIDDEN FORM BRIDGE LOGIC v5.0)
+      // Přesměrování po vizuální pauze (HIDDEN FORM BRIDGE LOGIC v6.0)
       timer = setTimeout(() => {
         if (!hasTriggered.current) {
             hasTriggered.current = true;
             
             try {
-              // Direct Injection do /kosik/ - ignoruje systémové akce a hlášky o neexistujících stránkách
-              const shoptetUrl = 'https://obchod.fit77.cz/kosik/';
+              // POST na addBatch/ - Ověřeno browser analýzou jako jediná funkční cesta
+              const shoptetUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
               const form = document.createElement('form');
-              form.method = 'GET';
+              form.method = 'POST';
               form.action = shoptetUrl;
               form.style.display = 'none';
 
               const params = new URLSearchParams(query);
+              params.set('action', 'addBatch'); // Mandatory action parameter
+
               params.forEach((value, key) => {
                 const input = document.createElement('input');
                 input.type = 'hidden';
