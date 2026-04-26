@@ -35,11 +35,11 @@ const Footer = () => {
         </div>
 
         {/* 2. Menu Links */}
-        <div className="hidden xl:flex gap-4 border-l border-white/10 pl-6 h-4 items-center">
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 border-l border-white/10 pl-6 items-center">
           <Link href="/supplements" className="hover:text-[#d4ff00]">SUPLEMENTY</Link>
           <Link href="/equipment" className="hover:text-[#d4ff00]">VYBAVENÍ</Link>
           <Link href="/bazaar" className="hover:text-[#d4ff00]">BAZAR</Link>
-          <Link href="/odstoupeni-od-smlouvy" className="hover:text-[#d4ff00] text-[#E10600]">ODSTOUPENÍ</Link>
+          <Link href="/odstoupeni-od-smlouvy" className="hover:text-[#d4ff00] text-red-600">ODSTOUPENÍ</Link>
         </div>
 
         {/* 4. Support Contact */}
