@@ -49,6 +49,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Jan Lančarič" }],
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
       { url: "/assets/favicon-white-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/assets/favicon-white-16x16.png", sizes: "16x16", type: "image/png" },
     ],
@@ -62,17 +63,20 @@ export const metadata: Metadata = {
     siteName: "FITNESS77",
     locale: "cs_CZ",
     type: "website",
-    images: [{ 
-      url: "https://fitness77.cz/images/brand/og-image.png", 
-      width: 1200, 
-      height: 630, 
-      alt: "Fitness 77 Mladá Boleslav" 
-    }],
+    images: [
+      { 
+        url: "/images/brand/og_image.png", 
+        width: 1200, 
+        height: 630, 
+        alt: "FITNESS77 Mladá Boleslav - Premium Gym & Supplements" 
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "FITNESS77 | Suplementy & Gym Mladá Boleslav",
     description: "Špičkové suplementy, vybavení a performance gym v MB.",
+    images: ["/images/brand/og_image.png"],
   },
   robots: {
     index: true,
@@ -109,7 +113,7 @@ const jsonLd = {
     "https://www.instagram.com/fitness77mb",
   ],
   priceRange: "$$",
-  image: "https://fitness77.cz/images/brand/og-image.png",
+  image: "https://fitness77.cz/images/brand/og_image.png",
 };
 
 import { SecurityKernel } from '@/components/security/SecurityKernel';
@@ -118,8 +122,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="cs" className={`${inter.variable} ${bebas.variable} ${spaceGrotesk.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -10,7 +10,7 @@ datasource db {
 
 model Product {
   id               String   @id @default(cuid())
-  shoptetId        String?  @unique
+  shoptetId        String?  
   slug             String   @unique
   name             String
   description      String?  @db.Text

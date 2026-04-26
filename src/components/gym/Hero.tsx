@@ -78,7 +78,8 @@ const Hero = () => {
                       alt=""
                       fill
                       className="object-cover rounded-xl grayscale contrast-125"
-                      loading="lazy"
+                      loading={i < 2 ? "eager" : "lazy"}
+                      priority={i < 1}
                       sizes="(max-width: 768px) 30vw, 18vw"
                     />
                   </div>
@@ -98,7 +99,8 @@ const Hero = () => {
                       alt=""
                       fill
                       className="object-cover rounded-xl grayscale contrast-125"
-                      loading="lazy"
+                      loading={i < 2 ? "eager" : "lazy"}
+                      priority={i < 1}
                       sizes="(max-width: 768px) 30vw, 18vw"
                     />
                   </div>
