@@ -120,20 +120,25 @@ export default async function SupplementDetailPage({ params }: Props) {
               }} 
             />
 
-            <div className="mt-8 max-w-2xl text-zinc-500 leading-relaxed text-lg font-medium">
-              <div className="whitespace-pre-wrap">
-                {product.description}
-              </div>
-            </div>
+            <div className="mt-16 flex flex-col md:flex-row gap-12 lg:gap-20 border-t border-zinc-100 pt-12">
+              {/* Left Side: Ingredients */}
+              {product.ingredients && (
+                <div className="md:w-[35%] shrink-0">
+                  <h3 className="text-[11px] font-black uppercase tracking-[0.25em] text-[#d4ff00] mb-6">Složení / Složky</h3>
+                  <div className="text-[13px] leading-relaxed text-zinc-400 font-bold uppercase tracking-tight">
+                    {product.ingredients}
+                  </div>
+                </div>
+              )}
 
-            {product.ingredients && (
-              <div className="mt-12 pt-8 border-t border-zinc-100">
-                <h3 className="text-[12px] font-black uppercase tracking-[0.22em] text-[#d4ff00] mb-3">Složení produktu</h3>
-                <div className="text-[14px] leading-relaxed text-zinc-400 font-bold uppercase tracking-tight max-w-xl">
-                  {product.ingredients}
+              {/* Right Side: Description */}
+              <div className="flex-1">
+                <h3 className="text-[11px] font-black uppercase tracking-[0.25em] text-zinc-400 mb-6">Popis produktu</h3>
+                <div className="text-zinc-500 leading-relaxed text-lg font-medium whitespace-pre-wrap">
+                  {product.description}
                 </div>
               </div>
-            )}
+            </div>
 
             <div className="mt-8 pt-0">
               <TrustBadges />
