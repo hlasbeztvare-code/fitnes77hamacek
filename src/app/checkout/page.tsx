@@ -61,31 +61,33 @@ export default function CheckoutPage() {
       if (resData.success) {
         clearCart();
         
-        // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME PŘES AJAX BRIDGE
+        // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME PŘES HIDDEN FORM BRIDGE
         if (resData.redirectUrl) {
           try {
-            // FLASH LOGIKA: Místo GET redirectu (který Shoptet blokuje 404)
-            // použijeme bleskový POST fetch pro naplnění košíku.
+            // FLASH LOGIKA: Místo fetche (který nepředá cookies) použijeme HIDDEN FORM.
+            // To zajistí, že se Shoptet session správně spáruje a košík se naplní.
             const shoptetUrl = resData.redirectUrl.split('?')[0];
             const params = new URLSearchParams(resData.redirectUrl.split('?')[1]);
             
-            await fetch(shoptetUrl, {
-              method: 'POST',
-              mode: 'no-cors', // Důležité pro cross-domain bez CORS headerů
-              body: params,
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = shoptetUrl;
+            form.style.display = 'none';
+
+            params.forEach((value, key) => {
+              const input = document.createElement('input');
+              input.type = 'hidden';
+              input.name = key;
+              input.value = value;
+              form.appendChild(input);
             });
 
-            // Po úspěšném (v no-cors režimu nevidíme status, ale předpokládáme success)
-            // přesměrujeme uživatele na finální krok košíku na Shoptetu.
-            window.location.href = 'https://obchod.fit77.cz/kosik/';
+            document.body.appendChild(form);
+            form.submit();
             return;
           } catch (err) {
             console.error('Shoptet Bridge Error:', err);
-            // Fallback na success stránku, pokud bridge selže úplně
-            router.push(`/success?orderId=${resData.orderId}`);
+            window.location.href = resData.redirectUrl; // Poslední záchrana
             return;
           }
         }

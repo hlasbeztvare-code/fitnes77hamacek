@@ -45,22 +45,29 @@ export default function CartPage() {
       
       const finalUrl = `${shoptetBaseUrl}?${query}`;
 
-      // Přesměrování po vizuální pauze (AJAX BRIDGE LOGIC)
-      timer = setTimeout(async () => {
+      // Přesměrování po vizuální pauze (HIDDEN FORM BRIDGE LOGIC)
+      timer = setTimeout(() => {
         if (!hasTriggered.current) {
             hasTriggered.current = true;
             
             try {
-              // POST fetch pro přidání do košíku bez opuštění domény (CORS bypass)
-              await fetch(shoptetBaseUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: new URLSearchParams(query),
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+              // Vytvoření neviditelného formuláře pro korektní předání cookies a session
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = shoptetBaseUrl;
+              form.style.display = 'none';
+
+              const params = new URLSearchParams(query);
+              params.forEach((value, key) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
               });
 
-              // Poté čistý redirect na Shoptet košík
-              window.location.href = 'https://obchod.fit77.cz/kosik/';
+              document.body.appendChild(form);
+              form.submit();
             } catch (err) {
               console.error("Cart Bridge Error:", err);
               setStatus('error');
