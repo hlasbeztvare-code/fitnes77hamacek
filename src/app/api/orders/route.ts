@@ -136,7 +136,21 @@ export async function POST(req: Request) {
         }
     }
 
-    return NextResponse.json({ success: true, orderId: order.id });
+    // 4. GENERATE SHOPTET PAYMENT LINK (Bridge)
+    const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
+    const query = finalItems.map(i => {
+      // Prioritizujeme variantCode pro Shoptet bridge
+      const code = i.id; // V našem případě id v DB odpovídá kódu v Shoptetu nebo variantě
+      return `products[${encodeURIComponent(code)}]=${i.quantity}`;
+    }).join('&');
+    
+    const paymentRedirectUrl = `${shoptetBaseUrl}?${query}`;
+
+    return NextResponse.json({ 
+        success: true, 
+        orderId: order.id,
+        redirectUrl: paymentRedirectUrl 
+    });
   } catch (error: any) {
     console.error('Order creation error:', error);
     

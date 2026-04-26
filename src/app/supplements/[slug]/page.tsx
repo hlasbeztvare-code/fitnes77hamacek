@@ -140,9 +140,6 @@ export default async function SupplementDetailPage({ params }: Props) {
               </div>
             </div>
 
-            <div className="mt-8 pt-0">
-              <TrustBadges />
-            </div>
 
             {/* Mastering Detail: Ingredients & Nutrition - MOBILE ONLY BELOW */}
             <div className="lg:hidden mt-12 pt-8 border-t border-zinc-100">
@@ -173,6 +170,11 @@ export default async function SupplementDetailPage({ params }: Props) {
             )}
             </div>
           </div>
+
+        {/* Full Width Section for Trust Badges */}
+        <div className="mt-20 border-t border-zinc-100 pt-12">
+          <TrustBadges />
+        </div>
         </div>
 
       {/* Related Products Section */}

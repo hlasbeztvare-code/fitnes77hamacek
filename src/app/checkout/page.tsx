@@ -60,6 +60,13 @@ export default function CheckoutPage() {
 
       if (resData.success) {
         clearCart();
+        
+        // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME TAM
+        if (resData.redirectUrl) {
+          window.location.href = resData.redirectUrl;
+          return;
+        }
+
         router.push(`/success?orderId=${resData.orderId}`);
         return;
       }

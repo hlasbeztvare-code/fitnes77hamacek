@@ -12,7 +12,7 @@ export default function TrustBadges() {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mt-8">
       {badges.map((badge, i) => (
         <motion.div 
           key={i}
@@ -20,16 +20,16 @@ export default function TrustBadges() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1 }}
           viewport={{ once: true }}
-          className="flex items-start gap-3 p-3 bg-zinc-50 border border-zinc-100 rounded-lg group hover:border-[#E10600]/30 transition-colors"
+          className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-3 p-3 bg-white border border-zinc-100 rounded-xl group hover:border-red-600/30 transition-all shadow-sm"
         >
-          <div className="p-2 bg-white rounded-md shadow-sm group-hover:bg-[#E10600]/5 transition-colors">
+          <div className="p-2 bg-zinc-50 rounded-lg group-hover:bg-red-50 transition-colors shrink-0">
             {badge.icon}
           </div>
-          <div>
-            <div className="text-[12px] font-black uppercase tracking-widest text-zinc-950 leading-none mb-1">
+          <div className="min-w-0">
+            <div className="text-[11px] md:text-[12px] font-black uppercase tracking-wider text-zinc-950 leading-tight mb-1 truncate">
               {badge.label}
             </div>
-            <div className="text-[10px] font-black text-zinc-400 uppercase tracking-wider">
+            <div className="text-[9px] md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest truncate">
               {badge.sub}
             </div>
           </div>
