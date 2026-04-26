@@ -74,63 +74,82 @@ export default function CheckoutPage() {
   };
 
   return (
-    <section className="py-16 bg-zinc-50 min-h-screen">
-      <div className="mx-auto grid w-[min(1200px,calc(100%-32px))] gap-8 lg:grid-cols-[1fr_360px]">
-        <div className="space-y-6">
+    <section className="py-24 bg-black min-h-screen text-white">
+      <div className="mx-auto grid w-[min(1280px,calc(100%-40px))] gap-12 lg:grid-cols-[1fr_400px]">
+        <div className="space-y-8">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm"
+            className="rounded-3xl border border-zinc-800 bg-[#0a0a0a] p-10 shadow-2xl"
           >
-            <h1 className="text-3xl font-black uppercase tracking-tighter mb-8">Pokladna</h1>
+            <div className="flex items-center gap-4 mb-12">
+              <div className="w-12 h-12 bg-[#d4ff00] rounded-full flex items-center justify-center text-black font-black text-xl">
+                1
+              </div>
+              <h1 className="text-4xl font-black uppercase tracking-tighter">Pokladna</h1>
+            </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-               <h2 className="md:col-span-2 text-lg font-bold uppercase tracking-widest text-zinc-400 mb-2">Kontaktní údaje</h2>
+            <div className="grid gap-6 md:grid-cols-2">
+               <h2 className="md:col-span-2 text-[11px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Doručovací údaje</h2>
               <div>
-                <input {...register('firstName')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-black/5 transition-all ${errors.firstName ? 'border-red-500 bg-red-50' : 'border-zinc-200'}`} placeholder="Jméno" />
-                {errors.firstName && <span className="text-red-500 text-xs mt-1 block font-semibold">{errors.firstName.message}</span>}
+                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">Jméno</label>
+                <input {...register('firstName')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.firstName ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Jan" />
+                {errors.firstName && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.firstName.message}</span>}
               </div>
               <div>
-                <input {...register('lastName')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-black/5 transition-all ${errors.lastName ? 'border-red-500 bg-red-50' : 'border-zinc-200'}`} placeholder="Příjmení" />
-                {errors.lastName && <span className="text-red-500 text-xs mt-1 block font-semibold">{errors.lastName.message}</span>}
+                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">Příjmení</label>
+                <input {...register('lastName')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.lastName ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Novák" />
+                {errors.lastName && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.lastName.message}</span>}
               </div>
               <div className="md:col-span-2">
-                <input {...register('email')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-black/5 transition-all ${errors.email ? 'border-red-500 bg-red-50' : 'border-zinc-200'}`} placeholder="Email" type="email" />
-                {errors.email && <span className="text-red-500 text-xs mt-1 block font-semibold">{errors.email.message}</span>}
+                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">E-mail</label>
+                <input {...register('email')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.email ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="vas@email.cz" type="email" />
+                {errors.email && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.email.message}</span>}
               </div>
               <div className="md:col-span-2">
-                <input {...register('address')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-black/5 transition-all ${errors.address ? 'border-red-500 bg-red-50' : 'border-zinc-200'}`} placeholder="Adresa" />
-                {errors.address && <span className="text-red-500 text-xs mt-1 block font-semibold">{errors.address.message}</span>}
+                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">Adresa a č.p.</label>
+                <input {...register('address')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.address ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Ulice 123" />
+                {errors.address && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.address.message}</span>}
               </div>
               <div>
-                <input {...register('city')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-black/5 transition-all ${errors.city ? 'border-red-500 bg-red-50' : 'border-zinc-200'}`} placeholder="Město" />
-                {errors.city && <span className="text-red-500 text-xs mt-1 block font-semibold">{errors.city.message}</span>}
+                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">Město</label>
+                <input {...register('city')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.city ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Praha" />
+                {errors.city && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.city.message}</span>}
               </div>
               <div>
-                <input {...register('zip')} className={`w-full rounded-md border px-4 py-3 outline-none focus:ring-2 focus:ring-black/5 transition-all ${errors.zip ? 'border-red-500 bg-red-50' : 'border-zinc-200'}`} placeholder="PSČ" />
-                {errors.zip && <span className="text-red-500 text-xs mt-1 block font-semibold">{errors.zip.message}</span>}
+                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">PSČ</label>
+                <input {...register('zip')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.zip ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="123 45" />
+                {errors.zip && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.zip.message}</span>}
               </div>
             </div>
 
-            <div className="mt-12">
-               <h2 className="text-lg font-bold uppercase tracking-widest text-zinc-400 mb-6">Způsob dopravy</h2>
-               <div className="grid gap-3">
+            <div className="mt-16">
+               <h2 className="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-8">Způsob dopravy</h2>
+               <div className="grid gap-4">
                   {[
-                    { id: 'zasilkovna', name: 'Zásilkovna (Na pobočku)', price: 89 },
-                    { id: 'ppl', name: 'PPL (Doručení na adresu)', price: 129 },
-                    { id: 'pickup', name: 'Osobní odběr (Fitness 77)', price: 0 },
+                    { id: 'zasilkovna', name: 'Zásilkovna (Na pobočku)', price: 89, desc: 'Doručení do 2-3 dnů' },
+                    { id: 'ppl', name: 'PPL (Na adresu)', price: 129, desc: 'Doručení do druhého dne' },
+                    { id: 'pickup', name: 'Osobní odběr (Mladá Boleslav)', price: 0, desc: 'Vyzvednutí na prodejně' },
                   ].map((method) => (
                     <button
                       key={method.id}
                       type="button"
                       onClick={() => setShippingMethod(method.id as any)}
-                      className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
+                      className={`flex items-center gap-6 p-6 rounded-2xl border-2 transition-all text-left ${
                         shippingMethod === method.id 
-                          ? 'border-black bg-black text-white' 
-                          : 'border-zinc-100 bg-zinc-50 hover:border-zinc-300'
+                          ? 'border-[#d4ff00] bg-[#d4ff00]/5' 
+                          : 'border-zinc-900 bg-zinc-900/50 hover:border-zinc-700'
                       }`}
                     >
-                      <div className="font-bold uppercase tracking-tight">{method.name}</div>
-                      <div className="font-black">{method.price === 0 ? 'ZDARMA' : `${method.price} Kč`}</div>
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${shippingMethod === method.id ? 'border-[#d4ff00]' : 'border-zinc-700'}`}>
+                        {shippingMethod === method.id && <div className="w-2.5 h-2.5 bg-[#d4ff00] rounded-full" />}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-black uppercase tracking-tight text-white">{method.name}</div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mt-1">{method.desc}</div>
+                      </div>
+                      <div className={`font-black text-lg ${shippingMethod === method.id ? 'text-[#d4ff00]' : 'text-white'}`}>
+                        {method.price === 0 ? 'ZDARMA' : `${method.price} Kč`}
+                      </div>
                     </button>
                   ))}
                </div>
@@ -139,44 +158,71 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-12 w-full rounded-xl bg-black px-6 py-5 font-black uppercase tracking-widest text-white transition hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
+              className="mt-16 w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 shadow-[0_20px_40px_rgba(212,255,0,0.15)]"
             >
-              {loading ? 'Pracujeme na tom...' : `Objednat s povinností platby – ${finalTotal.toLocaleString('cs-CZ')} Kč`}
+              {loading ? 'Zpracovávám...' : `Objednat s povinností platby • ${finalTotal.toLocaleString('cs-CZ')} Kč`}
             </button>
           </form>
         </div>
 
-        <aside className="h-fit rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-black uppercase tracking-tighter border-bottom pb-4 border-zinc-100">Shrnutí</h2>
+        <aside className="h-fit space-y-8">
+          <div className="rounded-3xl border border-zinc-800 bg-[#0a0a0a] p-8 shadow-2xl">
+            <h2 className="text-2xl font-black uppercase tracking-tighter mb-8 flex items-center justify-between">
+              Shrnutí
+              <span className="text-zinc-600 text-sm font-bold tracking-widest">{items.length} položek</span>
+            </h2>
 
-          <div className="mt-6 space-y-4">
-            {items.map((item) => (
-              <div key={`${item.id}-${item.variantCode}`} className="flex items-start justify-between text-sm">
-                <span className="text-zinc-500 font-medium">
-                  {item.name} <span className="text-zinc-300">× {item.quantity}</span>
-                </span>
-                <span className="font-bold">{(item.price * item.quantity).toLocaleString('cs-CZ')} Kč</span>
+            <div className="space-y-6">
+              {items.map((item) => (
+                <div key={`${item.id}-${item.variantCode}`} className="flex gap-4 items-center">
+                  <div className="relative w-16 h-16 bg-zinc-900 rounded-xl overflow-hidden shrink-0 border border-zinc-800">
+                    <img 
+                      src={item.image} 
+                      alt={item.name} 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute top-0 right-0 bg-[#d4ff00] text-black text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-bl-lg">
+                      {item.quantity}
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xs font-black uppercase tracking-tight text-white truncate">{item.name}</h3>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mt-1">{item.variantName || 'Základní varianta'}</p>
+                  </div>
+                  <div className="text-sm font-black text-white shrink-0">
+                    {(item.price * item.quantity).toLocaleString('cs-CZ')} Kč
+                  </div>
+                </div>
+              ))}
+              
+              <div className="pt-6 border-t border-zinc-900 space-y-3">
+                <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-zinc-500">
+                   <span>Mezisoučet</span>
+                   <span className="text-white">{totalPrice.toLocaleString('cs-CZ')} Kč</span>
+                </div>
+                <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-zinc-500">
+                   <span>Doprava</span>
+                   <span className="text-white">{shippingPrices[shippingMethod].toLocaleString('cs-CZ')} Kč</span>
+                </div>
               </div>
-            ))}
-            
-            <div className="pt-4 border-t border-zinc-50 flex justify-between text-sm italic text-zinc-400">
-               <span>Doprava ({shippingMethod})</span>
-               <span>{shippingPrices[shippingMethod].toLocaleString('cs-CZ')} Kč</span>
+            </div>
+
+            <div className="mt-8 pt-8 border-t-2 border-dashed border-zinc-800">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500">Celkem</span>
+                <span className="text-3xl font-black text-[#d4ff00]">{finalTotal.toLocaleString('cs-CZ')} Kč</span>
+              </div>
             </div>
           </div>
 
-          <div className="mt-8 border-t border-zinc-100 pt-6">
-            <div className="flex items-center justify-between text-2xl font-black">
-              <span className="uppercase tracking-tighter">Celkem</span>
-              <span>{finalTotal.toLocaleString('cs-CZ')} Kč</span>
-            </div>
-          </div>
-
-          <div className="mt-8 p-6 bg-zinc-50 rounded-2xl border border-zinc-100">
-             <h4 className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-3">Potřebuješ poradit?</h4>
-             <p className="text-sm font-bold uppercase leading-tight">Zákaznická linka Fitness 77</p>
-             <a href="tel:+420777105548" className="text-lg font-black block mt-2 hover:text-zinc-600 transition-colors">+420 777 105 548</a>
-             <p className="text-[10px] text-zinc-400 mt-2 uppercase">Po-Pá: 8:00 - 18:00</p>
+          <div className="rounded-3xl bg-[#d4ff00] p-8 text-black shadow-2xl">
+             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-60">Potřebuješ poradit?</h4>
+             <p className="text-lg font-black uppercase leading-none tracking-tighter">Zákaznická linka Fitness 77</p>
+             <a href="tel:+420777105548" className="text-3xl font-black block mt-4 hover:opacity-70 transition-opacity tracking-tighter">+420 777 105 548</a>
+             <div className="mt-6 pt-6 border-t border-black/10 flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-widest">Po-Pá: 8:00 - 18:00</span>
+                <div className="w-2 h-2 bg-black rounded-full animate-pulse" />
+             </div>
           </div>
         </aside>
       </div>
