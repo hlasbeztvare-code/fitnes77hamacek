@@ -61,10 +61,33 @@ export default function CheckoutPage() {
       if (resData.success) {
         clearCart();
         
-        // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME TAM
+        // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME PŘES AJAX BRIDGE
         if (resData.redirectUrl) {
-          window.location.href = resData.redirectUrl;
-          return;
+          try {
+            // FLASH LOGIKA: Místo GET redirectu (který Shoptet blokuje 404)
+            // použijeme bleskový POST fetch pro naplnění košíku.
+            const shoptetUrl = resData.redirectUrl.split('?')[0];
+            const params = new URLSearchParams(resData.redirectUrl.split('?')[1]);
+            
+            await fetch(shoptetUrl, {
+              method: 'POST',
+              mode: 'no-cors', // Důležité pro cross-domain bez CORS headerů
+              body: params,
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+            });
+
+            // Po úspěšném (v no-cors režimu nevidíme status, ale předpokládáme success)
+            // přesměrujeme uživatele na finální krok košíku na Shoptetu.
+            window.location.href = 'https://obchod.fit77.cz/kosik/';
+            return;
+          } catch (err) {
+            console.error('Shoptet Bridge Error:', err);
+            // Fallback na success stránku, pokud bridge selže úplně
+            router.push(`/success?orderId=${resData.orderId}`);
+            return;
+          }
         }
 
         router.push(`/success?orderId=${resData.orderId}`);
