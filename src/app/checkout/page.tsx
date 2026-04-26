@@ -124,7 +124,8 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-3 rounded-xl bg-[#d4ff00]/10 border border-[#d4ff00]/30 text-[#d4ff00] font-black uppercase text-[10px] tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all"
+                aria-label="Odeslat rychlou objednávku"
+                className="px-6 py-3 rounded-xl bg-[#d4ff00]/10 border border-[#d4ff00]/30 text-[#d4ff00] font-black uppercase text-[10px] tracking-widest hover:bg-[#d4ff00] hover:text-black focus:ring-2 focus:ring-[#d4ff00] outline-none transition-all"
               >
                 Rychlá objednávka
               </button>
@@ -133,33 +134,33 @@ export default function CheckoutPage() {
             <div className="grid gap-6 md:grid-cols-2">
                <h2 className="md:col-span-2 text-[11px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Doručovací údaje</h2>
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">Jméno</label>
-                <input {...register('firstName')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.firstName ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Jan" />
+                <label htmlFor="firstName" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">Jméno</label>
+                <input id="firstName" {...register('firstName')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.firstName ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Jan" />
                 {errors.firstName && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.firstName.message}</span>}
               </div>
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">Příjmení</label>
-                <input {...register('lastName')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.lastName ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Novák" />
+                <label htmlFor="lastName" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">Příjmení</label>
+                <input id="lastName" {...register('lastName')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.lastName ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Novák" />
                 {errors.lastName && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.lastName.message}</span>}
               </div>
               <div className="md:col-span-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">E-mail</label>
-                <input {...register('email')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.email ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="vas@email.cz" type="email" />
+                <label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">E-mail</label>
+                <input id="email" {...register('email')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.email ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="vas@email.cz" type="email" />
                 {errors.email && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.email.message}</span>}
               </div>
               <div className="md:col-span-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">Adresa a č.p.</label>
-                <input {...register('address')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.address ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Ulice 123" />
+                <label htmlFor="address" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">Adresa a č.p.</label>
+                <input id="address" {...register('address')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.address ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Ulice 123" />
                 {errors.address && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.address.message}</span>}
               </div>
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">Město</label>
-                <input {...register('city')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.city ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Praha" />
+                <label htmlFor="city" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">Město</label>
+                <input id="city" {...register('city')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.city ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Praha" />
                 {errors.city && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.city.message}</span>}
               </div>
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2 block ml-1">PSČ</label>
-                <input {...register('zip')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.zip ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="123 45" />
+                <label htmlFor="zip" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">PSČ</label>
+                <input id="zip" {...register('zip')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.zip ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="123 45" />
                 {errors.zip && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.zip.message}</span>}
               </div>
             </div>
@@ -201,7 +202,8 @@ export default function CheckoutPage() {
               type="submit"
               disabled={loading}
               id="submit-order-button"
-              className="mt-16 w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 shadow-[0_20px_40px_rgba(212,255,0,0.15)]"
+              aria-label={`Objednat a zaplatit ${finalTotal} korun`}
+              className="mt-16 w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-[1.01] focus:ring-4 focus:ring-[#d4ff00]/30 outline-none active:scale-[0.99] disabled:opacity-50 shadow-[0_20px_40px_rgba(212,255,0,0.15)]"
             >
               {loading ? 'Zpracovávám...' : `Objednat s povinností platby • ${finalTotal.toLocaleString('cs-CZ')} Kč`}
             </button>

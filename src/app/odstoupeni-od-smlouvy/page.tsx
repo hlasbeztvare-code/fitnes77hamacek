@@ -94,53 +94,58 @@ export default function WithdrawalPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-1">
-              <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 ml-1">Číslo objednávky</label>
+              <label htmlFor="orderId" className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Číslo objednávky</label>
               <input 
+                id="orderId"
                 {...register('orderId')} 
                 placeholder="Např. 20260001"
-                className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold ${errors.orderId ? 'border-red-500 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
+                className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold focus:ring-2 focus:ring-black/5 ${errors.orderId ? 'border-red-600 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
               />
-              {errors.orderId && <span className="text-[10px] text-red-500 font-bold uppercase">{errors.orderId.message}</span>}
+              {errors.orderId && <span className="text-[10px] text-red-600 font-bold uppercase">{errors.orderId.message}</span>}
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 ml-1">Datum převzetí</label>
+              <label htmlFor="date" className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Datum převzetí</label>
               <input 
+                id="date"
                 {...register('date')} 
                 type="date"
-                className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold ${errors.date ? 'border-red-500 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
+                className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold focus:ring-2 focus:ring-black/5 ${errors.date ? 'border-red-600 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
               />
-              {errors.date && <span className="text-[10px] text-red-500 font-bold uppercase">{errors.date.message}</span>}
+              {errors.date && <span className="text-[10px] text-red-600 font-bold uppercase">{errors.date.message}</span>}
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 ml-1">Jméno a příjmení</label>
+            <label htmlFor="name" className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Jméno a příjmení</label>
             <input 
+              id="name"
               {...register('name')} 
               placeholder="Jan Novák"
-              className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold ${errors.name ? 'border-red-500 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
+              className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold focus:ring-2 focus:ring-black/5 ${errors.name ? 'border-red-600 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
             />
-            {errors.name && <span className="text-[10px] text-red-500 font-bold uppercase">{errors.name.message}</span>}
+            {errors.name && <span className="text-[10px] text-red-600 font-bold uppercase">{errors.name.message}</span>}
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 ml-1">E-mail pro komunikaci</label>
+            <label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">E-mail pro komunikaci</label>
             <input 
+              id="email"
               {...register('email')} 
               type="email"
               placeholder="vas@email.cz"
-              className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold ${errors.email ? 'border-red-500 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
+              className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold focus:ring-2 focus:ring-black/5 ${errors.email ? 'border-red-600 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
             />
-            {errors.email && <span className="text-[10px] text-red-500 font-bold uppercase">{errors.email.message}</span>}
+            {errors.email && <span className="text-[10px] text-red-600 font-bold uppercase">{errors.email.message}</span>}
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400 ml-1">Důvod odstoupení (nepovinné)</label>
+            <label htmlFor="reason" className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Důvod odstoupení (nepovinné)</label>
             <textarea 
+              id="reason"
               {...register('reason')} 
               rows={4}
               placeholder="Popište stručně důvod vrácení..."
-              className="w-full bg-zinc-50 border-2 border-zinc-100 px-6 py-4 outline-none focus:border-black transition-all font-bold resize-none"
+              className="w-full bg-zinc-50 border-2 border-zinc-100 px-6 py-4 outline-none focus:border-black transition-all font-bold resize-none focus:ring-2 focus:ring-black/5"
             />
           </div>
 
@@ -161,13 +166,14 @@ export default function WithdrawalPage() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full bg-black text-white py-6 px-8 font-black uppercase tracking-[0.2em] flex items-center justify-center gap-4 hover:bg-[#E10600] transition-all disabled:opacity-50"
+            aria-label="Odeslat digitální formulář pro odstoupení"
+            className="w-full bg-black text-white py-6 px-8 font-black uppercase tracking-[0.2em] flex items-center justify-center gap-4 hover:bg-[#E10600] focus:ring-4 focus:ring-[#E10600]/20 outline-none transition-all disabled:opacity-50"
           >
             {status === 'loading' ? (
-              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true" />
             ) : (
               <>
-                <Send className="w-5 h-5" />
+                <Send className="w-5 h-5" aria-hidden="true" />
                 <span>Odeslat digitální formulář</span>
               </>
             )}
