@@ -141,7 +141,7 @@ export default function CheckoutPage() {
               disabled={loading}
               className="mt-12 w-full rounded-xl bg-black px-6 py-5 font-black uppercase tracking-widest text-white transition hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
             >
-              {loading ? 'Pracujeme na tom...' : `Potvrdit a zaplatit ${finalTotal.toLocaleString('cs-CZ')} Kč`}
+              {loading ? 'Pracujeme na tom...' : `Objednat s povinností platby – ${finalTotal.toLocaleString('cs-CZ')} Kč`}
             </button>
           </form>
         </div>
@@ -151,7 +151,7 @@ export default function CheckoutPage() {
 
           <div className="mt-6 space-y-4">
             {items.map((item) => (
-              <div key={item.id} className="flex items-start justify-between text-sm">
+              <div key={`${item.id}-${item.variantCode}`} className="flex items-start justify-between text-sm">
                 <span className="text-zinc-500 font-medium">
                   {item.name} <span className="text-zinc-300">× {item.quantity}</span>
                 </span>

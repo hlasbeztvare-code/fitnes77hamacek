@@ -39,15 +39,7 @@ const Footer = () => {
           <Link href="/supplements" className="hover:text-[#d4ff00]">SUPLEMENTY</Link>
           <Link href="/equipment" className="hover:text-[#d4ff00]">VYBAVENÍ</Link>
           <Link href="/bazaar" className="hover:text-[#d4ff00]">BAZAR</Link>
-        </div>
-
-        {/* 3. Shipping Info */}
-        <div className="flex flex-col gap-0.5 border-l border-white/10 pl-6">
-          <span className="text-white/20 text-[7px]">SHIPPING</span>
-          <div className="flex gap-2">
-            <span>PPL/DPD/ZÁSILKOVNA</span>
-            <span className="text-[#d4ff00]">OSOBNÍ ODBĚR MB</span>
-          </div>
+          <Link href="/odstoupeni-od-smlouvy" className="hover:text-[#d4ff00] text-[#E10600]">ODSTOUPENÍ</Link>
         </div>
 
         {/* 4. Support Contact */}
@@ -74,10 +66,6 @@ const Footer = () => {
 
         <div className="mt-6 pt-4 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-[7px] font-black uppercase tracking-[0.3em] text-white/20">
           <div>© {new Date().getFullYear()} FITNESS 77 MLADÁ BOLESLAV</div>
-          <div className="flex gap-4">
-            <span>JAN LANČARIČ</span>
-            <span className="text-[#d4ff00]">L-CODE DYNAMICS</span>
-          </div>
         </div>
       </div>
     </footer>

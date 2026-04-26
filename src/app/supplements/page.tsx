@@ -16,6 +16,9 @@ export default async function SupplementsPage() {
 
   return (
     <>
+      <div className="fixed left-0 top-1/2 -translate-y-1/2 -rotate-90 origin-left text-[7px] font-black uppercase tracking-[0.4em] text-zinc-200 pointer-events-none z-[100] opacity-30 whitespace-nowrap hidden lg:block pl-10">
+        JAN LANČARIČ | L-CODE DYNAMICS
+      </div>
       <WowHero />
       
       {/* Dynamic Info Lišta - Bílá verze - ULTRA NARROW */}

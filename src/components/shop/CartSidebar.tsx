@@ -124,23 +124,23 @@ export default function CartSidebar() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="p-6 border-t border-white/10 bg-zinc-900/50 space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-400 font-bold uppercase tracking-widest text-xs">Celkem k úhradě</span>
-                  <span className="text-2xl font-black">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
+              <div className="p-6 border-t border-white/10 bg-zinc-900/80 backdrop-blur-md space-y-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Celková hodnota</span>
+                  <span className="text-2xl font-black text-[#E10600]">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
                 </div>
                 
                 <Link 
-                  href="/cart"
+                  href="/checkout"
                   onClick={closeCart}
-                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_20px_50px_rgba(225,6,0,0.3)]"
+                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-[11005] active:scale-[0.98]"
                 >
-                  <span>K pokladně</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <span className="text-sm">Přejít k pokladně</span>
+                  <ArrowRight className="w-7 h-7" />
                 </Link>
 
-                <p className="text-[10px] text-zinc-500 text-center font-bold uppercase tracking-widest">
-                  Bezpečný nákup skrze Shoptet Bridge
+                <p className="text-[9px] text-zinc-600 text-center font-bold uppercase tracking-widest pt-2">
+                  Zabezpečený checkout Fitness 77
                 </p>
               </div>
             )}
