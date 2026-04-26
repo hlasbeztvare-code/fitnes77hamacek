@@ -64,18 +64,16 @@ export default function CheckoutPage() {
         // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME PŘES HIDDEN FORM BRIDGE
         if (resData.redirectUrl) {
           try {
-            // FLASH LOGIKA v4.0: Použijeme URL s lomítkem přímo, abychom se vyhnuli redirectu
+            // FLASH LOGIKA v5.0: Direct Injection do /kosik/. Nejspolehlivější metoda.
             const shoptetUrl = resData.redirectUrl.split('?')[0];
-            if (!shoptetUrl.endsWith('/')) shoptetUrl += '/';
-            
             const params = new URLSearchParams(resData.redirectUrl.split('?')[1]);
             
             const form = document.createElement('form');
-            form.method = 'POST';
+            form.method = 'GET'; // Direct injection funguje přes GET nejlépe
             form.action = shoptetUrl;
             form.style.display = 'none';
 
-            // Přidáme produkty a akci
+            // Přidáme produkty jako parametry
             params.forEach((value, key) => {
               const input = document.createElement('input');
               input.type = 'hidden';
@@ -83,15 +81,6 @@ export default function CheckoutPage() {
               input.value = value;
               form.appendChild(input);
             });
-
-            // Pokud v params není action, přidáme ji (pro jistotu)
-            if (!params.has('action')) {
-              const actionInput = document.createElement('input');
-              actionInput.type = 'hidden';
-              actionInput.name = 'action';
-              actionInput.value = 'Cart:addBatch';
-              form.appendChild(actionInput);
-            }
 
             document.body.appendChild(form);
             form.submit();
