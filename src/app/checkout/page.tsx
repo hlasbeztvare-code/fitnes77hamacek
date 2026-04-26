@@ -86,13 +86,23 @@ export default function CheckoutPage() {
         <div className="space-y-8">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="rounded-3xl border border-zinc-800 bg-[#0a0a0a] p-10 shadow-2xl"
+            className="rounded-3xl border border-zinc-800 bg-[#0a0a0a] p-10 shadow-2xl relative"
           >
-            <div className="flex items-center gap-4 mb-12">
-              <div className="w-12 h-12 bg-[#d4ff00] rounded-full flex items-center justify-center text-black font-black text-xl">
-                1
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-[#d4ff00] rounded-full flex items-center justify-center text-black font-black text-xl">
+                  1
+                </div>
+                <h1 className="text-4xl font-black uppercase tracking-tighter">Pokladna</h1>
               </div>
-              <h1 className="text-4xl font-black uppercase tracking-tighter">Pokladna</h1>
+              
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-3 rounded-xl bg-[#d4ff00]/10 border border-[#d4ff00]/30 text-[#d4ff00] font-black uppercase text-[10px] tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all"
+              >
+                Rychlá objednávka
+              </button>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
@@ -165,6 +175,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={loading}
+              id="submit-order-button"
               className="mt-16 w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 shadow-[0_20px_40px_rgba(212,255,0,0.15)]"
             >
               {loading ? 'Zpracovávám...' : `Objednat s povinností platby • ${finalTotal.toLocaleString('cs-CZ')} Kč`}
@@ -172,7 +183,7 @@ export default function CheckoutPage() {
           </form>
         </div>
 
-        <aside className="h-fit space-y-8">
+        <aside className="h-fit space-y-8 lg:sticky lg:top-8">
           <div className="rounded-3xl border border-zinc-800 bg-[#0a0a0a] p-8 shadow-2xl">
             <h2 className="text-2xl font-black uppercase tracking-tighter mb-8 flex items-center justify-between">
               Shrnutí
@@ -184,9 +195,12 @@ export default function CheckoutPage() {
                 <div key={`${item.id}-${item.variantCode}`} className="flex gap-4 items-center">
                   <div className="relative w-16 h-16 bg-zinc-900 rounded-xl overflow-hidden shrink-0 border border-zinc-800">
                     <img 
-                      src={item.image} 
+                      src={item.image || '/images/products/placeholder.webp'} 
                       alt={item.name} 
                       className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/products/placeholder.webp';
+                      }}
                     />
                     <div className="absolute top-0 right-0 bg-[#d4ff00] text-black text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-bl-lg">
                       {item.quantity}
@@ -220,6 +234,14 @@ export default function CheckoutPage() {
                 <span className="text-3xl font-black text-[#d4ff00]">{finalTotal.toLocaleString('cs-CZ')} Kč</span>
               </div>
             </div>
+            
+            {/* STICKY CTA FOR MOBILE/TABLET */}
+            <button
+              onClick={() => document.getElementById('submit-order-button')?.scrollIntoView({ behavior: 'smooth' })}
+              className="mt-8 w-full lg:hidden rounded-xl border border-[#d4ff00]/30 py-4 text-[#d4ff00] font-black uppercase text-xs tracking-widest"
+            >
+              Koupit nyní
+            </button>
           </div>
 
           <div className="rounded-3xl bg-[#d4ff00] p-8 text-black shadow-2xl">

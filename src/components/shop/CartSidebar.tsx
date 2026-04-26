@@ -35,7 +35,7 @@ export default function CartSidebar() {
             className="fixed right-0 top-0 bottom-0 z-[11001] w-full max-w-[450px] bg-zinc-950 text-white shadow-2xl flex flex-col border-l border-white/10"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10">
+            <div className="flex items-center justify-between p-6 border-b border-white/10 bg-zinc-950/50 backdrop-blur-sm sticky top-0 z-20">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-6 h-6 text-[#E10600]" />
                 <h2 className="text-xl font-black uppercase tracking-tighter">Váš košík</h2>
@@ -43,16 +43,28 @@ export default function CartSidebar() {
                   {items.reduce((acc, item) => acc + item.quantity, 0)}
                 </span>
               </div>
-              <button 
-                onClick={closeCart}
-                className="p-2 hover:bg-white/10 rounded-full transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
+              
+              <div className="flex items-center gap-2">
+                {items.length > 0 && (
+                  <Link 
+                    href="/checkout"
+                    onClick={closeCart}
+                    className="hidden sm:flex items-center gap-2 bg-white/10 hover:bg-red-600 transition-colors px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest"
+                  >
+                    Zaplatit
+                  </Link>
+                )}
+                <button 
+                  onClick={closeCart}
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
                   <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center">
@@ -73,11 +85,13 @@ export default function CartSidebar() {
                 items.map((item) => (
                   <div key={`${item.id}-${item.variantCode || 'base'}`} className="flex gap-4 group">
                     <div className="relative w-24 h-24 bg-white/5 flex-none rounded-lg overflow-hidden border border-white/5">
-                      <Image
-                        src={item.image}
+                      <img
+                        src={item.image || '/images/products/placeholder.webp'}
                         alt={item.name}
-                        fill
-                        className="object-contain p-2"
+                        className="w-full h-full object-contain p-2"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/images/products/placeholder.webp';
+                        }}
                       />
                     </div>
                     <div className="flex-1 flex flex-col justify-between py-1">
@@ -112,7 +126,7 @@ export default function CartSidebar() {
                             <Plus className="w-3 h-3" />
                           </button>
                         </div>
-                        <div className="text-sm font-black">
+                        <div className="text-sm font-black text-[#E10600]">
                           {(item.price * item.quantity).toLocaleString('cs-CZ')} Kč
                         </div>
                       </div>
@@ -124,7 +138,7 @@ export default function CartSidebar() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="p-6 border-t border-white/10 bg-zinc-900/80 backdrop-blur-md space-y-4">
+              <div className="p-6 border-t border-white/10 bg-zinc-950 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Celková hodnota</span>
                   <span className="text-2xl font-black text-[#E10600]">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
@@ -133,7 +147,7 @@ export default function CartSidebar() {
                 <Link 
                   href="/checkout"
                   onClick={closeCart}
-                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-[11005] active:scale-[0.98]"
+                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-20 active:scale-[0.98]"
                 >
                   <span className="text-sm">Přejít k pokladně</span>
                   <ArrowRight className="w-7 h-7" />

@@ -15,6 +15,7 @@ const orderSchema = z.object({
   shippingMethod: z.enum(['zasilkovna', 'ppl', 'pickup']),
   items: z.array(z.object({
     id: z.string(),
+    variantCode: z.string().optional(),
     quantity: z.number().min(1),
   })).min(1),
 });
@@ -137,10 +138,13 @@ export async function POST(req: Request) {
     }
 
     // 4. GENERATE SHOPTET PAYMENT LINK (Bridge)
-    const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
-    const query = finalItems.map(i => {
-      // Prioritizujeme variantCode pro Shoptet bridge
-      const code = i.id; // V našem případě id v DB odpovídá kódu v Shoptetu nebo variantě
+    // DŮLEŽITÉ: Shoptet potřebuje KÓD produktu (ne naše DB ID), a URL nesmí mít trailing slash před otazníkem.
+    const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch';
+    const query = items.map(i => {
+      // Prioritizujeme kód varianty z payloadu, pak shoptetId z DB
+      const dbProduct = dbProducts.find(p => p.id === i.id);
+      const code = i.variantCode || dbProduct?.shoptetId || i.id; 
+      
       return `products[${encodeURIComponent(code)}]=${i.quantity}`;
     }).join('&');
     
