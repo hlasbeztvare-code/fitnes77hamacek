@@ -87,7 +87,7 @@ export default function WithdrawalPage() {
             <span className="text-[#E10600]">od smlouvy</span>
           </h1>
           <p className="text-zinc-500 font-medium max-w-lg">
-            Vyplňte digitální formulář pro okamžité zahájení procesu vrácení zboží. Vše probíhá plně automatizovaně skrze GOLIÁŠ Bridge.
+            Vyplňte digitální formulář pro okamžité zahájení procesu vrácení zboží. Vše probíhá plně automatizovaně skrze náš systém.
           </p>
         </motion.div>
 

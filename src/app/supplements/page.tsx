@@ -25,7 +25,7 @@ export default async function SupplementsPage() {
       <section className="border-y border-zinc-100 bg-white text-zinc-950">
         <div className="mx-auto grid w-[min(1200px,calc(100%-32px))] grid-cols-2 md:grid-cols-4 gap-y-0.5 gap-x-4 py-0.5">
           <div className="text-center text-[10px] font-black uppercase tracking-[0.16em]">
-            DOPRAVA ZDARMA
+            DOPRAVA ZDARMA NAD 2500 KČ
           </div>
           <div className="text-center text-[10px] font-black uppercase tracking-[0.16em]">
             PPL / ZÁSILKOVNA / DPD

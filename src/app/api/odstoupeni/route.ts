@@ -38,8 +38,8 @@ async function notifyOwner(data: any) {
 
 async function syncWithShoptet(data: any) {
     // TODO: Implementace Shoptet API v3.1 (Reklamace/Vratky endpoint)
-    // Momentálně odesíláno jako systémová notifikace přes GOLIÁŠ Bridge.
-    console.log('🛠️ GOLIÁŠ Bridge: Synchronizing withdrawal with Shoptet API...', data.orderId);
+    // Momentálně odesíláno jako systémová notifikace přes interní systém.
+    console.log('🛠️ Internal Bridge: Synchronizing withdrawal with Shoptet API...', data.orderId);
     return true;
 }
 

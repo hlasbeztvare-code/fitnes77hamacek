@@ -120,8 +120,8 @@ export default async function SupplementDetailPage({ params }: Props) {
               }} 
             />
 
-            <div className="mt-8 md:columns-2 gap-12 text-zinc-500 leading-relaxed text-lg font-medium [column-rule:1px_solid_#f4f4f5]">
-              <div className="break-inside-avoid-column whitespace-pre-wrap">
+            <div className="mt-8 max-w-2xl text-zinc-500 leading-relaxed text-lg font-medium">
+              <div className="whitespace-pre-wrap">
                 {product.description}
               </div>
             </div>
@@ -129,7 +129,7 @@ export default async function SupplementDetailPage({ params }: Props) {
             {product.ingredients && (
               <div className="mt-12 pt-8 border-t border-zinc-100">
                 <h3 className="text-[12px] font-black uppercase tracking-[0.22em] text-[#d4ff00] mb-3">Složení produktu</h3>
-                <div className="text-[14px] leading-relaxed text-zinc-400 font-bold uppercase tracking-tight md:columns-2 gap-12">
+                <div className="text-[14px] leading-relaxed text-zinc-400 font-bold uppercase tracking-tight max-w-xl">
                   {product.ingredients}
                 </div>
               </div>
