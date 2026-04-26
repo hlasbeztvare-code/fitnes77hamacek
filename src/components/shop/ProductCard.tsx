@@ -103,7 +103,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
         price: product.price,
         image: finalImage,
       });
-      router.push('/cart');
+      useCartStore.getState().openCart();
     }
   };
 

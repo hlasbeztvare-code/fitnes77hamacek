@@ -36,8 +36,8 @@ export default function AddToCartButton({ product, disabled }: Props) {
       variantCode: product.variantCode,
     });
 
-    // OKAMŽITÝ PŘESUN DO KOŠÍKU (GOLIÁŠ CONVERSION)
-    router.push('/cart');
+    // OTEVŘENÍ SIDEBARU PRO KONTROLU (GOLIÁŠ UX FIX)
+    useCartStore.getState().openCart();
   };
 
   return (

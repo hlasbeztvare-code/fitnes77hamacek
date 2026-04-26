@@ -12,47 +12,85 @@ import Link from 'next/link';
 export default function CartPage() {
   const items = useCartStore((state) => state.items);
   const hasHydrated = useCartStore((state) => state._hasHydrated);
-  const [status, setStatus] = useState<'checking' | 'preparing' | 'empty'>('checking');
+  const [status, setStatus] = useState<'checking' | 'preparing' | 'empty' | 'error'>('checking');
+  const clearCart = useCartStore((state) => state.clearCart);
   const hasTriggered = useRef(false);
 
   useEffect(() => {
     if (!hasHydrated) return;
 
-    // Grace period: Počkáme 50ms na stabilizaci stavu pro pomalejší persistence
-    const timer = setTimeout(() => {
-      if (items.length === 0) {
-        setStatus('empty');
-      } else if (!hasTriggered.current) {
-        hasTriggered.current = true;
-        setStatus('preparing');
+    let timer: NodeJS.Timeout;
 
-        // Sestavení Shoptet URL - PŘIDÁNA LOMÍTKA A ENCODING (Oprava 404)
-        const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
-        
-        const query = items.map(i => {
-          // Priorita: 1. Kód varianty, 2. Shoptet ID, 3. Slug (fallback, ale Shoptet ho nemusí brát)
-          const code = i.variantCode || i.shoptetId;
-          
-          if (!code) {
-            console.error(`❌ Chybí Shoptet ID pro produkt: ${i.name} (${i.slug})`);
-            // Pokud chybí ID, zkusíme aspoň ten slug, ale varujeme
-            return `products[${encodeURIComponent(i.slug)}]=${i.quantity}`;
-          }
+    if (items.length === 0) {
+      setStatus('empty');
+    } else if (!hasTriggered.current) {
+      // Kontrola, zda mají VŠECHNY produkty ID/kód
+      const hasMissingIds = items.some(i => !(i.variantCode || i.shoptetId));
 
-          return `products[${encodeURIComponent(code)}]=${i.quantity}`;
-        }).join('&');
-        
-        const finalUrl = `${shoptetBaseUrl}?${query}`;
-
-        // Přesměrování po vizuální pauze
-        setTimeout(() => {
-          window.location.href = finalUrl;
-        }, 1200);
+      if (hasMissingIds) {
+        console.error("❌ Detekovány produkty bez Shoptet ID. Automatický redirect zrušen.");
+        setStatus('error');
+        return;
       }
-    }, 100);
 
-    return () => clearTimeout(timer);
+      setStatus('preparing');
+
+      // Sestavení Shoptet URL
+      const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
+      
+      const query = items.map(i => {
+        const code = i.variantCode || i.shoptetId;
+        return `products[${encodeURIComponent(code!)}]=${i.quantity}`;
+      }).join('&');
+      
+      const finalUrl = `${shoptetBaseUrl}?${query}`;
+
+      // Přesměrování po vizuální pauze
+      timer = setTimeout(() => {
+        if (!hasTriggered.current) {
+           hasTriggered.current = true;
+           window.location.href = finalUrl;
+        }
+      }, 2500); // Prodlouženo pro možnost zrušení
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [items, hasHydrated]);
+
+  const handleCancel = () => {
+    hasTriggered.current = true; // Zabráníme redirectu v tomto cyklu
+    useCartStore.getState().openCart();
+    // Vracíme se na supplements, aby uživatel nezůstal na prázdném loaderu
+    window.history.back();
+  };
+
+  // STAV: CHYBA (Záchranná brzda)
+  if (status === 'error') {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-4 text-center">
+        <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           className="max-w-md"
+        >
+          <span className="text-[#E10600] font-black text-6xl mb-6 block">ERR</span>
+          <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Chyba <span className="text-[#E10600]">košíku</span></h1>
+          <p className="text-zinc-500 mb-8 font-medium italic">V košíku jsou stará data, která Shoptet odmítá. Musíme to vyčistit.</p>
+          <button 
+            onClick={() => {
+              clearCart();
+              setStatus('empty');
+            }}
+            className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_20px_50px_rgba(225,6,0,0.3)]"
+          >
+             VYČISTIT KOŠÍK A ZKUSIT ZNOVU
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
 
   // STAV: PRÁZDNÝ KOŠÍK (Místo tvrdého redirectu, který zlobil)
   if (status === 'empty') {
@@ -90,6 +128,25 @@ export default function CartPage() {
           <p className="mt-4 text-gray-500 font-bold uppercase tracking-[0.3em] text-xs">
             Směřujeme do Shoptet pokladny...
           </p>
+        </div>
+
+        <div className="mt-12 max-w-sm mx-auto space-y-2 opacity-60">
+           {items.map(item => (
+             <div key={`${item.id}-${item.variantCode}`} className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/10 pb-2">
+               <span className="truncate pr-4">{item.name} {item.variantName && `(${item.variantName})`}</span>
+               <span className="flex-none">{item.quantity} ks</span>
+             </div>
+           ))}
+        </div>
+
+        <div className="mt-12">
+          <button 
+            onClick={handleCancel}
+            className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors flex items-center gap-2 mx-auto"
+          >
+            <span className="w-2 h-2 bg-[#E10600] rounded-full animate-pulse" />
+            Zrušit a upravit produkty
+          </button>
         </div>
       </motion.div>
     </div>

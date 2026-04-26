@@ -19,6 +19,10 @@ type CartStore = {
   items: CartItem[];
   _hasHydrated: boolean;
   setHasHydrated: (state: boolean) => void;
+  isOpen: boolean;
+  openCart: () => void;
+  closeCart: () => void;
+  toggleCart: () => void;
   addItem: (item: Omit<CartItem, 'quantity'>) => void;
   removeItem: (id: string, variantCode?: string) => void;
   increaseItem: (id: string, variantCode?: string) => void;
@@ -36,8 +40,12 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       _hasHydrated: false,
+      isOpen: false,
 
       setHasHydrated: (state) => set({ _hasHydrated: state }),
+      openCart: () => set({ isOpen: true }),
+      closeCart: () => set({ isOpen: false }),
+      toggleCart: () => set({ isOpen: !get().isOpen }),
 
       addItem: (item) =>
         set((state) => {
