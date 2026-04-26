@@ -28,8 +28,17 @@ export default function CartPage() {
 
         // Sestavení Shoptet URL - PŘIDÁNA LOMÍTKA A ENCODING (Oprava 404)
         const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
+        
         const query = items.map(i => {
-          const code = i.variantCode || i.shoptetId || i.slug;
+          // Priorita: 1. Kód varianty, 2. Shoptet ID, 3. Slug (fallback, ale Shoptet ho nemusí brát)
+          const code = i.variantCode || i.shoptetId;
+          
+          if (!code) {
+            console.error(`❌ Chybí Shoptet ID pro produkt: ${i.name} (${i.slug})`);
+            // Pokud chybí ID, zkusíme aspoň ten slug, ale varujeme
+            return `products[${encodeURIComponent(i.slug)}]=${i.quantity}`;
+          }
+
           return `products[${encodeURIComponent(code)}]=${i.quantity}`;
         }).join('&');
         
