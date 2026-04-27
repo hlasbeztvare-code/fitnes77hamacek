@@ -21,10 +21,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${product.name} | Vybavení | Fitness 77`,
-    description: product.shortDescription,
+    description: product.shortDescription ?? undefined,
     openGraph: {
       title: product.name,
-      description: product.shortDescription,
+      description: product.shortDescription ?? undefined,
       images: [{ url: product.image ?? '/images/brand/og_image.png' }],
     },
   };
@@ -57,7 +57,10 @@ export default async function EquipmentDetailPage({ params }: Props) {
     stock?: number;
   }
 
-  const variants = (item.variants as unknown as ProductVariant[]) || [];
+  const variants = ((item.variants as unknown as ProductVariant[]) || []).map(v => ({
+    ...v,
+    stock: v.stock ?? 0
+  }));
   const displayImage = item.name.toLowerCase().includes('opasek') ? '/videos/pasek.webm' : item.image;
   const isVideo = displayImage?.toLowerCase().match(/.(mp4|webm)$/i);
 
@@ -128,7 +131,6 @@ export default async function EquipmentDetailPage({ params }: Props) {
                       slug: item.slug,
                       price: item.price,
                       image: item.image ?? '/images/products/placeholder.webp',
-                      variants: variants
                     }}
                     disabled={item.stock <= 0}
                 />
