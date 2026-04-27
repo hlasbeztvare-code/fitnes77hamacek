@@ -50,6 +50,14 @@ export default async function EquipmentDetailPage({ params }: Props) {
     orderBy: { createdAt: 'desc' },
   });
 
+  interface ProductVariant {
+    name: string;
+    code: string;
+    price: number;
+    stock?: number;
+  }
+
+  const variants = (item.variants as unknown as ProductVariant[]) || [];
   const displayImage = item.name.toLowerCase().includes('opasek') ? '/videos/pasek.webm' : item.image;
   const isVideo = displayImage?.toLowerCase().match(/.(mp4|webm)$/i);
 
@@ -76,6 +84,7 @@ export default async function EquipmentDetailPage({ params }: Props) {
                   loop
                   muted
                   playsInline
+                  poster={item.image ?? undefined}
                   className="w-full h-full object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
                 />
               ) : (
@@ -114,10 +123,13 @@ export default async function EquipmentDetailPage({ params }: Props) {
             <div className="mt-8 max-w-md">
                 <AddToCartButton 
                     product={{
-                      ...item,
-                      image: item.image,
-                      variants: []
-                    } as any}
+                      id: item.id,
+                      name: item.name,
+                      slug: item.slug,
+                      price: item.price,
+                      image: item.image ?? '/images/products/placeholder.webp',
+                      variants: variants
+                    }}
                     disabled={item.stock <= 0}
                 />
             </div>

@@ -79,6 +79,22 @@ export default async function SupplementDetailPage({ params }: Props) {
     take: 3,
   });
 
+  interface ProductVariant {
+    name: string;
+    code: string;
+    price: number;
+    stock?: number;
+  }
+
+  interface NutritionData {
+    per100g?: Record<string, string>;
+    perServing?: Record<string, string>;
+    servingSize?: string;
+  }
+
+  const variants = (product.variants as unknown as ProductVariant[]) || [];
+  const nutrition = (product.nutrition as unknown as NutritionData);
+
   if (!product) return notFound();
 
   return (
@@ -98,7 +114,7 @@ export default async function SupplementDetailPage({ params }: Props) {
           <div>
             <ProductDetailImage product={product} />
             <div className="mt-12 hidden lg:block">
-              <NutritionTable data={product.nutrition as any} />
+              <NutritionTable data={nutrition as any} />
             </div>
           </div>
 
@@ -114,9 +130,12 @@ export default async function SupplementDetailPage({ params }: Props) {
             {/* GOLIÁŠ Product Selection Engine */}
             <ProductSelector 
               product={{
-                ...product,
-                image: product.image,
-                variants: (product.variants as any) || []
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                price: product.price,
+                image: product.image ?? '/images/products/placeholder.webp',
+                variants: variants
               }} 
             />
 
@@ -143,7 +162,7 @@ export default async function SupplementDetailPage({ params }: Props) {
 
             {/* Mastering Detail: Ingredients & Nutrition - MOBILE ONLY BELOW */}
             <div className="lg:hidden mt-12 pt-8 border-t border-zinc-100">
-              <NutritionTable data={product.nutrition as any} />
+              <NutritionTable data={nutrition as any} />
             </div>
 
             {/* Lifestyle / Hype Section */}

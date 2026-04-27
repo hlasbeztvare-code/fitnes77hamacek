@@ -27,6 +27,8 @@ function CartBridgeContent() {
     const processCart = async () => {
       if (hasTriggered.current) return;
       
+      console.log("[GOLIÁŠ] Synchronizing transaction...");
+
       // GOLIÁŠ DeepScan: Nejdřív zkusíme Next.js router, pak nativní window fallback
       let payloadBase64 = searchParams.get('payload');
       
