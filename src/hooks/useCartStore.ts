@@ -53,28 +53,23 @@ export const useCartStore = create<CartStore>()(
         if (items.length === 0) return;
 
         try {
-          const { resolveShoptetIds } = await import('@/lib/shoptet-map');
-          
-          const shoptetItems = items.map(item => {
-            const ids = resolveShoptetIds(item.slug, item.variantCode);
-            return {
-              priceId: ids?.priceId,
-              productId: ids?.productId,
-              amount: item.quantity,
-              name: item.name
-            };
+          // GOLIÁŠ Proxy v13.7: Server-side batch generation
+          const response = await fetch('/api/cart/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items }),
           });
 
-          if (shoptetItems.some(i => !i.priceId)) {
-            console.error('❌ Sync Engine: Missing Shoptet IDs');
-            alert('Chyba: Některé produkty nemají Shoptet ID.');
-            return;
-          }
+          const data = await response.json();
 
-          const payload = btoa(encodeURIComponent(JSON.stringify(shoptetItems)));
-          window.location.href = `/cart?payload=${encodeURIComponent(payload)}`;
+          if (data.redirectUrl) {
+            window.location.href = data.redirectUrl;
+          } else {
+            throw new Error(data.error || 'Proxy failed');
+          }
         } catch (error) {
-          console.error('❌ Sync Engine Critical Error:', error);
+          console.error('❌ Proxy Sync Error:', error);
+          alert('Chyba při synchronizaci košíku.');
         }
       },
 

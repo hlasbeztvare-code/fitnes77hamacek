@@ -135,32 +135,16 @@ export async function POST(req: Request) {
         total: finalTotal
     });
 
-    // GOLIÁŠ Bridge v8.0: PriceID Resolver — identický s /api/cart/sync
+    // GOLIÁŠ Bridge v13.1: Centralized ID Resolver
+    const { resolveShoptetIds } = await import('@/lib/shoptet-map');
+    
     const shoptetItems = finalItems.map(item => {
-      let priceId: string | null = null;
-
-      // 1. Priorita: variantCode přes VARIANT_MAP
-      if (item.variantCode) {
-        const variantUpper = item.variantCode.toUpperCase();
-        if (SHOPTET_VARIANT_MAP[variantUpper]) {
-          priceId = SHOPTET_VARIANT_MAP[variantUpper];
-        } else if (/^\d+$/.test(item.variantCode)) {
-          priceId = item.variantCode;
-        }
-      }
-
-      // 2. shoptetId z DB
-      if (!priceId) priceId = item.shoptetId ?? null;
-
-      // 3. Manual mapa ze slug
-      if (!priceId && SHOPTET_MANUAL_MAP[item.slug]) {
-        priceId = SHOPTET_MANUAL_MAP[item.slug];
-      }
-
-      // 4. Fallback: numerické ID produktu
-      if (!priceId && /^\d+$/.test(item.id)) priceId = item.id;
-
-      return { priceId, amount: item.quantity, slug: item.slug };
+      const ids = resolveShoptetIds(item.slug, item.variantCode);
+      return { 
+        priceId: ids?.priceId, 
+        amount: item.quantity, 
+        slug: item.slug 
+      };
     }).filter(item => item.priceId);
 
     return NextResponse.json({ 

@@ -39,11 +39,39 @@ export default function CheckoutPage() {
 
   const finalTotal = totalPrice + shippingPrices[shippingMethod];
 
-  const onSubmit = async (_data: CheckoutForm) => {
+  const onSubmit = async (data: CheckoutForm) => {
     setLoading(true);
-    // GOLIÁŠ Sync Engine v12.0: Centralizovaný hard-redirect
-    await useCartStore.getState().proceedToSync();
-    setLoading(false);
+    try {
+      // GOLIÁŠ Proxy v13.7: Uložit u nás a získat redirectUrl ze serveru
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...data,
+          items: items.map(i => ({ id: i.id, variantCode: i.variantCode, quantity: i.quantity, name: i.name }))
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success && result.shoptetItems) {
+        // Vygenerování batch URL na klientovi z dat, která připravil server (Proxy style)
+        const params = new URLSearchParams();
+        result.shoptetItems.forEach((item: any) => {
+          params.append('priceId[]', item.priceId);
+          params.append('amount[]', item.amount);
+        });
+        
+        window.location.href = `${result.shoptetBaseUrl}?${params.toString()}`;
+      } else {
+        throw new Error(result.error || 'Proxy redirect failed');
+      }
+    } catch (error) {
+      console.error('❌ Checkout Proxy Error:', error);
+      alert('Chyba při odesílání objednávky.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
