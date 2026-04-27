@@ -1,57 +1,45 @@
 'use client';
 
-import { useState, useRef, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { useCartStore } from '@/hooks/useCartStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
 /**
- * GOLIÁŠ Sync Engine v16.5 - "The Ultimate Bridge"
+ * GOLIÁŠ Sync Engine v16.6 - "The Proxy Loop Fix"
  * 
- * Kombinuje přesnost databáze (přes proxy lookup) a spolehlivost 
- * klientského POST formuláře pro 100% funkční košík. smrk
+ * Strategie: Server-side loop přes addCartItem. 
+ * Řeší 404 chybu u addBatch a obchází CORS. smrk
  */
 
 function CartBridgeContent() {
   const items = useCartStore((state) => state.items);
   const hasHydrated = useCartStore((state) => state._hasHydrated);
   const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
-  const formRef = useRef<HTMLFormElement>(null);
-  const [syncItems, setSyncItems] = useState<{priceId: string, amount: number}[]>([]);
 
-  // GOLIÁŠ v16.5: Hybridní odpal
+  // GOLIÁŠ v16.6: Server-side loop přes naši proxy
   const handleCheckout = async () => {
     if (items.length === 0) return;
     setStatus('sending');
     
     try {
-      // 1. KROK: Získání IDček z databáze přes naši proxy (Lookup mode)
       const res = await fetch('/api/cart/proxy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, dryRun: true }), // Přidáme dryRun, ať to proxy jen vrátí a nepálí do Shoptetu
+        body: JSON.stringify({ items }), // Žádný dryRun, chceme to fakt poslat
       });
 
       const data = await res.json();
 
-      if (data.success && data.shoptetItems) {
-        // 2. KROK: Naplnění formuláře daty z DB
-        setSyncItems(data.shoptetItems);
-        
-        // 3. KROK: Okamžitý submit formuláře (v useEffect nebo hned po renderu)
-        setTimeout(() => {
-          if (formRef.current) {
-            formRef.current.submit();
-          }
-        }, 100);
+      if (data.success) {
+        // Po úspěšném loopu v proxy redirectujeme na pokladnu
+        window.location.href = 'https://obchod.fit77.cz/objednavka/';
       } else {
-        throw new Error('Nepodařilo se získat ID produktů z DB');
+        throw new Error(data.error || 'Proxy sync failed');
       }
     } catch (err) {
-      console.error('❌ Sync Error:', err);
+      console.error('❌ Proxy Sync Error:', err);
       setStatus('error');
-      // Fallback: Pokud vše selže, pošleme ho aspoň na prázdnou pokladnu Shoptetu
-      window.location.href = 'https://obchod.fit77.cz/objednavka/';
     }
   };
 
@@ -111,7 +99,7 @@ function CartBridgeContent() {
               {status === 'sending' && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="h-6 w-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span className="ml-3 text-sm font-bold uppercase tracking-widest">Připravuji...</span>
+                  <span className="ml-3 text-sm font-bold uppercase tracking-widest">Sypeme to tam...</span>
                 </div>
               )}
             </button>
@@ -148,23 +136,6 @@ function CartBridgeContent() {
           </div>
         </motion.div>
       </div>
-
-      {/* GOLIÁŠ "ULTIMATE" HIDDEN FORM */}
-      <form 
-        ref={formRef} 
-        action="https://obchod.fit77.cz/kosik/" 
-        method="POST" 
-        className="hidden"
-      >
-        <input type="hidden" name="action" value="addBatch" />
-        {syncItems.map((item, idx) => (
-          <div key={`sync-item-${idx}`}>
-            <input type="hidden" name={`priceId[${idx}]`} value={item.priceId} />
-            <input type="hidden" name={`amount[${idx}]`} value={item.amount} />
-          </div>
-        ))}
-        <input type="hidden" name="returnUrl" value="/objednavka/" />
-      </form>
     </div>
   );
 }
