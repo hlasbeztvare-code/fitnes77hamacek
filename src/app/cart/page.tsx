@@ -151,7 +151,7 @@ function CartBridgeContent() {
       {/* GOLIÁŠ "FINAL STRIKE" FORM (v15.2) */}
       <form 
         ref={formRef} 
-        action="https://obchod.fit77.cz/action/Cart/addBatch/" 
+        action="https://obchod.fit77.cz/action/Cart/addBatch" 
         method="POST" 
         className="hidden"
       >
