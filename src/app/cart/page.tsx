@@ -2,88 +2,118 @@
 
 import { useEffect, useState, useRef, Suspense } from 'react';
 import { useCartStore } from '@/hooks/useCartStore';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+
+/**
+ * GOLIÁŠ Sync Engine v17.0 - "The Silent Assassin"
+ * 
+ * Production-ready Bridge. Čistý loading, tichý sync, 
+ * okamžitý redirect. Žádný šum. smrk
+ */
 
 function CartBridgeContent() {
   const items = useCartStore((state) => state.items);
   const hasHydrated = useCartStore((state) => state._hasHydrated);
-  const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
-  const [debug, setDebug] = useState<string[]>([]);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error' | 'empty'>('idle');
   const hasTriggered = useRef(false);
 
-  const addLog = (msg: string) => {
-    console.log(`[GOLIÁŠ DEBUG] ${msg}`);
-    setDebug(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
-  };
-
   const startSync = async () => {
-    addLog('Zahajuji synchronizaci...');
+    if (items.length === 0) return;
     setStatus('sending');
     
     try {
-      addLog(`Volám fetch /api/cart/proxy s ${items.length} položkami...`);
       const res = await fetch('/api/cart/proxy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items }),
       });
 
-      addLog(`Proxy odpověděla status kódem: ${res.status}`);
       const data = await res.json();
-      addLog(`Data z proxy: ${JSON.stringify(data)}`);
 
       if (data.success) {
-        addLog('✅ SYNC ÚSPĚŠNÝ. Čekám 3 sekundy před finálním přesměrováním...');
-        setTimeout(() => {
-          addLog('🚀 ODPAL NA SHOPTET!');
-          window.location.href = 'https://obchod.fit77.cz/objednavka/';
-        }, 3000);
+        window.location.href = 'https://obchod.fit77.cz/objednavka/';
       } else {
-        addLog(`❌ PROXY VRÁTILA CHYBU: ${data.error}`);
         setStatus('error');
       }
-    } catch (err: any) {
-      addLog(`❌ CATCH ERROR: ${err.message}`);
+    } catch (err) {
       setStatus('error');
     }
   };
 
   useEffect(() => {
-    addLog(`Hydratace: ${hasHydrated}, Položek: ${items.length}`);
     if (hasHydrated && items.length > 0 && !hasTriggered.current) {
       hasTriggered.current = true;
       startSync();
+    } else if (hasHydrated && items.length === 0) {
+      setStatus('empty');
     }
   }, [hasHydrated, items.length]);
 
-  if (!hasHydrated) return <div className="p-10 text-white">Čekám na hydrataci...</div>;
+  if (!hasHydrated) return null;
 
-  return (
-    <div className="min-h-screen bg-black text-white p-8 font-mono text-xs">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-black text-[#E10600] uppercase tracking-tighter">GOLIÁŠ Debug Console</h1>
-        
-        <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-xl space-y-2">
-          {debug.map((log, i) => (
-            <div key={i} className={log.includes('❌') ? 'text-red-500' : log.includes('✅') ? 'text-green-500' : 'text-zinc-400'}>
-              {log}
-            </div>
-          ))}
-          {status === 'sending' && <div className="animate-pulse text-[#E10600]">Pracuji...</div>}
-        </div>
-
-        {status === 'error' && (
-          <div className="p-6 bg-red-900/20 border border-red-900 rounded-xl text-red-500">
-            Synchronizace selhala. Zkontroluj Network tab v DevTools.
-            <button onClick={() => { hasTriggered.current = false; startSync(); }} className="block mt-4 bg-red-600 text-white px-4 py-2 rounded">Zkusit znovu</button>
-          </div>
-        )}
-
-        <div className="pt-10 opacity-30">
-          <Link href="/" className="hover:underline">Zpět do obchodu</Link>
+  if (status === 'empty') {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-black">
+        <div className="text-center">
+          <h1 className="text-2xl font-black text-white uppercase tracking-tighter mb-4 text-zinc-500 italic">Košík je prázdný</h1>
+          <button onClick={() => window.location.href = '/'} className="text-[#E10600] font-black uppercase tracking-widest text-[10px]">Zpět do obchodu</button>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-black p-4">
+      <AnimatePresence mode="wait">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }} 
+          animate={{ opacity: 1, scale: 1 }} 
+          exit={{ opacity: 0, scale: 1.05 }}
+          className="text-center"
+        >
+          {/* Logo */}
+          <div className="mb-12">
+            <Image
+              src="/images/brand/logo-fitness77.png"
+              alt="Fitness 77"
+              width={180}
+              height={45}
+              className="mx-auto brightness-0 invert"
+              priority
+            />
+          </div>
+
+          {/* Spinner */}
+          <div className="relative h-24 w-24 mx-auto mb-12">
+            <div className="absolute inset-0 border-4 border-white/5 rounded-full"></div>
+            <div className="absolute inset-0 border-4 border-[#E10600] border-t-transparent rounded-full animate-spin shadow-[0_0_50px_rgba(225,6,0,0.3)]"></div>
+          </div>
+
+          {/* Text */}
+          <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter text-white mb-4 italic">
+            Příprava <span className="text-[#E10600]">objednávky</span>
+          </h1>
+          <p className="text-zinc-500 font-bold uppercase tracking-[0.4em] text-[10px] animate-pulse">
+            Synchronizujeme tvoji session se Shoptetem...
+          </p>
+
+          {status === 'error' && (
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              className="mt-12"
+            >
+              <button 
+                onClick={() => { hasTriggered.current = false; startSync(); }}
+                className="bg-[#E10600] text-white px-8 py-4 font-black uppercase tracking-[0.2em] text-[10px] hover:brightness-110 transition-all"
+              >
+                Zkusit znovu
+              </button>
+            </motion.div>
+          )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
