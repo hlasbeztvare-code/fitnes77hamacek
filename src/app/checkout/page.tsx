@@ -43,7 +43,7 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      // GOLIÁŠ Bridge v10.0: Nativní přesun do Shoptetu skrze /cart bridge
+      // GOLIÁŠ Bridge v11.0: Příprava dat pro přestupní stanici
       const { resolveShoptetIds } = await import('@/lib/shoptet-map');
       
       const shoptetItems = items.map(item => {
@@ -56,19 +56,20 @@ export default function CheckoutPage() {
         };
       });
 
-      // Kontrola, zda máme všechna ID
+      // Kontrola ID
       if (shoptetItems.some(i => !i.priceId)) {
-        console.error('❌ Chybí Shoptet ID pro některé produkty:', shoptetItems.filter(i => !i.priceId));
-        alert('Některé produkty nelze přenést do košíku. Kontaktujte podporu.');
+        console.error('❌ Missing Shoptet IDs:', shoptetItems.filter(i => !i.priceId));
+        alert('Chyba: Některé produkty nemají Shoptet ID.');
         setLoading(false);
         return;
       }
 
-      // Zakódování do Base64 (UTF-8 Safe pro české znaky)
-      const payload = btoa(encodeURIComponent(JSON.stringify(shoptetItems)));
-      
-      // Přesun na přestupní stanici
-      window.location.href = `/cart?payload=${payload}`;
+      // 1. Vygeneruj payload (UTF-8 safe)
+      const payloadData = btoa(encodeURIComponent(JSON.stringify(shoptetItems)));
+      console.log("DEBUG: GOLIÁŠ Bridge Payload:", payloadData);
+
+      // 2. Přesměruj s PARAMETREM (Explicitní URL konstrukce)
+      window.location.href = `/cart?payload=${encodeURIComponent(payloadData)}`;
 
     } catch (error) {
       console.error('[GOLIÁŠ] Checkout Bridge Error:', error);
