@@ -3,13 +3,18 @@ import { db } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
-// GOLIÁŠ Sync v6.0: ID Mapping Logic (Aligned with orders/route.ts)
+// GOLIÁŠ Sync v7.0: ID Mapping Logic — verified against Shoptet admin /ceny/
 const SHOPTET_MANUAL_MAP: Record<string, string> = {
-  'creatine-monohydrate---fitness-77': '58',
-  'heavy-duty-powerlifting-opasek': '46',
-  'black-dead---pre-workout': '52',
-  'dead-pump---stim-free': '49',
-  'ryzova-kase': '79',
+  // Suplementy
+  'creatine-monohydrate---fitness-77': '53',
+  'black-dead---pre-workout': '49',
+  'dead-pump---stim-free': '46',
+  // Vybavení
+  'heavy-duty-powerlifting-opasek': '45',
+  // Rýžová kaše (base — fallback pokud není varianta)
+  'ryzova-kase': '81',
+  // BCAA (base — fallback pokud není varianta)
+  'bcaa-411-glutamine---fitness-77': '58',
 };
 
 export async function POST(req: Request) {
