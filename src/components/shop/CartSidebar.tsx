@@ -65,20 +65,8 @@ export default function CartSidebar() {
                         });
                         const data = await res.json();
                         if (data.success && data.shoptetItems) {
-                          const form = document.createElement('form');
-                          form.method = 'POST';
-                          form.action = 'https://obchod.fit77.cz/action/Cart/addBatch/';
-                          
-                          data.shoptetItems.forEach((item: any) => {
-                            const input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = `products[${item.priceId}]`;
-                            input.value = item.amount.toString();
-                            form.appendChild(input);
-                          });
-
-                          document.body.appendChild(form);
-                          form.submit();
+                          const payload = btoa(JSON.stringify(data.shoptetItems));
+                          window.location.href = `https://obchod.fit77.cz/kosik/?cart_payload=${payload}`;
                           return;
                         }
                       } catch (err) {
@@ -200,20 +188,8 @@ export default function CartSidebar() {
                       });
                       const data = await res.json();
                       if (data.success && data.shoptetItems) {
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = 'https://obchod.fit77.cz/action/Cart/addBatch/';
-                        
-                        data.shoptetItems.forEach((item: any) => {
-                          const input = document.createElement('input');
-                          input.type = 'hidden';
-                          input.name = `products[${item.priceId}]`;
-                          input.value = item.amount.toString();
-                          form.appendChild(input);
-                        });
-
-                        document.body.appendChild(form);
-                        form.submit();
+                        const payload = btoa(JSON.stringify(data.shoptetItems));
+                        window.location.href = `https://obchod.fit77.cz/kosik/?cart_payload=${payload}`;
                         return;
                       }
                     } catch (err) {
@@ -247,4 +223,4 @@ export default function CartSidebar() {
   );
 }
 
-// clean code comment: CartSidebar JIT Bridge v9.5. Sync přes hidden form POST eliminuje Ghost košíky. smrk
+// clean code comment: CartSidebar JIT Bridge v10.0. Payload Injection (Trójský kůň) přes Base64 bypassuje Shoptet bariéry. smrk
