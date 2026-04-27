@@ -155,7 +155,7 @@ export async function POST(req: Request) {
         success: true, 
         orderId: order.id,
         shoptetItems: shoptetItems,
-        shoptetBaseUrl: 'https://obchod.fit77.cz/action/Cart/addCartItem/'
+        shoptetBaseUrl: 'https://obchod.fit77.cz/action/Cart/addBatch/'
     });
   } catch (error: any) {
     console.error('Order creation error:', error);

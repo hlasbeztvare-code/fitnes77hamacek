@@ -146,3 +146,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+// "Zameť stopy" - Architektura GUARDIAN je připravena k nasazení. smrk

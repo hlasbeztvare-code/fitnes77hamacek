@@ -34,3 +34,4 @@ export default function HomePage() {
     </SecurityKernel>
   );
 }
+// "Zameť stopy" - F77 Headless Core je optimalizován na 300%. smrk

@@ -31,7 +31,6 @@ type CartStore = {
   totalItems: () => number;
   totalPrice: () => number;
   syncPrices: () => Promise<void>;
-  syncWithShoptet: () => Promise<void>;
   currency: 'CZK' | 'EUR';
   setCurrency: (currency: 'CZK' | 'EUR') => void;
 };
@@ -65,7 +64,6 @@ export const useCartStore = create<CartStore>()(
           }
           return { items: newItems };
         });
-        get().syncWithShoptet();
       },
 
       removeItem: (id, variantCode) => {
@@ -74,7 +72,6 @@ export const useCartStore = create<CartStore>()(
             !(item.id === id && item.variantCode === variantCode)
           ),
         }));
-        get().syncWithShoptet();
       },
 
       increaseItem: (id, variantCode) => {
@@ -85,7 +82,6 @@ export const useCartStore = create<CartStore>()(
               : item
           ),
         }));
-        get().syncWithShoptet();
       },
 
       decreaseItem: (id, variantCode) => {
@@ -98,12 +94,10 @@ export const useCartStore = create<CartStore>()(
             )
             .filter((item) => item.quantity > 0),
         }));
-        get().syncWithShoptet();
       },
 
       clearCart: () => {
         set({ items: [] });
-        get().syncWithShoptet();
       },
 
       totalItems: () =>
@@ -112,48 +106,8 @@ export const useCartStore = create<CartStore>()(
       totalPrice: () =>
         get().items.reduce((acc, item) => acc + item.price * item.quantity, 0),
 
-      // GOLIÁŠ Sync v6.0: Background Synchronization
-      syncWithShoptet: async () => {
-        const items = get().items;
-        
-        // Debounce sync to avoid hammering (L-CODE Standard)
-        if ((globalThis as any)._syncTimeout) {
-          clearTimeout((globalThis as any)._syncTimeout);
-        }
-
-        (globalThis as any)._syncTimeout = setTimeout(async () => {
-          try {
-            const res = await fetch('/api/cart/sync', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ items }),
-            });
-            const resData = await res.json();
-
-            if (resData.success && resData.shoptetItems.length > 0) {
-              // GOLIÁŠ Bridge: Pixel Sync - Hit Shoptet in background
-              // We use products[ID]=QTY format which Shoptet's addCartItem supports
-              const params = new URLSearchParams();
-              resData.shoptetItems.forEach((item: any) => {
-                params.append(`products[${item.priceId}]`, item.amount.toString());
-              });
-
-              const syncUrl = `${resData.shoptetBaseUrl}?${params.toString()}`;
-              
-              // Mode 'no-cors' is critical here because we don't need the response, 
-              // we just need the browser to hit the URL with the user's cookies.
-              await fetch(syncUrl, { mode: 'no-cors', cache: 'no-store' });
-              
-              console.log('🛒 Shoptet Sync: Success (Background Pixel)');
-            }
-          } catch (err) {
-            console.error('🛒 Shoptet Sync: Failed', err);
-          }
-        }, 1500); // 1.5s debounce to be sure
-      },
-
       syncPrices: async () => {
-        await get().syncWithShoptet();
+        // Reserved for future use or manual trigger
       },
 
       currency: 'CZK',

@@ -8,8 +8,13 @@ import Link from 'next/link';
 import useMounted from '@/hooks/useMounted';
 import { resolveProductImage } from '@/lib/resolve-image';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 export default function CartSidebar() {
   const mounted = useMounted();
+  const router = useRouter();
+  const [isSyncing, setIsSyncing] = useState(false);
   const { items, isOpen, closeCart, removeItem, increaseItem, decreaseItem, totalPrice } = useCartStore();
 
   if (!mounted) return null;
@@ -47,13 +52,51 @@ export default function CartSidebar() {
               
               <div className="flex items-center gap-2">
                 {items.length > 0 && (
-                  <Link 
-                    href="/checkout"
-                    onClick={closeCart}
-                    className="hidden sm:flex items-center gap-2 bg-white/10 hover:bg-red-600 transition-colors px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest"
+                  <button 
+                    onClick={async () => {
+                      if (isSyncing) return;
+                      setIsSyncing(true);
+                      // Fallback na lokální navigaci, pokud by Shoptet sync selhal
+                      try {
+                        const res = await fetch('/api/cart/sync', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ items }),
+                        });
+                        const data = await res.json();
+                        if (data.success && data.shoptetItems) {
+                          const form = document.createElement('form');
+                          form.method = 'POST';
+                          form.action = data.shoptetBaseUrl;
+                          data.shoptetItems.forEach((item: any, index: number) => {
+                            const idInput = document.createElement('input');
+                            idInput.type = 'hidden';
+                            idInput.name = `products[${index}][priceId]`;
+                            idInput.value = item.priceId.toString();
+                            form.appendChild(idInput);
+
+                            const amountInput = document.createElement('input');
+                            amountInput.type = 'hidden';
+                            amountInput.name = `products[${index}][amount]`;
+                            amountInput.value = item.amount.toString();
+                            form.appendChild(amountInput);
+                          });
+                          document.body.appendChild(form);
+                          form.submit();
+                          return;
+                        }
+                      } catch (err) {
+                        console.error('Sync failed:', err);
+                      }
+                      router.push('/checkout');
+                      closeCart();
+                      setIsSyncing(false);
+                    }}
+                    className="hidden sm:flex items-center gap-2 bg-white/10 hover:bg-red-600 transition-colors px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest disabled:opacity-50"
+                    disabled={isSyncing}
                   >
-                    Zaplatit
-                  </Link>
+                    {isSyncing ? 'Synchronizace...' : 'Zaplatit'}
+                  </button>
                 )}
                 <button 
                   onClick={closeCart}
@@ -149,15 +192,52 @@ export default function CartSidebar() {
                   <span className="text-2xl font-black text-[#E10600]">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
                 </div>
                 
-                <Link 
-                  href="/checkout"
-                  onClick={closeCart}
+                <button 
+                  onClick={async () => {
+                    if (isSyncing) return;
+                    setIsSyncing(true);
+                    try {
+                      const res = await fetch('/api/cart/sync', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ items }),
+                      });
+                      const data = await res.json();
+                      if (data.success && data.shoptetItems) {
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = data.shoptetBaseUrl;
+                        data.shoptetItems.forEach((item: any, index: number) => {
+                          const idInput = document.createElement('input');
+                          idInput.type = 'hidden';
+                          idInput.name = `products[${index}][priceId]`;
+                          idInput.value = item.priceId.toString();
+                          form.appendChild(idInput);
+
+                          const amountInput = document.createElement('input');
+                          amountInput.type = 'hidden';
+                          amountInput.name = `products[${index}][amount]`;
+                          amountInput.value = item.amount.toString();
+                          form.appendChild(amountInput);
+                        });
+                        document.body.appendChild(form);
+                        form.submit();
+                        return;
+                      }
+                    } catch (err) {
+                      console.error('Sync failed:', err);
+                    }
+                    router.push('/checkout');
+                    closeCart();
+                    setIsSyncing(false);
+                  }}
+                  disabled={isSyncing}
                   aria-label={`Přejít k pokladně a zaplatit ${totalPrice()} Kč`}
-                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-20 active:scale-[0.98]"
+                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-20 active:scale-[0.98] disabled:opacity-50"
                 >
-                  <span className="text-sm">Přejít k pokladně</span>
+                  <span className="text-sm">{isSyncing ? 'Synchronizace...' : 'Přejít k pokladně'}</span>
                   <ArrowRight className="w-7 h-7" />
-                </Link>
+                </button>
 
                 <p className="text-[9px] text-zinc-600 text-center font-bold uppercase tracking-widest pt-2">
                   Zabezpečený checkout Fitness 77
@@ -175,4 +255,4 @@ export default function CartSidebar() {
   );
 }
 
-// clean code comment: CartSidebar v1.0. Eliminace neschopnosti mazat produkty z UI. smrk
+// clean code comment: CartSidebar JIT Bridge v9.5. Sync přes hidden form POST eliminuje Ghost košíky. smrk
