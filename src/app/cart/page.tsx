@@ -7,56 +7,43 @@ import Link from 'next/link';
 
 // Shoptet priceId mapa — ověřeno z Network tabu
 const PRICE_ID_MAP: Record<string, { priceId: number; productId: number }> = {
-  // Jednoduché produkty (priceId = productId)
   'creatine-monohydrate---fitness-77': { priceId: 58, productId: 55 },
-  'black-dead---pre-workout': { priceId: 49, productId: 49 },
-  'dead-pump---stim-free': { priceId: 46, productId: 46 },
-  'heavy-duty-powerlifting-opasek': { priceId: 43, productId: 43 },
-  // Varianty BCAA
+  'black-dead---pre-workout':          { priceId: 49, productId: 49 },
+  'dead-pump---stim-free':             { priceId: 46, productId: 46 },
+  'heavy-duty-powerlifting-opasek':    { priceId: 43, productId: 43 },
   'BOR': { priceId: 73, productId: 58 },
   'GRE': { priceId: 67, productId: 58 },
   'MAL': { priceId: 70, productId: 58 },
-  // Varianty Rýžová kaše
   'COK': { priceId: 79, productId: 61 },
   'PIS': { priceId: 85, productId: 61 },
   'SLA': { priceId: 82, productId: 61 },
 };
 
-function resolveIds(slug: string, variantCode?: string): { priceId: number; productId: number } | null {
-  if (variantCode) {
-    const upper = variantCode.toUpperCase();
-    if (PRICE_ID_MAP[upper]) return PRICE_ID_MAP[upper];
+function resolveIds(slug: string, variantCode?: string) {
+  if (variantCode && PRICE_ID_MAP[variantCode.toUpperCase()]) {
+    return PRICE_ID_MAP[variantCode.toUpperCase()];
   }
-  if (PRICE_ID_MAP[slug]) return PRICE_ID_MAP[slug];
-  return null;
+  return PRICE_ID_MAP[slug] || null;
 }
 
 export default function CartPage() {
   const items = useCartStore((state) => state.items);
   const hasHydrated = useCartStore((state) => state._hasHydrated);
   const [status, setStatus] = useState<'checking' | 'preparing' | 'sending' | 'empty' | 'error'>('checking');
-  const [progress, setProgress] = useState(0);
   const clearCart = useCartStore((state) => state.clearCart);
   const hasTriggered = useRef(false);
 
   useEffect(() => {
     if (!hasHydrated) return;
-
-    if (items.length === 0) {
-      setStatus('empty');
-      return;
-    }
-
+    if (items.length === 0) { setStatus('empty'); return; }
     if (hasTriggered.current) return;
 
-    // Zkontroluj jestli máme IDs pro všechny produkty
     const resolved = items.map(i => ({
       item: i,
       ids: resolveIds(i.slug, i.variantCode),
     }));
 
-    const hasMissing = resolved.some(r => !r.ids);
-    if (hasMissing) {
+    if (resolved.some(r => !r.ids)) {
       console.error('❌ Chybí priceId pro:', resolved.filter(r => !r.ids).map(r => r.item.slug));
       setStatus('error');
       return;
@@ -70,30 +57,29 @@ export default function CartPage() {
       setStatus('sending');
 
       try {
-        // Postupně přidáme každý produkt do Shoptet košíku přes AJAX
-        for (let i = 0; i < resolved.length; i++) {
-          const { item, ids } = resolved[i];
-          setProgress(Math.round((i / resolved.length) * 100));
+        const shoptetItems = resolved.map(({ item, ids }) => ({
+          priceId: ids!.priceId,
+          productId: ids!.productId,
+          amount: item.quantity,
+        }));
 
-          const body = new URLSearchParams({
-            priceId: ids!.priceId.toString(),
-            productId: ids!.productId.toString(),
-            amount: item.quantity.toString(),
-            language: 'cs',
-          });
+        // Voláme náš server-side proxy (obchází CORS)
+        const res = await fetch('/api/cart/proxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: shoptetItems }),
+          credentials: 'include',
+        });
 
-          await fetch('https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: body.toString(),
-            credentials: 'include',
-          });
+        const data = await res.json();
+
+        if (data.success) {
+          // Přesměruj na Shoptet pokladnu
+          window.location.href = 'https://obchod.fit77.cz/objednavka/';
+        } else {
+          console.error('Proxy error:', data.error);
+          setStatus('error');
         }
-
-        setProgress(100);
-
-        // Přesměruj na Shoptet pokladnu
-        window.location.href = 'https://obchod.fit77.cz/objednavka/';
       } catch (err) {
         console.error('Cart Bridge Error:', err);
         setStatus('error');
@@ -151,7 +137,7 @@ export default function CartPage() {
             Příprava <span className="text-[#E10600]">objednávky</span>
           </h1>
           <p className="mt-4 text-gray-500 font-bold uppercase tracking-[0.3em] text-xs">
-            {status === 'sending' ? `Přidávám produkty... ${progress}%` : 'Směřujeme do Shoptet pokladny...'}
+            {status === 'sending' ? 'Odesílám do Shoptet...' : 'Směřujeme do Shoptet pokladny...'}
           </p>
         </div>
         <div className="mt-12 max-w-sm mx-auto space-y-2 opacity-60">
@@ -163,10 +149,7 @@ export default function CartPage() {
           ))}
         </div>
         <div className="mt-12">
-          <button
-            onClick={handleCancel}
-            className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors flex items-center gap-2 mx-auto"
-          >
+          <button onClick={handleCancel} className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors flex items-center gap-2 mx-auto">
             <span className="w-2 h-2 bg-[#E10600] rounded-full animate-pulse" />
             Zrušit a upravit produkty
           </button>
