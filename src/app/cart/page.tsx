@@ -45,17 +45,15 @@ function CartBridgeContent() {
 
         setStatus('sending');
 
-        // 2. Konstrukce addBatch URL (Jediná 100% cesta)
-        const baseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
-        const params = new URLSearchParams();
-        shoptetItems.forEach(item => {
-          params.append('priceId[]', item.priceId!.toString());
-          params.append('amount[]', item.amount.toString());
-        });
+        // 2. Sestavení query stringu pro addBatch (GOLIÁŠ v14.7)
+        // POZOR: Žádné lomítko před otazníkem!
+        const params = shoptetItems
+          .map(i => `priceId[]=${i.priceId}&amount[]=${i.amount}`)
+          .join('&');
 
-        const finalUrl = `${baseUrl}?${params.toString()}`;
+        const finalUrl = `https://obchod.fit77.cz/kosik/?action=addBatch&${params}&returnUrl=/objednavka/`;
 
-        // 3. Final Leap - Shoptet si to sám zpracuje a uloží cookies
+        // 3. Final Leap - Hard redirect zajistí zápis cookies a 100% funkčnost
         setTimeout(() => {
           window.location.href = finalUrl;
         }, 1200);
