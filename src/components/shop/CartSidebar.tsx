@@ -52,7 +52,7 @@ export default function CartSidebar() {
                 {items.length > 0 && (
                   <button 
                     onClick={() => {
-                      router.push('/checkout');
+                      router.push('/cart');
                       closeCart();
                     }}
                     className="hidden sm:flex items-center gap-2 bg-white/10 hover:bg-red-600 transition-colors px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest"
@@ -156,7 +156,7 @@ export default function CartSidebar() {
                 
                 <button 
                   onClick={() => {
-                    router.push('/checkout');
+                    router.push('/cart');
                     closeCart();
                   }}
                   aria-label={`Přejít k pokladně a zaplatit ${totalPrice()} Kč`}
