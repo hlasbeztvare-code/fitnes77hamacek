@@ -148,18 +148,17 @@ function CartBridgeContent() {
         </motion.div>
       </AnimatePresence>
 
-      {/* GOLIÁŠ "DIRTY MILLIONAIRE" FORM */}
+      {/* GOLIÁŠ "FINAL STRIKE" FORM (v15.2) */}
       <form 
         ref={formRef} 
-        action="https://obchod.fit77.cz/kosik/" 
-        method="GET" 
+        action="https://obchod.fit77.cz/action/Cart/addBatch/" 
+        method="POST" 
         className="hidden"
       >
-        <input type="hidden" name="action" value="addBatch" />
         {shoptetItemsForForm.map((item, idx) => (
           <div key={`form-item-${idx}`}>
-            <input type="hidden" name="priceId[]" value={item.priceId!} />
-            <input type="hidden" name="amount[]" value={item.amount} />
+            <input type="hidden" name={`priceId[${idx}]`} value={item.priceId!} />
+            <input type="hidden" name={`amount[${idx}]`} value={item.amount} />
           </div>
         ))}
         <input type="hidden" name="returnUrl" value="/objednavka/" />
