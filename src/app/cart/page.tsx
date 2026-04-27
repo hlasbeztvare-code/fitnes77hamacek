@@ -5,8 +5,6 @@ import { useCartStore } from '@/hooks/useCartStore';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-// Shoptet VARIANT id mapa — variantCode → správné numerické ID pro addBatch
-// Musí být synchronní s /api/orders/route.ts
 const SHOPTET_VARIANT_MAP: Record<string, string> = {
   'COK': '79',
   'PIS': '85',
@@ -18,11 +16,11 @@ const SHOPTET_VARIANT_MAP: Record<string, string> = {
 
 const SHOPTET_MANUAL_MAP: Record<string, string> = {
   'creatine-monohydrate---fitness-77': '55',
-  'black-dead---pre-workout':          '49',
-  'dead-pump---stim-free':             '46',
-  'heavy-duty-powerlifting-opasek':    '43',
-  'ryzova-kase':                       '79',
-  'bcaa-411-glutamine---fitness-77':   '67',
+  'black-dead---pre-workout': '49',
+  'dead-pump---stim-free': '46',
+  'heavy-duty-powerlifting-opasek': '43',
+  'ryzova-kase': '79',
+  'bcaa-411-glutamine---fitness-77': '67',
 };
 
 function resolveShoptetId(item: { shoptetId?: string; variantCode?: string; id: string; slug: string }): string | null {
