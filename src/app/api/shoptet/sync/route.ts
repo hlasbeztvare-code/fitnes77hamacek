@@ -38,26 +38,36 @@ export async function GET(req: Request) {
     
     const parser = new XMLParser({ 
       ignoreAttributes: false,
-      isArray: (name) => ['SHOPITEM'].indexOf(name) !== -1
+      isArray: (name) => ['SHOPITEM', 'item', 'ITEM'].indexOf(name) !== -1
     });
     const jsonObj = parser.parse(xmlData);
-    const items = jsonObj?.SHOP?.SHOPITEM || [];
-
-    const products = Array.isArray(items) ? items : (items ? [items] : []);
-    console.log(`📦 Shoptet Sync: Nalezeno ${products.length} produktů ve feedu.`);
+    
+    // Detekce formátu a extrakce položek
+    let rawItems = [];
+    if (jsonObj?.SHOP?.SHOPITEM) rawItems = jsonObj.SHOP.SHOPITEM; // Shoptet Universal
+    else if (jsonObj?.rss?.channel?.item) rawItems = jsonObj.rss.channel.item; // Google Merchant
+    else if (jsonObj?.SHOP?.ITEM) rawItems = jsonObj.SHOP.ITEM; // Heureka
+    
+    const products = Array.isArray(rawItems) ? rawItems : (rawItems ? [rawItems] : []);
+    console.log(`📦 GOLIÁŠ Sync v10.0: Nalezeno ${products.length} produktů (Detekován formát: ${jsonObj?.rss ? 'Google' : 'Shoptet/Heureka'}).`);
 
     let processedCount = 0;
 
     for (const item of products) {
-      const name = item.PRODUCTNAME || item.PRODUCT || 'Nepojmenovaný produkt';
-      const itemUrl = item.URL || '';
+      // Unifikované mapování polí napříč formáty
+      const name = item.PRODUCTNAME || item.PRODUCT || item.title || item['g:title'] || 'Nepojmenovaný produkt';
+      const itemUrl = item.URL || item.link || item['g:link'] || '';
+      const description = item.DESCRIPTION || item.description || item['g:description'] || '';
+      const priceStr = item.PRICE_VAT || item.price || item['g:price'] || '0';
+      const price = parseFloat(priceStr.replace(/[^0-9.]/g, ''));
+      const imgUrl = item.IMGURL || item['g:image_link'] || item.image_link || '';
       
-      // Stabilní ID: Přednost má ITEM_ID, jinak hash z URL
-      const stableId = item.ITEM_ID ? String(item.ITEM_ID) : generateStableId(itemUrl, name);
+      // Stabilní ID
+      const stableId = item.ITEM_ID || item['g:id'] || item.id || generateStableId(itemUrl, name);
       
       const slug = itemUrl ? itemUrl.split('/').pop()?.replace('.html', '').split('?')[0] : slugify(name);
       
-      // GOLIÁŠ Bridge: Extrakce variantId (priceId) pro přímé vložení do košíku
+      // GOLIÁŠ Bridge: Extrakce variantId (priceId)
       const variantMatch = itemUrl.match(/[?&](variantId|priceId)=(\d+)/);
       let shoptetId = variantMatch ? variantMatch[2] : null;
 
@@ -65,8 +75,9 @@ export async function GET(req: Request) {
       const SHOPTET_MANUAL_MAP: Record<string, string> = {
         'creatine-monohydrate---fitness-77': '58',
         'heavy-duty-powerlifting-opasek': '46',
-        'black-dead---pre-workout': '64',
-        'dead-pump---stim-free': '61',
+        'black-dead---pre-workout': '52',
+        'dead-pump---stim-free': '49',
+        'ryzova-kase-77': '79',
       };
 
       if (!shoptetId && SHOPTET_MANUAL_MAP[slug]) {
@@ -86,21 +97,22 @@ export async function GET(req: Request) {
         'black-dead---pre-workout': 'Blackdead.webp',
         'dead-pump---stim-free': 'Deadpump.webp',
         'bcaa-4-1-1-glutamine---fitness-77': 'bcaa.png',
-        'ryzova-kase': 'rice-chocolate.png',
+        'ryzova-kase-77': 'rice-chocolate.png',
+        'heavy-duty-powerlifting-opasek': 'bcaa.png', // Fallback
       };
 
-      // Fallback pro obrázek (Shoptet někdy IMGURL nedává do universal.xml)
-      const image = SHOPTET_IMAGE_MAP[slug] || item.IMGURL || '';
+      // Fallback pro obrázek
+      const image = SHOPTET_IMAGE_MAP[slug] || imgUrl || '';
 
       await db.product.upsert({
-        where: { slug: slug }, // Slug je v Shoptetu unikátní a stabilnější než chybějící ID
+        where: { slug: slug },
         update: {
           name: name,
-          price: parseFloat(item.PRICE_VAT || '0'),
+          price: price,
           oldPrice: item.PRICE_BEFORE_DISCOUNT ? parseFloat(item.PRICE_BEFORE_DISCOUNT) : null,
-          stock: parseInt(item.STOCK_AMOUNT || '0'),
-          description: item.DESCRIPTION || '',
-          shortDescription: item.DESCRIPTION?.substring(0, 160) || '',
+          stock: parseInt(item.STOCK_AMOUNT || item['g:availability'] === 'in stock' ? '10' : '0'),
+          description: description,
+          shortDescription: description?.substring(0, 160) || '',
           image: image,
           category: category,
           shoptetId: shoptetId, 

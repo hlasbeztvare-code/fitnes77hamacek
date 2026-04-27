@@ -51,7 +51,7 @@ const Footer = () => {
           <div className="flex flex-col gap-3 lg:border-l lg:border-white/10 lg:pl-6">
             <span className="text-white/20 text-[7px] mb-1">PRÁVNÍ</span>
             <Link href="/obchodni-podminky" className="hover:text-[#d4ff00]">PODMÍNKY</Link>
-            <Link href="/odstoupeni-od-smlouvy" className="hover:text-[#d4ff00] text-zinc-300">ODSTOUPENÍ</Link>
+            <Link href="/odstoupeni-od-smlouvy" className="hover:text-[#d4ff00] text-white/60 font-bold border-b border-[#d4ff00]/30 pb-0.5 inline-block w-fit">ODSTOUPENÍ</Link>
             <Link href="/privacy" className="hover:text-[#d4ff00]">SOUKROMÍ</Link>
           </div>
 

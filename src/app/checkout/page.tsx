@@ -230,7 +230,16 @@ export default function CheckoutPage() {
                </div>
             </div>
 
-            {/* MAIN DESKTOP SUBMIT (Schováváme, protože máme tlačítko v shrnutí) */}
+            {/* GOLIÁŠ Bridge v9.3: Secondary Submit Button for Mobile UX */}
+            <div className="mt-12 lg:hidden">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.15em] text-black transition-all hover:scale-[1.01] active:scale-[0.99] shadow-[0_20px_40px_rgba(212,255,0,0.2)] text-sm disabled:opacity-50"
+              >
+                {loading ? 'Zpracovávám...' : 'Dokončit objednávku • ' + finalTotal.toLocaleString('cs-CZ') + ' Kč'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -247,7 +256,9 @@ export default function CheckoutPage() {
                 const getSafeImage = () => {
                   const img = item.image;
                   if (!img || img === '/images/products/placeholder.webp') return '/images/products/placeholder.webp';
-                  if (img.startsWith('http') || img.startsWith('/')) return img;
+                  if (img.startsWith('http')) return img;
+                  if (img.startsWith('/')) return img;
+                  // Pokud je to jen název souboru, přidáme cestu
                   return `/images/products/${img}`;
                 };
 

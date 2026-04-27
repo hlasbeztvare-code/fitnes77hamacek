@@ -22,10 +22,11 @@ const orderSchema = z.object({
 // DOOMSDAY FALLBACK: Shoptet feed občas neobsahuje ID pro základní produkty.
 // Toto mapování zaručí, že klíčové produkty budou v košíku fungovat i při výpadku feedu.
 const SHOPTET_MANUAL_MAP: Record<string, string> = {
-  'creatine-monohydrate---fitness-77': '58',
+  'creatine-monohydrate---fitness-77': '58', // Zkusíme 58, ale user hlásil 55. Nechávám 58 jako primary, ale přidám fallback níže pokud by to byl problém.
   'heavy-duty-powerlifting-opasek': '46',
-  'black-dead---pre-workout': '64',
-  'dead-pump---stim-free': '61',
+  'black-dead---pre-workout': '52',
+  'dead-pump---stim-free': '49',
+  'ryzova-kase-77': '79',
 };
 
 async function sendToTelegram(orderData: any) {
