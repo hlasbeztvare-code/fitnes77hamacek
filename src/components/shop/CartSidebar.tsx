@@ -8,13 +8,11 @@ import Link from 'next/link';
 import useMounted from '@/hooks/useMounted';
 import { resolveProductImage } from '@/lib/resolve-image';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function CartSidebar() {
   const mounted = useMounted();
   const router = useRouter();
-  const [isSyncing, setIsSyncing] = useState(false);
   const { items, isOpen, closeCart, removeItem, increaseItem, decreaseItem, totalPrice } = useCartStore();
 
   if (!mounted) return null;
@@ -53,10 +51,7 @@ export default function CartSidebar() {
               <div className="flex items-center gap-2">
                 {items.length > 0 && (
                   <button 
-                    onClick={async () => {
-                      if (isSyncing) return;
-                      setIsSyncing(true);
-                      // Fallback na lokální navigaci, pokud by Shoptet sync selhal
+                    onClick={() => {
                       router.push('/checkout');
                       closeCart();
                     }}
