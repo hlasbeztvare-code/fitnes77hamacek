@@ -5,32 +5,33 @@ import { useCartStore } from '@/hooks/useCartStore';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
+// Správné kódy přímo ze Shoptetu (Hlavní ceník CSV)
 const SHOPTET_VARIANT_MAP: Record<string, string> = {
-  'COK': '79',
-  'PIS': '85',
-  'SLA': '82',
-  'BOR': '73',
-  'GRE': '67',
-  'MAL': '70',
+  'BOR': '58/BOR',  // BCAA Borůvka
+  'GRE': '58/GRE',  // BCAA Grep
+  'MAL': '58/MAL',  // BCAA Malina
+  'COK': '61/COK',  // Rýžová kaše Čokoláda
+  'PIS': '61/PIS',  // Rýžová kaše Piškotový dort
+  'SLA': '61/SLA',  // Rýžová kaše Slaný karamel
 };
 
 const SHOPTET_MANUAL_MAP: Record<string, string> = {
   'creatine-monohydrate---fitness-77': '55',
-  'black-dead---pre-workout': '49',
-  'dead-pump---stim-free': '46',
-  'heavy-duty-powerlifting-opasek': '43',
-  'ryzova-kase': '79',
-  'bcaa-411-glutamine---fitness-77': '67',
+  'black-dead---pre-workout':          '49',
+  'dead-pump---stim-free':             '46',
+  'heavy-duty-powerlifting-opasek':    '43',
 };
 
 function resolveShoptetId(item: { shoptetId?: string; variantCode?: string; id: string; slug: string }): string | null {
+  // 1. Varianta přes mapu
   if (item.variantCode) {
     const upper = item.variantCode.toUpperCase();
     if (SHOPTET_VARIANT_MAP[upper]) return SHOPTET_VARIANT_MAP[upper];
-    if (/^\d+$/.test(item.variantCode)) return item.variantCode;
   }
-  if (item.shoptetId && /^\d+$/.test(item.shoptetId)) return item.shoptetId;
+  // 2. Manuální mapa podle slugu
   if (SHOPTET_MANUAL_MAP[item.slug]) return SHOPTET_MANUAL_MAP[item.slug];
+  // 3. shoptetId z DB pokud je čisté číslo
+  if (item.shoptetId && /^\d+$/.test(item.shoptetId)) return item.shoptetId;
   return null;
 }
 
@@ -56,7 +57,7 @@ export default function CartPage() {
 
       const hasMissing = resolved.some(r => !r.shoptetCode);
       if (hasMissing) {
-        console.error("❌ Produkty bez Shoptet ID:", resolved.filter(r => !r.shoptetCode).map(r => r.item.slug));
+        console.error("❌ Produkty bez Shoptet kódu:", resolved.filter(r => !r.shoptetCode).map(r => r.item.slug));
         setStatus('error');
         return;
       }

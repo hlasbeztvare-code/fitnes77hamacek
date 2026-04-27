@@ -19,27 +19,22 @@ const orderSchema = z.object({
   })).min(1),
 });
 
-// GOLIÁŠ v8.0: Verified against productsComplete.xml — SHOPITEM id for simple, VARIANT id for variants
+// Správné kódy přímo ze Shoptetu (Hlavní ceník CSV export)
 const SHOPTET_MANUAL_MAP: Record<string, string> = {
-  'creatine-monohydrate---fitness-77': '55',  // SHOPITEM id=55
-  'black-dead---pre-workout':          '49',  // SHOPITEM id=49
-  'dead-pump---stim-free':             '46',  // SHOPITEM id=46
-  'heavy-duty-powerlifting-opasek':    '43',  // SHOPITEM id=43
-  // Fallback pro variantové produkty
-  'ryzova-kase':                       '79',  // default = Čokoláda (VARIANT id=79)
-  'bcaa-411-glutamine---fitness-77':   '67',  // default = Grep (VARIANT id=67)
+  'creatine-monohydrate---fitness-77': '55',
+  'black-dead---pre-workout':          '49',
+  'dead-pump---stim-free':             '46',
+  'heavy-duty-powerlifting-opasek':    '43',
 };
 
-// VARIANT id — interní Shoptet číslo varianty (z XML: <VARIANT id="...">)
+// Kódy variant přesně jak je Shoptet používá (CODE z CSV exportu)
 const SHOPTET_VARIANT_MAP: Record<string, string> = {
-  // Rýžová Kaše — SHOPITEM id=61
-  'COK': '79',  // Čokoláda       VARIANT id=79, CODE=61/COK
-  'PIS': '85',  // Piškotový dort  VARIANT id=85, CODE=61/PIS
-  'SLA': '82',  // Slaný karamel   VARIANT id=82, CODE=61/SLA
-  // BCAA 4:1:1 + Glutamine — SHOPITEM id=58
-  'BOR': '73',  // Borůvka   VARIANT id=73, CODE=58/BOR
-  'GRE': '67',  // Grep       VARIANT id=67, CODE=58/GRE
-  'MAL': '70',  // Malina     VARIANT id=70, CODE=58/MAL
+  'BOR': '58/BOR',
+  'GRE': '58/GRE',
+  'MAL': '58/MAL',
+  'COK': '61/COK',
+  'PIS': '61/PIS',
+  'SLA': '61/SLA',
 };
 
 async function sendToTelegram(orderData: any) {
