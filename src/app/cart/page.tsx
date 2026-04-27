@@ -7,9 +7,11 @@ import Link from 'next/link';
 import { resolveShoptetIds } from '@/lib/shoptet-map';
 
 /**
- * L-CODE Dynamics | GOLIÁŠ Sync Engine v14.0 (Hybrid Edition)
+ * GOLIÁŠ Sync Engine v15.1 - "The Dirty Millionaire"
  * 
- * Kombinuje tvůj design z cart-page-final2 s ultra-spolehlivým klientským AJAXem.
+ * Strategie: Používá skrytý auto-submit formulář. 
+ * Výhoda: Prohlížeč při odeslání formuláře automaticky přibalí cookies, 
+ * což serverová proxy neuměla. Tohle je cesta k milionu. smrk
  */
 
 function CartBridgeContent() {
@@ -18,60 +20,42 @@ function CartBridgeContent() {
   const [status, setStatus] = useState<'checking' | 'preparing' | 'sending' | 'empty' | 'error' | 'success'>('checking');
   const clearCart = useCartStore((state) => state.clearCart);
   const hasTriggered = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (!hasHydrated) return;
     if (items.length === 0) { setStatus('empty'); return; }
     if (hasTriggered.current) return;
 
-    const processCart = async () => {
+    const prepareSync = async () => {
       hasTriggered.current = true;
       setStatus('preparing');
 
-      try {
-        // 1. Příprava dat pro Proxy
-        const shoptetItems = items.map(item => {
-          const ids = resolveShoptetIds(item.slug, item.variantCode);
-          return {
-            priceId: ids?.priceId,
-            amount: item.quantity,
-          };
-        }).filter(i => i.priceId);
+      // GOLIÁŠ v15.1: Příprava dat pro Truth Edition
+      const shoptetItems = items.map(item => {
+        const ids = resolveShoptetIds(item.slug, item.variantCode);
+        return {
+          priceId: ids?.priceId,
+          amount: item.quantity,
+        };
+      }).filter(i => i.priceId);
 
-        if (shoptetItems.length === 0) {
-          setStatus('empty');
-          return;
-        }
-
-        setStatus('sending');
-
-        // 2. Volání naší Server-Side Proxy (Bypass 404/CORS)
-        const res = await fetch('/api/cart/proxy', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: shoptetItems }),
-        });
-
-        const data = await res.json();
-
-        if (data.success) {
-          setStatus('success');
-          // 3. Final Leap - Přímý skok na Shoptet pokladnu
-          setTimeout(() => {
-            window.location.href = 'https://obchod.fit77.cz/objednavka/';
-          }, 500);
-        } else {
-          throw new Error('Proxy sync failed');
-        }
-
-      } catch (err) {
-        console.error('❌ Sync Error:', err);
-        setStatus('error');
+      if (shoptetItems.length === 0) {
+        setStatus('empty');
+        return;
       }
+
+      // Malá pauza na wow-efekt designu
+      setTimeout(() => {
+        setStatus('sending');
+        // AUTO-SUBMIT: Tohle je ta prasárna, co funguje.
+        if (formRef.current) {
+          formRef.current.submit();
+        }
+      }, 1500);
     };
 
-    const timer = setTimeout(processCart, 1500);
-    return () => clearTimeout(timer);
+    prepareSync();
   }, [items, hasHydrated]);
 
   const handleCancel = () => {
@@ -117,6 +101,15 @@ function CartBridgeContent() {
     );
   }
 
+  // Příprava dat pro skrytý formulář
+  const shoptetItemsForForm = items.map(item => {
+    const ids = resolveShoptetIds(item.slug, item.variantCode);
+    return {
+      priceId: ids?.priceId,
+      amount: item.quantity,
+    };
+  }).filter(i => i.priceId);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-black text-white p-4 text-center">
       <AnimatePresence mode="wait">
@@ -154,6 +147,23 @@ function CartBridgeContent() {
           </div>
         </motion.div>
       </AnimatePresence>
+
+      {/* GOLIÁŠ "DIRTY MILLIONAIRE" FORM */}
+      <form 
+        ref={formRef} 
+        action="https://obchod.fit77.cz/kosik/" 
+        method="GET" 
+        className="hidden"
+      >
+        <input type="hidden" name="action" value="addBatch" />
+        {shoptetItemsForForm.map((item, idx) => (
+          <div key={`form-item-${idx}`}>
+            <input type="hidden" name="priceId[]" value={item.priceId!} />
+            <input type="hidden" name="amount[]" value={item.amount} />
+          </div>
+        ))}
+        <input type="hidden" name="returnUrl" value="/objednavka/" />
+      </form>
     </div>
   );
 }
@@ -165,5 +175,3 @@ export default function CartPage() {
     </Suspense>
   );
 }
-
-// clean code comment: GOLIÁŠ Sync Engine v14.0 Hybrid. smrk
