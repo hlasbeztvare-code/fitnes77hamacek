@@ -107,7 +107,7 @@ export const useCartStore = create<CartStore>()(
         get().items.reduce((acc, item) => acc + item.price * item.quantity, 0),
 
       syncPrices: async () => {
-        // Reserved for future use or manual trigger
+        // GOLIÁŠ Sync: Background fetch zrušen ve prospěch JIT Bridge při checkoutu. smrk
       },
 
       currency: 'CZK',

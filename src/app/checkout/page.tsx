@@ -71,18 +71,12 @@ export default function CheckoutPage() {
             form.style.display = 'none';
 
             // Formát products[ID]=QTY je pro vícero položek nejstabilnější
-            resData.shoptetItems.forEach((item: any, index: number) => {
-              const idInput = document.createElement('input');
-              idInput.type = 'hidden';
-              idInput.name = `products[${index}][priceId]`;
-              idInput.value = item.priceId.toString();
-              form.appendChild(idInput);
-
-              const amountInput = document.createElement('input');
-              amountInput.type = 'hidden';
-              amountInput.name = `products[${index}][amount]`;
-              amountInput.value = item.amount.toString();
-              form.appendChild(amountInput);
+            resData.shoptetItems.forEach((item: any) => {
+              const input = document.createElement('input');
+              input.type = 'hidden';
+              input.name = `products[${item.priceId}]`;
+              input.value = item.amount.toString();
+              form.appendChild(input);
             });
 
             document.body.appendChild(form);

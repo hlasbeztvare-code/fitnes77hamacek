@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       const product = dbProducts.find(p => p.id === item.id);
       if (!product) return null;
 
-      // 1. Resolve priceId
+      // 1. Resolve priceId (Priorita: variantCode -> shoptetId -> Manual Map -> ID)
       let priceId = (item.variantCode && /^\d+$/.test(item.variantCode)) ? item.variantCode : null;
       if (!priceId) priceId = product.shoptetId;
       if (!priceId && SHOPTET_MANUAL_MAP[product.slug]) {
@@ -43,20 +43,18 @@ export async function POST(req: Request) {
 
       return {
         priceId: priceId,
-        amount: item.quantity,
-        slug: product.slug
+        amount: item.quantity
       };
     }).filter(item => item !== null);
 
-    // Vracíme shoptetItems, které klientská část použije pro "pixel sync" nebo tichý POST
+    // Vracíme shoptetItems pro JIT Bridge formulářový výstřel
     return NextResponse.json({ 
       success: true, 
-      shoptetItems,
-      shoptetBaseUrl: 'https://obchod.fit77.cz/action/Cart/addBatch/'
+      shoptetItems
     });
   } catch (error: any) {
     console.error('🛒 Cart Sync Error:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
-// "Zameť stopy" - Cart Sync Bridge v6.0 je připraven na pozadí. smrk
+// "Zameť stopy" - Cart Sync Bridge v10.0: Logicky neprůstřelné mapování pro "Výstřel". smrk

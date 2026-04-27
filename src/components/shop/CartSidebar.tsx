@@ -67,20 +67,16 @@ export default function CartSidebar() {
                         if (data.success && data.shoptetItems) {
                           const form = document.createElement('form');
                           form.method = 'POST';
-                          form.action = data.shoptetBaseUrl;
-                          data.shoptetItems.forEach((item: any, index: number) => {
-                            const idInput = document.createElement('input');
-                            idInput.type = 'hidden';
-                            idInput.name = `products[${index}][priceId]`;
-                            idInput.value = item.priceId.toString();
-                            form.appendChild(idInput);
-
-                            const amountInput = document.createElement('input');
-                            amountInput.type = 'hidden';
-                            amountInput.name = `products[${index}][amount]`;
-                            amountInput.value = item.amount.toString();
-                            form.appendChild(amountInput);
+                          form.action = 'https://obchod.fit77.cz/action/Cart/addBatch/';
+                          
+                          data.shoptetItems.forEach((item: any) => {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = `products[${item.priceId}]`;
+                            input.value = item.amount.toString();
+                            form.appendChild(input);
                           });
+
                           document.body.appendChild(form);
                           form.submit();
                           return;
@@ -206,20 +202,16 @@ export default function CartSidebar() {
                       if (data.success && data.shoptetItems) {
                         const form = document.createElement('form');
                         form.method = 'POST';
-                        form.action = data.shoptetBaseUrl;
-                        data.shoptetItems.forEach((item: any, index: number) => {
-                          const idInput = document.createElement('input');
-                          idInput.type = 'hidden';
-                          idInput.name = `products[${index}][priceId]`;
-                          idInput.value = item.priceId.toString();
-                          form.appendChild(idInput);
-
-                          const amountInput = document.createElement('input');
-                          amountInput.type = 'hidden';
-                          amountInput.name = `products[${index}][amount]`;
-                          amountInput.value = item.amount.toString();
-                          form.appendChild(amountInput);
+                        form.action = 'https://obchod.fit77.cz/action/Cart/addBatch/';
+                        
+                        data.shoptetItems.forEach((item: any) => {
+                          const input = document.createElement('input');
+                          input.type = 'hidden';
+                          input.name = `products[${item.priceId}]`;
+                          input.value = item.amount.toString();
+                          form.appendChild(input);
                         });
+
                         document.body.appendChild(form);
                         form.submit();
                         return;
