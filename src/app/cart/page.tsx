@@ -29,41 +29,36 @@ function CartBridgeContent() {
       setStatus('preparing');
 
       try {
-        // 1. Mapování na Shoptet ID
+        // 1. Mapování na Shoptet ID (The Truth Edition v14.4)
         const shoptetItems = items.map(item => {
           const ids = resolveShoptetIds(item.slug, item.variantCode);
           return {
             priceId: ids?.priceId,
-            productId: ids?.productId,
             amount: item.quantity,
           };
-        });
+        }).filter(i => i.priceId);
 
-        if (shoptetItems.some(i => !i.priceId)) {
-          console.error('❌ Missing Shoptet IDs');
-          setStatus('error');
+        if (shoptetItems.length === 0) {
+          setStatus('empty');
           return;
         }
 
         setStatus('sending');
 
-        // 2. Sekvenční AJAX Injekce (Client-Side - Jistota cookies)
-        for (const item of shoptetItems) {
-          await fetch(`https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1&priceId=${item.priceId}&amount=${item.amount}`, {
-            method: 'GET',
-            mode: 'no-cors',
-            credentials: 'include'
-          });
-          // Malý delay pro stabilitu Shoptet session
-          await new Promise(resolve => setTimeout(resolve, 150));
-        }
+        // 2. Konstrukce addBatch URL (Jediná 100% cesta)
+        const baseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
+        const params = new URLSearchParams();
+        shoptetItems.forEach(item => {
+          params.append('priceId[]', item.priceId!.toString());
+          params.append('amount[]', item.amount.toString());
+        });
 
-        setStatus('success');
-        
-        // 3. Final Leap
+        const finalUrl = `${baseUrl}?${params.toString()}`;
+
+        // 3. Final Leap - Shoptet si to sám zpracuje a uloží cookies
         setTimeout(() => {
-          window.location.href = 'https://obchod.fit77.cz/objednavka/';
-        }, 500);
+          window.location.href = finalUrl;
+        }, 1200);
 
       } catch (err) {
         console.error('❌ Sync Error:', err);
