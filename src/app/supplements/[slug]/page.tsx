@@ -31,10 +31,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${product.name} | Fitness 77`,
-    description: product.shortDescription,
+    description: product.shortDescription ?? undefined,
     openGraph: {
       title: `${product.name} | Fitness 77`,
-      description: product.shortDescription,
+      description: product.shortDescription ?? undefined,
       images: [
         {
           url: product.image ?? '/images/brand/og_image.png',
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: 'summary_large_image',
       title: product.name,
-      description: product.shortDescription,
+      description: product.shortDescription ?? undefined,
       images: [product.image ?? '/images/brand/og_image.png'],
     },
   };
@@ -96,7 +96,7 @@ export default async function SupplementDetailPage({ params }: Props) {
 
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
           <div>
-            <ProductDetailImage product={product} />
+            <ProductDetailImage product={{ ...product, image: product.image ?? '' }} />
             <div className="mt-12 hidden lg:block">
               <NutritionTable data={product.nutrition as any} />
             </div>
