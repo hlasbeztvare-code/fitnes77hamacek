@@ -39,48 +39,40 @@ export default function CheckoutPage() {
 
   const finalTotal = totalPrice + shippingPrices[shippingMethod];
 
-  const onSubmit = async (data: CheckoutForm) => {
+  const onSubmit = async (_data: CheckoutForm) => {
     setLoading(true);
 
-    const payload = {
-      ...data,
-      total: finalTotal,
-      shippingMethod,
-      shippingPrice: shippingPrices[shippingMethod],
-      items,
-    };
-
     try {
-      const res = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+      // GOLIÁŠ Bridge v10.0: Nativní přesun do Shoptetu skrze /cart bridge
+      const { resolveShoptetIds } = await import('@/lib/shoptet-map');
+      
+      const shoptetItems = items.map(item => {
+        const ids = resolveShoptetIds(item.slug, item.variantCode);
+        return {
+          priceId: ids?.priceId,
+          productId: ids?.productId,
+          amount: item.quantity,
+          name: item.name
+        };
       });
 
-      const resData = await res.json();
-
-      if (resData.success) {
-        clearCart();
-
-        // GOLIÁŠ Bridge v8.0: GET addBatch — čistý URL redirect, žádný skrytý formulář
-        if (resData.shoptetItems && resData.shoptetItems.length > 0) {
-          const params = new URLSearchParams();
-          resData.shoptetItems.forEach((item: any) => {
-            params.set(`produkty[${item.priceId}]`, item.amount.toString());
-          });
-          window.location.href = `https://obchod.fit77.cz/action/Cart/addBatch/?${params.toString()}`;
-          return;
-        }
-
-        router.push(`/success?orderId=${resData.orderId}`);
+      // Kontrola, zda máme všechna ID
+      if (shoptetItems.some(i => !i.priceId)) {
+        console.error('❌ Chybí Shoptet ID pro některé produkty:', shoptetItems.filter(i => !i.priceId));
+        alert('Některé produkty nelze přenést do košíku. Kontaktujte podporu.');
+        setLoading(false);
         return;
       }
 
-      alert('Objednávku se nepodařilo vytvořit.');
+      // Zakódování do Base64
+      const payload = btoa(JSON.stringify(shoptetItems));
+      
+      // Přesun na přestupní stanici
+      window.location.href = `/cart?payload=${payload}`;
+
     } catch (error) {
-      console.error(error);
-      alert('Došlo k chybě při odeslání objednávky.');
-    } finally {
+      console.error('[GOLIÁŠ] Checkout Bridge Error:', error);
+      alert('Došlo k chybě při přípravě košíku.');
       setLoading(false);
     }
   };
