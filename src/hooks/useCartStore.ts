@@ -33,6 +33,7 @@ type CartStore = {
   syncPrices: () => Promise<void>;
   currency: 'CZK' | 'EUR';
   setCurrency: (currency: 'CZK' | 'EUR') => void;
+  proceedToSync: () => Promise<void>;
 };
 
 export const useCartStore = create<CartStore>()(
@@ -46,6 +47,36 @@ export const useCartStore = create<CartStore>()(
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
       toggleCart: () => set({ isOpen: !get().isOpen }),
+
+      proceedToSync: async () => {
+        const { items } = get();
+        if (items.length === 0) return;
+
+        try {
+          const { resolveShoptetIds } = await import('@/lib/shoptet-map');
+          
+          const shoptetItems = items.map(item => {
+            const ids = resolveShoptetIds(item.slug, item.variantCode);
+            return {
+              priceId: ids?.priceId,
+              productId: ids?.productId,
+              amount: item.quantity,
+              name: item.name
+            };
+          });
+
+          if (shoptetItems.some(i => !i.priceId)) {
+            console.error('❌ Sync Engine: Missing Shoptet IDs');
+            alert('Chyba: Některé produkty nemají Shoptet ID.');
+            return;
+          }
+
+          const payload = btoa(encodeURIComponent(JSON.stringify(shoptetItems)));
+          window.location.href = `/cart?payload=${encodeURIComponent(payload)}`;
+        } catch (error) {
+          console.error('❌ Sync Engine Critical Error:', error);
+        }
+      },
 
       addItem: (item) => {
         set((state) => {
