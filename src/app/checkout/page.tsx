@@ -241,7 +241,7 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        <aside className="h-fit space-y-8 lg:sticky lg:top-8 order-first lg:order-none">
+        <aside className="h-fit space-y-8 lg:sticky lg:top-8 order-last lg:order-none">
           <div className="rounded-3xl border border-zinc-800 bg-[#0a0a0a] p-8 shadow-2xl">
             <h2 className="text-2xl font-black uppercase tracking-tighter mb-8 flex items-center justify-between">
               Shrnutí
