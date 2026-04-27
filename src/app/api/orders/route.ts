@@ -19,13 +19,27 @@ const orderSchema = z.object({
   })).min(1),
 });
 
-// GOLIÁŠ v10.5: Global ID Mapping for Critical Items
+// GOLIÁŠ v8.0: Verified against productsComplete.xml — SHOPITEM id for simple, VARIANT id for variants
 const SHOPTET_MANUAL_MAP: Record<string, string> = {
-  'creatine-monohydrate---fitness-77': '58',
-  'heavy-duty-powerlifting-opasek': '46',
-  'black-dead---pre-workout': '52',
-  'dead-pump---stim-free': '49',
-  'ryzova-kase': '79',
+  'creatine-monohydrate---fitness-77': '55',  // SHOPITEM id=55
+  'black-dead---pre-workout':          '49',  // SHOPITEM id=49
+  'dead-pump---stim-free':             '46',  // SHOPITEM id=46
+  'heavy-duty-powerlifting-opasek':    '43',  // SHOPITEM id=43
+  // Fallback pro variantové produkty
+  'ryzova-kase':                       '79',  // default = Čokoláda (VARIANT id=79)
+  'bcaa-411-glutamine---fitness-77':   '67',  // default = Grep (VARIANT id=67)
+};
+
+// VARIANT id — interní Shoptet číslo varianty (z XML: <VARIANT id="...">)
+const SHOPTET_VARIANT_MAP: Record<string, string> = {
+  // Rýžová Kaše — SHOPITEM id=61
+  'COK': '79',  // Čokoláda       VARIANT id=79, CODE=61/COK
+  'PIS': '85',  // Piškotový dort  VARIANT id=85, CODE=61/PIS
+  'SLA': '82',  // Slaný karamel   VARIANT id=82, CODE=61/SLA
+  // BCAA 4:1:1 + Glutamine — SHOPITEM id=58
+  'BOR': '73',  // Borůvka   VARIANT id=73, CODE=58/BOR
+  'GRE': '67',  // Grep       VARIANT id=67, CODE=58/GRE
+  'MAL': '70',  // Malina     VARIANT id=70, CODE=58/MAL
 };
 
 async function sendToTelegram(orderData: any) {
@@ -126,35 +140,38 @@ export async function POST(req: Request) {
         total: finalTotal
     });
 
-    // GOLIÁŠ Bridge v10.5: Advanced PriceID Resolver
+    // GOLIÁŠ Bridge v8.0: PriceID Resolver — identický s /api/cart/sync
     const shoptetItems = finalItems.map(item => {
-      // 1. Pokud máme variantCode, který je numerický, je to náš priceId
-      let priceId = (item.variantCode && /^\d+$/.test(item.variantCode)) ? item.variantCode : null;
-      
-      // 2. Pokud ne, zkusíme shoptetId z DB (synchronizované z feedu pro základní produkt)
-      if (!priceId) priceId = item.shoptetId;
-      
-      // 3. Zkusíme manuální mapu
+      let priceId: string | null = null;
+
+      // 1. Priorita: variantCode přes VARIANT_MAP
+      if (item.variantCode) {
+        const variantUpper = item.variantCode.toUpperCase();
+        if (SHOPTET_VARIANT_MAP[variantUpper]) {
+          priceId = SHOPTET_VARIANT_MAP[variantUpper];
+        } else if (/^\d+$/.test(item.variantCode)) {
+          priceId = item.variantCode;
+        }
+      }
+
+      // 2. shoptetId z DB
+      if (!priceId) priceId = item.shoptetId ?? null;
+
+      // 3. Manual mapa ze slug
       if (!priceId && SHOPTET_MANUAL_MAP[item.slug]) {
         priceId = SHOPTET_MANUAL_MAP[item.slug];
       }
-      
-      // 4. Poslední záchrana: Pokud je původní ID numerické
-      if (!priceId && /^\d+$/.test(item.id)) {
-        priceId = item.id;
-      }
 
-      return {
-        priceId: priceId,
-        amount: item.quantity,
-        slug: item.slug
-      };
+      // 4. Fallback: numerické ID produktu
+      if (!priceId && /^\d+$/.test(item.id)) priceId = item.id;
+
+      return { priceId, amount: item.quantity, slug: item.slug };
     }).filter(item => item.priceId);
 
     return NextResponse.json({ 
         success: true, 
         orderId: order.id,
-        shoptetItems: shoptetItems,
+        shoptetItems,
         shoptetBaseUrl: 'https://obchod.fit77.cz/action/Cart/addBatch/'
     });
   } catch (error: any) {
@@ -165,5 +182,4 @@ export async function POST(req: Request) {
     );
   }
 }
-// "Zameť stopy" - bridge v10.5 je neprůstřelný a varianty zvládá s grácií. smrk
-
+// „Zameť stopy" — GOLIÁŠ Orders v8.0: Správný VARIANT id resolver. smrk

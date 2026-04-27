@@ -61,33 +61,15 @@ export default function CheckoutPage() {
 
       if (resData.success) {
         clearCart();
-        
-        // GOLIÁŠ Bridge v8.0: Shoptet vyžaduje POST na addCartItem/ s numerickými priceId
-        if (resData.shoptetItems && resData.shoptetBaseUrl) {
-          try {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = resData.shoptetBaseUrl;
-            form.style.display = 'none';
 
-            // Formát products[ID]=QTY je pro vícero položek nejstabilnější
-            resData.shoptetItems.forEach((item: any) => {
-              const input = document.createElement('input');
-              input.type = 'hidden';
-              input.name = `products[${item.priceId}]`;
-              input.value = item.amount.toString();
-              form.appendChild(input);
-            });
-
-            document.body.appendChild(form);
-            form.submit();
-            return;
-          } catch (err) {
-            console.error('Shoptet Bridge Error:', err);
-            // Fallback na ruční přesměrování do košíku, pokud form selže
-            window.location.href = 'https://obchod.fit77.cz/kosik/';
-            return;
-          }
+        // GOLIÁŠ Bridge v8.0: GET addBatch — čistý URL redirect, žádný skrytý formulář
+        if (resData.shoptetItems && resData.shoptetItems.length > 0) {
+          const params = new URLSearchParams();
+          resData.shoptetItems.forEach((item: any) => {
+            params.set(`produkty[${item.priceId}]`, item.amount.toString());
+          });
+          window.location.href = `https://obchod.fit77.cz/action/Cart/addBatch/?${params.toString()}`;
+          return;
         }
 
         router.push(`/success?orderId=${resData.orderId}`);

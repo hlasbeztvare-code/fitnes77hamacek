@@ -57,32 +57,12 @@ export default function CartSidebar() {
                       if (isSyncing) return;
                       setIsSyncing(true);
                       // Fallback na lokální navigaci, pokud by Shoptet sync selhal
-                      try {
-                        const res = await fetch('/api/cart/sync', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ items }),
-                        });
-                        const data = await res.json();
-                        if (data.success && data.shoptetItems) {
-                          const params = new URLSearchParams();
-                          data.shoptetItems.forEach((item: any) => {
-                            params.set(`produkty[${item.priceId}]`, item.amount.toString());
-                          });
-                          window.location.href = `https://obchod.fit77.cz/action/Cart/addBatch/?${params.toString()}`;
-                          return;
-                        }
-                      } catch (err) {
-                        console.error('Sync failed:', err);
-                      }
                       router.push('/checkout');
                       closeCart();
-                      setIsSyncing(false);
                     }}
-                    className="hidden sm:flex items-center gap-2 bg-white/10 hover:bg-red-600 transition-colors px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest disabled:opacity-50"
-                    disabled={isSyncing}
+                    className="hidden sm:flex items-center gap-2 bg-white/10 hover:bg-red-600 transition-colors px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest"
                   >
-                    {isSyncing ? 'Synchronizace...' : 'Zaplatit'}
+                    Pokladna
                   </button>
                 )}
                 <button 
@@ -180,36 +160,14 @@ export default function CartSidebar() {
                 </div>
                 
                 <button 
-                  onClick={async () => {
-                    if (isSyncing) return;
-                    setIsSyncing(true);
-                    try {
-                      const res = await fetch('/api/cart/sync', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ items }),
-                      });
-                      const data = await res.json();
-                      if (data.success && data.shoptetItems) {
-                        const params = new URLSearchParams();
-                        data.shoptetItems.forEach((item: any) => {
-                          params.set(`produkty[${item.priceId}]`, item.amount.toString());
-                        });
-                        window.location.href = `https://obchod.fit77.cz/action/Cart/addBatch/?${params.toString()}`;
-                        return;
-                      }
-                    } catch (err) {
-                      console.error('Sync failed:', err);
-                    }
+                  onClick={() => {
                     router.push('/checkout');
                     closeCart();
-                    setIsSyncing(false);
                   }}
-                  disabled={isSyncing}
                   aria-label={`Přejít k pokladně a zaplatit ${totalPrice()} Kč`}
-                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-20 active:scale-[0.98] disabled:opacity-50"
+                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-20 active:scale-[0.98]"
                 >
-                  <span className="text-sm">{isSyncing ? 'Synchronizace...' : 'Přejít k pokladně'}</span>
+                  <span className="text-sm">Přejít k pokladně</span>
                   <ArrowRight className="w-7 h-7" />
                 </button>
 
