@@ -65,8 +65,11 @@ export default function CartSidebar() {
                         });
                         const data = await res.json();
                         if (data.success && data.shoptetItems) {
-                          const payload = btoa(JSON.stringify(data.shoptetItems));
-                          window.location.href = `https://obchod.fit77.cz/kosik/?cart_payload=${payload}`;
+                          const params = new URLSearchParams();
+                          data.shoptetItems.forEach((item: any) => {
+                            params.set(`produkty[${item.priceId}]`, item.amount.toString());
+                          });
+                          window.location.href = `https://obchod.fit77.cz/action/Cart/addBatch/?${params.toString()}`;
                           return;
                         }
                       } catch (err) {
@@ -188,8 +191,11 @@ export default function CartSidebar() {
                       });
                       const data = await res.json();
                       if (data.success && data.shoptetItems) {
-                        const payload = btoa(JSON.stringify(data.shoptetItems));
-                        window.location.href = `https://obchod.fit77.cz/kosik/?cart_payload=${payload}`;
+                        const params = new URLSearchParams();
+                        data.shoptetItems.forEach((item: any) => {
+                          params.set(`produkty[${item.priceId}]`, item.amount.toString());
+                        });
+                        window.location.href = `https://obchod.fit77.cz/action/Cart/addBatch/?${params.toString()}`;
                         return;
                       }
                     } catch (err) {
