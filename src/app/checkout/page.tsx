@@ -64,8 +64,8 @@ export default function CheckoutPage() {
         return;
       }
 
-      // Zakódování do Base64
-      const payload = btoa(JSON.stringify(shoptetItems));
+      // Zakódování do Base64 (UTF-8 Safe pro české znaky)
+      const payload = btoa(encodeURIComponent(JSON.stringify(shoptetItems)));
       
       // Přesun na přestupní stanici
       window.location.href = `/cart?payload=${payload}`;

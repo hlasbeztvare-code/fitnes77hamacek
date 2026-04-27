@@ -37,8 +37,8 @@ function CartBridgeContent() {
         hasTriggered.current = true;
         setStatus('processing');
         
-        // 1. Dekódování payloadu
-        const jsonString = atob(payloadBase64);
+        // 1. Dekódování payloadu (UTF-8 Safe)
+        const jsonString = decodeURIComponent(atob(payloadBase64));
         const items = JSON.parse(jsonString);
 
         if (!Array.isArray(items) || items.length === 0) {
