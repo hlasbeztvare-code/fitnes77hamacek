@@ -49,9 +49,9 @@ function CartBridgeContent() {
 
         // 2. Sekvenční AJAX Injekce (Client-Side - Jistota cookies)
         for (const item of shoptetItems) {
-          await fetch(`https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1&priceId=${item.priceId}&productId=${item.productId}&amount=${item.amount}`, {
+          await fetch(`https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1&priceId=${item.priceId}&amount=${item.amount}`, {
             method: 'GET',
-            mode: 'no-cors', // Důležité pro Shoptet subdomain sync
+            mode: 'no-cors',
             credentials: 'include'
           });
           // Malý delay pro stabilitu Shoptet session

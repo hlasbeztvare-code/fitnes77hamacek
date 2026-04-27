@@ -1,46 +1,62 @@
 /**
- * L-CODE Dynamics: Shoptet ID Mapping v12.1
- * Mapuje slugy a varianty produktů na interní Shoptet priceId a productId.
+ * GOLIÁŠ BRIDGE v14.4 - "The Truth Edition"
+ * Mapování postavené na reálných priceId ze Shoptetu.
  */
 
-export const PRICE_ID_MAP: Record<string, { priceId: number; productId: number }> = {
-  // Creatine - Opraveno na 55
-  'creatine-monohydrate-fitness-77': { priceId: 55, productId: 55 },
-  'creatine-monohydrate---fitness-77': { priceId: 55, productId: 55 },
-
-  // BCAA - Product ID je 58
-  'bcaa-4-1-1-glutamine-fitness-77': { priceId: 67, productId: 58 },
-  'bcaa-411-glutamine---fitness-77': { priceId: 67, productId: 58 },
-
-  // Rýžová kaše - Doplněn plný slug a ID 61
-  'ryzova-kase-cream-of-rice': { priceId: 79, productId: 61 },
-  'ryzova-kase': { priceId: 79, productId: 61 },
-
-  // Black Dead - ID 49
-  'black-dead-pre-workout': { priceId: 49, productId: 49 },
-  'black-dead---pre-workout': { priceId: 49, productId: 49 },
-
+const SHOPTET_TRUTH_MAP: Record<string, number> = {
+  // BCAA
+  'bcaa-4-1-1-glutamine-fitness-77-boruvka': 73,
+  'bcaa-4-1-1-glutamine-fitness-77-grep': 67,
+  'bcaa-4-1-1-glutamine-fitness-77-malina': 70,
+  
+  // Rýžovky
+  'ryzova-kase-cokolada': 79,
+  'ryzova-kase-pistacie': 85,
+  'ryzova-kase-slany-karamel': 82,
+  
   // Ostatní
-  'dead-pump---stim-free': { priceId: 46, productId: 46 },
-  'heavy-duty-powerlifting-opasek': { priceId: 43, productId: 43 },
+  'creatine-monohydrate-fitness-77': 58,
+  'black-dead-pre-workout': 49,
+  'dead-pump-stim-free': 46,
+  'heavy-duty-powerlifting-opasek': 43,
+};
 
-  // Varianty (pro přímé volání přes kód příchutě)
-  'BOR': { priceId: 73, productId: 58 },
-  'GRE': { priceId: 67, productId: 58 },
-  'MAL': { priceId: 70, productId: 58 },
-  'COK': { priceId: 79, productId: 61 },
-  'PIS': { priceId: 85, productId: 61 },
-  'SLA': { priceId: 82, productId: 61 },
+/**
+ * Pomocná mapa pro převod variantních kódů na "Truth" slugy
+ */
+const VARIANT_TO_TRUTH: Record<string, string> = {
+  'BOR': 'boruvka',
+  'GRE': 'grep',
+  'MAL': 'malina',
+  'COK': 'cokolada',
+  'PIS': 'pistacie',
+  'SLA': 'slany-karamel',
 };
 
 export function resolveShoptetIds(slug: string, variantCode?: string) {
-  // 1. Priorita: Varianta (např. 'BOR')
+  let finalKey = slug;
+
+  // Pokud máme variantu, pokusíme se složit Truth Slug
   if (variantCode) {
-    const code = variantCode.toUpperCase().split('/').pop() || '';
-    if (PRICE_ID_MAP[code]) return PRICE_ID_MAP[code];
+    const vCode = variantCode.toUpperCase().split('/').pop() || '';
+    const suffix = VARIANT_TO_TRUTH[vCode];
+    if (suffix) {
+      // Specialitka pro Shoptet: bcaa-4-1-1-glutamine-fitness-77 + grep
+      finalKey = `${slug}-${suffix}`;
+    }
   }
 
-  // 2. Priorita: Slug produktu
-  const normalizedSlug = slug.toLowerCase();
-  return PRICE_ID_MAP[normalizedSlug] || null;
+  const priceId = SHOPTET_TRUTH_MAP[finalKey];
+
+  if (!priceId) {
+    console.warn(`[GOLIÁŠ TRUTH] No priceId found for key: ${finalKey}`);
+    return null;
+  }
+
+  return {
+    priceId: priceId,
+    productId: priceId, // V tomto módu Shoptet často bere priceId i jako productId
+  };
 }
+
+// clean code comment: GOLIÁŠ BRIDGE v14.4. Pravda osvobozuje košík. smrk
