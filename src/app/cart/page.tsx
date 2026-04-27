@@ -17,83 +17,37 @@ import { resolveShoptetIds } from '@/lib/shoptet-map';
 function CartBridgeContent() {
   const items = useCartStore((state) => state.items);
   const hasHydrated = useCartStore((state) => state._hasHydrated);
-  const [status, setStatus] = useState<'checking' | 'preparing' | 'sending' | 'empty' | 'error' | 'success'>('checking');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'empty' | 'error'>('idle');
   const clearCart = useCartStore((state) => state.clearCart);
-  const hasTriggered = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    if (!hasHydrated) return;
-    if (items.length === 0) { setStatus('empty'); return; }
-    if (hasTriggered.current) return;
-
-    const prepareSync = async () => {
-      hasTriggered.current = true;
-      setStatus('preparing');
-
-      // GOLIÁŠ v15.1: Příprava dat pro Truth Edition
-      const shoptetItems = items.map(item => {
-        const ids = resolveShoptetIds(item.slug, item.variantCode);
-        return {
-          priceId: ids?.priceId,
-          amount: item.quantity,
-        };
-      }).filter(i => i.priceId);
-
-      if (shoptetItems.length === 0) {
-        setStatus('empty');
-        return;
+  // GOLIÁŠ v16.0: Manuální odpal
+  const handleCheckout = () => {
+    if (items.length === 0) return;
+    setStatus('sending');
+    
+    // Malá prodleva pro efekt a pak SUBMIT
+    setTimeout(() => {
+      if (formRef.current) {
+        formRef.current.submit();
       }
-
-      // Malá pauza na wow-efekt designu
-      setTimeout(() => {
-        setStatus('sending');
-        // AUTO-SUBMIT: Tohle je ta prasárna, co funguje.
-        if (formRef.current) {
-          formRef.current.submit();
-        }
-      }, 1500);
-    };
-
-    prepareSync();
-  }, [items, hasHydrated]);
+    }, 800);
+  };
 
   const handleCancel = () => {
-    hasTriggered.current = true;
     useCartStore.getState().openCart();
     window.location.href = '/';
   };
 
-  if (status === 'error') {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-4 text-center">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md">
-          <span className="text-[#E10600] font-black text-6xl mb-6 block">ERR</span>
-          <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Chyba <span className="text-[#E10600]">košíku</span></h1>
-          <p className="text-zinc-500 mb-8 font-medium italic">Synchronizace se nezdařila. Zkusíme to vyčistit.</p>
-          <button
-            onClick={() => { 
-              localStorage.removeItem('fitness77-cart');
-              clearCart(); 
-              window.location.href = '/'; 
-            }}
-            className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_20px_50px_rgba(225,6,0,0.3)]"
-          >
-            VYČISTIT A ZKUSIT ZNOVU
-          </button>
-        </motion.div>
-      </div>
-    );
-  }
+  if (!hasHydrated) return null;
 
-  if (status === 'empty') {
+  if (items.length === 0) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-4 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md">
           <span className="text-[#E10600] font-black text-6xl mb-6 block">!</span>
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Košík je <span className="text-[#E10600]">prázdný</span></h1>
-          <p className="text-zinc-500 mb-8 font-medium italic">Zdá se, že sypání zůstalo v regálu.</p>
-          <Link href="/supplements" className="inline-block bg-white text-black px-10 py-5 font-black uppercase tracking-[0.2em] hover:bg-[#E10600] hover:text-white transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)]">
+          <Link href="/supplements" className="inline-block bg-white text-black px-10 py-5 font-black uppercase tracking-[0.2em] hover:bg-[#E10600] hover:text-white transition-all">
             ZPĚT DO OBCHODU
           </Link>
         </motion.div>
@@ -110,43 +64,82 @@ function CartBridgeContent() {
     };
   }).filter(i => i.priceId);
 
+  const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black text-white p-4 text-center">
-      <AnimatePresence mode="wait">
+    <div className="flex min-h-screen items-center justify-center bg-black text-white p-4">
+      <div className="w-full max-w-xl">
         <motion.div 
-          key={status}
-          initial={{ opacity: 0, scale: 0.95 }} 
-          animate={{ opacity: 1, scale: 1 }} 
-          exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 0.4 }}
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-zinc-900/50 border border-white/10 p-8 sm:p-12 rounded-3xl backdrop-blur-xl shadow-2xl"
         >
-          <div className="mb-8">
-            <div className="h-20 w-20 border-4 border-[#E10600] border-t-transparent rounded-full animate-spin mx-auto mb-8 shadow-[0_0_50px_rgba(225,6,0,0.2)]"></div>
-            <h1 className="text-4xl font-black uppercase tracking-tighter sm:text-5xl">
-              Příprava <span className="text-[#E10600]">košíku</span>
+          <div className="mb-12 text-center">
+            <h1 className="text-4xl font-black uppercase tracking-tighter sm:text-6xl mb-2">
+              Tvoje <span className="text-[#E10600]">Objednávka</span>
             </h1>
-            <p className="mt-4 text-gray-500 font-bold uppercase tracking-[0.3em] text-xs">
-              {status === 'sending' ? 'Právě sypeme produkty do Shoptetu...' : 'Synchronizujeme tvou session...'}
+            <p className="text-zinc-500 font-bold uppercase tracking-[0.3em] text-[10px]">
+              Poslední kontrola před vstupem do pokladny
             </p>
           </div>
           
-          <div className="mt-12 max-w-sm mx-auto space-y-2 opacity-60">
+          <div className="flex justify-between items-end mb-8 px-2">
+            <span className="text-zinc-500 font-black uppercase tracking-[0.2em] text-xs">Celková hodnota</span>
+            <span className="text-4xl font-black tracking-tighter text-white">
+              {totalPrice.toLocaleString('cs-CZ')} <span className="text-[#E10600]">Kč</span>
+            </span>
+          </div>
+
+          <div className="space-y-6 mb-12">
+            <button 
+              onClick={handleCheckout}
+              disabled={status === 'sending'}
+              className="w-full bg-[#E10600] text-white py-6 rounded-2xl font-black uppercase tracking-[0.2em] text-xl hover:brightness-110 transition-all shadow-[0_20px_50px_rgba(225,6,0,0.3)] disabled:opacity-50 disabled:cursor-wait relative overflow-hidden"
+            >
+              <span className={status === 'sending' ? 'opacity-0' : 'opacity-100'}>
+                DOKONČIT OBCHOD
+              </span>
+              {status === 'sending' && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-6 w-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span className="ml-3 text-sm font-bold">PŘIPRAVUJI POKLADNU...</span>
+                </div>
+              )}
+            </button>
+          </div>
+          
+          <div className="space-y-4 mb-8 max-h-[30vh] overflow-y-auto pr-2 custom-scrollbar opacity-60">
+            <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-4 border-b border-white/10 pb-2">Rekapitulace sypání:</p>
             {items.map(item => (
-              <div key={`${item.id}-${item.variantCode}`} className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/10 pb-2">
-                <span className="truncate pr-4">{item.name} {item.variantName && `(${item.variantName})`}</span>
-                <span className="flex-none">{item.quantity} ks</span>
+              <div key={`${item.id}-${item.variantCode}`} className="flex justify-between items-center py-2 border-b border-white/5 group">
+                <div>
+                  <h3 className="font-black uppercase text-[11px] tracking-wide group-hover:text-[#E10600] transition-colors">
+                    {item.name}
+                  </h3>
+                  {item.variantName && (
+                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">
+                      {item.variantName}
+                    </p>
+                  )}
+                </div>
+                <div className="text-right">
+                  <p className="font-black text-[11px]">{item.quantity} ks</p>
+                </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-12">
-            <button onClick={handleCancel} className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors flex items-center gap-2 mx-auto">
-              <span className="w-2 h-2 bg-[#E10600] rounded-full animate-pulse" />
-              Zrušit a upravit produkty
+          <div className="mt-8">
+            <button 
+              onClick={handleCancel}
+              disabled={status === 'sending'}
+              className="w-full py-2 text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px] hover:text-white transition-colors"
+            >
+              Zpět k výběru produktů
             </button>
           </div>
         </motion.div>
-      </AnimatePresence>
+      </div>
 
       {/* GOLIÁŠ "HEAVY POST" FORM (v15.5) */}
       <form 

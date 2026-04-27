@@ -49,17 +49,6 @@ export default function CartSidebar() {
               </div>
               
               <div className="flex items-center gap-2">
-                {items.length > 0 && (
-                  <button 
-                    onClick={() => {
-                      useCartStore.getState().proceedToSync();
-                      closeCart();
-                    }}
-                    className="hidden sm:flex items-center gap-2 bg-white/10 hover:bg-red-600 transition-colors px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest"
-                  >
-                    Pokladna
-                  </button>
-                )}
                 <button 
                   onClick={closeCart}
                   className="p-2 hover:bg-white/10 rounded-full transition-colors"
