@@ -1,221 +1,166 @@
 'use client';
 
 import { useEffect, useState, useRef, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useCartStore } from '@/hooks/useCartStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useHydrationFix } from '@/lib/guardian/GoliasClient';
+import Link from 'next/link';
+import { resolveShoptetIds } from '@/lib/shoptet-map';
 
 /**
- * L-CODE GUARDIAN: SecurityKernel & Cart Bridge
+ * L-CODE Dynamics | GOLIÁŠ Sync Engine v14.0 (Hybrid Edition)
  * 
- * Strategie: 
- * 1. Převezme Base64 payload z URL (?payload=...)
- * 2. Dekóduje na seznam položek (priceId, productId, amount)
- * 3. Provede sekvenční AJAX volání na nativní endpoint Shoptetu
- * 4. Browser automaticky přibalí cookies (protože běžíme na subdoméně)
- * 5. Po dokončení přesměruje na /objednavka/
+ * Kombinuje tvůj design z cart-page-final2 s ultra-spolehlivým klientským AJAXem.
  */
 
 function CartBridgeContent() {
-  const searchParams = useSearchParams();
-  const [status, setStatus] = useState<'initializing' | 'processing' | 'finishing' | 'error' | 'empty'>('initializing');
-  const [progress, setProgress] = useState(0);
-  const [currentStep, setCurrentStep] = useState('');
+  const items = useCartStore((state) => state.items);
+  const hasHydrated = useCartStore((state) => state._hasHydrated);
+  const [status, setStatus] = useState<'checking' | 'preparing' | 'sending' | 'empty' | 'error' | 'success'>('checking');
+  const clearCart = useCartStore((state) => state.clearCart);
   const hasTriggered = useRef(false);
 
   useEffect(() => {
+    if (!hasHydrated) return;
+    if (items.length === 0) { setStatus('empty'); return; }
+    if (hasTriggered.current) return;
+
     const processCart = async () => {
-      if (hasTriggered.current) return;
-      
-      console.log("[GOLIÁŠ] Synchronizing transaction...");
-
-      // GOLIÁŠ DeepScan: Nejdřív zkusíme Next.js router, pak nativní window fallback
-      let payloadBase64 = searchParams.get('payload');
-      
-      if (!payloadBase64 && typeof window !== 'undefined') {
-        const urlParams = new URLSearchParams(window.location.search);
-        payloadBase64 = urlParams.get('payload');
-      }
-
-      if (!payloadBase64) {
-        setStatus('empty');
-        return;
-      }
+      hasTriggered.current = true;
+      setStatus('preparing');
 
       try {
-        hasTriggered.current = true;
-        setStatus('processing');
-        
-        // 1. Dekódování payloadu (UTF-8 Safe)
-        const jsonString = decodeURIComponent(atob(payloadBase64));
-        const items = JSON.parse(jsonString);
+        // 1. Mapování na Shoptet ID
+        const shoptetItems = items.map(item => {
+          const ids = resolveShoptetIds(item.slug, item.variantCode);
+          return {
+            priceId: ids?.priceId,
+            productId: ids?.productId,
+            amount: item.quantity,
+          };
+        });
 
-        if (!Array.isArray(items) || items.length === 0) {
-          setStatus('empty');
+        if (shoptetItems.some(i => !i.priceId)) {
+          console.error('❌ Missing Shoptet IDs');
+          setStatus('error');
           return;
         }
 
-        // 2. AJAX Smyčka (Sekvenční pro stabilitu session)
-        for (let i = 0; i < items.length; i++) {
-          const item = items[i];
-          setCurrentStep(`Přidávám: ${item.name || `Produkt ${item.priceId}`}`);
-          
-          const body = new URLSearchParams({
-            priceId: item.priceId.toString(),
-            productId: item.productId.toString(),
-            amount: (item.amount || 1).toString(),
-            language: 'cs',
+        setStatus('sending');
+
+        // 2. Sekvenční AJAX Injekce (Client-Side - Jistota cookies)
+        for (const item of shoptetItems) {
+          await fetch(`https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1&priceId=${item.priceId}&productId=${item.productId}&amount=${item.amount}`, {
+            method: 'GET',
+            mode: 'no-cors', // Důležité pro Shoptet subdomain sync
+            credentials: 'include'
           });
-
-          // Nativní volání na Shoptet (předpokládá se běh na stejné (sub)doméně nebo povolený CORS)
-          // Využíváme simple_ajax_cart pro čistou odpověď
-          const response = await fetch('https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: body.toString(),
-          });
-
-          if (!response.ok) {
-            console.warn(`[GOLIÁŠ] Item ${item.priceId} failed, status: ${response.status}`);
-          }
-
-          setProgress(Math.round(((i + 1) / items.length) * 100));
+          // Malý delay pro stabilitu Shoptet session
+          await new Promise(resolve => setTimeout(resolve, 150));
         }
 
-        // 3. Final Leap
-        setStatus('finishing');
-        setCurrentStep('Přesměrování na pokladnu...');
+        setStatus('success');
         
+        // 3. Final Leap
         setTimeout(() => {
           window.location.href = 'https://obchod.fit77.cz/objednavka/';
-        }, 800);
+        }, 500);
 
       } catch (err) {
-        console.error('[GOLIÁŠ] Critical Bridge Failure:', err);
+        console.error('❌ Sync Error:', err);
         setStatus('error');
       }
     };
 
-    processCart();
-  }, [searchParams]);
+    const timer = setTimeout(processCart, 1500);
+    return () => clearTimeout(timer);
+  }, [items, hasHydrated]);
 
-  if (status === 'empty') {
+  const handleCancel = () => {
+    hasTriggered.current = true;
+    useCartStore.getState().openCart();
+    window.location.href = '/';
+  };
+
+  if (status === 'error') {
     return (
-      <div className="text-center space-y-6">
-        <div className="text-6xl text-zinc-800 font-black">404</div>
-        <h1 className="text-3xl font-black uppercase tracking-tighter text-white">Prázdný <span className="text-red-600">payload</span></h1>
-        <p className="text-zinc-500 font-medium italic">Nebyly nalezeny žádné produkty k přenosu.</p>
-        <button onClick={() => window.location.href = '/'} className="px-8 py-3 bg-white text-black font-black uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all">
-          ZPĚT DOMŮ
-        </button>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-4 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md">
+          <span className="text-[#E10600] font-black text-6xl mb-6 block">ERR</span>
+          <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Chyba <span className="text-[#E10600]">košíku</span></h1>
+          <p className="text-zinc-500 mb-8 font-medium italic">Synchronizace se nezdařila. Zkusíme to vyčistit.</p>
+          <button
+            onClick={() => { clearCart(); window.location.href = '/'; }}
+            className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_20px_50px_rgba(225,6,0,0.3)]"
+          >
+            VYČISTIT A ZKUSIT ZNOVU
+          </button>
+        </motion.div>
       </div>
     );
   }
 
-  if (status === 'error') {
+  if (status === 'empty') {
     return (
-      <div className="text-center space-y-6">
-        <div className="text-6xl text-red-600 font-black">ERR</div>
-        <h1 className="text-3xl font-black uppercase tracking-tighter text-white">Selhání <span className="text-red-600">přenosu</span></h1>
-        <p className="text-zinc-500 font-medium italic">Nepodařilo se synchronizovat košík se Shoptetem.</p>
-        <button onClick={() => window.location.reload()} className="px-8 py-3 border border-red-600 text-red-600 font-black uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all">
-          Zkusit znovu
-        </button>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-4 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md">
+          <span className="text-[#E10600] font-black text-6xl mb-6 block">!</span>
+          <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Košík je <span className="text-[#E10600]">prázdný</span></h1>
+          <p className="text-zinc-500 mb-8 font-medium italic">Zdá se, že sypání zůstalo v regálu.</p>
+          <Link href="/supplements" className="inline-block bg-white text-black px-10 py-5 font-black uppercase tracking-[0.2em] hover:bg-[#E10600] hover:text-white transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)]">
+            ZPĚT DO OBCHODU
+          </Link>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-md">
-      <div className="relative mb-12">
-        {/* Progress Ring / Spinner */}
-        <div className="flex items-center justify-center">
-          <svg className="w-40 h-40 transform -rotate-90">
-            <circle
-              cx="80"
-              cy="80"
-              r="70"
-              stroke="currentColor"
-              strokeWidth="4"
-              fill="transparent"
-              className="text-zinc-900"
-            />
-            <motion.circle
-              cx="80"
-              cy="80"
-              r="70"
-              stroke="currentColor"
-              strokeWidth="4"
-              fill="transparent"
-              strokeDasharray={440}
-              initial={{ strokeDashoffset: 440 }}
-              animate={{ strokeDashoffset: 440 - (440 * progress) / 100 }}
-              className="text-red-600"
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-black text-white">{progress}%</span>
-            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.2em]">Sync Status</span>
+    <div className="flex min-h-screen items-center justify-center bg-black text-white p-4 text-center">
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={status}
+          initial={{ opacity: 0, scale: 0.95 }} 
+          animate={{ opacity: 1, scale: 1 }} 
+          exit={{ opacity: 0, scale: 1.05 }}
+          transition={{ duration: 0.4 }}
+        >
+          <div className="mb-8">
+            <div className="h-20 w-20 border-4 border-[#E10600] border-t-transparent rounded-full animate-spin mx-auto mb-8 shadow-[0_0_50px_rgba(225,6,0,0.2)]"></div>
+            <h1 className="text-4xl font-black uppercase tracking-tighter sm:text-5xl">
+              Příprava <span className="text-[#E10600]">košíku</span>
+            </h1>
+            <p className="mt-4 text-gray-500 font-bold uppercase tracking-[0.3em] text-xs">
+              {status === 'sending' ? 'Právě sypeme produkty do Shoptetu...' : 'Synchronizujeme tvou session...'}
+            </p>
           </div>
-        </div>
-      </div>
+          
+          <div className="mt-12 max-w-sm mx-auto space-y-2 opacity-60">
+            {items.map(item => (
+              <div key={`${item.id}-${item.variantCode}`} className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/10 pb-2">
+                <span className="truncate pr-4">{item.name} {item.variantName && `(${item.variantName})`}</span>
+                <span className="flex-none">{item.quantity} ks</span>
+              </div>
+            ))}
+          </div>
 
-      <div className="space-y-4 text-center">
-        <h1 className="text-4xl font-black uppercase tracking-tighter text-white">
-          {status === 'processing' ? 'Synchronizace' : 'Dokončeno'}
-        </h1>
-        <div className="h-1 w-12 bg-red-600 mx-auto" />
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={currentStep}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="text-xs text-zinc-400 font-mono uppercase tracking-widest"
-          >
-            {currentStep || 'Inicializace GOLIÁŠ protokolu...'}
-          </motion.p>
-        </AnimatePresence>
-      </div>
-      
-      <div className="mt-16 pt-8 border-t border-zinc-900">
-        <div className="flex justify-between items-center opacity-30">
-          <span className="text-[8px] font-black tracking-[0.4em] uppercase text-zinc-500">Secure Channel</span>
-          <div className="flex gap-1">
-            <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse" />
-            <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse [animation-delay:0.2s]" />
-            <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse [animation-delay:0.4s]" />
+          <div className="mt-12">
+            <button onClick={handleCancel} className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors flex items-center gap-2 mx-auto">
+              <span className="w-2 h-2 bg-[#E10600] rounded-full animate-pulse" />
+              Zrušit a upravit produkty
+            </button>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
 
 export default function CartPage() {
-  const isReady = useHydrationFix();
-
-  if (!isReady) return null;
-
   return (
-    <main className="min-h-screen bg-black flex flex-col items-center justify-center p-6 font-sans">
-      <Suspense fallback={
-        <div className="text-white font-black uppercase tracking-tighter animate-pulse">
-          Loading SecurityKernel...
-        </div>
-      }>
-        <CartBridgeContent />
-      </Suspense>
-
-      <footer className="fixed bottom-8 w-full text-center">
-        <p className="text-[9px] text-zinc-800 font-mono uppercase tracking-[0.5em]">
-          L-CODE Dynamics // Guardian Standard // Doomsday Ready
-        </p>
-      </footer>
-    </main>
+    <Suspense fallback={null}>
+      <CartBridgeContent />
+    </Suspense>
   );
 }
 
-// clean code comment: Bridge logika je plně klientská pro nativní session handling. Bezpečné dekódování payloadu a sekvenční AJAX.
+// clean code comment: GOLIÁŠ Sync Engine v14.0 Hybrid. smrk

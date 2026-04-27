@@ -42,7 +42,7 @@ export default function CheckoutPage() {
   const onSubmit = async (data: CheckoutForm) => {
     setLoading(true);
     try {
-      // GOLIÁŠ Proxy v13.7: Uložit u nás a získat redirectUrl ze serveru
+      // GOLIÁŠ v14.0: Uložit u nás a poslat na Bridge
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -54,20 +54,14 @@ export default function CheckoutPage() {
 
       const result = await response.json();
 
-      if (result.success && result.shoptetItems) {
-        // Vygenerování batch URL na klientovi z dat, která připravil server (Proxy style)
-        const params = new URLSearchParams();
-        result.shoptetItems.forEach((item: any) => {
-          params.append('priceId[]', item.priceId);
-          params.append('amount[]', item.amount);
-        });
-        
-        window.location.href = `${result.shoptetBaseUrl}?${params.toString()}`;
+      if (result.success) {
+        // Čistý přesun na Bridge - ten si data vytáhne ze Storu
+        window.location.href = '/cart';
       } else {
-        throw new Error(result.error || 'Proxy redirect failed');
+        throw new Error(result.error || 'Checkout failed');
       }
     } catch (error) {
-      console.error('❌ Checkout Proxy Error:', error);
+      console.error('❌ Checkout Error:', error);
       alert('Chyba při odesílání objednávky.');
     } finally {
       setLoading(false);

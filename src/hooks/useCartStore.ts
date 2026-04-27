@@ -49,28 +49,8 @@ export const useCartStore = create<CartStore>()(
       toggleCart: () => set({ isOpen: !get().isOpen }),
 
       proceedToSync: async () => {
-        const { items } = get();
-        if (items.length === 0) return;
-
-        try {
-          // GOLIÁŠ Proxy v13.7: Server-side batch generation
-          const response = await fetch('/api/cart/sync', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ items }),
-          });
-
-          const data = await response.json();
-
-          if (data.redirectUrl) {
-            window.location.href = data.redirectUrl;
-          } else {
-            throw new Error(data.error || 'Proxy failed');
-          }
-        } catch (error) {
-          console.error('❌ Proxy Sync Error:', error);
-          alert('Chyba při synchronizaci košíku.');
-        }
+        // GOLIÁŠ Sync Engine v14.0: Čistý přesun na Bridge
+        window.location.href = '/cart';
       },
 
       addItem: (item) => {
