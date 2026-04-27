@@ -29,7 +29,7 @@ function CartBridgeContent() {
       setStatus('preparing');
 
       try {
-        // 1. Mapování na Shoptet ID (The Truth Edition v14.4)
+        // 1. Příprava dat pro Proxy
         const shoptetItems = items.map(item => {
           const ids = resolveShoptetIds(item.slug, item.variantCode);
           return {
@@ -45,18 +45,24 @@ function CartBridgeContent() {
 
         setStatus('sending');
 
-        // 2. Sestavení query stringu pro addBatch (GOLIÁŠ v14.7)
-        // POZOR: Žádné lomítko před otazníkem!
-        const params = shoptetItems
-          .map(i => `priceId[]=${i.priceId}&amount[]=${i.amount}`)
-          .join('&');
+        // 2. Volání naší Server-Side Proxy (Bypass 404/CORS)
+        const res = await fetch('/api/cart/proxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: shoptetItems }),
+        });
 
-        const finalUrl = `https://obchod.fit77.cz/kosik/?action=addBatch&${params}&returnUrl=/objednavka/`;
+        const data = await res.json();
 
-        // 3. Final Leap - Hard redirect zajistí zápis cookies a 100% funkčnost
-        setTimeout(() => {
-          window.location.href = finalUrl;
-        }, 1200);
+        if (data.success) {
+          setStatus('success');
+          // 3. Final Leap - Přímý skok na Shoptet pokladnu
+          setTimeout(() => {
+            window.location.href = 'https://obchod.fit77.cz/objednavka/';
+          }, 500);
+        } else {
+          throw new Error('Proxy sync failed');
+        }
 
       } catch (err) {
         console.error('❌ Sync Error:', err);
@@ -82,7 +88,11 @@ function CartBridgeContent() {
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Chyba <span className="text-[#E10600]">košíku</span></h1>
           <p className="text-zinc-500 mb-8 font-medium italic">Synchronizace se nezdařila. Zkusíme to vyčistit.</p>
           <button
-            onClick={() => { clearCart(); window.location.href = '/'; }}
+            onClick={() => { 
+              localStorage.removeItem('fitness77-cart');
+              clearCart(); 
+              window.location.href = '/'; 
+            }}
             className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_20px_50px_rgba(225,6,0,0.3)]"
           >
             VYČISTIT A ZKUSIT ZNOVU

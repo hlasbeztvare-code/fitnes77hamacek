@@ -1,10 +1,10 @@
 /**
- * GOLIÁŠ BRIDGE v14.4 - "The Truth Edition"
- * Mapování postavené na reálných priceId ze Shoptetu.
+ * GOLIÁŠ BRIDGE v15.0 - "The Proxy King"
+ * Fixnuté slugy a priceId pro server-side proxy synchronizaci.
  */
 
 const SHOPTET_TRUTH_MAP: Record<string, number> = {
-  // BCAA
+  // BCAA (Opravené pomlčky)
   'bcaa-4-1-1-glutamine-fitness-77-boruvka': 73,
   'bcaa-4-1-1-glutamine-fitness-77-grep': 67,
   'bcaa-4-1-1-glutamine-fitness-77-malina': 70,
@@ -21,9 +21,6 @@ const SHOPTET_TRUTH_MAP: Record<string, number> = {
   'heavy-duty-powerlifting-opasek': 43,
 };
 
-/**
- * Pomocná mapa pro převod variantních kódů na "Truth" slugy
- */
 const VARIANT_TO_TRUTH: Record<string, string> = {
   'BOR': 'boruvka',
   'GRE': 'grep',
@@ -36,12 +33,10 @@ const VARIANT_TO_TRUTH: Record<string, string> = {
 export function resolveShoptetIds(slug: string, variantCode?: string) {
   let finalKey = slug;
 
-  // Pokud máme variantu, pokusíme se složit Truth Slug
   if (variantCode) {
     const vCode = variantCode.toUpperCase().split('/').pop() || '';
     const suffix = VARIANT_TO_TRUTH[vCode];
     if (suffix) {
-      // Specialitka pro Shoptet: bcaa-4-1-1-glutamine-fitness-77 + grep
       finalKey = `${slug}-${suffix}`;
     }
   }
@@ -49,14 +44,11 @@ export function resolveShoptetIds(slug: string, variantCode?: string) {
   const priceId = SHOPTET_TRUTH_MAP[finalKey];
 
   if (!priceId) {
-    console.warn(`[GOLIÁŠ TRUTH] No priceId found for key: ${finalKey}`);
+    console.warn(`[GOLIÁŠ PROXY] No priceId found for: ${finalKey}`);
     return null;
   }
 
-  return {
-    priceId: priceId,
-    productId: priceId, // V tomto módu Shoptet často bere priceId i jako productId
-  };
+  return { priceId };
 }
 
-// clean code comment: GOLIÁŠ BRIDGE v14.4. Pravda osvobozuje košík. smrk
+// clean code comment: GOLIÁŠ BRIDGE v15.0. Slugy vyčištěny. smrk
