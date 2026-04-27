@@ -41,28 +41,45 @@ export default function CheckoutPage() {
 
   const onSubmit = async (data: CheckoutForm) => {
     setLoading(true);
+
+    const payload = {
+      ...data,
+      total: finalTotal,
+      shippingMethod,
+      shippingPrice: shippingPrices[shippingMethod],
+      items,
+    };
+
     try {
-      // GOLIÁŠ v14.0: Uložit u nás a poslat na Bridge
-      const response = await fetch('/api/orders', {
+      const res = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...data,
-          items: items.map(i => ({ id: i.id, variantCode: i.variantCode, quantity: i.quantity, name: i.name }))
-        }),
+        body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
+      const resData = await res.json();
 
-      if (result.success) {
-        // Čistý přesun na Bridge - ten si data vytáhne ze Storu
-        window.location.href = '/cart';
-      } else {
-        throw new Error(result.error || 'Checkout failed');
+      if (resData.success) {
+        clearCart();
+
+        // GOLIÁŠ Bridge v8.0: GET addBatch — čistý URL redirect, žádný skrytý formulář
+        if (resData.shoptetItems && resData.shoptetItems.length > 0) {
+          const params = new URLSearchParams();
+          resData.shoptetItems.forEach((item: any) => {
+            params.set(`produkty[${item.priceId}]`, item.amount.toString());
+          });
+          window.location.href = `https://obchod.fit77.cz/action/Cart/addBatch/?${params.toString()}`;
+          return;
+        }
+
+        router.push(`/success?orderId=${resData.orderId}`);
+        return;
       }
+
+      alert('Objednávku se nepodařilo vytvořit.');
     } catch (error) {
-      console.error('❌ Checkout Error:', error);
-      alert('Chyba při odesílání objednávky.');
+      console.error(error);
+      alert('Došlo k chybě při odeslání objednávky.');
     } finally {
       setLoading(false);
     }

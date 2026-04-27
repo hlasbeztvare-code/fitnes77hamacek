@@ -33,7 +33,6 @@ type CartStore = {
   syncPrices: () => Promise<void>;
   currency: 'CZK' | 'EUR';
   setCurrency: (currency: 'CZK' | 'EUR') => void;
-  proceedToSync: () => Promise<void>;
 };
 
 export const useCartStore = create<CartStore>()(
@@ -47,11 +46,6 @@ export const useCartStore = create<CartStore>()(
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
       toggleCart: () => set({ isOpen: !get().isOpen }),
-
-      proceedToSync: async () => {
-        // GOLIÁŠ Sync Engine v14.0: Čistý přesun na Bridge
-        window.location.href = '/cart';
-      },
 
       addItem: (item) => {
         set((state) => {

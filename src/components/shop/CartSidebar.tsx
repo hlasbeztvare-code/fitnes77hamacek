@@ -3,8 +3,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from 'lucide-react';
 import { useCartStore } from '@/hooks/useCartStore';
+import Image from 'next/image';
+import Link from 'next/link';
 import useMounted from '@/hooks/useMounted';
 import { resolveProductImage } from '@/lib/resolve-image';
+
 import { useRouter } from 'next/navigation';
 
 export default function CartSidebar() {
@@ -44,39 +47,32 @@ export default function CartSidebar() {
                   {items.reduce((acc, item) => acc + item.quantity, 0)}
                 </span>
               </div>
-              <button 
-                onClick={closeCart}
-                className="p-2 hover:bg-white/10 rounded-full transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            {/* GOLIÁŠ v16.3: Top-Fixed Checkout Action (Už žádné scrolování!) */}
-            {items.length > 0 && (
-              <div className="p-6 bg-zinc-950 border-b border-white/10 space-y-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Celková hodnota</span>
-                  <span className="text-2xl font-black text-[#E10600]">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
-                </div>
-                
+              
+              <div className="flex items-center gap-2">
+                {items.length > 0 && (
+                  <button 
+                    onClick={() => {
+                      router.push('/cart');
+                      closeCart();
+                    }}
+                    className="hidden sm:flex items-center gap-2 bg-white/10 hover:bg-red-600 transition-colors px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest"
+                  >
+                    Pokladna
+                  </button>
+                )}
                 <button 
-                  onClick={() => {
-                    useCartStore.getState().proceedToSync();
-                    closeCart();
-                  }}
-                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-6 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-20"
+                  onClick={closeCart}
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors"
                 >
-                  <span className="text-sm">Přejít k pokladně</span>
-                  <ArrowRight className="w-7 h-7" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
-            )}
+            </div>
 
             {/* Content - Scrollable */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
               {items.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-center space-y-4 pt-12">
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
                   <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center">
                     <ShoppingBag className="w-10 h-10 text-zinc-500" />
                   </div>
@@ -92,60 +88,92 @@ export default function CartSidebar() {
                   </button>
                 </div>
               ) : (
-                <div className="space-y-6">
-                  {items.map((item) => (
-                    <div key={`${item.id}-${item.variantCode || 'base'}`} className="flex gap-4 group">
-                      <div className="relative w-20 h-20 bg-white/5 flex-none rounded-lg overflow-hidden border border-white/5">
-                        <img
-                          src={resolveProductImage(item.image, item.name, item.slug)}
-                          alt={item.name}
-                          className="w-full h-full object-contain p-2"
-                        />
-                      </div>
-                      <div className="flex-1 flex flex-col justify-between py-0.5">
-                        <div>
-                          <div className="flex justify-between items-start gap-2">
-                            <h3 className="text-xs font-black uppercase tracking-tight leading-tight line-clamp-2">{item.name}</h3>
-                            <button 
-                              onClick={() => removeItem(item.id, item.variantCode)}
-                              className="p-1 text-zinc-600 hover:text-[#E10600] transition-colors"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                          {item.variantName && (
-                            <p className="text-[9px] text-zinc-500 font-bold uppercase mt-1">{item.variantName}</p>
-                          )}
+                <>
+                  <div className="space-y-6">
+                    {items.map((item) => (
+                      <div key={`${item.id}-${item.variantCode || 'base'}`} className="flex gap-4 group">
+                        <div className="relative w-24 h-24 bg-white/5 flex-none rounded-lg overflow-hidden border border-white/5">
+                          <img
+                            src={resolveProductImage(item.image, item.name, item.slug)}
+                            alt={item.name}
+                            className="w-full h-full object-contain p-2"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/images/products/placeholder.webp';
+                            }}
+                          />
                         </div>
-                        
-                        <div className="flex items-center justify-between mt-1">
-                          <div className="flex items-center border border-white/10 rounded-full bg-white/5">
-                            <button 
-                              onClick={() => decreaseItem(item.id, item.variantCode)}
-                              className="p-1 hover:text-[#E10600] transition-colors"
-                            >
-                              <Minus className="w-3 h-3" />
-                            </button>
-                            <span className="w-6 text-center text-[10px] font-black">{item.quantity}</span>
-                            <button 
-                              onClick={() => increaseItem(item.id, item.variantCode)}
-                              className="p-1 hover:text-[#E10600] transition-colors"
-                            >
-                              <Plus className="w-3 h-3" />
-                            </button>
+                        <div className="flex-1 flex flex-col justify-between py-1">
+                          <div>
+                            <div className="flex justify-between items-start gap-2">
+                              <h3 className="text-sm font-black uppercase tracking-tight leading-tight line-clamp-2">{item.name}</h3>
+                              <button 
+                                onClick={() => removeItem(item.id, item.variantCode)}
+                                className="p-1 text-zinc-600 hover:text-[#E10600] transition-colors"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                            {item.variantName && (
+                              <p className="text-[10px] text-zinc-500 font-bold uppercase mt-1">{item.variantName}</p>
+                            )}
                           </div>
-                          <div className="text-xs font-black text-[#E10600]">
-                            {(item.price * item.quantity).toLocaleString('cs-CZ')} Kč
+                          
+                          <div className="flex items-center justify-between mt-2">
+                            <div className="flex items-center border border-white/10 rounded-full bg-white/5">
+                              <button 
+                                onClick={() => decreaseItem(item.id, item.variantCode)}
+                                className="p-1.5 hover:text-[#E10600] transition-colors"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
+                              <span className="w-8 text-center text-xs font-black">{item.quantity}</span>
+                              <button 
+                                onClick={() => increaseItem(item.id, item.variantCode)}
+                                className="p-1.5 hover:text-[#E10600] transition-colors"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                            </div>
+                            <div className="text-sm font-black text-[#E10600]">
+                              {(item.price * item.quantity).toLocaleString('cs-CZ')} Kč
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
 
-            <div className="h-4 bg-zinc-950 flex-none" />
+            {/* Sticky Footer CTA - ALWAYS VISIBLE (UX 300%) */}
+            {items.length > 0 && (
+              <div className="p-6 bg-zinc-950 border-t border-white/10 space-y-4">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Celková hodnota</span>
+                  <span className="text-2xl font-black text-[#E10600]">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
+                </div>
+                
+                <button 
+                  onClick={() => {
+                    router.push('/cart');
+                    closeCart();
+                  }}
+                  aria-label={`Přejít k pokladně a zaplatit ${totalPrice()} Kč`}
+                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-20 active:scale-[0.98]"
+                >
+                  <span className="text-sm">Přejít k pokladně</span>
+                  <ArrowRight className="w-7 h-7" />
+                </button>
+
+                <p className="text-[9px] text-zinc-600 text-center font-bold uppercase tracking-widest pt-2">
+                  Zabezpečený checkout Fitness 77
+                </p>
+              </div>
+            )}
+
+            {/* Empty Footer - Keep spacing but remove content that is now above */}
+            <div className="h-4 bg-zinc-950" />
 
           </motion.div>
         </>
@@ -153,5 +181,3 @@ export default function CartSidebar() {
     </AnimatePresence>
   );
 }
-
-// clean code comment: CartSidebar JIT Bridge v16.3. smrk

@@ -21,10 +21,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${product.name} | Vybavení | Fitness 77`,
-    description: product.shortDescription ?? undefined,
+    description: product.shortDescription,
     openGraph: {
       title: product.name,
-      description: product.shortDescription ?? undefined,
+      description: product.shortDescription,
       images: [{ url: product.image ?? '/images/brand/og_image.png' }],
     },
   };
@@ -50,17 +50,6 @@ export default async function EquipmentDetailPage({ params }: Props) {
     orderBy: { createdAt: 'desc' },
   });
 
-  interface ProductVariant {
-    name: string;
-    code: string;
-    price: number;
-    stock?: number;
-  }
-
-  const variants = ((item.variants as unknown as ProductVariant[]) || []).map(v => ({
-    ...v,
-    stock: v.stock ?? 0
-  }));
   const displayImage = item.name.toLowerCase().includes('opasek') ? '/videos/pasek.webm' : item.image;
   const isVideo = displayImage?.toLowerCase().match(/.(mp4|webm)$/i);
 
@@ -87,7 +76,6 @@ export default async function EquipmentDetailPage({ params }: Props) {
                   loop
                   muted
                   playsInline
-                  poster={item.image ?? undefined}
                   className="w-full h-full object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
                 />
               ) : (
@@ -126,12 +114,10 @@ export default async function EquipmentDetailPage({ params }: Props) {
             <div className="mt-8 max-w-md">
                 <AddToCartButton 
                     product={{
-                      id: item.id,
-                      name: item.name,
-                      slug: item.slug,
-                      price: item.price,
-                      image: item.image ?? '/images/products/placeholder.webp',
-                    }}
+                      ...item,
+                      image: item.image,
+                      variants: []
+                    } as any}
                     disabled={item.stock <= 0}
                 />
             </div>
