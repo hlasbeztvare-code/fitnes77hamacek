@@ -61,24 +61,20 @@ export default function CheckoutPage() {
       if (resData.success) {
         clearCart();
         
-        // POKUD MÁME REDIRECT NA SHOPTET (PLATBA), JEDEME PŘES HIDDEN FORM BRIDGE
-        if (resData.redirectUrl) {
+        // GOLIÁŠ Bridge v8.0: Shoptet vyžaduje POST na addCartItem/ s numerickými priceId
+        if (resData.shoptetItems && resData.shoptetBaseUrl) {
           try {
-            // FLASH LOGIKA v6.0: POST na addBatch/ - jediné 100% funkční řešení
-            const shoptetUrl = resData.redirectUrl.split('?')[0];
-            const params = new URLSearchParams(resData.redirectUrl.split('?')[1]);
-            
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = shoptetUrl;
+            form.action = resData.shoptetBaseUrl;
             form.style.display = 'none';
 
-            // Přidáme všechny parametry z URL do POST body
-            params.forEach((value, key) => {
+            // Formát products[ID]=QTY je pro vícero položek nejstabilnější
+            resData.shoptetItems.forEach((item: any) => {
               const input = document.createElement('input');
               input.type = 'hidden';
-              input.name = key;
-              input.value = value;
+              input.name = `products[${item.priceId}]`;
+              input.value = item.amount.toString();
               form.appendChild(input);
             });
 
@@ -87,7 +83,8 @@ export default function CheckoutPage() {
             return;
           } catch (err) {
             console.error('Shoptet Bridge Error:', err);
-            window.location.href = resData.redirectUrl; 
+            // Fallback na ruční přesměrování do košíku, pokud form selže
+            window.location.href = 'https://obchod.fit77.cz/kosik/';
             return;
           }
         }
@@ -107,12 +104,12 @@ export default function CheckoutPage() {
 
   return (
     <section className="py-24 bg-black min-h-screen text-white">
-      <div className="mx-auto grid w-[min(1280px,calc(100%-40px))] gap-12 lg:grid-cols-[1fr_400px]">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mx-auto grid w-[min(1280px,calc(100%-40px))] gap-12 lg:grid-cols-[1fr_400px]"
+      >
         <div className="space-y-8">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="rounded-3xl border border-zinc-800 bg-[#0a0a0a] p-10 shadow-2xl relative"
-          >
+          <div className="rounded-3xl border border-zinc-800 bg-[#0a0a0a] p-10 shadow-2xl relative">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-[#d4ff00] rounded-full flex items-center justify-center text-black font-black text-xl">
@@ -121,46 +118,79 @@ export default function CheckoutPage() {
                 <h1 className="text-4xl font-black uppercase tracking-tighter">Pokladna</h1>
               </div>
               
-              <button
-                type="submit"
-                disabled={loading}
-                aria-label="Odeslat rychlou objednávku"
-                className="px-6 py-3 rounded-xl bg-[#d4ff00]/10 border border-[#d4ff00]/30 text-[#d4ff00] font-black uppercase text-[10px] tracking-widest hover:bg-[#d4ff00] hover:text-black focus:ring-2 focus:ring-[#d4ff00] outline-none transition-all"
-              >
-                Rychlá objednávka
-              </button>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-[#d4ff00] rounded-full animate-pulse" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#d4ff00]">Zabezpečený přenos</span>
+              </div>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
                <h2 className="md:col-span-2 text-[11px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Doručovací údaje</h2>
               <div>
                 <label htmlFor="firstName" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">Jméno</label>
-                <input id="firstName" {...register('firstName')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.firstName ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Jan" />
+                <input 
+                  id="firstName" 
+                  {...register('firstName')} 
+                  className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.firstName ? 'border-red-500/50' : 'border-zinc-800'}`} 
+                  placeholder="Jan" 
+                  aria-invalid={errors.firstName ? "true" : "false"}
+                />
                 {errors.firstName && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.firstName.message}</span>}
               </div>
               <div>
                 <label htmlFor="lastName" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">Příjmení</label>
-                <input id="lastName" {...register('lastName')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.lastName ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Novák" />
+                <input 
+                  id="lastName" 
+                  {...register('lastName')} 
+                  className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.lastName ? 'border-red-500/50' : 'border-zinc-800'}`} 
+                  placeholder="Novák" 
+                  aria-invalid={errors.lastName ? "true" : "false"}
+                />
                 {errors.lastName && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.lastName.message}</span>}
               </div>
               <div className="md:col-span-2">
                 <label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">E-mail</label>
-                <input id="email" {...register('email')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.email ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="vas@email.cz" type="email" />
+                <input 
+                  id="email" 
+                  {...register('email')} 
+                  className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.email ? 'border-red-500/50' : 'border-zinc-800'}`} 
+                  placeholder="vas@email.cz" 
+                  type="email" 
+                  aria-invalid={errors.email ? "true" : "false"}
+                />
                 {errors.email && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.email.message}</span>}
               </div>
               <div className="md:col-span-2">
                 <label htmlFor="address" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">Adresa a č.p.</label>
-                <input id="address" {...register('address')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.address ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Ulice 123" />
+                <input 
+                  id="address" 
+                  {...register('address')} 
+                  className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.address ? 'border-red-500/50' : 'border-zinc-800'}`} 
+                  placeholder="Ulice 123" 
+                  aria-invalid={errors.address ? "true" : "false"}
+                />
                 {errors.address && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.address.message}</span>}
               </div>
               <div>
                 <label htmlFor="city" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">Město</label>
-                <input id="city" {...register('city')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.city ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="Praha" />
+                <input 
+                  id="city" 
+                  {...register('city')} 
+                  className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.city ? 'border-red-500/50' : 'border-zinc-800'}`} 
+                  placeholder="Praha" 
+                  aria-invalid={errors.city ? "true" : "false"}
+                />
                 {errors.city && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.city.message}</span>}
               </div>
               <div>
                 <label htmlFor="zip" className="text-[10px] font-black uppercase tracking-widest text-zinc-300 mb-2 block ml-1">PSČ</label>
-                <input id="zip" {...register('zip')} className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.zip ? 'border-red-500/50' : 'border-zinc-800'}`} placeholder="123 45" />
+                <input 
+                  id="zip" 
+                  {...register('zip')} 
+                  className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.zip ? 'border-red-500/50' : 'border-zinc-800'}`} 
+                  placeholder="123 45" 
+                  aria-invalid={errors.zip ? "true" : "false"}
+                />
                 {errors.zip && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.zip.message}</span>}
               </div>
             </div>
@@ -182,13 +212,14 @@ export default function CheckoutPage() {
                           ? 'border-[#d4ff00] bg-[#d4ff00]/5' 
                           : 'border-zinc-900 bg-zinc-900/50 hover:border-zinc-700'
                       }`}
+                      aria-pressed={shippingMethod === method.id}
                     >
                       <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${shippingMethod === method.id ? 'border-[#d4ff00]' : 'border-zinc-700'}`}>
                         {shippingMethod === method.id && <div className="w-2.5 h-2.5 bg-[#d4ff00] rounded-full" />}
                       </div>
                       <div className="flex-1">
                         <div className="font-black uppercase tracking-tight text-white">{method.name}</div>
-                        <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mt-1">{method.desc}</div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mt-1">{method.desc}</div>
                       </div>
                       <div className={`font-black text-lg ${shippingMethod === method.id ? 'text-[#d4ff00]' : 'text-white'}`}>
                         {method.price === 0 ? 'ZDARMA' : `${method.price} Kč`}
@@ -203,14 +234,14 @@ export default function CheckoutPage() {
               disabled={loading}
               id="submit-order-button"
               aria-label={`Objednat a zaplatit ${finalTotal} korun`}
-              className="mt-16 w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-[1.01] focus:ring-4 focus:ring-[#d4ff00]/30 outline-none active:scale-[0.99] disabled:opacity-50 shadow-[0_20px_40px_rgba(212,255,0,0.15)]"
+              className="mt-16 w-full hidden lg:block rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-[1.01] focus:ring-4 focus:ring-[#d4ff00]/30 outline-none active:scale-[0.99] disabled:opacity-50 shadow-[0_20px_40px_rgba(212,255,0,0.15)]"
             >
               {loading ? 'Zpracovávám...' : `Objednat s povinností platby • ${finalTotal.toLocaleString('cs-CZ')} Kč`}
             </button>
-          </form>
+          </div>
         </div>
 
-        <aside className="h-fit space-y-8 lg:sticky lg:top-8">
+        <aside className="h-fit space-y-8 lg:sticky lg:top-8 order-first lg:order-none">
           <div className="rounded-3xl border border-zinc-800 bg-[#0a0a0a] p-8 shadow-2xl">
             <h2 className="text-2xl font-black uppercase tracking-tighter mb-8 flex items-center justify-between">
               Shrnutí
@@ -218,37 +249,58 @@ export default function CheckoutPage() {
             </h2>
 
             <div className="space-y-6">
-              {items.map((item) => (
-                <div key={`${item.id}-${item.variantCode}`} className="flex gap-4 items-center">
-                  <div className="relative w-16 h-16 bg-zinc-900 rounded-xl overflow-hidden shrink-0 border border-zinc-800">
-                    <img 
-                      src={item.image || '/images/products/placeholder.webp'} 
-                      alt={item.name} 
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/images/products/placeholder.webp';
-                      }}
-                    />
-                    <div className="absolute top-0 right-0 bg-[#d4ff00] text-black text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-bl-lg">
-                      {item.quantity}
+              {items.map((item) => {
+                // Robustní resolver obrázků pro boční panel
+                const getSafeImage = () => {
+                  const img = item.image;
+                  if (!img || img === '/images/products/placeholder.webp') return '/images/products/placeholder.webp';
+                  if (img.startsWith('http') || img.startsWith('/')) return img;
+                  return `/images/products/${img}`;
+                };
+
+                return (
+                  <div key={`${item.id}-${item.variantCode}`} className="flex gap-4 items-center">
+                    <div className="relative w-16 h-16 bg-zinc-900 rounded-xl overflow-hidden shrink-0 border border-zinc-800">
+                      <img 
+                        src={getSafeImage()} 
+                        alt={item.name} 
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/images/products/placeholder.webp';
+                        }}
+                      />
+                      <div className="absolute top-0 right-0 bg-[#d4ff00] text-black text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-bl-lg">
+                        {item.quantity}
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xs font-black uppercase tracking-tight text-white truncate">{item.name}</h3>
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mt-1">{item.variantName || 'Základní varianta'}</p>
+                    </div>
+                    <div className="text-sm font-black text-white shrink-0">
+                      {(item.price * item.quantity).toLocaleString('cs-CZ')} Kč
                     </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xs font-black uppercase tracking-tight text-white truncate">{item.name}</h3>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mt-1">{item.variantName || 'Základní varianta'}</p>
-                  </div>
-                  <div className="text-sm font-black text-white shrink-0">
-                    {(item.price * item.quantity).toLocaleString('cs-CZ')} Kč
-                  </div>
-                </div>
-              ))}
+                );
+              })}
               
+              {/* PRIMARY ACTION BUTTON - MOVED RIGHT UNDER ITEMS AS REQUESTED */}
+              <button
+                type="submit"
+                disabled={loading}
+                aria-label={`Odeslat objednávku za ${finalTotal} korun`}
+                className="w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.15em] text-black transition-all hover:scale-[1.01] active:scale-[0.99] shadow-[0_20px_40px_rgba(212,255,0,0.15)] text-sm mb-4"
+              >
+                {loading ? 'Zpracovávám...' : 'Dokončit a zaplatit'}
+              </button>
+
               <div className="pt-6 border-t border-zinc-900 space-y-3">
-                <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-zinc-500">
+                <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-zinc-400">
                    <span>Mezisoučet</span>
                    <span className="text-white">{totalPrice.toLocaleString('cs-CZ')} Kč</span>
                 </div>
-                <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-zinc-500">
+                <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-zinc-400">
                    <span>Doprava</span>
                    <span className="text-white">{shippingPrices[shippingMethod].toLocaleString('cs-CZ')} Kč</span>
                 </div>
@@ -257,18 +309,10 @@ export default function CheckoutPage() {
 
             <div className="mt-8 pt-8 border-t-2 border-dashed border-zinc-800">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500">Celkem</span>
+                <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-400">Celkem</span>
                 <span className="text-3xl font-black text-[#d4ff00]">{finalTotal.toLocaleString('cs-CZ')} Kč</span>
               </div>
             </div>
-            
-            {/* STICKY CTA FOR MOBILE/TABLET */}
-            <button
-              onClick={() => document.getElementById('submit-order-button')?.scrollIntoView({ behavior: 'smooth' })}
-              className="mt-8 w-full lg:hidden rounded-xl border border-[#d4ff00]/30 py-4 text-[#d4ff00] font-black uppercase text-xs tracking-widest"
-            >
-              Koupit nyní
-            </button>
           </div>
 
           <div className="rounded-3xl bg-[#d4ff00] p-8 text-black shadow-2xl">
@@ -281,7 +325,8 @@ export default function CheckoutPage() {
              </div>
           </div>
         </aside>
-      </div>
+      </form>
     </section>
+// "Zameť stopy" - checkout je přístupný a ergonomický na 300%. smrk
   );
 }

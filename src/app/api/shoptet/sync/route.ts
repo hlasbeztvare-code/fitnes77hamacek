@@ -44,8 +44,14 @@ export async function GET(req: Request) {
       if (!item.ITEM_ID) continue;
 
       const name = item.PRODUCTNAME || item.PRODUCT || 'Nepojmenovaný produkt';
-      const slug = item.URL ? item.URL.split('/').pop()?.replace('.html', '') : slugify(name);
+      const itemUrl = item.URL || '';
+      const slug = itemUrl ? itemUrl.split('/').pop()?.replace('.html', '').split('?')[0] : slugify(name);
       
+      // GOLIÁŠ Bridge: Extrakce variantId (priceId) pro přímé vložení do košíku
+      // Shoptet používá v URL ?variantId=XY nebo ?priceId=XY
+      const variantMatch = itemUrl.match(/[?&](variantId|priceId)=(\d+)/);
+      const shoptetId = variantMatch ? variantMatch[2] : null;
+
       // Inteligentní mapování kategorií
       const categoryText = (item.CATEGORYTEXT || '').toLowerCase();
       let category = 'supplement';
@@ -62,26 +68,31 @@ export async function GET(req: Request) {
         update: {
           name: name,
           price: parseFloat(item.PRICE_VAT || '0'),
+          oldPrice: item.PRICE_BEFORE_DISCOUNT ? parseFloat(item.PRICE_BEFORE_DISCOUNT) : null,
           stock: parseInt(item.STOCK_AMOUNT || '0'),
           description: item.DESCRIPTION || '',
           shortDescription: item.DESCRIPTION?.substring(0, 160) || '',
           image: item.IMGURL || '',
           category: category,
+          shoptetId: shoptetId, // Uložíme ID pro bridge
         },
         create: {
           id: String(item.ITEM_ID),
           name: name,
           slug: slug || String(item.ITEM_ID),
           price: parseFloat(item.PRICE_VAT || '0'),
+          oldPrice: item.PRICE_BEFORE_DISCOUNT ? parseFloat(item.PRICE_BEFORE_DISCOUNT) : null,
           stock: parseInt(item.STOCK_AMOUNT || '0'),
           description: item.DESCRIPTION || '',
           shortDescription: item.DESCRIPTION?.substring(0, 160) || '',
           image: item.IMGURL || '',
           category: category,
-          featured: false
+          featured: false,
+          shoptetId: shoptetId,
         }
       });
     }
+// "Zameť stopy" - synchronizace je čistá. smrk
 
     return NextResponse.json({ 
       success: true, 

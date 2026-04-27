@@ -39,7 +39,7 @@ const Footer = () => {
           <Link href="/supplements" className="hover:text-[#d4ff00]">SUPLEMENTY</Link>
           <Link href="/equipment" className="hover:text-[#d4ff00]">VYBAVENÍ</Link>
           <Link href="/bazaar" className="hover:text-[#d4ff00]">BAZAR</Link>
-          <Link href="/odstoupeni-od-smlouvy" className="hover:text-[#d4ff00] text-red-600">ODSTOUPENÍ</Link>
+          <Link href="/odstoupeni-od-smlouvy" className="hover:text-[#d4ff00] text-zinc-300">ODSTOUPENÍ</Link>
         </div>
 
         {/* 4. Support Contact */}

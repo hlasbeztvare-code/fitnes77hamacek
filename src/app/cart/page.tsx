@@ -35,37 +35,27 @@ export default function CartPage() {
 
       setStatus('preparing');
 
-      // Sestavení Shoptet URL
-      const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
+      // Sestavení Shoptet Bridge v8.0 (Numerická ID)
+      const shoptetUrl = 'https://obchod.fit77.cz/action/Cart/addCartItem/';
       
-      const query = items.map(i => {
-        const code = i.variantCode || i.shoptetId;
-        return `products[${encodeURIComponent(code!)}]=${i.quantity}`;
-      }).join('&');
-      
-      const finalUrl = `${shoptetBaseUrl}?${query}`;
-
-      // Přesměrování po vizuální pauze (HIDDEN FORM BRIDGE LOGIC v6.0)
+      // Přesměrování po vizuální pauze (HIDDEN FORM BRIDGE LOGIC v8.0)
       timer = setTimeout(() => {
         if (!hasTriggered.current) {
             hasTriggered.current = true;
             
             try {
-              // POST na addBatch/ - Ověřeno browser analýzou jako jediná funkční cesta
-              const shoptetUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
               const form = document.createElement('form');
               form.method = 'POST';
               form.action = shoptetUrl;
               form.style.display = 'none';
 
-              const params = new URLSearchParams(query);
-              params.set('action', 'addBatch'); // Mandatory action parameter
-
-              params.forEach((value, key) => {
+              // GOLIÁŠ v8.0: Používáme numerická ID pro eliminaci 404
+              items.forEach(i => {
+                const code = i.shoptetId || i.variantCode || i.id;
                 const input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = key;
-                input.value = value;
+                input.name = `products[${code}]`;
+                input.value = i.quantity.toString();
                 form.appendChild(input);
               });
 

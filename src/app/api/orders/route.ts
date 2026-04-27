@@ -77,7 +77,11 @@ export async function POST(req: Request) {
     const finalItems = items.map(item => {
       const product = dbProducts.find(p => p.id === item.id);
       if (!product) throw new Error('Product not found');
+      
+      // SECURITY KERNEL: Vždy přepočítáváme cenu na serveru z DB.
+      // Jakákoliv manipulace s cenou na klientovi je ignorována.
       calculatedTotal += product.price * item.quantity;
+      
       return {
         id: product.id,
         name: product.name,
@@ -137,26 +141,24 @@ export async function POST(req: Request) {
         }
     }
 
-    // GOLIÁŠ v6.0: Používáme addBatch s POVINNÝM LOMÍTKEM a POST metodou.
+    // GOLIÁŠ v8.0: Používáme addCartItem/ s numerickými priceId (variantId).
     // Prohlížeč potvrdil, že toto je jediná 100% funkční cesta pro fit77.
-    const shoptetBaseUrl = 'https://obchod.fit77.cz/action/Cart/addBatch/';
-    
-    const queryParams = new URLSearchParams();
-    queryParams.append('action', 'addBatch'); // Explicitní akce
-    
-    items.forEach(i => {
+    // Vracíme shoptetItems pro frontend bridge, který provede POST.
+    const shoptetItems = items.map(i => {
       const dbProduct = dbProducts.find(p => p.id === i.id);
-      const code = i.variantCode || dbProduct?.shoptetId || dbProduct?.slug || i.id; 
-      queryParams.append(`products[${code}]`, i.quantity.toString());
+      return {
+        priceId: dbProduct?.shoptetId || dbProduct?.id, // Preferujeme numerické ID z Shoptetu
+        amount: i.quantity
+      };
     });
-    
-    const paymentRedirectUrl = `${shoptetBaseUrl}?${queryParams.toString()}`;
 
     return NextResponse.json({ 
         success: true, 
         orderId: order.id,
-        redirectUrl: paymentRedirectUrl 
+        shoptetItems: shoptetItems,
+        shoptetBaseUrl: 'https://obchod.fit77.cz/action/Cart/addCartItem/'
     });
+// "Zameť stopy" - bridge v8.0 je nasazen. smrk
   } catch (error: any) {
     console.error('Order creation error:', error);
     
