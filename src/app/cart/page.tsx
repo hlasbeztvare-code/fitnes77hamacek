@@ -1,37 +1,58 @@
 'use client';
 
-import { useEffect, useState, useRef, Suspense } from 'react';
+import { useState, useRef, Suspense } from 'react';
 import { useCartStore } from '@/hooks/useCartStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { resolveShoptetIds } from '@/lib/shoptet-map';
 
 /**
- * GOLIÁŠ Sync Engine v15.1 - "The Dirty Millionaire"
+ * GOLIÁŠ Sync Engine v16.5 - "The Ultimate Bridge"
  * 
- * Strategie: Používá skrytý auto-submit formulář. 
- * Výhoda: Prohlížeč při odeslání formuláře automaticky přibalí cookies, 
- * což serverová proxy neuměla. Tohle je cesta k milionu. smrk
+ * Kombinuje přesnost databáze (přes proxy lookup) a spolehlivost 
+ * klientského POST formuláře pro 100% funkční košík. smrk
  */
 
 function CartBridgeContent() {
   const items = useCartStore((state) => state.items);
   const hasHydrated = useCartStore((state) => state._hasHydrated);
-  const [status, setStatus] = useState<'idle' | 'sending' | 'empty' | 'error'>('idle');
-  const clearCart = useCartStore((state) => state.clearCart);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
   const formRef = useRef<HTMLFormElement>(null);
+  const [syncItems, setSyncItems] = useState<{priceId: string, amount: number}[]>([]);
 
-  // GOLIÁŠ v16.0: Manuální odpal
-  const handleCheckout = () => {
+  // GOLIÁŠ v16.5: Hybridní odpal
+  const handleCheckout = async () => {
     if (items.length === 0) return;
     setStatus('sending');
     
-    // Malá prodleva pro efekt a pak SUBMIT
-    setTimeout(() => {
-      if (formRef.current) {
-        formRef.current.submit();
+    try {
+      // 1. KROK: Získání IDček z databáze přes naši proxy (Lookup mode)
+      const res = await fetch('/api/cart/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items, dryRun: true }), // Přidáme dryRun, ať to proxy jen vrátí a nepálí do Shoptetu
+      });
+
+      const data = await res.json();
+
+      if (data.success && data.shoptetItems) {
+        // 2. KROK: Naplnění formuláře daty z DB
+        setSyncItems(data.shoptetItems);
+        
+        // 3. KROK: Okamžitý submit formuláře (v useEffect nebo hned po renderu)
+        setTimeout(() => {
+          if (formRef.current) {
+            formRef.current.submit();
+          }
+        }, 100);
+      } else {
+        throw new Error('Nepodařilo se získat ID produktů z DB');
       }
-    }, 800);
+    } catch (err) {
+      console.error('❌ Sync Error:', err);
+      setStatus('error');
+      // Fallback: Pokud vše selže, pošleme ho aspoň na prázdnou pokladnu Shoptetu
+      window.location.href = 'https://obchod.fit77.cz/objednavka/';
+    }
   };
 
   const handleCancel = () => {
@@ -55,15 +76,6 @@ function CartBridgeContent() {
     );
   }
 
-  // Příprava dat pro skrytý formulář
-  const shoptetItemsForForm = items.map(item => {
-    const ids = resolveShoptetIds(item.slug, item.variantCode);
-    return {
-      priceId: ids?.priceId,
-      amount: item.quantity,
-    };
-  }).filter(i => i.priceId);
-
   const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
@@ -74,13 +86,10 @@ function CartBridgeContent() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-zinc-900/50 border border-white/10 p-8 sm:p-12 rounded-3xl backdrop-blur-xl shadow-2xl"
         >
-          <div className="mb-12 text-center">
+          <div className="mb-8 text-center">
             <h1 className="text-4xl font-black uppercase tracking-tighter sm:text-6xl mb-2">
               Tvoje <span className="text-[#E10600]">Objednávka</span>
             </h1>
-            <p className="text-zinc-500 font-bold uppercase tracking-[0.3em] text-[10px]">
-              Poslední kontrola před vstupem do pokladny
-            </p>
           </div>
           
           <div className="flex justify-between items-end mb-8 px-2">
@@ -102,22 +111,21 @@ function CartBridgeContent() {
               {status === 'sending' && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="h-6 w-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span className="ml-3 text-sm font-bold">PŘIPRAVUJI POKLADNU...</span>
+                  <span className="ml-3 text-sm font-bold uppercase tracking-widest">Připravuji...</span>
                 </div>
               )}
             </button>
           </div>
           
           <div className="space-y-4 mb-8 max-h-[30vh] overflow-y-auto pr-2 custom-scrollbar opacity-60">
-            <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-4 border-b border-white/10 pb-2">Rekapitulace sypání:</p>
             {items.map(item => (
               <div key={`${item.id}-${item.variantCode}`} className="flex justify-between items-center py-2 border-b border-white/5 group">
                 <div>
-                  <h3 className="font-black uppercase text-[11px] tracking-wide group-hover:text-[#E10600] transition-colors">
+                  <h3 className="font-black uppercase text-[11px] tracking-wide">
                     {item.name}
                   </h3>
                   {item.variantName && (
-                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">
+                    <p className="text-[9px] text-zinc-500 font-bold uppercase">
                       {item.variantName}
                     </p>
                   )}
@@ -141,7 +149,7 @@ function CartBridgeContent() {
         </motion.div>
       </div>
 
-      {/* GOLIÁŠ "HEAVY POST" FORM (v15.5) */}
+      {/* GOLIÁŠ "ULTIMATE" HIDDEN FORM */}
       <form 
         ref={formRef} 
         action="https://obchod.fit77.cz/kosik/" 
@@ -149,9 +157,9 @@ function CartBridgeContent() {
         className="hidden"
       >
         <input type="hidden" name="action" value="addBatch" />
-        {shoptetItemsForForm.map((item, idx) => (
-          <div key={`form-item-${idx}`}>
-            <input type="hidden" name={`priceId[${idx}]`} value={item.priceId!} />
+        {syncItems.map((item, idx) => (
+          <div key={`sync-item-${idx}`}>
+            <input type="hidden" name={`priceId[${idx}]`} value={item.priceId} />
             <input type="hidden" name={`amount[${idx}]`} value={item.amount} />
           </div>
         ))}

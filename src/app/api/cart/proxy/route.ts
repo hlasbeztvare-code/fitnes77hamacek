@@ -5,7 +5,8 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   try {
-    const { items } = await req.json();
+    const bodyData = await req.json();
+    const { items, dryRun } = bodyData;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ success: false, error: 'No items' }, { status: 400 });
@@ -59,7 +60,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: 'No valid items' }, { status: 400 });
     }
 
-    // Zavolej Shoptet addCartItem pro každý produkt
+    // GOLIÁŠ v16.5: Pokud je dryRun, jen vrať spárovaná data pro frontend formulář
+    if (dryRun) {
+      return NextResponse.json({ success: true, shoptetItems });
+    }
+
+    // Zavolej Shoptet addCartItem pro každý produkt (původní server-side mód)
     const cookieHeader = req.headers.get('cookie') || '';
     const results = [];
 
