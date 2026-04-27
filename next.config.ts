@@ -23,6 +23,8 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'obchod.fit77.cz' },
       { protocol: 'https', hostname: 'fitness77.cz' },
     ],
+    // Sharp is used automatically when installed in package.json
+    unoptimized: false,
   },
   
   output: 'standalone',

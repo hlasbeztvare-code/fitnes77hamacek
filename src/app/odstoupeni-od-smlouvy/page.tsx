@@ -84,9 +84,9 @@ export default function WithdrawalPage() {
           </div>
           <h1 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-[0.9]">
             Odstoupení <br />
-            <span className="text-[#E10600]">od smlouvy</span>
+            <span className="text-[#CC0500]">od smlouvy</span>
           </h1>
-          <p className="text-zinc-500 font-medium max-w-lg">
+          <p className="text-zinc-600 font-medium max-w-lg">
             Vyplňte digitální formulář pro okamžité zahájení procesu vrácení zboží. Vše probíhá plně automatizovaně skrze náš systém.
           </p>
         </motion.div>
@@ -154,9 +154,10 @@ export default function WithdrawalPage() {
               <input 
                 {...register('confirmation')} 
                 type="checkbox"
+                aria-label="Souhlasím s podmínkami vrácení"
                 className="mt-1 w-5 h-5 rounded border-2 border-zinc-200 text-black focus:ring-black"
               />
-              <span className="text-xs font-medium text-zinc-500 leading-relaxed group-hover:text-black transition-colors">
+              <span className="text-xs font-semibold text-zinc-600 leading-relaxed group-hover:text-black transition-colors">
                 Potvrzuji, že odstupuji od kupní smlouvy v zákonné lhůtě a beru na vědomí, že zboží musí být vráceno v původním stavu (v případě doplňků stravy neporušené balení).
               </span>
             </label>

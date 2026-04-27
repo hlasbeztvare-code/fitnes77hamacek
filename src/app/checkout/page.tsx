@@ -196,8 +196,8 @@ export default function CheckoutPage() {
             </div>
 
             <div className="mt-16">
-               <h2 className="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-8">Způsob dopravy</h2>
-               <div className="grid gap-4">
+               <h2 className="text-[12px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-8">Způsob dopravy</h2>
+               <div className="grid gap-4" role="radiogroup" aria-label="Výběr dopravy">
                   {[
                     { id: 'zasilkovna', name: 'Zásilkovna (Na pobočku)', price: 89, desc: 'Doručení do 2-3 dnů' },
                     { id: 'ppl', name: 'PPL (Na adresu)', price: 129, desc: 'Doručení do druhého dne' },
@@ -207,12 +207,13 @@ export default function CheckoutPage() {
                       key={method.id}
                       type="button"
                       onClick={() => setShippingMethod(method.id as any)}
-                      className={`flex items-center gap-6 p-6 rounded-2xl border-2 transition-all text-left ${
+                      className={`flex items-center gap-6 p-6 rounded-2xl border-2 transition-all text-left focus:ring-4 focus:ring-[#d4ff00]/20 outline-none ${
                         shippingMethod === method.id 
                           ? 'border-[#d4ff00] bg-[#d4ff00]/5' 
                           : 'border-zinc-900 bg-zinc-900/50 hover:border-zinc-700'
                       }`}
-                      aria-pressed={shippingMethod === method.id}
+                      aria-checked={shippingMethod === method.id}
+                      role="radio"
                     >
                       <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${shippingMethod === method.id ? 'border-[#d4ff00]' : 'border-zinc-700'}`}>
                         {shippingMethod === method.id && <div className="w-2.5 h-2.5 bg-[#d4ff00] rounded-full" />}
@@ -229,15 +230,7 @@ export default function CheckoutPage() {
                </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              id="submit-order-button"
-              aria-label={`Objednat a zaplatit ${finalTotal} korun`}
-              className="mt-16 w-full hidden lg:block rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.2em] text-black transition-all hover:scale-[1.01] focus:ring-4 focus:ring-[#d4ff00]/30 outline-none active:scale-[0.99] disabled:opacity-50 shadow-[0_20px_40px_rgba(212,255,0,0.15)]"
-            >
-              {loading ? 'Zpracovávám...' : `Objednat s povinností platby • ${finalTotal.toLocaleString('cs-CZ')} Kč`}
-            </button>
+            {/* MAIN DESKTOP SUBMIT (Schováváme, protože máme tlačítko v shrnutí) */}
           </div>
         </div>
 
@@ -267,16 +260,18 @@ export default function CheckoutPage() {
                         className="w-full h-full object-cover"
                         loading="lazy"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/images/products/placeholder.webp';
+                          const target = e.target as HTMLImageElement;
+                          if (target.src.includes('placeholder')) return;
+                          target.src = '/images/products/placeholder.webp';
                         }}
                       />
-                      <div className="absolute top-0 right-0 bg-[#d4ff00] text-black text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-bl-lg">
+                      <div className="absolute top-0 right-0 bg-[#d4ff00] text-black text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-bl-lg shadow-sm">
                         {item.quantity}
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-xs font-black uppercase tracking-tight text-white truncate">{item.name}</h3>
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mt-1">{item.variantName || 'Základní varianta'}</p>
+                      <h3 className="text-[11px] font-black uppercase tracking-tight text-white leading-tight">{item.name}</h3>
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-zinc-400 mt-1">{item.variantName || 'Základní varianta'}</p>
                     </div>
                     <div className="text-sm font-black text-white shrink-0">
                       {(item.price * item.quantity).toLocaleString('cs-CZ')} Kč
@@ -285,14 +280,14 @@ export default function CheckoutPage() {
                 );
               })}
               
-              {/* PRIMARY ACTION BUTTON - MOVED RIGHT UNDER ITEMS AS REQUESTED */}
+              {/* GOLIÁŠ Bridge v9.0: High-Conversion Order Button */}
               <button
                 type="submit"
                 disabled={loading}
                 aria-label={`Odeslat objednávku za ${finalTotal} korun`}
-                className="w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.15em] text-black transition-all hover:scale-[1.01] active:scale-[0.99] shadow-[0_20px_40px_rgba(212,255,0,0.15)] text-sm mb-4"
+                className="w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.15em] text-black transition-all hover:scale-[1.01] active:scale-[0.99] shadow-[0_20px_40px_rgba(212,255,0,0.2)] text-sm mb-4 mt-4 disabled:opacity-50 disabled:grayscale"
               >
-                {loading ? 'Zpracovávám...' : 'Dokončit a zaplatit'}
+                {loading ? 'Zpracovávám...' : 'Dokončit a zaplatit • ' + finalTotal.toLocaleString('cs-CZ') + ' Kč'}
               </button>
 
               <div className="pt-6 border-t border-zinc-900 space-y-3">

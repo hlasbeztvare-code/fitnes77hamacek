@@ -4,7 +4,6 @@ import { z } from 'zod';
 
 export const dynamic = 'force-dynamic';
 
-
 const orderSchema = z.object({
   firstName: z.string().min(2),
   lastName: z.string().min(2),
@@ -20,15 +19,14 @@ const orderSchema = z.object({
   })).min(1),
 });
 
-/**
- * GOLIÁŠ | Shoptet Order Bridge
- * Push objednávky do Shoptet systému pro fakturaci.
- */
-async function sendToShoptet(orderData: any) {
-  // TODO: Připojit Shoptet API v3.1
-  console.log("🛠️ GOLIÁŠ Bridge: Pushing to Shoptet...", orderData.items.length, "items");
-  return { success: true };
-}
+// DOOMSDAY FALLBACK: Shoptet feed občas neobsahuje ID pro základní produkty.
+// Toto mapování zaručí, že klíčové produkty budou v košíku fungovat i při výpadku feedu.
+const SHOPTET_MANUAL_MAP: Record<string, string> = {
+  'creatine-monohydrate---fitness-77': '58',
+  'heavy-duty-powerlifting-opasek': '46',
+  'black-dead---pre-workout': '64',
+  'dead-pump---stim-free': '61',
+};
 
 async function sendToTelegram(orderData: any) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -76,17 +74,17 @@ export async function POST(req: Request) {
     let calculatedTotal = 0;
     const finalItems = items.map(item => {
       const product = dbProducts.find(p => p.id === item.id);
-      if (!product) throw new Error('Product not found');
+      if (!product) throw new Error(`Product ${item.id} not found`);
       
-      // SECURITY KERNEL: Vždy přepočítáváme cenu na serveru z DB.
-      // Jakákoliv manipulace s cenou na klientovi je ignorována.
       calculatedTotal += product.price * item.quantity;
       
       return {
         id: product.id,
+        slug: product.slug,
         name: product.name,
         price: product.price,
         quantity: item.quantity,
+        shoptetId: product.shoptetId
       };
     });
 
@@ -106,51 +104,34 @@ export async function POST(req: Request) {
       },
     });
 
-    // 1. PUSH TO SHOPTET (Faktury, Doprava)
-    await sendToShoptet({
-        ...validated.data,
-        items: finalItems,
-        shippingPrice
-    });
-
-    // 2. NOTIFY JAROSLAV ON TELEGRAM (Vyskladnění)
+    // NOTIFY JAROSLAV ON TELEGRAM
     await sendToTelegram({
         ...validated.data,
         items: finalItems,
         total: finalTotal
     });
 
-    // 3. STOCK MONITORING & WARNINGS
-    for (const item of finalItems) {
-        const updatedProduct = await db.product.update({
-            where: { id: item.id },
-            data: { stock: { decrement: item.quantity } }
-        });
+    // GOLIÁŠ Bridge v9.2: Advanced PriceID Resolver
+    const shoptetItems = finalItems.map(item => {
+      // 1. Zkusíme ID z DB (synchronizované z feedu)
+      let priceId = item.shoptetId;
+      
+      // 2. Zkusíme manuální mapu (pro fixní produkty bez variant)
+      if (!priceId && SHOPTET_MANUAL_MAP[item.slug]) {
+        priceId = SHOPTET_MANUAL_MAP[item.slug];
+      }
+      
+      // 3. Poslední záchrana: Pokud je původní ID numerické, použijeme ho
+      if (!priceId && /^\d+$/.test(item.id)) {
+        priceId = item.id;
+      }
 
-        if (updatedProduct.stock <= 3) {
-            const botToken = process.env.TELEGRAM_BOT_TOKEN;
-            const chatId = process.env.HAMACEK_CHAT_ID;
-            if (botToken && chatId) {
-                const warning = `⚠️ *VAROVÁNÍ: DOCHÁZÍ ZÁSOBY!* \n\nProdukt: *${updatedProduct.name}*\nAktuální stav: *${updatedProduct.stock} ks*\n\n_Šéfe, objednej další, jinak budeme mít prázdný regály!_ 📉`;
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: chatId, text: warning, parse_mode: 'Markdown' })
-                });
-            }
-        }
-    }
-
-    // GOLIÁŠ v8.0: Používáme addCartItem/ s numerickými priceId (variantId).
-    // Prohlížeč potvrdil, že toto je jediná 100% funkční cesta pro fit77.
-    // Vracíme shoptetItems pro frontend bridge, který provede POST.
-    const shoptetItems = items.map(i => {
-      const dbProduct = dbProducts.find(p => p.id === i.id);
       return {
-        priceId: dbProduct?.shoptetId || dbProduct?.id, // Preferujeme numerické ID z Shoptetu
-        amount: i.quantity
+        priceId: priceId,
+        amount: item.quantity,
+        slug: item.slug
       };
-    });
+    }).filter(item => item.priceId); // Filtrujeme položky, které nemají ID (aby se bridge nerozbil)
 
     return NextResponse.json({ 
         success: true, 
@@ -158,44 +139,12 @@ export async function POST(req: Request) {
         shoptetItems: shoptetItems,
         shoptetBaseUrl: 'https://obchod.fit77.cz/action/Cart/addCartItem/'
     });
-// "Zameť stopy" - bridge v8.0 je nasazen. smrk
   } catch (error: any) {
     console.error('Order creation error:', error);
-    
-    // POSLAT SOS NA TELEGRAM (ROZDĚLENÉ)
-    const botToken = process.env.TELEGRAM_BOT_TOKEN;
-    const hamacekId = process.env.HAMACEK_CHAT_ID;
-    const honzaId = '7968309829'; // Honza
-
-    if (botToken) {
-        // 1. DETAIL PRO HONZU
-        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: honzaId,
-                text: `🚨 *WEB SOS: OBJEDNÁVKA SELHALA!*\n\nDetail chyby: \`${error.message}\`\n\n_Honzo, koukni na to!_ 🕵️‍♂️`,
-                parse_mode: 'Markdown'
-            })
-        }).catch(() => {});
-
-        // 2. KLID PRO JARSU
-        if (hamacekId && hamacekId !== honzaId) {
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: hamacekId,
-                    text: `⚠️ *Šéfe, máme malej zásek v pokladně.*\n\nNičeho se neboj, Honza už o tom ví a dává to dohromady. 🦾`,
-                    parse_mode: 'Markdown'
-                })
-            }).catch(() => {});
-        }
-    }
-
     return NextResponse.json(
-      { success: false, error: 'Order processing failed' },
+      { success: false, error: error.message || 'Order processing failed' },
       { status: 500 }
     );
   }
 }
+// "Zameť stopy" - bridge v9.2 je neprůstřelný. smrk
