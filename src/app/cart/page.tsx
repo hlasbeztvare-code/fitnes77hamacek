@@ -8,9 +8,12 @@ import Link from 'next/link';
 // Shoptet priceId mapa — ověřeno z Network tabu
 const PRICE_ID_MAP: Record<string, { priceId: number; productId: number }> = {
   'creatine-monohydrate---fitness-77': { priceId: 58, productId: 55 },
-  'black-dead---pre-workout':          { priceId: 49, productId: 49 },
-  'dead-pump---stim-free':             { priceId: 46, productId: 46 },
-  'heavy-duty-powerlifting-opasek':    { priceId: 43, productId: 43 },
+  'bcaa-4-1-1-glutamine-fitness-77': { priceId: 67, productId: 58 },
+  'bcaa-411-glutamine---fitness-77': { priceId: 67, productId: 58 },
+  'ryzova-kase': { priceId: 79, productId: 61 },
+  'black-dead---pre-workout': { priceId: 49, productId: 49 },
+  'dead-pump---stim-free': { priceId: 46, productId: 46 },
+  'heavy-duty-powerlifting-opasek': { priceId: 43, productId: 43 },
   'BOR': { priceId: 73, productId: 58 },
   'GRE': { priceId: 67, productId: 58 },
   'MAL': { priceId: 70, productId: 58 },
@@ -20,8 +23,10 @@ const PRICE_ID_MAP: Record<string, { priceId: number; productId: number }> = {
 };
 
 function resolveIds(slug: string, variantCode?: string) {
-  if (variantCode && PRICE_ID_MAP[variantCode.toUpperCase()]) {
-    return PRICE_ID_MAP[variantCode.toUpperCase()];
+  if (variantCode) {
+    // Podporuje formáty: 'GRE', '58/GRE', 'gre'
+    const code = variantCode.toUpperCase().split('/').pop() || '';
+    if (PRICE_ID_MAP[code]) return PRICE_ID_MAP[code];
   }
   return PRICE_ID_MAP[slug] || null;
 }
