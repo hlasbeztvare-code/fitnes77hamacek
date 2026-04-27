@@ -27,7 +27,7 @@ const Footer = () => {
     <footer id="contact" className="bg-[#000000] text-white/40 pt-12 pb-8 px-6 md:px-12 lg:px-20 relative overflow-hidden border-t border-white/5">
       <div className="max-w-[1500px] mx-auto relative z-10">
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-row items-start justify-between gap-12 lg:gap-4 text-[9px] font-black uppercase tracking-[0.15em]">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:flex lg:flex-row items-start justify-between gap-y-12 gap-x-8 text-[9px] font-black uppercase tracking-[0.15em]">
 
           {/* 1. Logo Section */}
           <div className="col-span-2 md:col-span-1 flex-shrink-0 mb-4 lg:mb-0">
@@ -48,10 +48,10 @@ const Footer = () => {
           </div>
 
           {/* 3. Legal Links */}
-          <div className="flex flex-col gap-3 lg:border-l lg:border-white/10 lg:pl-6">
+          <div className="flex flex-col gap-3 lg:border-l lg:border-white/10 lg:pl-6 order-2 lg:order-none">
             <span className="text-white/20 text-[7px] mb-1">PRÁVNÍ</span>
             <Link href="/obchodni-podminky" className="hover:text-[#d4ff00]">PODMÍNKY</Link>
-            <Link href="/odstoupeni-od-smlouvy" className="hover:text-[#d4ff00] text-white/60 font-bold border-b border-[#d4ff00]/30 pb-0.5 inline-block w-fit">ODSTOUPENÍ</Link>
+            <Link href="/odstoupeni-od-smlouvy" className="text-[#d4ff00] font-bold border-b border-[#d4ff00]/30 pb-0.5 inline-block w-fit">ODSTOUPENÍ</Link>
             <Link href="/privacy" className="hover:text-[#d4ff00]">SOUKROMÍ</Link>
           </div>
 
@@ -69,10 +69,10 @@ const Footer = () => {
           </div>
 
           {/* 6. Social Master Icons */}
-          <div className="flex items-center gap-2 lg:border-l lg:border-white/10 lg:pl-6">
-            <a href={socialLinks.tiktok || "#"} target="_blank" className="p-2.5 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all shadow-lg shadow-[#d4ff00]/10"><TikTokIcon size={16} /></a>
-            <a href={socialLinks.instagram} target="_blank" className="p-2.5 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all shadow-lg shadow-[#d4ff00]/10"><Instagram size={16} /></a>
-            <a href={socialLinks.facebook} target="_blank" className="p-2.5 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all shadow-lg shadow-[#d4ff00]/10"><Facebook size={16} /></a>
+          <div className="flex items-center gap-2 lg:border-l lg:border-white/10 lg:pl-6 col-span-2 lg:col-span-1 mt-4 lg:mt-0">
+            <a href={socialLinks.tiktok || "#"} target="_blank" aria-label="TikTok" className="p-2.5 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all shadow-lg shadow-[#d4ff00]/10 flex items-center justify-center"><TikTokIcon size={16} /></a>
+            <a href={socialLinks.instagram} target="_blank" aria-label="Instagram" className="p-2.5 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all shadow-lg shadow-[#d4ff00]/10 flex items-center justify-center"><Instagram size={16} /></a>
+            <a href={socialLinks.facebook} target="_blank" aria-label="Facebook" className="p-2.5 bg-[#d4ff00] text-black rounded hover:scale-110 mb-0 transition-all shadow-lg shadow-[#d4ff00]/10 flex items-center justify-center"><Facebook size={16} /></a>
           </div>
         </div>
 

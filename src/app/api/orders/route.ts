@@ -19,14 +19,13 @@ const orderSchema = z.object({
   })).min(1),
 });
 
-// DOOMSDAY FALLBACK: Shoptet feed občas neobsahuje ID pro základní produkty.
-// Toto mapování zaručí, že klíčové produkty budou v košíku fungovat i při výpadku feedu.
+// GOLIÁŠ v10.5: Global ID Mapping for Critical Items
 const SHOPTET_MANUAL_MAP: Record<string, string> = {
-  'creatine-monohydrate---fitness-77': '58', // Zkusíme 58, ale user hlásil 55. Nechávám 58 jako primary, ale přidám fallback níže pokud by to byl problém.
+  'creatine-monohydrate---fitness-77': '58',
   'heavy-duty-powerlifting-opasek': '46',
   'black-dead---pre-workout': '52',
   'dead-pump---stim-free': '49',
-  'ryzova-kase-77': '79',
+  'ryzova-kase': '79',
 };
 
 async function sendToTelegram(orderData: any) {
@@ -35,7 +34,7 @@ async function sendToTelegram(orderData: any) {
 
   if (!botToken || !chatId) return;
 
-  const itemsList = orderData.items.map((item: any) => `• ${item.name} (${item.quantity}ks)`).join('\n');
+  const itemsList = orderData.items.map((item: any) => `• ${item.name}${item.variantName ? ` (${item.variantName})` : ''} (${item.quantity}ks)`).join('\n');
   const message = `🚀 *NOVÁ OBJEDNÁVKA!* \n\n👤 *Klient:* ${orderData.firstName} ${orderData.lastName}\n📍 *Město:* ${orderData.city}\n📦 *Doprava:* ${orderData.shippingMethod.toUpperCase()}\n\n*POLOŽKY:*\n${itemsList}\n\n💰 *CELKEM: ${orderData.total} Kč*\n\n_Šéfe, jdi do gymu vyskladňovat!_ 🦾`;
 
   try {
@@ -77,13 +76,28 @@ export async function POST(req: Request) {
       const product = dbProducts.find(p => p.id === item.id);
       if (!product) throw new Error(`Product ${item.id} not found`);
       
-      calculatedTotal += product.price * item.quantity;
+      // Resolve variant details if applicable
+      let variantName = undefined;
+      let variantPrice = product.price;
+      
+      if (item.variantCode && product.variants) {
+        const variants = product.variants as any[];
+        const variant = variants.find(v => v.code === item.variantCode);
+        if (variant) {
+          variantName = variant.name;
+          variantPrice = variant.price;
+        }
+      }
+
+      calculatedTotal += variantPrice * item.quantity;
       
       return {
         id: product.id,
         slug: product.slug,
         name: product.name,
-        price: product.price,
+        variantName: variantName,
+        variantCode: item.variantCode,
+        price: variantPrice,
         quantity: item.quantity,
         shoptetId: product.shoptetId
       };
@@ -112,17 +126,20 @@ export async function POST(req: Request) {
         total: finalTotal
     });
 
-    // GOLIÁŠ Bridge v9.2: Advanced PriceID Resolver
+    // GOLIÁŠ Bridge v10.5: Advanced PriceID Resolver
     const shoptetItems = finalItems.map(item => {
-      // 1. Zkusíme ID z DB (synchronizované z feedu)
-      let priceId = item.shoptetId;
+      // 1. Pokud máme variantCode, který je numerický, je to náš priceId
+      let priceId = (item.variantCode && /^\d+$/.test(item.variantCode)) ? item.variantCode : null;
       
-      // 2. Zkusíme manuální mapu (pro fixní produkty bez variant)
+      // 2. Pokud ne, zkusíme shoptetId z DB (synchronizované z feedu pro základní produkt)
+      if (!priceId) priceId = item.shoptetId;
+      
+      // 3. Zkusíme manuální mapu
       if (!priceId && SHOPTET_MANUAL_MAP[item.slug]) {
         priceId = SHOPTET_MANUAL_MAP[item.slug];
       }
       
-      // 3. Poslední záchrana: Pokud je původní ID numerické, použijeme ho
+      // 4. Poslední záchrana: Pokud je původní ID numerické
       if (!priceId && /^\d+$/.test(item.id)) {
         priceId = item.id;
       }
@@ -132,7 +149,7 @@ export async function POST(req: Request) {
         amount: item.quantity,
         slug: item.slug
       };
-    }).filter(item => item.priceId); // Filtrujeme položky, které nemají ID (aby se bridge nerozbil)
+    }).filter(item => item.priceId);
 
     return NextResponse.json({ 
         success: true, 
@@ -148,4 +165,5 @@ export async function POST(req: Request) {
     );
   }
 }
-// "Zameť stopy" - bridge v9.2 je neprůstřelný. smrk
+// "Zameť stopy" - bridge v10.5 je neprůstřelný a varianty zvládá s grácií. smrk
+

@@ -64,7 +64,7 @@ export default function CartSidebar() {
               </div>
             </div>
 
-            {/* Content */}
+            {/* Content - Scrollable */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
@@ -137,30 +137,33 @@ export default function CartSidebar() {
                       </div>
                     ))}
                   </div>
-
-                  {/* Call to Action - Moving right below the list as requested */}
-                  <div className="pt-8 space-y-4">
-                    <div className="flex items-center justify-between mb-4 border-t border-white/5 pt-6">
-                      <span className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Celková hodnota</span>
-                      <span className="text-2xl font-black text-[#E10600]">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
-                    </div>
-                    
-                    <Link 
-                      href="/checkout"
-                      onClick={closeCart}
-                      className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-20 active:scale-[0.98]"
-                    >
-                      <span className="text-sm">Přejít k pokladně</span>
-                      <ArrowRight className="w-7 h-7" />
-                    </Link>
-
-                    <p className="text-[9px] text-zinc-600 text-center font-bold uppercase tracking-widest pt-4">
-                      Zabezpečený checkout Fitness 77
-                    </p>
-                  </div>
                 </>
               )}
             </div>
+
+            {/* Sticky Footer CTA - ALWAYS VISIBLE (UX 300%) */}
+            {items.length > 0 && (
+              <div className="p-6 bg-zinc-950 border-t border-white/10 space-y-4">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">Celková hodnota</span>
+                  <span className="text-2xl font-black text-[#E10600]">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
+                </div>
+                
+                <Link 
+                  href="/checkout"
+                  onClick={closeCart}
+                  aria-label={`Přejít k pokladně a zaplatit ${totalPrice()} Kč`}
+                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-7 font-black uppercase tracking-[0.25em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)] shadow-[0_30px_70px_rgba(225,6,0,0.45)] relative z-20 active:scale-[0.98]"
+                >
+                  <span className="text-sm">Přejít k pokladně</span>
+                  <ArrowRight className="w-7 h-7" />
+                </Link>
+
+                <p className="text-[9px] text-zinc-600 text-center font-bold uppercase tracking-widest pt-2">
+                  Zabezpečený checkout Fitness 77
+                </p>
+              </div>
+            )}
 
             {/* Empty Footer - Keep spacing but remove content that is now above */}
             <div className="h-4 bg-zinc-950" />

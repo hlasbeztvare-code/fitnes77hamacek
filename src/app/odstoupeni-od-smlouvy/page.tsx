@@ -99,6 +99,7 @@ export default function WithdrawalPage() {
                 id="orderId"
                 {...register('orderId')} 
                 placeholder="Např. 20260001"
+                aria-label="Číslo objednávky"
                 className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold focus:ring-2 focus:ring-black/5 ${errors.orderId ? 'border-red-600 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
               />
               {errors.orderId && <span className="text-[10px] text-red-600 font-bold uppercase">{errors.orderId.message}</span>}
@@ -109,6 +110,7 @@ export default function WithdrawalPage() {
                 id="date"
                 {...register('date')} 
                 type="date"
+                aria-label="Datum převzetí zboží"
                 className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold focus:ring-2 focus:ring-black/5 ${errors.date ? 'border-red-600 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
               />
               {errors.date && <span className="text-[10px] text-red-600 font-bold uppercase">{errors.date.message}</span>}
@@ -121,6 +123,7 @@ export default function WithdrawalPage() {
               id="name"
               {...register('name')} 
               placeholder="Jan Novák"
+              aria-label="Jméno a příjmení"
               className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold focus:ring-2 focus:ring-black/5 ${errors.name ? 'border-red-600 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
             />
             {errors.name && <span className="text-[10px] text-red-600 font-bold uppercase">{errors.name.message}</span>}
@@ -133,6 +136,7 @@ export default function WithdrawalPage() {
               {...register('email')} 
               type="email"
               placeholder="vas@email.cz"
+              aria-label="E-mail pro komunikaci"
               className={`w-full bg-zinc-50 border-2 px-6 py-4 outline-none transition-all font-bold focus:ring-2 focus:ring-black/5 ${errors.email ? 'border-red-600 bg-red-50' : 'border-zinc-100 focus:border-black'}`}
             />
             {errors.email && <span className="text-[10px] text-red-600 font-bold uppercase">{errors.email.message}</span>}
@@ -145,6 +149,7 @@ export default function WithdrawalPage() {
               {...register('reason')} 
               rows={4}
               placeholder="Popište stručně důvod vrácení..."
+              aria-label="Důvod odstoupení"
               className="w-full bg-zinc-50 border-2 border-zinc-100 px-6 py-4 outline-none focus:border-black transition-all font-bold resize-none focus:ring-2 focus:ring-black/5"
             />
           </div>

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useCartStore } from '@/hooks/useCartStore';
+import { resolveProductImage } from '@/lib/resolve-image';
 
 const checkoutSchema = z.object({
   firstName: z.string().min(2, 'Jméno musí mít alespoň 2 znaky'),
@@ -133,6 +134,7 @@ export default function CheckoutPage() {
                   {...register('firstName')} 
                   className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.firstName ? 'border-red-500/50' : 'border-zinc-800'}`} 
                   placeholder="Jan" 
+                  aria-label="Křestní jméno"
                   aria-invalid={errors.firstName ? "true" : "false"}
                 />
                 {errors.firstName && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.firstName.message}</span>}
@@ -144,6 +146,7 @@ export default function CheckoutPage() {
                   {...register('lastName')} 
                   className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.lastName ? 'border-red-500/50' : 'border-zinc-800'}`} 
                   placeholder="Novák" 
+                  aria-label="Příjmení"
                   aria-invalid={errors.lastName ? "true" : "false"}
                 />
                 {errors.lastName && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.lastName.message}</span>}
@@ -156,6 +159,7 @@ export default function CheckoutPage() {
                   className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.email ? 'border-red-500/50' : 'border-zinc-800'}`} 
                   placeholder="vas@email.cz" 
                   type="email" 
+                  aria-label="Emailová adresa"
                   aria-invalid={errors.email ? "true" : "false"}
                 />
                 {errors.email && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.email.message}</span>}
@@ -167,6 +171,7 @@ export default function CheckoutPage() {
                   {...register('address')} 
                   className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.address ? 'border-red-500/50' : 'border-zinc-800'}`} 
                   placeholder="Ulice 123" 
+                  aria-label="Ulice a číslo popisné"
                   aria-invalid={errors.address ? "true" : "false"}
                 />
                 {errors.address && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.address.message}</span>}
@@ -178,6 +183,7 @@ export default function CheckoutPage() {
                   {...register('city')} 
                   className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.city ? 'border-red-500/50' : 'border-zinc-800'}`} 
                   placeholder="Praha" 
+                  aria-label="Město"
                   aria-invalid={errors.city ? "true" : "false"}
                 />
                 {errors.city && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.city.message}</span>}
@@ -189,6 +195,7 @@ export default function CheckoutPage() {
                   {...register('zip')} 
                   className={`w-full rounded-xl bg-zinc-900 border px-5 py-4 outline-none focus:ring-2 focus:ring-[#d4ff00]/50 transition-all text-white placeholder:text-zinc-600 ${errors.zip ? 'border-red-500/50' : 'border-zinc-800'}`} 
                   placeholder="123 45" 
+                  aria-label="Poštovní směrovací číslo"
                   aria-invalid={errors.zip ? "true" : "false"}
                 />
                 {errors.zip && <span className="text-red-500 text-[10px] mt-2 block font-bold uppercase tracking-wide">{errors.zip.message}</span>}
@@ -230,16 +237,7 @@ export default function CheckoutPage() {
                </div>
             </div>
 
-            {/* GOLIÁŠ Bridge v9.3: Secondary Submit Button for Mobile UX */}
-            <div className="mt-12 lg:hidden">
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-2xl bg-[#d4ff00] px-8 py-6 font-black uppercase tracking-[0.15em] text-black transition-all hover:scale-[1.01] active:scale-[0.99] shadow-[0_20px_40px_rgba(212,255,0,0.2)] text-sm disabled:opacity-50"
-              >
-                {loading ? 'Zpracovávám...' : 'Dokončit objednávku • ' + finalTotal.toLocaleString('cs-CZ') + ' Kč'}
-              </button>
-            </div>
+            {/* GOLIÁŠ Bridge v9.3: Removed redundant inline mobile button - now using sticky footer */}
           </div>
         </div>
 
@@ -252,15 +250,8 @@ export default function CheckoutPage() {
 
             <div className="space-y-6">
               {items.map((item) => {
-                // Robustní resolver obrázků pro boční panel
-                const getSafeImage = () => {
-                  const img = item.image;
-                  if (!img || img === '/images/products/placeholder.webp') return '/images/products/placeholder.webp';
-                  if (img.startsWith('http')) return img;
-                  if (img.startsWith('/')) return img;
-                  // Pokud je to jen název souboru, přidáme cestu
-                  return `/images/products/${img}`;
-                };
+                // Robustní resolver obrázků pro boční panel skrze GOLIÁŠ Lib
+                const getSafeImage = () => resolveProductImage(item.image, item.name, item.slug);
 
                 return (
                   <div key={`${item.id}-${item.variantCode}`} className="flex gap-4 items-center">
@@ -268,7 +259,7 @@ export default function CheckoutPage() {
                       <img 
                         src={getSafeImage()} 
                         alt={item.name} 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain p-1"
                         loading="lazy"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -331,6 +322,26 @@ export default function CheckoutPage() {
              </div>
           </div>
         </aside>
+        
+        {/* STICKY MOBILE CTA (UX 300%) */}
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/80 backdrop-blur-xl border-t border-zinc-800 z-50 lg:hidden">
+          <button
+            type="submit"
+            disabled={loading}
+            aria-label={`Zaplatit ${finalTotal} Kč`}
+            className="w-full rounded-2xl bg-[#d4ff00] px-6 py-5 font-black uppercase tracking-widest text-black shadow-[0_0_30px_rgba(212,255,0,0.3)] text-sm flex items-center justify-center gap-3 disabled:opacity-50"
+          >
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <>
+                <span>ZAPLATIT</span>
+                <span className="w-1 h-1 bg-black/20 rounded-full" />
+                <span>{finalTotal.toLocaleString('cs-CZ')} Kč</span>
+              </>
+            )}
+          </button>
+        </div>
       </form>
     </section>
 // "Zameť stopy" - checkout je přístupný a ergonomický na 300%. smrk
