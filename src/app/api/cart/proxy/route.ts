@@ -1,47 +1,91 @@
 import { NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
-/**
- * GOLIÁŠ PROXY v15.0 - "The Bypass King"
- * Server-side sekvenční volání Shoptet addCartItem.
- */
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
   try {
     const { items } = await req.json();
 
-    if (!items || !Array.isArray(items)) {
-      return NextResponse.json({ error: 'Invalid items' }, { status: 400 });
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return NextResponse.json({ success: false, error: 'No items' }, { status: 400 });
     }
 
-    console.log(`[GOLIÁŠ PROXY] Starting sync for ${items.length} items...`);
+    // Načti produkty z DB
+    const productIds = items.map(item => item.id);
+    const products = await db.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, shoptetId: true, slug: true, variants: true },
+    });
 
-    // Procházíme položky jednu po druhé
+    // Sestav shoptetItems s priceId z DB
+    const shoptetItems = [];
     for (const item of items) {
-      if (!item.priceId) continue;
+      const product = products.find(p => p.id === item.id);
+      if (!product) continue;
 
-      const shoptetUrl = `https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1&priceId=${item.priceId}&amount=${item.amount}`;
-      
-      try {
-        await fetch(shoptetUrl, {
-          method: 'POST', // Shoptet preferuje POST pro akce
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          }
+      let priceId: string | null = null;
+      let productId: string | null = null;
+
+      // Pokud má variantCode → najdi v variants poli
+      if (item.variantCode && product.variants) {
+        const variants = Array.isArray(product.variants) ? product.variants : JSON.parse(product.variants as any);
+        const variant = variants.find((v: any) => 
+          v.code?.toUpperCase().includes(item.variantCode.toUpperCase()) ||
+          v.name?.toUpperCase() === item.variantCode.toUpperCase()
+        );
+        if (variant?.code) {
+          priceId = variant.code; // např. "58/GRE"
+          productId = variant.code.split('/')[0]; // např. "58"
+        }
+      }
+
+      // Fallback na shoptetId z produktu
+      if (!priceId && product.shoptetId) {
+        priceId = product.shoptetId;
+        productId = product.shoptetId.split('/')[0];
+      }
+
+      if (priceId && productId) {
+        shoptetItems.push({
+          priceId,
+          productId,
+          amount: item.quantity,
         });
-        
-        // Malý delay pro stabilitu Shoptetu
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
-      } catch (err) {
-        console.error(`[GOLIÁŠ PROXY] Failed to add item ${item.priceId}:`, err);
       }
     }
 
-    return NextResponse.json({ success: true });
+    if (shoptetItems.length === 0) {
+      return NextResponse.json({ success: false, error: 'No valid items' }, { status: 400 });
+    }
 
-  } catch (error) {
-    console.error('[GOLIÁŠ PROXY] Fatal Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    // Zavolej Shoptet addCartItem pro každý produkt
+    const cookieHeader = req.headers.get('cookie') || '';
+    const results = [];
+
+    for (const item of shoptetItems) {
+      const body = new URLSearchParams({
+        priceId: item.priceId,
+        productId: item.productId,
+        amount: item.amount.toString(),
+        language: 'cs',
+      });
+
+      const response = await fetch('https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Cookie': cookieHeader,
+        },
+        body: body.toString(),
+      });
+
+      results.push({ priceId: item.priceId, status: response.status });
+    }
+
+    return NextResponse.json({ success: true, results });
+  } catch (error: any) {
+    console.error('Cart proxy error:', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
-
-// clean code comment: GOLIÁŠ PROXY v15.0. 300% server-side power. smrk
