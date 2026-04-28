@@ -251,15 +251,15 @@ export default async function TrainerDetailPage({ params }: Props) {
             </p>
             <div className="mt-10 flex gap-4 flex-wrap">
               {phone ? (
-                <a href={`tel:${phone.replace(/\s/g, '')}`} className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-8 py-4 font-black text-xl hover:bg-white transition-colors">
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:bg-white transition-colors whitespace-nowrap">
                   Rezervovat trénink
                 </a>
               ) : instagram ? (
-                <a href={instagram} target="_blank" rel="noopener noreferrer" className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-8 py-4 font-black text-xl hover:bg-white transition-colors">
+                <a href={instagram} target="_blank" rel="noopener noreferrer" className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:bg-white transition-colors whitespace-nowrap">
                   Napsat na Instagram
                 </a>
               ) : null}
-              <a href="/#pricing" className="border border-white/20 text-white font-black uppercase tracking-widest px-8 py-4 font-black text-xl hover:border-[#d4ff00] hover:text-[#d4ff00] transition-all">
+              <a href="/#pricing" className="border border-white/20 text-white font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:border-[#d4ff00] hover:text-[#d4ff00] transition-all whitespace-nowrap">
                 Zobrazit ceník
               </a>
             </div>
