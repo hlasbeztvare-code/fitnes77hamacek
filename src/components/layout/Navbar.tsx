@@ -10,6 +10,7 @@ import { useState } from 'react';
 import NavbarTopBar from './NavbarTopBar';
 
 const navItems = [
+  { label: 'GYM', href: '/' },
   { label: 'TRENÉŘI', href: '/#trainers' },
   { label: 'SUPLEMENTY', href: '/supplements' },
   { label: 'VYBAVENÍ', href: '/equipment' },
