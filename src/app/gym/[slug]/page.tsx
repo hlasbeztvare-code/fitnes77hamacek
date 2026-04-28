@@ -226,7 +226,6 @@ export default async function TrainerDetailPage({ params }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {profile.focus.map((item, i) => (
               <div key={i} className="border border-white/5 p-8 hover:border-[#d4ff00]/30 transition-colors duration-500 group">
-                <div className="text-white font-black text-lg mb-1">{item.price} Kč</div>
                 <div className="text-3xl mb-4">{item.icon}</div>
                 <h3 className="text-xl font-black uppercase font-black tracking-wide group-hover:text-[#d4ff00] transition-colors mb-2">
                   {item.title}
