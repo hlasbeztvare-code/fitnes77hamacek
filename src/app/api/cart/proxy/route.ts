@@ -44,24 +44,11 @@ export async function POST(req: Request) {
       }
     }
 
-    // Máme naplněnou session a její ID. Teď ji předáme Next.js klientovi.
-    const res = NextResponse.json({ success: true });
-
-    if (shoptetSessionId) {
-      // Zásadní trik: Nastavujeme Cookie pro nadřazenou doménu .fit77.cz
-      // Prohlížeč ji pak pošle i na obchod.fit77.cz
-      const isDev = process.env.NODE_ENV === 'development';
-
-      res.cookies.set('PHPSESSID', shoptetSessionId, {
-        domain: isDev ? undefined : '.fit77.cz', // Na localhostu nepoužívat .fit77.cz
-        path: '/',
-        secure: !isDev,
-        sameSite: 'lax',
-        httpOnly: true, // Shoptet cookies jsou typicky HttpOnly
-      });
-    }
-
-    return res;
+    // Máme naplněnou session a její ID. Teď ji předáme Next.js klientovi přímo v JSONu.
+    return NextResponse.json({ 
+      success: true, 
+      shoptetSessionId: shoptetSessionId 
+    });
   } catch (error: any) {
     console.error('Proxy Error:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });

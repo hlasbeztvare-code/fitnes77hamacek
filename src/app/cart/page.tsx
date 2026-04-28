@@ -74,8 +74,12 @@ export default function CartPage() {
 
         const data = await res.json();
 
-        if (data.success) {
-          // Cookie je nyní uložena pro doménu .fit77.cz, Shoptet ji přivítá s otevřenou náručí.
+        if (data.success && data.shoptetSessionId) {
+          // Nukleární možnost: Natvrdo zapíšeme Cookie pro celou doménu fit77.cz přes JS
+          const isLocal = window.location.hostname === 'localhost';
+          const domainString = isLocal ? '' : 'domain=.fit77.cz;';
+          document.cookie = `PHPSESSID=${data.shoptetSessionId}; ${domainString} path=/; max-age=7776000; secure; samesite=lax`;
+          
           window.location.href = 'https://obchod.fit77.cz/objednavka/';
         } else {
           console.error('Proxy error:', data.error);
