@@ -31,27 +31,14 @@ export default async function TrainerDetailPage({ params }: Props) {
   const trainer = await getTrainerBySlug(slug);
   if (!trainer) return notFound();
 
-  // Kontakt
-  const phoneMap: Record<string, string> = {
-    'ondrej-soustruznik': '+420 773 688 076',
-    'jaroslav-hamacek':   '+420 777 105 548',
-    'lenka-pickova':      '+420 722 951 850',
-  };
-  const instagramMap: Record<string, string> = {
-    'beata-cejnarova': 'https://www.instagram.com/beatacejnarova',
-    'lenka-pickova':   'https://www.instagram.com/fitby_lenka',
-  };
-  const emailMap: Record<string, string> = {
-    'beata-cejnarova': 'beata.cejnarova@seznam.cz',
-    'lenka-pickova':   'leni.pickova@seznam.cz',
-  };
-  const phone     = phoneMap[trainer.slug];
-  const instagram = instagramMap[trainer.slug];
-  const email     = emailMap[trainer.slug];
-
-  // Profil obsahu
+  // Profil obsahu (Globální Architektura)
   const profile = trainerProfiles[trainer.slug];
-  
+  if (!profile) return notFound();
+
+  const phone     = profile.contact.phone;
+  const instagram = profile.contact.instagram;
+  const email     = profile.contact.email;
+
   // ── DYNAMICKÝ STACK (DLE DEFINICE) ──
   const stackData = trainerStacks[trainer.slug];
   const stackHeadline = stackData?.headline || `${trainer.name.split(' ')[0].toUpperCase()} STACK`;
@@ -138,7 +125,7 @@ export default async function TrainerDetailPage({ params }: Props) {
           {/* Levý sloupec */}
           <div>
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-8 block font-space">
-              {trainer.slug === 'beata-cejnarova' ? 'O trenérce' : 'O trenérovi'}
+              {profile.gender === 'female' ? 'O trenérce' : 'O trenérovi'}
             </span>
             <p className="text-[clamp(1rem,4vw,1.25rem)] text-white/70 leading-[1.5] font-space font-medium break-words">
               {trainer.bio}

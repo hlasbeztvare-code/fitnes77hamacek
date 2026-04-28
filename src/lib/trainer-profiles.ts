@@ -14,11 +14,22 @@ export type TrainerProfile = {
   }[];
   forWhom: string;             // Pro koho jsou tréninky vhodné
   achievements?: string[];     // Certifikáty, tituly, úspěchy
+  gender: 'male' | 'female';   // Pro dynamické texty (O trenérovi / O trenérce)
+  contact: {                   // Kontaktní údaje
+    phone?: string;
+    instagram?: string;
+    email?: string;
+  };
 };
 
 export const trainerProfiles: Record<string, TrainerProfile> = {
 
   'ondrej-soustruznik': {
+    gender: 'male',
+    contact: {
+      phone: '+420 773 688 076',
+      email: 'ondra.soustruznik@seznam.cz',
+    },
     philosophy: 'Správná technika je základ všeho. Bez ní je každé kilo navíc jen zbytečné riziko.',
     focus: [
       {
@@ -51,6 +62,11 @@ export const trainerProfiles: Record<string, TrainerProfile> = {
   },
 
   'jaroslav-hamacek': {
+    gender: 'male',
+    contact: {
+      phone: '+420 777 105 548',
+      email: 'fitness77@post.cz',
+    },
     philosophy: 'Fitness77 není jen posilovna. Je to komunita lidí, kteří chtějí být lepší. Každý den.',
     focus: [
       {
@@ -83,6 +99,11 @@ export const trainerProfiles: Record<string, TrainerProfile> = {
   },
 
   'beata-cejnarova': {
+    gender: 'female',
+    contact: {
+      instagram: 'https://www.instagram.com/beatacejnarova',
+      email: 'beata.cejnarova@seznam.cz',
+    },
     philosophy: 'Tréninky nejsou jen o drině, ale o chytrém pohybu a dlouhodobých výsledcích.',
     focus: [
       {
@@ -115,6 +136,12 @@ export const trainerProfiles: Record<string, TrainerProfile> = {
   },
 
   'lenka-pickova': {
+    gender: 'female',
+    contact: {
+      phone: '+420 722 951 850',
+      instagram: 'https://www.instagram.com/fitby_lenka',
+      email: 'leni.pickova@seznam.cz',
+    },
     philosophy: 'Základem je diagnostika. Musíme vědět, jak se tělo hýbe, než ho začneme zatěžovat.',
     focus: [
       {
