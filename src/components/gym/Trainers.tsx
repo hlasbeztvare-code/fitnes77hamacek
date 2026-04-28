@@ -20,7 +20,7 @@ const miniTrainers = [
     name: "BEATA CEJNAROVÁ",
     slug: "beata-cejnarova",
     tags: "TRENÉRKA / NUTRI / SÍLA",
-    image: "/images/trainers/cejnarova.jpg"
+    image: "/images/trainers/cejnarova.webp"
   },
   {
     name: "LENKA PICKOVÁ",

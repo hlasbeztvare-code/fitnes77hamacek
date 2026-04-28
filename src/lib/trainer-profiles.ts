@@ -114,4 +114,36 @@ export const trainerProfiles: Record<string, TrainerProfile> = {
     ],
   },
 
+  'lenka-pickova': {
+    philosophy: 'Základem je diagnostika. Musíme vědět, jak se tělo hýbe, než ho začneme zatěžovat.',
+    focus: [
+      {
+        icon: '🔍',
+        title: 'Diagnostika těla',
+        description: 'Vstupní analýza pohybových stereotypů a zhodnocení mobility.',
+      },
+      {
+        icon: '🤸',
+        title: 'Mobilita a funkčnost',
+        description: 'Zlepšení rozsahu pohybu a celkové funkčnosti těla.',
+      },
+      {
+        icon: '⏳',
+        title: 'Formování postavy',
+        description: 'Efektivní trénink na míru vašim estetickým i fyzickým cílům.',
+      },
+      {
+        icon: '🛡️',
+        title: 'Prevence zranění',
+        description: 'Důraz na správnou techniku a dlouhodobě udržitelné výsledky.',
+      },
+    ],
+    forWhom: 'Ať už jste na úplném začátku a bojujete se ztuhlým tělem, nebo chcete posunout své výkony dál a přitom se hýbat zdravě. Lenka vám pomůže najít správný směr skrze diagnostiku a individuální přístup.',
+    achievements: [
+      'Odbornice na diagnostiku pohybového aparátu',
+      'Specialistka na mobilitu',
+      'Individuální coaching',
+    ],
+  },
+
 };
