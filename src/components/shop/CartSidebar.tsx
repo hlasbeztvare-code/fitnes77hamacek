@@ -36,7 +36,7 @@ export default function CartSidebar() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 z-[11001] w-full max-w-[450px] bg-zinc-950 text-white shadow-2xl flex flex-col border-l border-white/10"
+            className="fixed right-0 top-0 bottom-0 z-[11001] w-full max-w-[450px] bg-zinc-950 text-white shadow-2xl flex flex-col border-l border-white/10 h-[100dvh]"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-white/10 bg-zinc-950/50 backdrop-blur-sm sticky top-0 z-20">
@@ -156,7 +156,7 @@ export default function CartSidebar() {
 
             {/* Sticky Footer CTA - ALWAYS VISIBLE & AGGRESSIVE (L-CODE UX) */}
             {items.length > 0 && (
-              <div className="p-6 bg-zinc-950 border-t border-white/10 shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+              <div className="p-6 bg-zinc-950 border-t border-white/10 shadow-[0_-20px_50px_rgba(0,0,0,0.8)] sticky bottom-0 z-30 mt-auto">
                 <div className="flex items-center justify-between mb-6">
                   <span className="text-zinc-500 font-black uppercase tracking-[0.3em] text-[10px]">Mezisoučet</span>
                   <div className="text-right">
@@ -182,8 +182,6 @@ export default function CartSidebar() {
               </div>
             )}
 
-            {/* Empty Footer - Keep spacing but remove content that is now above */}
-            <div className="h-4 bg-zinc-950" />
 
           </motion.div>
         </>
