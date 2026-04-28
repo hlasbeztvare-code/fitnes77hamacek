@@ -23,7 +23,7 @@ const Pricing = () => {
       </div>
 
       <div className="max-w-[1400px] mx-auto relative z-10">
-        <div className="flex flex-col mb-20">
+        <div className="flex flex-col mb-10">
           <motion.span
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}

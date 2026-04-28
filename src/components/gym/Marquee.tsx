@@ -19,7 +19,7 @@ const Marquee: React.FC<MarqueeProps> = ({
   const animId = `marquee-flow-${speed}-${reverse ? 'rev' : 'fwd'}`;
   
   return (
-    <div className="relative flex overflow-x-hidden border-y border-white/10 bg-black py-6 md:py-10 w-full">
+    <div className="relative flex overflow-x-hidden border-y border-white/10 bg-black py-2 w-full">
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes ${animId} {
           0% { transform: translate3d(${reverse ? '-50%' : '0'}, 0, 0); }
