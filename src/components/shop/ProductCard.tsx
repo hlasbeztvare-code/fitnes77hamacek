@@ -164,7 +164,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
 
         <div className="mt-auto pt-2">
           <div className="flex flex-wrap items-center gap-1 sm:gap-3">
-            <span className="text-xl font-black tracking-tighter text-zinc-950">
+            <span className={`text-xl font-black tracking-tighter ${isDark ? 'text-white' : 'text-zinc-900'}`}>
               {(product.price || 0).toLocaleString('cs-CZ')} Kč
             </span>
           </div>

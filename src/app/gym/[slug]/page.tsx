@@ -98,7 +98,7 @@ export default async function TrainerDetailPage({ params }: Props) {
             alt={trainer.name}
             fill
             sizes="100vw"
-            className="object-cover object-[center_10%] grayscale-[0.3]"
+            className="object-cover object-[center_25%] grayscale-[0.3]"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
@@ -226,6 +226,7 @@ export default async function TrainerDetailPage({ params }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {profile.focus.map((item, i) => (
               <div key={i} className="border border-white/5 p-8 hover:border-[#d4ff00]/30 transition-colors duration-500 group">
+                <div className="text-white font-black text-lg mb-1">{item.price} Kč</div>
                 <div className="text-4xl mb-6">{item.icon}</div>
                 <h3 className="text-2xl font-black uppercase font-black tracking-wide group-hover:text-[#d4ff00] transition-colors mb-3">
                   {item.title}
