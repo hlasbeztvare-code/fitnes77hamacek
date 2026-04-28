@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const withdrawalSchema = z.object({
   orderId: z.string(),
   name: z.string(),
@@ -11,6 +9,16 @@ const withdrawalSchema = z.object({
   date: z.string(),
   reason: z.string().optional(),
 });
+
+// Lazy inicializace Resendu - aby build na Vercelu neselhal na chybějícím klíči
+const getResend = () => {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn('⚠️ RESEND_API_KEY is missing');
+    return null;
+  }
+  return new Resend(apiKey);
+};
 
 /**
  * L-CODE Dynamics | Legislative Bridge 06/2026
@@ -42,7 +50,13 @@ async function notifyOwner(data: any) {
 async function syncWithShoptet(data: any) {
   try {
     const { orderId, name, email, date, reason } = data;
+    const resend = getResend();
     
+    if (!resend) {
+      console.error('Resend client not initialized');
+      return false;
+    }
+
     // Shadow Injector: Odesíláme mail do Shoptetu v předepsaném formátu pro automatické párování
     await resend.emails.send({
       from: 'Fitness 77 <system@fit77.cz>',
