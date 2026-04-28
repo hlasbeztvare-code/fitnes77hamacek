@@ -21,6 +21,12 @@ const miniTrainers = [
     slug: "beata-cejnarova",
     tags: "TRENÉRKA / NUTRI / SÍLA",
     image: "/images/trainers/cejnarova.jpg"
+  },
+  {
+    name: "LENKA PICKOVÁ",
+    slug: "lenka-pickova",
+    tags: "TRENÉRKA / MOBILITA / DIAGNOSTIKA",
+    image: "/images/trainers/lenka.webp"
   }
 ];
 

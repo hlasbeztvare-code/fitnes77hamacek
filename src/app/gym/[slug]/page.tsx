@@ -35,12 +35,15 @@ export default async function TrainerDetailPage({ params }: Props) {
   const phoneMap: Record<string, string> = {
     'ondrej-soustruznik': '+420 773 688 076',
     'jaroslav-hamacek':   '+420 777 105 548',
+    'lenka-pickova':      '+420 722 951 850',
   };
   const instagramMap: Record<string, string> = {
     'beata-cejnarova': 'https://www.instagram.com/beatacejnarova',
+    'lenka-pickova':   'https://www.instagram.com/fitby_lenka',
   };
   const emailMap: Record<string, string> = {
     'beata-cejnarova': 'beata.cejnarova@seznam.cz',
+    'lenka-pickova':   'leni.pickova@seznam.cz',
   };
   const phone     = phoneMap[trainer.slug];
   const instagram = instagramMap[trainer.slug];
@@ -49,26 +52,32 @@ export default async function TrainerDetailPage({ params }: Props) {
   // Profil obsahu
   const profile = trainerProfiles[trainer.slug];
   
-  // ── TITULEK STACKU (GOLIÁŠ MANUAL OVERRIDE) ──
-  const stackHeadlineMap: Record<string, string> = {
-    'beata-cejnarova': 'BEATIN STACK',
-    'jaroslav-hamacek': 'JARDŮV STACK',
-    'ondrej-soustruznik': 'ONDROV STACK',
-  };
-  const stackHeadline = stackHeadlineMap[trainer.slug] || `${trainer.name.split(' ')[0].toUpperCase()} STACK`;
-  const stackSubline = "PRODUKTY, KTERÉ DOOPRAVDY POUŽÍVÁM. PRO VÝSLEDKY I ZDRAVÍ.";
-
-  // ── DYNAMICKÝ STACK (NÁHODNÝ VÝBĚR) ──
-  const allProducts = await db.product.findMany({
-    where: {
-      image: { not: '/images/products/placeholder.webp' } // Chceme jen ty s fotkou
-    }
-  });
+  // ── DYNAMICKÝ STACK (DLE DEFINICE) ──
+  const stackData = trainerStacks[trainer.slug];
+  const stackHeadline = stackData?.headline || `${trainer.name.split(' ')[0].toUpperCase()} STACK`;
+  const stackSubline = stackData?.subline || "PRODUKTY, KTERÉ DOOPRAVDY POUŽÍVÁM. PRO VÝSLEDKY I ZDRAVÍ.";
   
-  // Zamícháme a vybereme 4 náhodné kousky (Master Random)
-  const stackProducts = allProducts
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 4);
+  let stackProducts = [];
+  
+  if (stackData) {
+    stackProducts = await db.product.findMany({
+      where: {
+        slug: { in: stackData.productSlugs }
+      }
+    });
+    // Zachováme pořadí z definice
+    stackProducts.sort((a, b) => 
+      stackData.productSlugs.indexOf(a.slug) - stackData.productSlugs.indexOf(b.slug)
+    );
+  } else {
+    // Fallback na náhodu
+    const allProducts = await db.product.findMany({
+      where: {
+        image: { not: '/images/products/placeholder.webp' }
+      }
+    });
+    stackProducts = allProducts.sort(() => Math.random() - 0.5).slice(0, 4);
+  }
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">

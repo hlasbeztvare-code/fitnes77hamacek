@@ -172,6 +172,34 @@ const Pricing = () => {
                   </span>
                 </div>
               </div>
+              <div className="block group cursor-pointer relative">
+                <Link href="/gym/lenka-pickova" className="absolute inset-0 z-10" aria-label="Lenka Picková Profil"></Link>
+                <div className="flex items-center gap-10 mb-8">
+                  <div className="w-32 h-32 rounded-3xl overflow-hidden transition-all duration-700 -rotate-2 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative">
+                    <Image 
+                      src="/images/trainers/lenka.webp" 
+                      alt="Lenka Picková" 
+                      fill
+                      sizes="128px"
+                      loading="lazy"
+                      className="object-cover scale-110 group-hover:scale-100 transition-all duration-1000" 
+                    />
+                  </div>
+                  <div>
+                    <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-black tracking-wider uppercase leading-none">LENKA PICKOVÁ</h5>
+                    <div className="h-1 w-0 group-hover:w-full bg-[#d4ff00] transition-all duration-700 mt-2" />
+                  </div>
+                </div>
+                <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-medium max-w-sm group-hover:text-white/80 transition-colors mb-4">FITNESS TRENÉRKA</p>
+                <div className="flex items-center gap-6 flex-wrap relative z-20">
+                  <a href="https://www.instagram.com/fitby_lenka" target="_blank" rel="noopener noreferrer" className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
+                    @fitby_lenka
+                  </a>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20 group-hover:text-white/60 transition-colors">
+                    Detail profilu →
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 

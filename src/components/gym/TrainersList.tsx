@@ -16,7 +16,12 @@ const miniTrainers = [
   {
     name: "BEATA CEJNAROVÁ",
     tags: "FITNESS / NUTRITION / STRENGTH",
-    image: "/images/trainers/cejnarova.jpg"
+    image: "/images/trainers/cejnarova.webp"
+  },
+  {
+    name: "LENKA PICKOVÁ",
+    tags: "DIAGNOSTICS / MOBILITY / FITNESS",
+    image: "/images/trainers/lenka.webp"
   }
 ];
 

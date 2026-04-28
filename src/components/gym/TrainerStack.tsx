@@ -4,7 +4,8 @@ import ProductCard from '@/components/shop/ProductCard';
 
 type Product = {
   id: string;
-  shoptetId?: string | null;
+  shoptetProductId?: string | null;
+  shoptetPriceId?: string | null;
   name: string;
   slug: string;
   price: number;

@@ -13,33 +13,43 @@ export const trainerStacks: Record<string, {
   productSlugs: string[];
 }> = {
   'ondrej-soustruznik': {
-    headline: 'Ondřejův stack',
+    headline: 'Ondrův stack',
     subline: 'Produkty, které používám každý trénink. Bez kompromisů.',
     productSlugs: [
       'deadpump-v2-pump-formula',
       'creatine-monohydrate',
-      'bcaa-amino-complex',
+      'bcaa-4-1-1-glutamine',
       'black-dead-pre-workout',
     ],
   },
   'jaroslav-hamacek': {
-    headline: 'Hamáčkův stack',
+    headline: 'Jardův stack',
     subline: 'To, co doopravdy funguje. Testováno na vlastní kůži.',
     productSlugs: [
       'black-dead-pre-workout',
       'deadpump-v2-pump-formula',
       'creatine-monohydrate',
-      'bcaa-amino-complex',
+      'bcaa-4-1-1-glutamine',
     ],
   },
   'beata-cejnarova': {
     headline: 'Beátin stack',
     subline: 'Produkty, které doopravdy používám. Pro výsledky i zdraví.',
     productSlugs: [
-      'bcaa-amino-complex',
+      'bcaa-4-1-1-glutamine',
       'creatine-monohydrate',
       'deadpump-v2-pump-formula',
       'black-dead-pre-workout',
+    ],
+  },
+  'lenka-pickova': {
+    headline: 'Lenčin stack',
+    subline: 'Pro maximální regeneraci a mobilitu. Moje denní rutina.',
+    productSlugs: [
+      'bcaa-4-1-1-glutamine',
+      'creatine-monohydrate',
+      'deadpump-v2-pump-formula',
+      'ryzova-kase',
     ],
   },
 };
