@@ -85,7 +85,9 @@ export default async function TrainerDetailPage({ params }: Props) {
             alt={trainer.name}
             fill
             sizes="100vw"
-            className="object-cover object-[center_25%] grayscale-[0.3]"
+            className="object-cover object-[center_25%] grayscale-[0.2] contrast-[1.1] brightness-[0.9]"
+            quality={100}
+            unoptimized
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
