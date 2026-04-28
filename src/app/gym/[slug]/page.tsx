@@ -219,7 +219,7 @@ export default async function TrainerDetailPage({ params }: Props) {
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-4 block font-space">
               Co tréninky zahrnují
             </span>
-            <h2 className="text-[8vw] md:text-[4vw] font-black uppercase leading-[0.85] tracking-tighter font-black">
+            <h2 className="text-4xl md:text-6xl font-black uppercase font-black leading-[0.8] tracking-tighter mb-10">
               OBLASTI <span className="text-[#d4ff00]">ZAMĚŘENÍ</span>
             </h2>
           </div>
@@ -227,11 +227,11 @@ export default async function TrainerDetailPage({ params }: Props) {
             {profile.focus.map((item, i) => (
               <div key={i} className="border border-white/5 p-8 hover:border-[#d4ff00]/30 transition-colors duration-500 group">
                 <div className="text-white font-black text-lg mb-1">{item.price} Kč</div>
-                <div className="text-4xl mb-6">{item.icon}</div>
-                <h3 className="text-2xl font-black uppercase font-black tracking-wide group-hover:text-[#d4ff00] transition-colors mb-3">
+                <div className="text-3xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-black uppercase font-black tracking-wide group-hover:text-[#d4ff00] transition-colors mb-2">
                   {item.title}
                 </h3>
-                <p className="text-white/40 font-space text-sm leading-relaxed">
+                <p className="text-white/40 text-xs sm:text-sm font-medium leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -244,10 +244,10 @@ export default async function TrainerDetailPage({ params }: Props) {
       {profile?.forWhom && (
         <div className="px-6 md:px-16 pb-32 max-w-[1400px] mx-auto">
           <div className="border border-[#d4ff00]/10 bg-white/[0.02] p-12 md:p-16">
-            <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-6 block font-space">
-              Pro koho jsou tréninky vhodné?
-            </span>
-            <p className="text-2xl md:text-3xl text-white/70 leading-relaxed font-space font-medium">
+            <h2 className="text-3xl md:text-5xl font-black uppercase font-black leading-[0.8] tracking-tighter mb-8">
+              O <span className="text-[#d4ff00]">TRENÉROVI</span>
+            </h2>
+            <p className="text-xl md:text-2xl text-white/70 leading-relaxed font-space font-medium">
               {profile.forWhom}
             </p>
             <div className="mt-10 flex gap-4 flex-wrap">
