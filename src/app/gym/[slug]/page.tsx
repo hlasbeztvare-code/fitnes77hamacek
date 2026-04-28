@@ -81,6 +81,7 @@ export default async function TrainerDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">
+      <script dangerouslySetInnerHTML={{ __reactHydrationDiff:{}, __html: "window.scrollTo(0,0);" }} />
 
       {/* Back */}
       <div className="absolute top-24 left-6 md:left-16 z-30">
@@ -97,7 +98,7 @@ export default async function TrainerDetailPage({ params }: Props) {
             alt={trainer.name}
             fill
             sizes="100vw"
-            className="object-cover object-top grayscale-[0.3]"
+            className="object-cover object-[center_10%] grayscale-[0.3]"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
@@ -107,7 +108,7 @@ export default async function TrainerDetailPage({ params }: Props) {
           <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-6 block font-space">
             {trainer.role}
           </span>
-          <h1 className="text-[13vw] md:text-[8vw] font-black uppercase leading-[0.85] tracking-tighter font-black">
+          <h1 className="text-[10vw] md:text-[7vw] font-black uppercase leading-[0.85] tracking-tighter font-black">
             {trainer.name.split(' ')[0]}<br />
             <span className="text-[#d4ff00]">{trainer.name.split(' ').slice(1).join(' ')}</span>
           </h1>
@@ -166,9 +167,9 @@ export default async function TrainerDetailPage({ params }: Props) {
                   </a>
                 )}
                 {instagram && (
-                  <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-xl sm:text-2xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group">
+                  <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-xl sm:text-2xl font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group">
                     <span className="w-3 h-3 rounded-full bg-[#d4ff00] group-hover:scale-150 transition-transform duration-300" />
-                    @beatacejnarova
+                    @{instagram.split('/').filter(Boolean).pop()}
                   </a>
                 )}
                 {email && (
