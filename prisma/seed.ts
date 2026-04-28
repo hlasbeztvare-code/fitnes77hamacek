@@ -23,10 +23,18 @@ async function main() {
         oldPrice: 790,
         shoptetProductId: '55',
         shoptetPriceId: '58',
-        image: '/images/products/creatine.webp',
+        image: '/images/products/creatine-pure.png',
         stock: 120,
         category: 'supplement',
         featured: true,
+        ingredients: '100% mikronizovaný kreatin monohydrát (čistota 99.9%). Žádná barviva, žádná sladidla.',
+        nutrition: {
+          'Energetická hodnota': '0 kJ / 0 kcal',
+          'Tuky': '0 g',
+          'Sacharidy': '0 g',
+          'Bílkoviny': '0 g',
+          'Kreatin monohydrát': '100 g',
+        }
       },
       {
         name: 'BCAA 4:1:1 + GLUTAMINE – FITNESS 77',
@@ -46,6 +54,15 @@ async function main() {
         stock: 90,
         category: 'supplement',
         featured: true,
+        ingredients: 'L-Leucin, L-Isoleucin, L-Valin, L-Glutamin, regulátor kyselosti (kyselina citronová), aroma, sladidlo (sukralóza).',
+        nutrition: {
+          'Energetická hodnota': '1450 kJ / 346 kcal',
+          'L-Leucin': '40 g',
+          'L-Isoleucin': '10 g',
+          'L-Valin': '10 g',
+          'L-Glutamin': '30 g',
+          'Bílkoviny': '90 g',
+        }
       },
       {
         name: 'RÝŽOVÁ KAŠE – FITNESS 77',
@@ -55,16 +72,26 @@ async function main() {
         price: 90,
         oldPrice: null,
         shoptetProductId: '61',
-        shoptetPriceId: '79', // default COK
+        shoptetPriceId: '79', 
         variants: [
           { name: 'Čokoláda', variantCode: 'COK', stock: 50, shoptetPriceId: '79' },
           { name: 'Slaný karamel', variantCode: 'SLA', stock: 50, shoptetPriceId: '82' },
           { name: 'Piškotový dort', variantCode: 'PIS', stock: 50, shoptetPriceId: '85' }
         ],
-        image: '/images/products/placeholder.webp',
+        image: '/images/products/kase1.png',
         stock: 150,
         category: 'supplement',
         featured: true,
+        ingredients: '100% rýžová mouka, kakaový prášek (u příchutě čokoláda), aroma, sladidlo (sukralóza).',
+        nutrition: {
+          'Energetická hodnota': '1580 kJ / 372 kcal',
+          'Tuky': '1.5 g',
+          'Z toho nasycené': '0.3 g',
+          'Sacharidy': '80 g',
+          'Z toho cukry': '0.5 g',
+          'Bílkoviny': '7 g',
+          'Sůl': '0.01 g',
+        }
       },
       {
         name: 'BLACK DEAD – PRE WORKOUT',
@@ -79,6 +106,15 @@ async function main() {
         stock: 50,
         category: 'supplement',
         featured: true,
+        ingredients: 'Beta-Alanin, L-Citrulin Malát, AAKG, Taurin, Tyrosin, Kofein bezvodý, Extrakt ze zeleného čaje, Sladidlo (Sukralóza).',
+        nutrition: {
+          'Beta-Alanin': '4000 mg',
+          'L-Citrulin Malát': '6000 mg',
+          'AAKG': '3000 mg',
+          'Kofein': '200 mg',
+          'Taurin': '1000 mg',
+          'Tyrosin': '500 mg',
+        }
       },
       {
         name: 'DEAD PUMP – STIM FREE',
@@ -93,6 +129,14 @@ async function main() {
         stock: 45,
         category: 'supplement',
         featured: true,
+        ingredients: 'L-Citrulin, Glycerol monostearát, AAKG, Extrakt z červené řepy, Vitamín C, Sladidlo (Steviol-glykosidy).',
+        nutrition: {
+          'L-Citrulin': '8000 mg',
+          'Glycerol': '3000 mg',
+          'AAKG': '4000 mg',
+          'Vitamín C': '250 mg',
+          'Červená řepa': '500 mg',
+        }
       },
     ],
   });
@@ -110,7 +154,7 @@ async function main() {
         name: 'Heavy Duty Powerlifting Opasek',
         slug: 'heavy-duty-powerlifting-opasek',
         shortDescription: 'Nekompromisní opora pro ty nejtvrdší lifty.',
-        description: 'Profesionální vzpěračský opasek navržený speciálně pro liftery, kteří zvedají fakt těžké váhy. Poskytuje maximální zpevnění středu těla při těžkých dřepech a mrtvých tazích.',
+        description: 'Profesionální vzpěračský opasek navržený speciálně pro liftery, kteří zvedají fakt těžké váhy. Poskytuje maximální zpevnění středu těla při těžkých dřepech a mrtvých tazích. Vyroben z prémiové kůže se zesíleným prošíváním a masivní ocelovou sponou. Šířka 10cm, tloušťka 13mm – splňuje parametry pro závodní lifting.',
         price: 1890,
         oldPrice: 2290,
         shoptetProductId: '43',
@@ -119,6 +163,7 @@ async function main() {
         stock: 15,
         category: 'equipment',
         featured: true,
+        ingredients: 'Materiál: 100% výběrová hovězí kůže, Spona: Nerezová ocel s rychlopřezkou, Švy: Vysokopevnostní nylon.',
       },
     ],
   });
