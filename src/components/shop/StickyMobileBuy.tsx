@@ -37,7 +37,7 @@ export default function StickyMobileBuy({ product }: Props) {
           const slug = product.slug;
           window.location.href = `/supplements/${slug}`;
         }}
-        className="w-full bg-black text-white font-black text-sm uppercase tracking-[0.25em] py-4 px-6 shadow-2xl flex items-center justify-center gap-3 active:scale-95 transition-all border-b-4 border-[#E10600]"
+        className="f77-button-master bg-black text-white py-4 px-6 shadow-2xl flex items-center justify-center gap-3 active:scale-95 transition-all border-b-4 border-[#E10600]"
       >
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E10600] opacity-75"></span>
