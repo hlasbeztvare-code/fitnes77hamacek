@@ -65,56 +65,47 @@ export default function CartPage() {
           amount: item.quantity,
         }));
 
-        // GOLIÁŠ Sync v23.0 - Sekvenční skrytý Iframe s eliminací Race Condition
-        // Prohlížeč zpracuje POST jako nativní formulář a my ho nepřesměrujeme, dokud Shoptet nevrátí Cookie
+        // GOLIÁŠ Sync v30.0 - The Final Bridge (postMessage)
+        // Iframe se načte z Shoptetu, takže skript v něm spuštěný má plný přístup ke cookies
         const iframe = document.createElement('iframe');
-        iframe.name = 'shoptet_sync_iframe';
+        iframe.src = 'https://obchod.fit77.cz/';
         iframe.style.display = 'none';
         document.body.appendChild(iframe);
 
-        for (const { item, ids } of resolved) {
-          await new Promise((resolve) => {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1';
-            form.target = 'shoptet_sync_iframe';
-            
-            const inputs = [
-              { name: 'productId', value: ids!.productId.toString() },
-              { name: 'priceId', value: ids!.priceId.toString() },
-              { name: 'amount', value: item.quantity.toString() },
-              { name: 'language', value: 'cs' }
-            ];
+        const shoptetItems = resolved.map(({ item, ids }) => ({
+          priceId: ids!.priceId.toString(),
+          productId: ids!.productId.toString(),
+          amount: item.quantity.toString(),
+        }));
 
-            inputs.forEach(i => {
-              const input = document.createElement('input');
-              input.type = 'hidden';
-              input.name = i.name;
-              input.value = i.value;
-              form.appendChild(input);
-            });
+        // Nasloucháme odpovědi od Shoptetu
+        const messageListener = (e: MessageEvent) => {
+          if (e.origin !== 'https://obchod.fit77.cz') return;
+          if (e.data && e.data.action === 'SYNC_DONE') {
+            window.removeEventListener('message', messageListener);
+            document.body.removeChild(iframe);
+            window.location.href = 'https://obchod.fit77.cz/objednavka/';
+          }
+        };
+        window.addEventListener('message', messageListener);
 
-            document.body.appendChild(form);
+        // Jakmile se Iframe s Shoptetem načte, pošleme mu seznam košíku
+        iframe.onload = () => {
+          iframe.contentWindow?.postMessage({
+            action: 'SYNC_CART',
+            items: shoptetItems
+          }, 'https://obchod.fit77.cz');
+        };
 
-            // Timeout pro jistotu, kdyby Iframe onload selhal (např. v mobilním Safari)
-            const fallbackTimeout = setTimeout(() => {
-              document.body.removeChild(form);
-              resolve(true);
-            }, 1200);
-            
-            iframe.onload = () => {
-              clearTimeout(fallbackTimeout);
-              document.body.removeChild(form);
-              resolve(true);
-            };
+        // Fallback pro případ chyby sítě atd.
+        setTimeout(() => {
+          window.removeEventListener('message', messageListener);
+          if (document.body.contains(iframe)) {
+            document.body.removeChild(iframe);
+          }
+          window.location.href = 'https://obchod.fit77.cz/objednavka/';
+        }, 5000);
 
-            form.submit();
-          });
-        }
-
-        // Vše bezpečně uloženo v Shoptet session, uklízíme a přesměrováváme
-        document.body.removeChild(iframe);
-        window.location.href = 'https://obchod.fit77.cz/objednavka/';
       } catch (err) {
         console.error('Cart Bridge Error:', err);
         setStatus('error');
