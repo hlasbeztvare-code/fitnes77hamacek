@@ -65,22 +65,55 @@ export default function CartPage() {
           amount: item.quantity,
         }));
 
-        // GOLIÁŠ Sync v22.0 - Nativní GET požadavky
-        // Obejde CSRF ochranu Shoptetu, protože GET požadavky (odkazy z e-mailů apod.) Shoptet nezakazuje.
+        // GOLIÁŠ Sync v23.0 - Sekvenční skrytý Iframe s eliminací Race Condition
+        // Prohlížeč zpracuje POST jako nativní formulář a my ho nepřesměrujeme, dokud Shoptet nevrátí Cookie
+        const iframe = document.createElement('iframe');
+        iframe.name = 'shoptet_sync_iframe';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+
         for (const { item, ids } of resolved) {
-          const url = `https://obchod.fit77.cz/action/Cart/addCartItem/?productId=${ids!.productId}&priceId=${ids!.priceId}&amount=${item.quantity}&language=cs`;
+          await new Promise((resolve) => {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1';
+            form.target = 'shoptet_sync_iframe';
+            
+            const inputs = [
+              { name: 'productId', value: ids!.productId.toString() },
+              { name: 'priceId', value: ids!.priceId.toString() },
+              { name: 'amount', value: item.quantity.toString() },
+              { name: 'language', value: 'cs' }
+            ];
 
-          await fetch(url, {
-            method: 'GET',
-            mode: 'no-cors', // Nevyhodí CORS error
-            credentials: 'include', // Pošle a uloží cookies
+            inputs.forEach(i => {
+              const input = document.createElement('input');
+              input.type = 'hidden';
+              input.name = i.name;
+              input.value = i.value;
+              form.appendChild(input);
+            });
+
+            document.body.appendChild(form);
+
+            // Timeout pro jistotu, kdyby Iframe onload selhal (např. v mobilním Safari)
+            const fallbackTimeout = setTimeout(() => {
+              document.body.removeChild(form);
+              resolve(true);
+            }, 1200);
+            
+            iframe.onload = () => {
+              clearTimeout(fallbackTimeout);
+              document.body.removeChild(form);
+              resolve(true);
+            };
+
+            form.submit();
           });
-
-          // Dáme Shoptetu 400ms na uložení do session mezi položkami
-          await new Promise(resolve => setTimeout(resolve, 400));
         }
 
-        // Vše posláno, přesměrováváme
+        // Vše bezpečně uloženo v Shoptet session, uklízíme a přesměrováváme
+        document.body.removeChild(iframe);
         window.location.href = 'https://obchod.fit77.cz/objednavka/';
       } catch (err) {
         console.error('Cart Bridge Error:', err);
