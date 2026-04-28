@@ -41,7 +41,7 @@ export default async function SupplementsPage() {
 
       {/* Main Grid (White Background) - MOVED IMMEDIATELY UNDER HERO/INFO */}
       <section className="bg-white pt-2 pb-12">
-        <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
+        <div className="mx-auto w-[min(1280px,calc(100%-48px))]">
           <Reveal>
             <div className="max-w-3xl mb-8">
               <div className="inline-block border-l-4 border-zinc-200 pl-3 text-sm font-black uppercase tracking-[0.22em] text-zinc-400">

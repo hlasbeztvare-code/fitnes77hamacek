@@ -31,7 +31,7 @@ export default function Navbar() {
           className="w-full pointer-events-auto px-2 sm:px-0"
           style={{ paddingTop: 'env(safe-area-inset-top)' }}
         >
-          <div className="flex w-full items-center rounded-b-[2.5rem] border-b border-white/20 bg-black/40 py-1 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-4 md:px-12">
+          <div className="flex w-full items-center rounded-b-[2.5rem] border-b border-white/20 bg-black/40 py-1 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-6 md:px-12">
             {/* Logo */}
             <div className="flex flex-1 md:w-[300px] items-center">
               <Link href="/" className="flex items-center gap-2 md:gap-3 px-1 md:px-0">
