@@ -23,7 +23,12 @@ export async function POST(req: Request) {
       const response = await fetch('https://obchod.fit77.cz/action/Cart/addCartItem/?simple_ajax_cart=1', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'X-Requested-With': 'XMLHttpRequest',
+          'Origin': 'https://obchod.fit77.cz',
+          'Referer': 'https://obchod.fit77.cz/',
+          'Accept': 'application/json, text/javascript, */*; q=0.01',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
           'Cookie': shoptetSessionId ? `PHPSESSID=${shoptetSessionId}` : '',
         },
         body: body.toString(),
@@ -41,12 +46,12 @@ export async function POST(req: Request) {
 
     // Máme naplněnou session a její ID. Teď ji předáme Next.js klientovi.
     const res = NextResponse.json({ success: true });
-    
+
     if (shoptetSessionId) {
       // Zásadní trik: Nastavujeme Cookie pro nadřazenou doménu .fit77.cz
       // Prohlížeč ji pak pošle i na obchod.fit77.cz
       const isDev = process.env.NODE_ENV === 'development';
-      
+
       res.cookies.set('PHPSESSID', shoptetSessionId, {
         domain: isDev ? undefined : '.fit77.cz', // Na localhostu nepoužívat .fit77.cz
         path: '/',
