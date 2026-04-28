@@ -120,9 +120,9 @@ export default async function TrainerDetailPage({ params }: Props) {
         </div>
       </div>
 
-      {/* ── BIO + ZAMĚŘENÍ ── */}
-      <div className="px-6 md:px-16 py-32 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
+      {/* ── BIO + ZAMĚŘENÍ (Global Spacing Protocol: py-20) ── */}
+      <div className="px-6 md:px-16 py-20 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
           {/* Levý sloupec */}
           <div>
@@ -150,13 +150,13 @@ export default async function TrainerDetailPage({ params }: Props) {
               <div className="mt-16 space-y-4">
                 <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] font-space">Přímý kontakt</p>
                 {phone && (
-                  <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-4 text-4xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group whitespace-nowrap">
+                  <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-4 text-3xl md:text-4xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group whitespace-nowrap">
                     <span className="w-3 h-3 rounded-full bg-[#d4ff00] group-hover:scale-150 transition-transform duration-300 flex-shrink-0" />
                     {phone}
                   </a>
                 )}
                 {instagram && (
-                  <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-2xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group">
+                  <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-xl md:text-2xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group">
                     <span className="w-3 h-3 rounded-full bg-[#d4ff00] group-hover:scale-150 transition-transform duration-300 flex-shrink-0" />
                     @{instagram.split('/').filter(Boolean).pop()}
                   </a>
@@ -179,15 +179,15 @@ export default async function TrainerDetailPage({ params }: Props) {
                 Chceš trénovat s {profile.nameInstrumental}? Napiš nebo zavolej a dohodneme se na termínu.
               </p>
               {phone ? (
-                <a href={`tel:${phone.replace(/\s/g, '')}`} className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-2xl hover:bg-white transition-colors duration-300 whitespace-nowrap">
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="f77-button-master bg-[#d4ff00] text-black py-5 hover:bg-white transition-colors duration-300">
                   Zavolat {profile.gender === 'female' ? 'trenérce' : 'trenérovi'}
                 </a>
               ) : instagram ? (
-                <a href={instagram} target="_blank" rel="noopener noreferrer" className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-2xl hover:bg-white transition-colors duration-300">
+                <a href={instagram} target="_blank" rel="noopener noreferrer" className="f77-button-master bg-[#d4ff00] text-black py-5 hover:bg-white transition-colors duration-300">
                   Napsat na Instagram
                 </a>
               ) : (
-                <a href={`mailto:${email ?? 'fitness77@post.cz'}`} className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-2xl hover:bg-white transition-colors duration-300">
+                <a href={`mailto:${email ?? 'fitness77@post.cz'}`} className="f77-button-master bg-[#d4ff00] text-black py-5 hover:bg-white transition-colors duration-300">
                   Kontaktovat e-mailem
                 </a>
               )}
@@ -203,12 +203,12 @@ export default async function TrainerDetailPage({ params }: Props) {
 
       {/* ── OBLASTI ZAMĚŘENÍ ── */}
       {profile?.focus && (
-        <div className="px-6 md:px-16 pb-32 max-w-[1400px] mx-auto">
-          <div className="border-t border-white/5 pt-24 mb-16">
+        <div className="px-6 md:px-16 pb-20 max-w-[1400px] mx-auto">
+          <div className="border-t border-white/5 pt-16 mb-12">
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-4 block font-space">
               Co tréninky zahrnují
             </span>
-            <h2 className="text-[8vw] md:text-[4vw] font-black uppercase leading-[0.85] tracking-tighter font-black">
+            <h2 className="text-[10vw] md:text-[5vw] font-black uppercase leading-[0.85] tracking-tighter font-black">
               OBLASTI <span className="text-[#d4ff00]">ZAMĚŘENÍ</span>
             </h2>
           </div>
@@ -230,7 +230,7 @@ export default async function TrainerDetailPage({ params }: Props) {
 
       {/* ── PRO KOHO ── */}
       {profile?.forWhom && (
-        <div className="px-6 md:px-16 pb-32 max-w-[1400px] mx-auto">
+        <div className="px-6 md:px-16 pb-20 max-w-[1400px] mx-auto">
           <div className="border border-[#d4ff00]/10 bg-white/[0.02] p-12 md:p-16">
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-6 block font-space">
               Pro koho jsou tréninky vhodné?
@@ -240,11 +240,11 @@ export default async function TrainerDetailPage({ params }: Props) {
             </p>
             <div className="mt-10 flex gap-4 flex-wrap">
               {phone ? (
-                <a href={`tel:${phone.replace(/\s/g, '')}`} className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-8 py-4 font-black text-xl hover:bg-white transition-colors whitespace-nowrap">
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="f77-button-master bg-[#d4ff00] text-black py-4 hover:bg-white transition-colors max-w-sm">
                   Rezervovat trénink
                 </a>
               ) : instagram ? (
-                <a href={instagram} target="_blank" rel="noopener noreferrer" className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-8 py-4 font-black text-xl hover:bg-white transition-colors whitespace-nowrap">
+                <a href={instagram} target="_blank" rel="noopener noreferrer" className="f77-button-master bg-[#d4ff00] text-black py-4 hover:bg-white transition-colors max-w-sm">
                   Napsat na Instagram
                 </a>
               ) : null}
