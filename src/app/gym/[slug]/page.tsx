@@ -108,7 +108,7 @@ export default async function TrainerDetailPage({ params }: Props) {
           <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-6 block font-space">
             {trainer.role}
           </span>
-          <h1 className="text-[10vw] md:text-[7vw] font-black uppercase leading-[0.85] tracking-tighter font-black">
+          <h1 className="text-[clamp(2.5rem,10vw,4.5rem)] font-black uppercase leading-[0.8] tracking-tighter font-black">
             {trainer.name.split(' ')[0]}<br />
             <span className="text-[#d4ff00]">{trainer.name.split(' ').slice(1).join(' ')}</span>
           </h1>
@@ -140,7 +140,7 @@ export default async function TrainerDetailPage({ params }: Props) {
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-8 block font-space">
               {trainer.slug === 'beata-cejnarova' ? 'O trenérce' : 'O trenérovi'}
             </span>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed font-space font-medium break-words">
+            <p className="text-[clamp(1rem,4vw,1.25rem)] text-white/70 leading-[1.5] font-space font-medium break-words">
               {trainer.bio}
             </p>
 
@@ -246,7 +246,7 @@ export default async function TrainerDetailPage({ params }: Props) {
             <h2 className="text-3xl md:text-5xl font-black uppercase font-black leading-[0.8] tracking-tighter mb-8">
               O <span className="text-[#d4ff00]">TRENÉROVI</span>
             </h2>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed font-space font-medium break-words hyphens-auto">
+            <p className="text-[clamp(1rem,4vw,1.25rem)] text-white/70 leading-[1.5] font-space font-medium break-words hyphens-auto">
               {profile.forWhom}
             </p>
             <div className="mt-10 flex gap-4 flex-wrap">
