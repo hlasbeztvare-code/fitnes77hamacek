@@ -59,47 +59,15 @@ export default function CartPage() {
       setStatus('sending');
 
       try {
-        // GOLIÁŠ Sync v30.0 - The Final Bridge (postMessage)
-        // Iframe se načte z Shoptetu, takže skript v něm spuštěný má plný přístup ke cookies
-        const iframe = document.createElement('iframe');
-        iframe.src = 'https://obchod.fit77.cz/';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
+        // GOLIÁŠ Sync v40.0 - Pašerák v URL
+        // Vyhneme se úplně všem CORS a X-Frame-Options blokacím Shoptetu.
+        // Produkty zabalíme do textu a pošleme je přes parametr v adrese přímo Shoptetu.
+        const itemsPayload = resolved.map(({ item, ids }) => {
+          return `${ids!.productId}:${ids!.priceId}:${item.quantity}`;
+        }).join(',');
 
-        const shoptetItems = resolved.map(({ item, ids }) => ({
-          priceId: ids!.priceId.toString(),
-          productId: ids!.productId.toString(),
-          amount: item.quantity.toString(),
-        }));
-
-        // Nasloucháme odpovědi od Shoptetu
-        const messageListener = (e: MessageEvent) => {
-          if (e.origin !== 'https://obchod.fit77.cz') return;
-          if (e.data && e.data.action === 'SYNC_DONE') {
-            window.removeEventListener('message', messageListener);
-            document.body.removeChild(iframe);
-            window.location.href = 'https://obchod.fit77.cz/objednavka/';
-          }
-        };
-        window.addEventListener('message', messageListener);
-
-        // Jakmile se Iframe s Shoptetem načte, pošleme mu seznam košíku
-        iframe.onload = () => {
-          iframe.contentWindow?.postMessage({
-            action: 'SYNC_CART',
-            items: shoptetItems
-          }, 'https://obchod.fit77.cz');
-        };
-
-        // Fallback pro případ chyby sítě atd.
-        setTimeout(() => {
-          window.removeEventListener('message', messageListener);
-          if (document.body.contains(iframe)) {
-            document.body.removeChild(iframe);
-          }
-          window.location.href = 'https://obchod.fit77.cz/objednavka/';
-        }, 5000);
-
+        // Přesměrujeme zákazníka rovnou na Shoptet s tímto nákladem
+        window.location.href = `https://obchod.fit77.cz/?sync_cart=1&items=${itemsPayload}`;
       } catch (err) {
         console.error('Cart Bridge Error:', err);
         setStatus('error');
