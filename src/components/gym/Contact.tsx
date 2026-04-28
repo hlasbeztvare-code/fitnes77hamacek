@@ -36,8 +36,8 @@ const Contact = () => {
             <div className="flex gap-12">
               <div>
                 <p className="text-white/40 font-medium text-xs tracking-widest uppercase mb-4">Telefon</p>
-                <a href="tel:+420123456789" className="text-2xl font-bold text-white font-black hover:text-[#d4ff00] transition-colors">
-                  +420 123 456 789
+                <a href="tel:+420777105548" className="text-2xl font-bold text-white font-black hover:text-[#d4ff00] transition-colors whitespace-nowrap">
+                  +420 777 105 548
                 </a>
               </div>
               <div>

@@ -98,7 +98,7 @@ const Pricing = () => {
                       fill
                       sizes="128px"
                       loading="lazy"
-                      className="object-cover scale-110 group-hover:scale-100 transition-all duration-1000" 
+                      className="object-cover object-top transition-all duration-1000" 
                     />
                   </div>
                   <div>
@@ -108,7 +108,7 @@ const Pricing = () => {
                 </div>
                 <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-medium max-w-sm group-hover:text-white/80 transition-colors mb-4">HEAD COACH / FYZIO / SÍLA</p>
                 <div className="flex items-center gap-6 flex-wrap relative z-20">
-                  <a href="tel:+420773688076" className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
+                  <a href="tel:+420773688076" className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all whitespace-nowrap">
                     Kontaktovat: +420 773 688 076
                   </a>
                   <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20 group-hover:text-white/60 transition-colors">
@@ -126,7 +126,7 @@ const Pricing = () => {
                       fill
                       sizes="128px"
                       loading="lazy"
-                      className="object-cover scale-110 group-hover:scale-100 transition-all duration-1000" 
+                      className="object-cover object-top transition-all duration-1000" 
                     />
                   </div>
                   <div>
@@ -136,7 +136,7 @@ const Pricing = () => {
                 </div>
                 <p className="text-xl font-medium text-white/40 uppercase tracking-[0.2em] font-medium max-w-sm group-hover:text-white/80 transition-colors mb-4">MAJITEL / BOX / KOMUNITA</p>
                 <div className="flex items-center gap-6 flex-wrap relative z-20">
-                  <a href="tel:+420777105548" className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all">
+                  <a href="tel:+420777105548" className="inline-block text-[#d4ff00] border border-[#d4ff00]/30 px-4 py-2 rounded-xl uppercase text-sm font-bold tracking-widest hover:bg-[#d4ff00] hover:text-black transition-all whitespace-nowrap">
                     Kontaktovat: +420 777 105 548
                   </a>
                   <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20 group-hover:text-white/60 transition-colors">
@@ -149,12 +149,12 @@ const Pricing = () => {
                 <div className="flex items-center gap-10 mb-8">
                   <div className="w-32 h-32 rounded-3xl overflow-hidden transition-all duration-700 rotate-2 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative">
                     <Image 
-                      src="/images/trainers/cejnarova.jpg" 
+                      src="/images/trainers/cejnarova.webp" 
                       alt="Beata Cejnarová" 
                       fill
                       sizes="128px"
                       loading="lazy"
-                      className="object-cover scale-110 group-hover:scale-100 transition-all duration-1000" 
+                      className="object-cover object-top transition-all duration-1000" 
                     />
                   </div>
                   <div>
@@ -182,7 +182,7 @@ const Pricing = () => {
                       fill
                       sizes="128px"
                       loading="lazy"
-                      className="object-cover scale-110 group-hover:scale-100 transition-all duration-1000" 
+                      className="object-cover object-top transition-all duration-1000" 
                     />
                   </div>
                   <div>

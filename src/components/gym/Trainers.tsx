@@ -52,8 +52,8 @@ export const Trainers = () => {
                   whileHover={{ x: 10 }}
                   className="flex items-center gap-6 group cursor-pointer mb-8 last:mb-0"
                 >
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/10 group-hover:border-[#d4ff00]/50 bg-zinc-900">
-                    <img src={t.image} alt={t.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/10 group-hover:border-[#d4ff00]/50 bg-zinc-900 shrink-0">
+                    <img src={t.image} alt={t.name} loading="lazy" decoding="async" className="w-full h-full object-cover object-top" />
                   </div>
                   <div>
                     <h3 className="text-3xl font-bold text-white font-black tracking-tight group-hover:text-[#d4ff00] transition-colors uppercase">

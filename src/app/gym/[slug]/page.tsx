@@ -160,13 +160,13 @@ export default async function TrainerDetailPage({ params }: Props) {
               <div className="mt-16 space-y-4">
                 <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] font-space">Přímý kontakt</p>
                 {phone && (
-                  <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-4 text-4xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group">
-                    <span className="w-3 h-3 rounded-full bg-[#d4ff00] group-hover:scale-150 transition-transform duration-300" />
+                  <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-4 text-xl sm:text-4xl font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group whitespace-nowrap">
+                    <span className="w-3 h-3 rounded-full bg-[#d4ff00] group-hover:scale-150 transition-transform duration-300 flex-shrink-0" />
                     {phone}
                   </a>
                 )}
                 {instagram && (
-                  <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-2xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group">
+                  <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-xl sm:text-2xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group">
                     <span className="w-3 h-3 rounded-full bg-[#d4ff00] group-hover:scale-150 transition-transform duration-300" />
                     @beatacejnarova
                   </a>
@@ -189,7 +189,7 @@ export default async function TrainerDetailPage({ params }: Props) {
                 Chceš trénovat s {trainer.name.split(' ')[0]}? Napiš nebo zavolej a dohodneme se na termínu.
               </p>
               {phone ? (
-                <a href={`tel:${phone.replace(/\s/g, '')}`} className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-2xl hover:bg-white transition-colors duration-300">
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-xl sm:text-2xl hover:bg-white transition-colors duration-300 whitespace-nowrap">
                   Zavolat trenérovi
                 </a>
               ) : instagram ? (
