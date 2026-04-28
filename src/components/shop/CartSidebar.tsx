@@ -161,7 +161,7 @@ export default function CartSidebar() {
                   <span className="text-zinc-500 font-black uppercase tracking-[0.3em] text-[10px]">Mezisoučet</span>
                   <div className="text-right">
                     <span className="text-2xl md:text-3xl font-black text-white tracking-tighter">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
-                    <p className="text-[9px] text-[#E10600] font-black uppercase tracking-widest mt-1">Doprava zdarma od 2 000 Kč</p>
+                    <p className="text-[9px] text-[#E10600] font-black uppercase tracking-widest mt-1">Doprava zdarma od 2 500 Kč</p>
                   </div>
                 </div>
                 
