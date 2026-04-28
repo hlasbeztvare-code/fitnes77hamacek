@@ -1,22 +1,23 @@
 'use client';
 
-import { X, ShoppingBag, Plus, Minus, Trash2 } from 'lucide-react';
+import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCartStore } from '@/hooks/useCartStore';
 import { usePathname } from 'next/navigation';
 import useMounted from '@/hooks/useMounted';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function CartDrawer() {
   const { isOpen, closeCart, items, updateQuantity, removeItem, totalPrice } = useCartStore();
   const mounted = useMounted();
   const pathname = usePathname();
 
-  // Dynamická barva podle kontextu (Janův Mandate: E-shop je ČERVENÝ)
+  // Janův Mandate: E-shop je ČERVENÝ, Trenéři NEON
   const isEshop = pathname?.includes('/supplements') || pathname?.includes('/equipment') || pathname?.includes('/bazaar');
-  const accentColor = isEshop ? 'bg-[#E10600]' : 'bg-[#d4ff00]';
+  const accentColor = isEshop ? 'bg-[#ff0000]' : 'bg-[#d4ff00]';
   const textColor = isEshop ? 'text-white' : 'text-black';
-  const shadowColor = isEshop ? 'shadow-[0_10px_30px_rgba(225,6,0,0.3)]' : 'shadow-[0_10px_30px_rgba(212,255,0,0.2)]';
+  const borderPrimary = isEshop ? 'border-[#ff0000]/20' : 'border-[#d4ff00]/20';
 
   if (!mounted) return null;
 
@@ -47,7 +48,7 @@ export default function CartDrawer() {
             {/* Header */}
             <div className="px-8 py-5 flex items-center justify-between border-b border-white/5">
               <div className="flex items-center gap-3">
-                <ShoppingBag className={`w-5 h-5 ${isEshop ? 'text-[#E10600]' : 'text-[#d4ff00]'}`} />
+                <ShoppingBag className={`w-5 h-5 ${isEshop ? 'text-[#ff0000]' : 'text-[#d4ff00]'}`} />
                 <h2 className="text-xl font-black uppercase tracking-[0.2em] text-white">Tvůj Výběr</h2>
               </div>
               <button 
@@ -58,7 +59,7 @@ export default function CartDrawer() {
               </button>
             </div>
 
-            {/* Content Area (Zero Spacing Zone - Compact Flow) */}
+            {/* Content Area (Compact Flow) */}
             <div className="flex-1 overflow-y-auto px-6 py-2 custom-scrollbar">
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
@@ -87,7 +88,7 @@ export default function CartDrawer() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="text-[10px] font-black uppercase truncate text-white tracking-widest">{item.name}</h3>
-                        <p className={`${isEshop ? 'text-[#E10600]' : 'text-[#d4ff00]'} font-black text-xs mt-1`}>{item.price.toLocaleString('cs-CZ')} Kč</p>
+                        <p className={`${isEshop ? 'text-[#ff0000]' : 'text-[#d4ff00]'} font-black text-xs mt-1`}>{item.price.toLocaleString('cs-CZ')} Kč</p>
                       </div>
                       
                       <div className="flex items-center gap-1 bg-black p-1 border border-white/10">
@@ -97,7 +98,7 @@ export default function CartDrawer() {
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className={`w-6 text-center text-[10px] font-black ${isEshop ? 'text-[#E10600]' : 'text-[#d4ff00]'}`}>{item.quantity}</span>
+                        <span className={`w-6 text-center text-[10px] font-black ${isEshop ? 'text-[#ff0000]' : 'text-[#d4ff00]'}`}>{item.quantity}</span>
                         <button 
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
                           className="p-1 text-white/40 hover:text-white transition-colors"
@@ -108,7 +109,7 @@ export default function CartDrawer() {
 
                       <button 
                         onClick={() => removeItem(item.id)}
-                        className="p-2 text-white/10 hover:text-[#E10600] transition-colors"
+                        className="p-2 text-white/10 hover:text-[#ff0000] transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -118,25 +119,20 @@ export default function CartDrawer() {
               )}
             </div>
 
-            {/* Bottom Section (Thumb Zone Mastery + Global Padding Fix) */}
-            <div className="bg-[#0a0a0a] border-t border-white/10 p-8 pb-[safe-area-inset-bottom+25px] md:pb-12 space-y-6">
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.4em] mb-1">Doprava zdarma od 2 500 Kč</p>
-                  <p className={`text-[10px] font-black ${isEshop ? 'text-[#E10600]' : 'text-[#d4ff00]'} uppercase tracking-[0.3em]`}>Celkem k úhradě</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-4xl font-black text-white tracking-tighter leading-none">{totalPrice().toLocaleString('cs-CZ')} Kč</p>
-                </div>
+            {/* Spodní fixní sekce Draweru - Jan's Mandate Snippet */}
+            <div className="sticky bottom-0 bg-black p-4 md:p-8 pb-[safe-area-inset-bottom+25px] border-t border-zinc-800 w-full mt-auto">
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-zinc-400 text-sm uppercase tracking-widest font-black">Celkem</span>
+                <span className="text-2xl md:text-3xl font-black text-white">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
               </div>
-
-              <a 
+              
+              <Link 
                 href="/checkout"
-                className={`f77-button-master ${accentColor} ${textColor} ${shadowColor} py-6 tracking-[0.3em] shadow-2xl hover:scale-[1.02] active:scale-[0.98] mb-[25px]`}
-                style={{ paddingBottom: '25px', paddingTop: '25px' }}
+                className={`w-full ${accentColor} ${textColor} font-black py-5 px-6 flex items-center justify-between transition-all active:scale-95 shadow-[0_10px_40px_rgba(0,0,0,0.5)] mb-[10px]`}
               >
-                ZAPLATIT
-              </a>
+                <span className="uppercase text-lg md:text-xl tracking-[0.2em]">ZAPLATIT</span>
+                <ArrowRight className="w-6 h-6 md:w-8 md:h-8" />
+              </Link>
             </div>
           </motion.div>
         </>
