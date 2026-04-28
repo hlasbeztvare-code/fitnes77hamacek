@@ -65,26 +65,23 @@ export default function CartPage() {
           amount: item.quantity,
         }));
 
-        // GOLIÁŠ Sync v20.0 - Zavoláme Proxy, která nám pošle nastavenou .fit77.cz Cookie
-        const res = await fetch('/api/cart/proxy', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: shoptetItems }),
-        });
+        // GOLIÁŠ Sync v22.0 - Nativní GET požadavky
+        // Obejde CSRF ochranu Shoptetu, protože GET požadavky (odkazy z e-mailů apod.) Shoptet nezakazuje.
+        for (const { item, ids } of resolved) {
+          const url = `https://obchod.fit77.cz/action/Cart/addCartItem/?productId=${ids!.productId}&priceId=${ids!.priceId}&amount=${item.quantity}&language=cs`;
 
-        const data = await res.json();
+          await fetch(url, {
+            method: 'GET',
+            mode: 'no-cors', // Nevyhodí CORS error
+            credentials: 'include', // Pošle a uloží cookies
+          });
 
-        if (data.success && data.shoptetSessionId) {
-          // Nukleární možnost: Natvrdo zapíšeme Cookie pro celou doménu fit77.cz přes JS
-          const isLocal = window.location.hostname === 'localhost';
-          const domainString = isLocal ? '' : 'domain=.fit77.cz;';
-          document.cookie = `PHPSESSID=${data.shoptetSessionId}; ${domainString} path=/; max-age=7776000; secure; samesite=lax`;
-          
-          window.location.href = 'https://obchod.fit77.cz/objednavka/';
-        } else {
-          console.error('Proxy error:', data.error);
-          setStatus('error');
+          // Dáme Shoptetu 400ms na uložení do session mezi položkami
+          await new Promise(resolve => setTimeout(resolve, 400));
         }
+
+        // Vše posláno, přesměrováváme
+        window.location.href = 'https://obchod.fit77.cz/objednavka/';
       } catch (err) {
         console.error('Cart Bridge Error:', err);
         setStatus('error');
