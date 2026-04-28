@@ -204,7 +204,7 @@ async function main() {
         name: 'Lenka Picková',
         slug: 'lenka-pickova',
         role: 'Fitness trenérka',
-        bio: 'Ve své praxi se zaměřuji na individuální přístup ke každému klientovi. Základem spolupráce je vstupní diagnostika těla, analýza pohybových stereotypů a zhodnocení celkové mobility. Díky tomu dokážu nastavit tréninkový plán na míru, který respektuje vaše cíle i aktuální fyzickou kondici. Pomáhám klientům nejen s formováním postavy, ale především se zlepšením kondice, správného držení těla a celkové funkčnosti pohybu. Důraz kladu na správnou techniku cvičení, prevenci zranění a dlouhodobě udržitelné výsledky. Ať už jste na začátku, nebo chcete posunout své výkony dál, ráda vám pomůžu najít správný směr. \n\nKontakt: leni.pickova@seznam.cz | Tel: 722 951 850 | IG: @fitby_lenka | FB: https://www.facebook.com/share/g/1H1Mqom3be/',
+        bio: 'Ve své praxi se zaměřuji na individuální přístup ke každému klientovi. Základem spolupráce je vstupní diagnostika těla, analýza pohybových stereotypů a zhodnocení celkové mobility. Díky tomu dokážu nastavit tréninkový plán na míru, který respektuje vaše cíle i aktuální fyzickou kondici. Pomáhám klientům nejen s formováním postavy, ale především se zlepšením kondice, správného držení těla a celkové funkčnosti pohybu. Důraz kladu na správnou techniku cvičení, prevenci zranění a dlouhodobě udržitelné výsledky. Ať už jste na začátku, nebo chcete posunout své výkony dál, ráda vám pomůžu najít správný směr.',
         image: '/images/trainers/lenka.webp',
         specialties: ['Diagnostika', 'Mobilita', 'Formování postavy', 'Správná technika'],
       },
