@@ -26,6 +26,7 @@ export async function POST(req: Request) {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Cookie': shoptetSessionId ? `PHPSESSID=${shoptetSessionId}` : '',
         },
+        body: body.toString(),
       });
 
       // Získat Set-Cookie od Shoptetu a vyextrahovat PHPSESSID
