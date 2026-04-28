@@ -20,8 +20,8 @@
 }
 
 html { 
-  scroll-behavior: auto; 
-  font-size: 18px; /* Zvětšení základu o cca +2px */
+  scroll-behavior: smooth !important; 
+  font-size: 18px; 
 }
 
 body {

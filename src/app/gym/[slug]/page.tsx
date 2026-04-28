@@ -132,15 +132,15 @@ export default async function TrainerDetailPage({ params }: Props) {
       </div>
 
       {/* ── BIO + ZAMĚŘENÍ ── */}
-      <div className="px-6 md:px-16 py-32 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
+      <div className="px-6 md:px-16 py-16 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
           {/* Levý sloupec */}
           <div>
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-8 block font-space">
               {trainer.slug === 'beata-cejnarova' ? 'O trenérce' : 'O trenérovi'}
             </span>
-            <p className="text-xl md:text-2xl text-white/70 leading-relaxed font-space font-medium break-words">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed font-space font-medium break-words">
               {trainer.bio}
             </p>
 
@@ -214,8 +214,8 @@ export default async function TrainerDetailPage({ params }: Props) {
 
       {/* ── OBLASTI ZAMĚŘENÍ ── */}
       {profile?.focus && (
-        <div className="px-6 md:px-16 pb-32 max-w-[1400px] mx-auto">
-          <div className="border-t border-white/5 pt-24 mb-16">
+        <div className="px-6 md:px-16 pb-16 max-w-[1400px] mx-auto">
+          <div className="border-t border-white/5 pt-16 mb-12">
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-4 block font-space">
               Co tréninky zahrnují
             </span>
@@ -230,7 +230,7 @@ export default async function TrainerDetailPage({ params }: Props) {
                 <h3 className="text-xl font-black uppercase font-black tracking-wide group-hover:text-[#d4ff00] transition-colors mb-2">
                   {item.title}
                 </h3>
-                <p className="text-white/40 text-xs sm:text-sm font-medium leading-relaxed">
+                <p className="text-white/40 text-[10px] sm:text-xs font-medium leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -241,12 +241,12 @@ export default async function TrainerDetailPage({ params }: Props) {
 
       {/* ── PRO KOHO ── */}
       {profile?.forWhom && (
-        <div className="px-6 md:px-16 pb-32 max-w-[1400px] mx-auto">
-          <div className="border border-[#d4ff00]/10 bg-white/[0.02] p-12 md:p-16">
+        <div className="px-6 md:px-16 pb-16 max-w-[1400px] mx-auto">
+          <div className="border border-[#d4ff00]/10 bg-white/[0.02] p-8 md:p-12">
             <h2 className="text-3xl md:text-5xl font-black uppercase font-black leading-[0.8] tracking-tighter mb-8">
               O <span className="text-[#d4ff00]">TRENÉROVI</span>
             </h2>
-            <p className="text-xl md:text-2xl text-white/70 leading-relaxed font-space font-medium break-words hyphens-auto">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed font-space font-medium break-words hyphens-auto">
               {profile.forWhom}
             </p>
             <div className="mt-10 flex gap-4 flex-wrap">

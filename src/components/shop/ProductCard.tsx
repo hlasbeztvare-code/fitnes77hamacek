@@ -116,7 +116,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
       />
       
       <Link href={detailUrl} className="relative z-10 block">
-        <div className="relative h-[150px] sm:h-[220px] lg:h-[260px] w-full overflow-visible transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex items-center justify-center p-3">
+        <div className="relative h-[120px] sm:h-[220px] lg:h-[260px] w-full overflow-visible transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex items-center justify-center p-2">
           {/* Shine effect */}
           <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
             <div className="absolute inset-0 translate-x-[-100%] transition-transform duration-1000 ease-in-out group-hover:translate-x-[100%]" style={{ backgroundImage: `linear-gradient(to right, transparent, ${accentColor}10, transparent)` }} />
@@ -158,13 +158,13 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
           {product.category?.toUpperCase() || 'SUPLEMENT'} 
         </div>
 
-        <h3 className="mt-1 sm:mt-2 text-[0.85rem] sm:text-lg font-black uppercase leading-tight transition-colors duration-300 line-clamp-2 h-[2.5em] tracking-tight" style={{ color: accentColor }}>
+        <h3 className="mt-1 text-[0.7rem] sm:text-lg font-black uppercase leading-tight transition-colors duration-300 line-clamp-2 h-[2.5em] tracking-tight" style={{ color: accentColor }}>
           {product.name || 'Produkt'}
         </h3>
 
         <div className="mt-auto pt-2">
           <div className="flex flex-wrap items-center gap-1 sm:gap-3">
-            <span className={`text-xl font-black tracking-tighter ${isDark ? 'text-white' : 'text-zinc-900'}`}>
+            <span className={`text-sm sm:text-xl font-black tracking-tighter ${isDark ? 'text-white' : 'text-zinc-900'}`}>
               {(product.price || 0).toLocaleString('cs-CZ')} Kč
             </span>
           </div>
@@ -175,8 +175,8 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
           <div className="mt-3">
             <button onClick={handleAction} className="w-full cursor-pointer focus:outline-none focus:ring-0">
               <div className="flex justify-between items-center group/btn pointer-events-auto">
-                <div className={`w-full bg-zinc-950 ${buttonTextColor} py-2.5 px-3 [clip-path:polygon(0%_0%,100%_0%,90%_100%,0%_100%)] flex items-center justify-between transition-all duration-300 ${isDark ? 'group-hover/btn:bg-[#d4ff00] group-hover/btn:text-black' : 'group-hover/btn:bg-[#E10600] group-hover/btn:text-white'}`}>
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em]">
+                <div className={`w-full bg-zinc-950 ${buttonTextColor} py-2 px-3 [clip-path:polygon(0%_0%,100%_0%,90%_100%,0%_100%)] flex items-center justify-between transition-all duration-300 ${isDark ? 'group-hover/btn:bg-[#d4ff00] group-hover/btn:text-black' : 'group-hover/btn:bg-[#E10600] group-hover/btn:text-white'}`}>
+                  <span className="text-[8px] font-black uppercase tracking-[0.1em]">
                     DO KOŠÍKU
                   </span>
                   <span className="transform translate-x-0 group-hover/btn:translate-x-1 transition-transform duration-300">→</span>
