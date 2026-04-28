@@ -15,6 +15,7 @@ export type TrainerProfile = {
   forWhom: string;             // Pro koho jsou tréninky vhodné
   achievements?: string[];     // Certifikáty, tituly, úspěchy
   gender: 'male' | 'female';   // Pro dynamické texty (O trenérovi / O trenérce)
+  nameInstrumental: string;    // Skloňované jméno (7. pád - s kým? s Ondřejem, s Lenkou)
   contact: {                   // Kontaktní údaje
     phone?: string;
     instagram?: string;
@@ -26,6 +27,7 @@ export const trainerProfiles: Record<string, TrainerProfile> = {
 
   'ondrej-soustruznik': {
     gender: 'male',
+    nameInstrumental: 'Ondřejem',
     contact: {
       phone: '+420 773 688 076',
       email: 'ondra.soustruznik@seznam.cz',
@@ -63,6 +65,7 @@ export const trainerProfiles: Record<string, TrainerProfile> = {
 
   'jaroslav-hamacek': {
     gender: 'male',
+    nameInstrumental: 'Jaroslavem',
     contact: {
       phone: '+420 777 105 548',
       email: 'fitness77@post.cz',
@@ -100,6 +103,7 @@ export const trainerProfiles: Record<string, TrainerProfile> = {
 
   'beata-cejnarova': {
     gender: 'female',
+    nameInstrumental: 'Beatou',
     contact: {
       instagram: 'https://www.instagram.com/beatacejnarova',
       email: 'beata.cejnarova@seznam.cz',
@@ -137,6 +141,7 @@ export const trainerProfiles: Record<string, TrainerProfile> = {
 
   'lenka-pickova': {
     gender: 'female',
+    nameInstrumental: 'Lenkou',
     contact: {
       phone: '+420 722 951 850',
       instagram: 'https://www.instagram.com/fitby_lenka',

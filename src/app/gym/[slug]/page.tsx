@@ -174,10 +174,13 @@ export default async function TrainerDetailPage({ params }: Props) {
           {/* Pravý sloupec – CTA + gym info */}
           <div className="space-y-8">
             <div className="border border-[#d4ff00]/20 p-10 bg-white/[0.02]">
-              <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.6em] mb-6 font-space">Kontakt</p>
+              <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.6em] mb-6 font-space">Rezervace tréninku</p>
+              <p className="text-xl text-white/60 font-space font-medium mb-8">
+                Chceš trénovat s {profile.nameInstrumental}? Napiš nebo zavolej a dohodneme se na termínu.
+              </p>
               {phone ? (
                 <a href={`tel:${phone.replace(/\s/g, '')}`} className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-xl sm:text-2xl hover:bg-white transition-colors duration-300 whitespace-nowrap">
-                  Zavolat trenérovi
+                  Zavolat {profile.gender === 'female' ? 'trenérce' : 'trenérovi'}
                 </a>
               ) : instagram ? (
                 <a href={instagram} target="_blank" rel="noopener noreferrer" className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-2xl hover:bg-white transition-colors duration-300">
@@ -238,7 +241,7 @@ export default async function TrainerDetailPage({ params }: Props) {
             <div className="mt-10 flex gap-4 flex-wrap">
               {phone ? (
                 <a href={`tel:${phone.replace(/\s/g, '')}`} className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:bg-white transition-colors whitespace-nowrap">
-                  Zavolat trenérovi
+                  Rezervovat trénink
                 </a>
               ) : instagram ? (
                 <a href={instagram} target="_blank" rel="noopener noreferrer" className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:bg-white transition-colors whitespace-nowrap">
