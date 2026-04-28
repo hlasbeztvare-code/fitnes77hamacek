@@ -39,7 +39,7 @@ export default function CartSidebar() {
             className="fixed right-0 top-0 bottom-0 z-[11001] w-full max-w-[450px] bg-zinc-950 text-white shadow-2xl flex flex-col border-l border-white/10 h-[100dvh]"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10 bg-zinc-950/50 backdrop-blur-sm sticky top-0 z-20">
+            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-zinc-950/50 backdrop-blur-sm sticky top-0 z-20">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-6 h-6 text-[#E10600]" />
                 <h2 className="text-xl font-black uppercase tracking-tighter">Váš košík</h2>
@@ -72,7 +72,7 @@ export default function CartSidebar() {
             {/* Content - Scrollable */}
             <div 
               id="cart-items-container"
-              className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 scrollbar-hide scroll-smooth"
+              className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 scrollbar-hide scroll-smooth"
             >
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
@@ -156,8 +156,8 @@ export default function CartSidebar() {
 
             {/* Sticky Footer CTA - ALWAYS VISIBLE & AGGRESSIVE (L-CODE UX) */}
             {items.length > 0 && (
-              <div className="p-6 bg-zinc-950 border-t border-white/10 shadow-[0_-20px_50px_rgba(0,0,0,0.8)] sticky bottom-0 z-30 mt-auto">
-                <div className="flex items-center justify-between mb-6">
+              <div className="p-4 bg-zinc-950 border-t border-white/10 shadow-[0_-20px_50px_rgba(0,0,0,0.8)] sticky bottom-0 z-30 mt-auto">
+                <div className="flex items-center justify-between mb-4">
                   <span className="text-zinc-500 font-black uppercase tracking-[0.3em] text-[10px]">Mezisoučet</span>
                   <div className="text-right">
                     <span className="text-2xl md:text-3xl font-black text-white tracking-tighter">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
@@ -170,7 +170,7 @@ export default function CartSidebar() {
                     router.push('/cart');
                     closeCart();
                   }}
-                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-8 py-6 md:py-8 font-black uppercase tracking-[0.25em] hover:bg-red-600 transition-all rounded-2xl shadow-[0_20px_40px_rgba(225,6,0,0.3)] group active:scale-[0.98]"
+                  className="w-full flex items-center justify-between bg-[#E10600] text-white px-6 py-4 md:py-5 font-black uppercase tracking-[0.25em] hover:bg-red-600 transition-all rounded-2xl shadow-[0_20px_40px_rgba(225,6,0,0.3)] group active:scale-[0.98]"
                 >
                   <span className="text-sm md:text-base">Objednat zboží</span>
                   <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
