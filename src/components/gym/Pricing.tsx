@@ -17,7 +17,7 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="bg-[#000000] text-white py-20 md:py-40 px-4 md:px-32 relative overflow-hidden">
+    <section id="pricing" className="bg-[#000000] text-white pt-0 pb-20 md:pb-40 px-4 md:px-32 relative overflow-hidden">
       <div className="absolute top-40 -right-20 text-[25vw] font-black text-white/[0.02] select-none pointer-events-none uppercase tracking-tighter leading-none">
         GO HARD
       </div>
