@@ -11,9 +11,10 @@ import AddToCartButton from './AddToCartButton';
 interface Variant {
   name: string;
   stock: number;
-  code?: string;
+  variantCode?: string;
   price?: number;
   shoptetPriceId?: string;
+  image?: string;
 }
 
 interface ProductSelectorProps {
@@ -97,7 +98,8 @@ export default function ProductSelector({ product }: ProductSelectorProps) {
             shoptetPriceId: selectedVariant?.shoptetPriceId || product.shoptetPriceId,
             price: currentPrice,
             variantName: selectedVariant?.name,
-            variantCode: selectedVariant?.code,
+            variantCode: selectedVariant?.variantCode,
+            image: selectedVariant?.image || product.image,
           }}
           disabled={isOutOfStock}
         />

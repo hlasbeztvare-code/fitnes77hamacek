@@ -42,7 +42,7 @@ async function main() {
           { name: 'Malina', variantCode: 'MAL', stock: 10, shoptetPriceId: '70' },
           { name: 'Borůvka', variantCode: 'BOR', stock: 10, shoptetPriceId: '73' }
         ],
-        image: '/images/products/bcaa411.webp',
+        image: '/images/products/bcaa.png',
         stock: 90,
         category: 'supplement',
         featured: true,
