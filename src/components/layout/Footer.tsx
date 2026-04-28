@@ -99,16 +99,6 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-[7px] font-black uppercase tracking-[0.3em] text-white/20">
-          <div>© {new Date().getFullYear()} FITNESS 77 MLADÁ BOLESLAV</div>
-          <div className="flex items-center gap-2">
-            <span>DESIGNED BY</span>
-            <span className="text-white/40">L-CODE DYNAMICS</span>
-          </div>
-        </div>
-      </div>
-    </footer>
   );
 };
 
