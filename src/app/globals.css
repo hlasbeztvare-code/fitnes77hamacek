@@ -22,6 +22,8 @@
 html { 
   scroll-behavior: smooth !important; 
   font-size: 18px; 
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -31,6 +33,8 @@ body {
   color: #fff;
   text-transform: uppercase; /* GOLIÁŠ UPPERCASE MANDATE */
   font-style: normal !important; /* LIKVIDACE KURZÍVY */
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* Ensure all interactive elements and headings follow the mandate */
