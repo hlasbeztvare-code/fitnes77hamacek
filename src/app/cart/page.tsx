@@ -59,12 +59,6 @@ export default function CartPage() {
       setStatus('sending');
 
       try {
-        const shoptetItems = resolved.map(({ item, ids }) => ({
-          priceId: ids!.priceId,
-          productId: ids!.productId,
-          amount: item.quantity,
-        }));
-
         // GOLIÁŠ Sync v30.0 - The Final Bridge (postMessage)
         // Iframe se načte z Shoptetu, takže skript v něm spuštěný má plný přístup ke cookies
         const iframe = document.createElement('iframe');
