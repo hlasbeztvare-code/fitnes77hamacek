@@ -121,15 +121,15 @@ export default async function TrainerDetailPage({ params }: Props) {
       </div>
 
       {/* ── BIO + ZAMĚŘENÍ ── */}
-      <div className="px-6 md:px-16 py-16 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div className="px-6 md:px-16 py-32 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
 
           {/* Levý sloupec */}
           <div>
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-8 block font-space">
               {profile.gender === 'female' ? 'O trenérce' : 'O trenérovi'}
             </span>
-            <p className="text-[clamp(1rem,4vw,1.25rem)] text-white/70 leading-[1.5] font-space font-medium break-words">
+            <p className="text-2xl md:text-3xl text-white/70 leading-relaxed font-space font-medium break-words">
               {trainer.bio}
             </p>
 
@@ -150,14 +150,14 @@ export default async function TrainerDetailPage({ params }: Props) {
               <div className="mt-16 space-y-4">
                 <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] font-space">Přímý kontakt</p>
                 {phone && (
-                  <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-4 text-xl sm:text-4xl font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group whitespace-nowrap">
+                  <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-4 text-4xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group whitespace-nowrap">
                     <span className="w-3 h-3 rounded-full bg-[#d4ff00] group-hover:scale-150 transition-transform duration-300 flex-shrink-0" />
                     {phone}
                   </a>
                 )}
                 {instagram && (
-                  <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-xl sm:text-2xl font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group">
-                    <span className="w-3 h-3 rounded-full bg-[#d4ff00] group-hover:scale-150 transition-transform duration-300" />
+                  <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-2xl font-black font-black tracking-widest text-white hover:text-[#d4ff00] transition-colors duration-300 group">
+                    <span className="w-3 h-3 rounded-full bg-[#d4ff00] group-hover:scale-150 transition-transform duration-300 flex-shrink-0" />
                     @{instagram.split('/').filter(Boolean).pop()}
                   </a>
                 )}
@@ -179,7 +179,7 @@ export default async function TrainerDetailPage({ params }: Props) {
                 Chceš trénovat s {profile.nameInstrumental}? Napiš nebo zavolej a dohodneme se na termínu.
               </p>
               {phone ? (
-                <a href={`tel:${phone.replace(/\s/g, '')}`} className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-xl sm:text-2xl hover:bg-white transition-colors duration-300 whitespace-nowrap">
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-2xl hover:bg-white transition-colors duration-300 whitespace-nowrap">
                   Zavolat {profile.gender === 'female' ? 'trenérce' : 'trenérovi'}
                 </a>
               ) : instagram ? (
@@ -203,23 +203,23 @@ export default async function TrainerDetailPage({ params }: Props) {
 
       {/* ── OBLASTI ZAMĚŘENÍ ── */}
       {profile?.focus && (
-        <div className="px-6 md:px-16 pb-16 max-w-[1400px] mx-auto">
-          <div className="border-t border-white/5 pt-16 mb-12">
+        <div className="px-6 md:px-16 pb-32 max-w-[1400px] mx-auto">
+          <div className="border-t border-white/5 pt-24 mb-16">
             <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-4 block font-space">
               Co tréninky zahrnují
             </span>
-            <h2 className="text-4xl md:text-6xl font-black uppercase font-black leading-[0.8] tracking-tighter mb-10">
+            <h2 className="text-[8vw] md:text-[4vw] font-black uppercase leading-[0.85] tracking-tighter font-black">
               OBLASTI <span className="text-[#d4ff00]">ZAMĚŘENÍ</span>
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {profile.focus.map((item, i) => (
               <div key={i} className="border border-white/5 p-8 hover:border-[#d4ff00]/30 transition-colors duration-500 group">
-                <div className="text-3xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-black uppercase font-black tracking-wide group-hover:text-[#d4ff00] transition-colors mb-2">
+                <div className="text-4xl mb-6">{item.icon}</div>
+                <h3 className="text-2xl font-black uppercase font-black tracking-wide group-hover:text-[#d4ff00] transition-colors mb-3">
                   {item.title}
                 </h3>
-                <p className="text-white/40 text-[10px] sm:text-xs font-medium leading-relaxed">
+                <p className="text-white/40 font-space text-sm leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -230,25 +230,25 @@ export default async function TrainerDetailPage({ params }: Props) {
 
       {/* ── PRO KOHO ── */}
       {profile?.forWhom && (
-        <div className="px-6 md:px-16 pb-16 max-w-[1400px] mx-auto">
-          <div className="border border-[#d4ff00]/10 bg-white/[0.02] p-8 md:p-12">
-            <h2 className="text-3xl md:text-5xl font-black uppercase font-black leading-[0.8] tracking-tighter mb-8">
-              O <span className="text-[#d4ff00]">TRENÉROVI</span>
-            </h2>
-            <p className="text-[clamp(1rem,4vw,1.25rem)] text-white/70 leading-[1.5] font-space font-medium break-words hyphens-auto">
+        <div className="px-6 md:px-16 pb-32 max-w-[1400px] mx-auto">
+          <div className="border border-[#d4ff00]/10 bg-white/[0.02] p-12 md:p-16">
+            <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-6 block font-space">
+              Pro koho jsou tréninky vhodné?
+            </span>
+            <p className="text-2xl md:text-3xl text-white/70 leading-relaxed font-space font-medium break-words hyphens-auto">
               {profile.forWhom}
             </p>
             <div className="mt-10 flex gap-4 flex-wrap">
               {phone ? (
-                <a href={`tel:${phone.replace(/\s/g, '')}`} className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:bg-white transition-colors whitespace-nowrap">
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-8 py-4 font-black text-xl hover:bg-white transition-colors whitespace-nowrap">
                   Rezervovat trénink
                 </a>
               ) : instagram ? (
-                <a href={instagram} target="_blank" rel="noopener noreferrer" className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:bg-white transition-colors whitespace-nowrap">
+                <a href={instagram} target="_blank" rel="noopener noreferrer" className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-8 py-4 font-black text-xl hover:bg-white transition-colors whitespace-nowrap">
                   Napsat na Instagram
                 </a>
               ) : null}
-              <a href="/#pricing" className="border border-white/20 text-white font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:border-[#d4ff00] hover:text-[#d4ff00] transition-all whitespace-nowrap">
+              <a href="/#pricing" className="border border-white/20 text-white font-black uppercase tracking-widest px-8 py-4 font-black text-xl hover:border-[#d4ff00] hover:text-[#d4ff00] transition-all whitespace-nowrap">
                 Zobrazit ceník
               </a>
             </div>
