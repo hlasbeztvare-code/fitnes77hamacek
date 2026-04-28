@@ -173,6 +173,22 @@ export default async function TrainerDetailPage({ params }: Props) {
 
           {/* Pravý sloupec – CTA + gym info */}
           <div className="space-y-8">
+            <div className="border border-[#d4ff00]/20 p-10 bg-white/[0.02]">
+              <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.6em] mb-6 font-space">Kontakt</p>
+              {phone ? (
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-xl sm:text-2xl hover:bg-white transition-colors duration-300 whitespace-nowrap">
+                  Zavolat trenérovi
+                </a>
+              ) : instagram ? (
+                <a href={instagram} target="_blank" rel="noopener noreferrer" className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-2xl hover:bg-white transition-colors duration-300">
+                  Napsat na Instagram
+                </a>
+              ) : (
+                <a href={`mailto:${email ?? 'fitness77@post.cz'}`} className="inline-block w-full text-center bg-[#d4ff00] text-black font-black uppercase tracking-[0.2em] px-8 py-5 font-black text-2xl hover:bg-white transition-colors duration-300">
+                  Kontaktovat e-mailem
+                </a>
+              )}
+            </div>
             <div className="border border-white/5 p-8 space-y-4">
               <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.5em] font-space">Kde nás najdeš</p>
               <p className="text-3xl font-black font-black tracking-widest text-white">FITNESS 77 MLADÁ BOLESLAV</p>
@@ -220,6 +236,15 @@ export default async function TrainerDetailPage({ params }: Props) {
               {profile.forWhom}
             </p>
             <div className="mt-10 flex gap-4 flex-wrap">
+              {phone ? (
+                <a href={`tel:${phone.replace(/\s/g, '')}`} className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:bg-white transition-colors whitespace-nowrap">
+                  Zavolat trenérovi
+                </a>
+              ) : instagram ? (
+                <a href={instagram} target="_blank" rel="noopener noreferrer" className="bg-[#d4ff00] text-black font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:bg-white transition-colors whitespace-nowrap">
+                  Napsat na Instagram
+                </a>
+              ) : null}
               <a href="/#pricing" className="border border-white/20 text-white font-black uppercase tracking-widest px-6 sm:px-8 py-4 font-black text-sm sm:text-xl hover:border-[#d4ff00] hover:text-[#d4ff00] transition-all whitespace-nowrap">
                 Zobrazit ceník
               </a>
