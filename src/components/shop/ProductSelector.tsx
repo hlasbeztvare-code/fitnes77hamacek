@@ -11,14 +11,16 @@ import AddToCartButton from './AddToCartButton';
 interface Variant {
   name: string;
   stock: number;
-  code: string;
-  price: number;
+  code?: string;
+  price?: number;
+  shoptetPriceId?: string;
 }
 
 interface ProductSelectorProps {
   product: {
     id: string;
-    shoptetId?: string | null;
+    shoptetProductId?: string | null;
+    shoptetPriceId?: string | null;
     name: string;
     slug: string;
     price: number;
@@ -87,12 +89,12 @@ export default function ProductSelector({ product }: ProductSelectorProps) {
         </div>
       )}
 
-      {/* Buy Button Container */}
       <div className="pt-4">
         <AddToCartButton 
           product={{
             ...product,
-            shoptetId: product.shoptetId,
+            shoptetProductId: product.shoptetProductId,
+            shoptetPriceId: selectedVariant?.shoptetPriceId || product.shoptetPriceId,
             price: currentPrice,
             variantName: selectedVariant?.name,
             variantCode: selectedVariant?.code,

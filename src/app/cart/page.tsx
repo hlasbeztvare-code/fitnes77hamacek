@@ -5,27 +5,7 @@ import { useCartStore } from '@/hooks/useCartStore';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-// Shoptet priceId mapa
-const PRICE_ID_MAP: Record<string, { priceId: number; productId: number }> = {
-  'creatine-monohydrate---fitness-77': { priceId: 58, productId: 55 },
-  'black-dead---pre-workout':          { priceId: 52, productId: 49 },
-  'dead-pump---stim-free':             { priceId: 49, productId: 46 },
-  'heavy-duty-powerlifting-opasek':    { priceId: 46, productId: 43 },
-  'BOR': { priceId: 73, productId: 58 },
-  'GRE': { priceId: 67, productId: 58 },
-  'MAL': { priceId: 70, productId: 58 },
-  'COK': { priceId: 79, productId: 61 },
-  'PIS': { priceId: 85, productId: 61 },
-  'SLA': { priceId: 82, productId: 61 },
-};
-
-function resolveIds(slug: string, variantCode?: string) {
-  if (variantCode) {
-    const code = variantCode.toUpperCase().split('/').pop() || '';
-    if (PRICE_ID_MAP[code]) return PRICE_ID_MAP[code];
-  }
-  return PRICE_ID_MAP[slug] || null;
-}
+// GOLIÁŠ v40.0: PRICE_ID_MAP zlikvidován. Impérium bere data přímo z databáze a stavu.
 
 export default function CartPage() {
   const items = useCartStore((state) => state.items);
@@ -42,11 +22,11 @@ export default function CartPage() {
 
     const resolved = items.map(i => ({
       item: i,
-      ids: resolveIds(i.slug, i.variantCode),
+      ids: { productId: i.shoptetProductId, priceId: i.shoptetPriceId }
     }));
 
-    if (resolved.some(r => !r.ids)) {
-      console.error('❌ Chybí priceId pro:', resolved.filter(r => !r.ids).map(r => r.item.slug));
+    if (resolved.some(r => !r.ids.productId || !r.ids.priceId)) {
+      console.error('❌ Chybí shoptetProductId nebo shoptetPriceId pro:', resolved.filter(r => !r.ids.productId || !r.ids.priceId).map(r => r.item.slug));
       setStatus('error');
       return;
     }
@@ -63,7 +43,7 @@ export default function CartPage() {
         // Vyhneme se úplně všem CORS a X-Frame-Options blokacím Shoptetu.
         // Produkty zabalíme do textu a pošleme je přes parametr v adrese přímo Shoptetu.
         const itemsPayload = resolved.map(({ item, ids }) => {
-          return `${ids!.productId}:${ids!.priceId}:${item.quantity}`;
+          return `${ids.productId}:${ids.priceId}:${item.quantity}`;
         }).join(',');
 
         // Přesměrujeme zákazníka rovnou na Shoptet s tímto nákladem

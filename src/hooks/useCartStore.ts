@@ -5,7 +5,8 @@ import { persist } from 'zustand/middleware';
 
 type CartItem = {
   id: string;
-  shoptetId?: string;
+  shoptetProductId?: string;
+  shoptetPriceId?: string;
   name: string;
   slug: string;
   price: number;

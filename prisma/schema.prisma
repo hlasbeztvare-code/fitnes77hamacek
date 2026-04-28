@@ -7,25 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Product {
   id               String   @id @default(cuid())
-  shoptetId        String?  
-  slug             String   @unique
   name             String
-  description      String?  @db.Text
-  shortDescription String?  @db.Text
-  ingredients      String?  @db.Text
-  nutrition        Json?    // Nutritional facts: { protein: "80g", carbs: "10g", ... }
+  slug             String   @unique
+  shortDescription String?
+  description      String?
+  price            Float
   image            String?
-  category         String?
-  price            Float    // Aktuální (akční) cena
-  oldPrice         Float?   // Původní vysoká cena z PRICE_BEFORE_DISCOUNT
   stock            Int      @default(0)
+  category         String?
   featured         Boolean  @default(false)
-  variants         Json?    // Varianty: [{name: "Borůvka", stock: 10, code: "BCAA-BOR"}, ...]
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  shoptetId        String?
+  shoptetProductId String?
+  shoptetPriceId   String?
+  ingredients      String?
+  nutrition        Json?
+  oldPrice         Float?
+  variants         Json?
 }
 
 model BazaarListing {
@@ -66,14 +67,14 @@ model BlogPost {
 }
 
 model Order {
-  id         String   @id @default(cuid())
-  firstName  String
-  lastName   String
-  email      String
-  address    String
-  city       String
-  zip        String
-  total      Float
-  itemsJson  String
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  address   String
+  city      String
+  zip       String
+  total     Float
+  itemsJson String
+  createdAt DateTime @default(now())
 }

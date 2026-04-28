@@ -10,7 +10,8 @@ import AddToCartButton from './AddToCartButton';
 
 type Product = {
   id: string;
-  shoptetId?: string | null;
+  shoptetProductId?: string | null;
+  shoptetPriceId?: string | null;
   name: string;
   slug: string;
   shortDescription: string;
@@ -97,7 +98,8 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
     } else {
       addItem({
         id: product.id,
-        shoptetId: product.shoptetId || undefined,
+        shoptetProductId: product.shoptetProductId || undefined,
+        shoptetPriceId: product.shoptetPriceId || undefined,
         name: product.name,
         slug: product.slug,
         price: product.price,
