@@ -10,9 +10,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: 'No items' }, { status: 400 });
     }
 
-    const cookieHeader = req.headers.get('cookie') || '';
-    const results = [];
-    let lastSetCookie = '';
+    let shoptetSessionId = '';
 
     for (const item of items) {
       const body = new URLSearchParams({
@@ -26,25 +24,40 @@ export async function POST(req: Request) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Cookie': cookieHeader + (lastSetCookie ? '; ' + lastSetCookie : ''),
-          'Origin': 'https://obchod.fit77.cz',
-          'Referer': 'https://obchod.fit77.cz/',
+          'Cookie': shoptetSessionId ? `PHPSESSID=${shoptetSessionId}` : '',
         },
-        body: body.toString(),
       });
 
+      // Získat Set-Cookie od Shoptetu a vyextrahovat PHPSESSID
       const setCookie = response.headers.get('set-cookie');
-      if (setCookie) lastSetCookie = setCookie;
-
-      results.push({ priceId: item.priceId, status: response.status });
+      if (setCookie) {
+        const match = setCookie.match(/PHPSESSID=([^;]+)/);
+        if (match && match[1]) {
+          shoptetSessionId = match[1];
+        }
+      }
     }
 
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    if (lastSetCookie) headers.set('Set-Cookie', lastSetCookie);
+    // Máme naplněnou session a její ID. Teď ji předáme Next.js klientovi.
+    const res = NextResponse.json({ success: true });
+    
+    if (shoptetSessionId) {
+      // Zásadní trik: Nastavujeme Cookie pro nadřazenou doménu .fit77.cz
+      // Prohlížeč ji pak pošle i na obchod.fit77.cz
+      const isDev = process.env.NODE_ENV === 'development';
+      
+      res.cookies.set('PHPSESSID', shoptetSessionId, {
+        domain: isDev ? undefined : '.fit77.cz', // Na localhostu nepoužívat .fit77.cz
+        path: '/',
+        secure: !isDev,
+        sameSite: 'lax',
+        httpOnly: true, // Shoptet cookies jsou typicky HttpOnly
+      });
+    }
 
-    return new Response(JSON.stringify({ success: true, results }), { status: 200, headers });
+    return res;
   } catch (error: any) {
-    console.error('Cart proxy error:', error);
+    console.error('Proxy Error:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
