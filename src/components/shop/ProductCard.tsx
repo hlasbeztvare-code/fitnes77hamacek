@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useCartStore } from '@/hooks/useCartStore';
 import { useRouter } from 'next/navigation';
 import AddToCartButton from './AddToCartButton';
+import { resolveProductImage } from '@/lib/resolve-image';
 
 type Product = {
   id: string;
@@ -50,30 +51,8 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
   const nameUpper = product.name?.toUpperCase() || '';
   const slugLower = product.slug?.toLowerCase() || '';
   
-  // Robustní Image Path Resolver s prioritou pro Master Assety
-  const getProductImage = () => {
-    // 0. PRIORITA: VIDEO ZE SHOPTETU
-    const isShoptetVideo = product.image?.toLowerCase()?.match(/.(mp4|webm)$/i);
-    if (isShoptetVideo) return product.image;
-
-    // 0.5 PRIORITA: MASTER VIDEO (Např. OPASEK)
-    if (nameUpper?.includes('OPASEK')) return '/videos/pasek.webm';
-
-    // 1. MASTER ASSETS (Vždy přednost před statickým Shoptetem)
-    if (nameUpper?.includes('BCA') || slugLower?.includes('bca')) return '/images/products/bcaa.png';
-    if (nameUpper?.includes('CREATINE') || slugLower?.includes('kreatin')) return '/images/products/creatine-pure.png';
-    if (nameUpper?.includes('PUMP') || slugLower?.includes('deadpump')) return '/images/products/Deadpump.webp';
-    if (nameUpper?.includes('DEAD') || slugLower?.includes('blackdead')) return '/images/products/Blackdead.webp';
-    if (nameUpper?.includes('KAŠE') || nameUpper?.includes('RICE')) return '/images/products/kase1.png';
-
-    // 2. SHOPTET / DB FALLBACK
-    const img = product.image;
-    if (!img || img === '/images/products/placeholder.webp') return '/images/products/placeholder.webp';
-    if (img.startsWith('http') || img.startsWith('/')) return img;
-    return `/images/products/${img}`;
-  };
-
-  const finalImage = getProductImage();
+  const finalImage = resolveProductImage(product.image, product.name, product.slug);
+  const finalImageStatic = resolveProductImage(product.image, product.name, product.slug, { forceStatic: true });
   const isVideo = typeof finalImage === 'string' && finalImage.toLowerCase().match(/.(mp4|webm)$/i);
 
   const addItem = useCartStore((state) => state.addItem);
@@ -103,7 +82,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
         name: product.name,
         slug: product.slug,
         price: product.price,
-        image: finalImage,
+        image: finalImageStatic,
       });
       useCartStore.getState().openCart();
     }

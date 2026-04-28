@@ -103,7 +103,7 @@ export default function CartSidebar() {
                     >
                       <div className="relative w-20 h-20 bg-black flex-none rounded-xl overflow-hidden border border-white/10 group-hover:border-[#E10600]/30 transition-colors">
                         <img
-                          src={resolveProductImage(item.image, item.name, item.slug)}
+                          src={resolveProductImage(item.image, item.name, item.slug, { forceStatic: true })}
                           alt={item.name}
                           className="w-full h-full object-contain p-2"
                           onError={(e) => {

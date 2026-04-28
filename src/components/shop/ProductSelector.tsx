@@ -7,6 +7,7 @@
 import { useState } from 'react';
 import { clsx } from 'clsx';
 import AddToCartButton from './AddToCartButton';
+import { resolveProductImage } from '@/lib/resolve-image';
 
 interface Variant {
   name: string;
@@ -99,7 +100,7 @@ export default function ProductSelector({ product }: ProductSelectorProps) {
             price: currentPrice,
             variantName: selectedVariant?.name,
             variantCode: selectedVariant?.variantCode,
-            image: selectedVariant?.image || product.image,
+            image: resolveProductImage(selectedVariant?.image || product.image, product.name, product.slug, { forceStatic: true }),
           }}
           disabled={isOutOfStock}
         />
