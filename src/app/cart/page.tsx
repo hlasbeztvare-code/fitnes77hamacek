@@ -8,9 +8,9 @@ import Link from 'next/link';
 // Shoptet priceId mapa
 const PRICE_ID_MAP: Record<string, { priceId: number; productId: number }> = {
   'creatine-monohydrate---fitness-77': { priceId: 58, productId: 55 },
-  'black-dead---pre-workout':          { priceId: 49, productId: 49 },
-  'dead-pump---stim-free':             { priceId: 46, productId: 46 },
-  'heavy-duty-powerlifting-opasek':    { priceId: 43, productId: 43 },
+  'black-dead---pre-workout':          { priceId: 52, productId: 49 },
+  'dead-pump---stim-free':             { priceId: 49, productId: 46 },
+  'heavy-duty-powerlifting-opasek':    { priceId: 46, productId: 43 },
   'BOR': { priceId: 73, productId: 58 },
   'GRE': { priceId: 67, productId: 58 },
   'MAL': { priceId: 70, productId: 58 },
