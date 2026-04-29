@@ -37,19 +37,19 @@ export default function CartDrawer() {
           {/* Bottom Drawer (Jan's Bottom-Up Tech) */}
           <motion.div
             initial={{ y: '100%' }}
-            animate={{ y: '25%' }} // Max 3/4 obrazovky
+            animate={{ y: 0 }}
             exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed inset-0 top-0 z-[10006] bg-[#050505] border-t border-white/10 rounded-t-[2.5rem] shadow-[0_-20px_50px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden"
+            transition={{ type: 'spring', damping: 32, stiffness: 300 }}
+            className="fixed bottom-0 left-0 right-0 h-[82vh] z-[10006] bg-[#050505] border-t border-white/10 rounded-t-[2.5rem] shadow-[0_-20px_50px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden"
           >
-            {/* Handlebar for dragging feel */}
-            <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mt-4 mb-2" />
+            {/* Handlebar for dragging feel (L-CODE UX) */}
+            <div className="w-16 h-1.5 bg-white/20 rounded-full mx-auto mt-4 mb-2 shrink-0" />
 
             {/* Header */}
-            <div className="px-8 py-5 flex items-center justify-between border-b border-white/5">
+            <div className="px-8 py-5 flex items-center justify-between border-b border-white/5 shrink-0">
               <div className="flex items-center gap-3">
                 <ShoppingBag className={`w-5 h-5 ${isEshop ? 'text-[#ff0000]' : 'text-[#d4ff00]'}`} />
-                <h2 className="text-xl font-black uppercase tracking-[0.2em] text-white">Tvůj Výběr</h2>
+                <h2 className="text-xl font-black uppercase tracking-[0.2em] text-white">Košík</h2>
               </div>
               <button 
                 onClick={closeCart}
@@ -60,38 +60,44 @@ export default function CartDrawer() {
             </div>
 
             {/* Content Area (Compact Flow) */}
-            <div className="flex-1 overflow-y-auto px-6 py-2 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto px-6 py-4 custom-scrollbar">
               {items.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                  <p className="text-white/20 font-black uppercase tracking-widest">Košík je prázdný</p>
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-6">
+                  <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center">
+                    <ShoppingBag className="w-8 h-8 text-white/20" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-white font-black uppercase tracking-widest">Košík zeje prázdnotou</p>
+                    <p className="text-white/40 text-[10px] uppercase tracking-widest">Přidej si něco a ukaž, že to myslíš vážně.</p>
+                  </div>
                   <button 
                     onClick={closeCart}
-                    className="text-[#d4ff00] text-xs font-black underline tracking-[0.3em]"
+                    className={`${isEshop ? 'text-[#ff0000]' : 'text-[#d4ff00]'} text-xs font-black underline tracking-[0.3em]`}
                   >
                     POKRAČOVAT V NÁKUPU
                   </button>
                 </div>
               ) : (
-                <div className="space-y-2 mt-2">
+                <div className="space-y-3">
                   {items.map((item) => (
                     <div 
                       key={item.id} 
-                      className="flex items-center gap-4 bg-white/[0.02] p-2 border border-white/5 hover:border-white/10 transition-colors"
+                      className="flex items-center gap-4 bg-white/[0.03] p-3 border border-white/5 rounded-xl transition-colors"
                     >
-                      <div className="relative w-14 h-14 flex-shrink-0 bg-black">
+                      <div className="relative w-16 h-16 flex-shrink-0 bg-black rounded-lg overflow-hidden border border-white/5">
                         <Image
                           src={item.image}
                           alt={item.name}
                           fill
-                          className="object-contain p-1"
+                          className="object-contain p-2"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-[10px] font-black uppercase truncate text-white tracking-widest">{item.name}</h3>
-                        <p className={`${isEshop ? 'text-[#ff0000]' : 'text-[#d4ff00]'} font-black text-xs mt-1`}>{item.price.toLocaleString('cs-CZ')} Kč</p>
+                        <h3 className="text-[11px] font-black uppercase truncate text-white tracking-widest">{item.name}</h3>
+                        <p className={`${isEshop ? 'text-[#ff0000]' : 'text-[#d4ff00]'} font-black text-sm mt-1`}>{item.price.toLocaleString('cs-CZ')} Kč</p>
                       </div>
                       
-                      <div className="flex items-center gap-1 bg-black p-1 border border-white/10">
+                      <div className="flex items-center gap-2 bg-black/40 p-1 border border-white/10 rounded-lg">
                         <button 
                           onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                           className="p-1 text-white/40 hover:text-white transition-colors"
@@ -119,24 +125,29 @@ export default function CartDrawer() {
               )}
             </div>
 
-            {/* Spodní fixní sekce Draweru - Jan's Mandate Snippet */}
-            <div className="sticky bottom-0 bg-black p-4 md:p-8 pb-[safe-area-inset-bottom+25px] border-t border-zinc-800 w-full mt-auto">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-zinc-400 text-sm uppercase tracking-widest font-black">Celkem</span>
-                <span className="text-2xl md:text-3xl font-black text-white">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
+            {/* Checkout Footer (Always on eye for Mobile) */}
+            {items.length > 0 && (
+              <div className="sticky bottom-0 bg-[#050505] p-6 md:p-8 border-t border-white/10 w-full mt-auto pb-[calc(env(safe-area-inset-bottom,20px)+20px)]">
+                <div className="flex justify-between items-center mb-6">
+                  <div className="flex flex-col">
+                    <span className="text-zinc-500 text-[10px] uppercase tracking-widest font-black">Celková částka</span>
+                    <span className="text-2xl md:text-3xl font-black text-white">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
+                  </div>
+                </div>
+                
+                <Link 
+                  href="/checkout"
+                  className={`w-full ${accentColor} ${textColor} font-black py-6 px-8 flex items-center justify-between transition-all active:scale-[0.98] shadow-[0_20px_50px_rgba(255,0,0,0.2)] rounded-2xl group`}
+                >
+                  <span className="uppercase text-lg md:text-xl tracking-[0.2em]">K POKLADNĚ</span>
+                  <ArrowRight className="w-6 h-6 md:w-8 md:h-8 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </div>
-              
-              <Link 
-                href="/checkout"
-                className={`w-full ${accentColor} ${textColor} font-black py-5 px-6 flex items-center justify-between transition-all active:scale-95 shadow-[0_10px_40px_rgba(0,0,0,0.5)] mb-[10px]`}
-              >
-                <span className="uppercase text-lg md:text-xl tracking-[0.2em]">ZAPLATIT</span>
-                <ArrowRight className="w-6 h-6 md:w-8 md:h-8" />
-              </Link>
-            </div>
+            )}
           </motion.div>
         </>
       )}
     </AnimatePresence>
   );
 }
+// "Zameť stopy" - Mobilní checkout vyřešen na 300 %. smrk
