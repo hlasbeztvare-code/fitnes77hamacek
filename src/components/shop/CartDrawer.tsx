@@ -9,7 +9,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function CartDrawer() {
-  const { isOpen, closeCart, items, updateQuantity, removeItem, totalPrice } = useCartStore();
+  // L-CODE FIX: Přepojeno na správné funkce increaseItem a decreaseItem
+  const { isOpen, closeCart, items, increaseItem, decreaseItem, removeItem, totalPrice } = useCartStore();
   const mounted = useMounted();
   const pathname = usePathname();
 
@@ -81,7 +82,7 @@ export default function CartDrawer() {
                 <div className="space-y-3">
                   {items.map((item) => (
                     <div 
-                      key={item.id} 
+                      key={`${item.id}-${item.variantCode || 'base'}`} 
                       className="flex items-center gap-4 bg-white/[0.03] p-3 border border-white/5 rounded-xl transition-colors"
                     >
                       <div className="relative w-16 h-16 flex-shrink-0 bg-black rounded-lg overflow-hidden border border-white/5">
@@ -94,19 +95,22 @@ export default function CartDrawer() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="text-[11px] font-black uppercase truncate text-white tracking-widest">{item.name}</h3>
+                        {item.variantName && (
+                          <p className="text-[9px] text-white/50 uppercase tracking-widest">{item.variantName}</p>
+                        )}
                         <p className={`${isEshop ? 'text-[#ff0000]' : 'text-[#d4ff00]'} font-black text-sm mt-1`}>{item.price.toLocaleString('cs-CZ')} Kč</p>
                       </div>
                       
                       <div className="flex items-center gap-2 bg-black/40 p-1 border border-white/10 rounded-lg">
                         <button 
-                          onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                          onClick={() => decreaseItem(item.id, item.variantCode)}
                           className="p-1 text-white/40 hover:text-white transition-colors"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
                         <span className={`w-6 text-center text-[10px] font-black ${isEshop ? 'text-[#ff0000]' : 'text-[#d4ff00]'}`}>{item.quantity}</span>
                         <button 
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => increaseItem(item.id, item.variantCode)}
                           className="p-1 text-white/40 hover:text-white transition-colors"
                         >
                           <Plus className="w-3 h-3" />
@@ -114,7 +118,7 @@ export default function CartDrawer() {
                       </div>
 
                       <button 
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => removeItem(item.id, item.variantCode)}
                         className="p-2 text-white/10 hover:text-[#ff0000] transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
