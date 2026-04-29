@@ -2,15 +2,42 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { Resend } from 'resend';
 
+// L-CODE SECURITY: In-memory rate limiting
+const rateLimitMap = new Map<string, { count: number, lastReset: number }>();
+
+function isRateLimited(ip: string) {
+  const now = Date.now();
+  const limit = 2; // Max 2 requesty za minutu
+  const timeframe = 60 * 1000; // 60 vteřin
+
+  const record = rateLimitMap.get(ip) || { count: 0, lastReset: now };
+
+  if (now - record.lastReset > timeframe) {
+    record.count = 1;
+    record.lastReset = now;
+    rateLimitMap.set(ip, record);
+    return false;
+  }
+
+  if (record.count >= limit) {
+    return true;
+  }
+
+  record.count++;
+  rateLimitMap.set(ip, record);
+  return false;
+}
+
 const withdrawalSchema = z.object({
   orderId: z.string(),
   name: z.string(),
   email: z.string().email(),
   date: z.string(),
   reason: z.string().optional(),
+  startTime: z.number().optional(), // Pro timestamp check
+  _full_name_confirm_: z.string().optional(), // Honeypot
 });
 
-// Lazy inicializace Resendu - aby build na Vercelu neselhal na chybějícím klíči
 const getResend = () => {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -57,54 +84,33 @@ async function syncWithShoptet(data: any) {
       return false;
     }
 
-    // Shadow Injector: Odesíláme mail do Shoptetu v předepsaném formátu pro automatické párování
     await resend.emails.send({
       from: 'Fitness 77 <system@fit77.cz>',
       to: 'fitness77@post.cz',
-      replyTo: email, // Důležité pro párování se zákazníkem
+      replyTo: email,
       subject: `Objednávka č. ${orderId} - Odstoupení od smlouvy`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; border: 2px solid #000; padding: 30px; background-color: #fff;">
           <div style="background-color: #d4ff00; padding: 10px; margin-bottom: 20px; text-align: center;">
             <h1 style="margin: 0; font-size: 20px; text-transform: uppercase;">Legislativní Odstoupení</h1>
           </div>
-          
           <p><strong>DŮLEŽITÉ:</strong> Toto je oficiální digitální protokol k objednávce <strong>${orderId}</strong>.</p>
-          
           <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Číslo objednávky:</strong></td>
-              <td style="padding: 10px; border-bottom: 1px solid #eee;">${orderId}</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Zákazník:</strong></td>
-              <td style="padding: 10px; border-bottom: 1px solid #eee;">${name}</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>E-mail:</strong></td>
-              <td style="padding: 10px; border-bottom: 1px solid #eee;">${email}</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Datum převzetí:</strong></td>
-              <td style="padding: 10px; border-bottom: 1px solid #eee;">${date}</td>
-            </tr>
+            <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Číslo objednávky:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${orderId}</td></tr>
+            <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Zákazník:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${name}</td></tr>
+            <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>E-mail:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${email}</td></tr>
+            <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Datum převzetí:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${date}</td></tr>
           </table>
-          
           <div style="margin-top: 20px; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #d4ff00;">
-            <strong>Důvod odstoupení:</strong><br />
-            ${reason || 'Neuveden'}
+            <strong>Důvod odstoupení:</strong><br />${reason || 'Neuveden'}
           </div>
-          
-          <p style="margin-top: 30px; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 2px;">
-            Odesláno z L-CODE Goliáš Bridge v1.0 | fit77.cz
-          </p>
+          <p style="margin-top: 30px; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 2px;">Odesláno z L-CODE Goliáš Bridge v1.0 | fit77.cz</p>
         </div>
       `,
     });
 
-    // ZÁKAZNICKÝ SERVIS: Potvrzení pro zákazníka
     await resend.emails.send({
-      from: 'Fitness 77 <fitness77@post.cz>', // Z ofiko mailu, aby mohl odpovědět
+      from: 'Fitness 77 <fitness77@post.cz>',
       to: email,
       subject: `Potvrzení o přijetí odstoupení - Objednávka č. ${orderId}`,
       html: `
@@ -112,13 +118,10 @@ async function syncWithShoptet(data: any) {
           <h1 style="text-transform: uppercase; font-size: 24px; border-bottom: 4px solid #E10600; padding-bottom: 10px;">Fitness 77</h1>
           <p>Dobrý den, ${name},</p>
           <p>potvrzujeme přijetí Vašeho odstoupení od smlouvy k objednávce <strong>č. ${orderId}</strong>.</p>
-          <p>Vaši žádost jsme automaticky zaevidovali. O dalším postupu Vás budeme informovat v nejbližší době.</p>
-          
           <div style="background-color: #f5f5f5; padding: 20px; margin: 20px 0;">
             <h3 style="margin-top: 0;">Shrnutí žádosti:</h3>
             <p><strong>Objednávka:</strong> ${orderId}<br><strong>Datum podání:</strong> ${new Date().toLocaleDateString('cs-CZ')}</p>
           </div>
-
           <p>V případě dotazů nás můžete kontaktovat přímo odpovědí na tento e-mail.</p>
           <p style="margin-top: 40px; font-size: 12px; color: #888;">Tým Fitness 77<br>www.fit77.cz</p>
         </div>
@@ -134,22 +137,42 @@ async function syncWithShoptet(data: any) {
 
 export async function POST(req: Request) {
   try {
-    const rawBody = await req.json();
-    const validated = withdrawalSchema.safeParse(rawBody);
+    const ip = req.headers.get("x-forwarded-for") || "anonymous";
 
+    // 1. IP RATE LIMITING (L-CODE Standard)
+    if (isRateLimited(ip)) {
+      console.warn(`L-CODE SECURITY: Rate limit exceeded for IP: ${ip}`);
+      return NextResponse.json({ error: "Too many requests. Please wait." }, { status: 429 });
+    }
+
+    const rawBody = await req.json();
+    const { _full_name_confirm_, startTime, ...formData } = rawBody;
+
+    // 2. HONEYPOT CHECK (Boti vyplňují skrytá pole)
+    if (_full_name_confirm_) {
+      console.warn("L-CODE SECURITY: Honeypot triggered.");
+      return NextResponse.json({ error: "Bot detected" }, { status: 400 });
+    }
+
+    // 3. TIMESTAMP CHECK (Ochrana proti okamžitému odeslání)
+    const now = Date.now();
+    if (!startTime || now - startTime < 3000) {
+      console.warn("L-CODE SECURITY: Speed violation (Bot/Spam detected).");
+      return NextResponse.json({ error: "Are you a human? You're too fast." }, { status: 400 });
+    }
+
+    const validated = withdrawalSchema.safeParse(rawBody);
     if (!validated.success) {
       return NextResponse.json({ success: false, error: 'Invalid data' }, { status: 400 });
     }
 
-    // 1. Notifikace majitele (Telegram)
+    // 4. Notifikace majitele (Telegram)
     await notifyOwner(validated.data);
 
-    // 2. Shadow Injector (Shoptet Email Bypass)
+    // 5. Shadow Injector (Shoptet Email Bypass)
     const synced = await syncWithShoptet(validated.data);
 
     if (!synced) {
-        // I když mail selže (třeba chybí API klíč), chceme, aby uživatel viděl "úspěch", 
-        // protože to máme v logu a na Telegramu.
         console.warn('⚠️ Shadow Sync failed, but order processed via Telegram.');
     }
 
@@ -160,5 +183,4 @@ export async function POST(req: Request) {
   }
 }
 
-// clean code comment: Goliáš Stealth Bypass 1.0 je aktivní. smrk
-
+// clean code comment: Shadow Injector Hardening is ACTIVE. No bots allowed. smrk
