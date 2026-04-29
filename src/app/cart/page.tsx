@@ -59,7 +59,6 @@ export default function CartPage() {
 
   const handleCancel = () => {
     hasTriggered.current = true;
-    useCartStore.getState().openCart();
     window.history.back();
   };
 

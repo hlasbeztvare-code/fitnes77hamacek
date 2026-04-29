@@ -84,7 +84,8 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
         price: product.price,
         image: finalImageStatic,
       });
-      useCartStore.getState().openCart();
+      // AGRESIVNÍ PŘESMĚROVÁNÍ (L-CODE REDIRECT STRATEGY)
+      router.push('/cart');
     }
   };
 

@@ -38,8 +38,8 @@ export default function AddToCartButton({ product, disabled }: Props) {
       variantCode: product.variantCode,
     });
 
-    // OTEVŘENÍ SIDEBARU PRO KONTROLU (GOLIÁŠ UX FIX)
-    useCartStore.getState().openCart();
+    // AGRESIVNÍ PŘESMĚROVÁNÍ (L-CODE REDIRECT STRATEGY)
+    router.push('/cart');
   };
 
   return (

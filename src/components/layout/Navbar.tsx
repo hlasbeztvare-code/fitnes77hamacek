@@ -67,8 +67,8 @@ export default function Navbar() {
 
             {/* Right side icons */}
             <div className="flex items-center justify-end gap-2 sm:gap-4 md:gap-5 relative z-[10002] flex-none md:w-[300px]">
-              <button 
-                onClick={() => useCartStore.getState().openCart()}
+              <Link 
+                href="/cart"
                 className="relative group p-2 focus:outline-none"
               >
                 <ShoppingCart className="h-6 w-6 text-white group-hover:text-[#E10600] transition-colors" />
@@ -77,7 +77,7 @@ export default function Navbar() {
                     {totalItems}
                   </span>
                 )}
-              </button>
+              </Link>
 
               <button
                 className="lg:hidden p-2 text-[#d4ff00]"
@@ -131,11 +131,9 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <button
-              onClick={() => {
-                setMobileOpen(false);
-                useCartStore.getState().openCart();
-              }}
+            <Link
+              href="/cart"
+              onClick={() => setMobileOpen(false)}
               className="flex items-center gap-4 text-4xl font-black uppercase tracking-[0.1em] text-white hover:text-[#E10600] transition-colors focus:outline-none"
             >
               <span>Košík</span>
@@ -144,7 +142,7 @@ export default function Navbar() {
                   {totalItems}
                 </span>
               )}
-            </button>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>

@@ -6,7 +6,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ScrollToTop from "@/components/utils/ScrollToTop";
-import CartDrawer from "@/components/shop/CartDrawer";
+
 import FloatingCartButton from "@/components/shop/FloatingCartButton";
 import dynamic from 'next/dynamic';
 
@@ -135,7 +135,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PerformanceProviders>
               <ScrollToTop />
               <Navbar />
-              <CartDrawer />
+
               <FloatingCartButton />
               <main><GlobalPreloader>{children}</GlobalPreloader></main>
               <div id="main-global-footer">
