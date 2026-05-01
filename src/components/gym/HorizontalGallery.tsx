@@ -58,7 +58,7 @@ const HorizontalGallery = () => {
                 alt={img.title}
                 fill
                 sizes="85vw"
-                className="object-cover grayscale"
+                className="object-cover"
                 loading={i < 2 ? "eager" : "lazy"}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
@@ -99,7 +99,7 @@ const HorizontalGallery = () => {
                 alt={img.title}
                 fill
                 sizes="45vw"
-                className="w-full h-full object-cover grayscale-[0.8] contrast-[1.1] transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0 group-hover:contrast-125"
+                className="w-full h-full object-cover contrast-[1.1] transition-all duration-700 group-hover:scale-105 group-hover:contrast-125"
                 priority={i < 2}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
