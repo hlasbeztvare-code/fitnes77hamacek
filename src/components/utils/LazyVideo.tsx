@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
+import { forwardRef } from "react";
 
 interface LazyVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
   src: string;
@@ -8,43 +8,17 @@ interface LazyVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
 }
 
 /**
- * L-CODE DYNAMICS | LazyVideo Component (THE FINAL PURGE - ULTRA RELIABLE)
- * Používá přímé SRC pro video tag po aktivaci, což je spolehlivější pro autoPlay a onCanPlay.
+ * L-CODE DYNAMICS | Zero-JS Video Component
+ * Jednoduchý wrapper, který spoléhá na nativní preload="none" prohlížeče.
+ * Žádný JavaScript, žádné blokování hlavního vlákna.
  */
 const LazyVideo = forwardRef<HTMLVideoElement, LazyVideoProps>(({ src, poster, ...props }, ref) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
-
-  // Expozice nativního elementu pro vnější Ref (Hero, WowHero)
-  useImperativeHandle(ref, () => videoRef.current as HTMLVideoElement);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldLoad(true);
-          observer.disconnect();
-        }
-      },
-      { 
-        threshold: 0.01,
-        rootMargin: "100px" // Trochu větší margin pro jistotu
-      }
-    );
-
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <video
-      ref={videoRef}
+      ref={ref}
       preload="none"
       poster={poster}
-      src={shouldLoad ? src : undefined}
+      src={src}
       {...props}
     />
   );

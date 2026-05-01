@@ -46,15 +46,40 @@ const Hero = () => {
 
   return (
     <section ref={containerRef} className="relative h-[250vh] bg-transparent overflow-clip">
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        {/* LCP Optimization: Background is pure black by default now */}
+      {/* MOBILE VERSION (Zero JS / Zero Motion) */}
+      <div className="block md:hidden sticky top-0 h-screen w-full bg-black">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/gym/gym01.webp"
+            alt="Fitness 77"
+            fill
+            priority
+            loading="eager"
+            className="object-cover opacity-40 grayscale"
+            sizes="100vw"
+          />
+        </div>
+        <div className="relative z-30 flex h-full flex-col items-center justify-center text-center px-4">
+           <h1 className="text-[22vw] font-black leading-none tracking-tighter text-[#d4ff00] drop-shadow-[0_0_30px_rgba(212,255,0,0.4)]">
+            F77<span className="text-white italic">.</span>
+          </h1>
+          <p className="text-lg font-bold text-white tracking-[0.6em] uppercase mt-2 opacity-90">
+            Mladá Boleslav
+          </p>
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+            <span className="text-[10px] uppercase tracking-[0.4em] text-white/50">Scroll</span>
+            <div className="w-[1px] h-12 bg-[#d4ff00]" />
+          </div>
+        </div>
+      </div>
 
-        {/* Video Overlay Layer - FULL VERSION RESTORED */}
+      {/* DESKTOP VERSION (Full Cinematic Experience) */}
+      <div className="hidden md:flex sticky top-0 h-screen w-full items-center justify-center overflow-hidden">
+        {/* Video Overlay Layer */}
         <motion.div
           style={{ scale: videoScale, opacity: videoOpacity }}
           className="absolute inset-0 w-full h-full flex items-center justify-center transform-gpu"
         >
-          {/* Hlavní ostré video uprostřed - OPTIMALIZOVÁNO */}
           <LazyVideo
             ref={mainVideoRef}
             src="/videos/TVE_NOVE_VIDEO_9_16.webm"
@@ -63,22 +88,20 @@ const Hero = () => {
             muted
             loop
             playsInline
-            className="relative z-10 w-full h-full object-cover md:object-contain grayscale-[0.2] brightness-[0.7] contrast-[1.1] rotate-6 scale-[1.05] transform-gpu will-change-transform"
+            className="relative z-10 w-full h-full object-contain grayscale-[0.2] brightness-[0.7] contrast-[1.1] rotate-6 scale-[1.05] transform-gpu will-change-transform"
           />
 
-          {/* Blend Overlay */}
           <div className="absolute inset-0 bg-[#050505]/40 z-11 pointer-events-none mix-blend-multiply" />
 
-          {/* Pohyblivé postranní pruhy - GPU ACCELERATED (All devices) */}
-          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex justify-between items-center px-2 md:px-12">
-            <div className="w-[30vw] md:w-[18vw] rotate-6 opacity-25 scale-[1.15] opacity-30">
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex justify-between items-center px-12">
+            <div className="w-[18vw] rotate-6 opacity-25 scale-[1.15] opacity-30">
               <motion.div
                 animate={{ y: ['0%', '-50%'] }}
                 transition={{ duration: 25, ease: 'linear', repeat: Infinity }}
                 className="flex flex-col transform-gpu will-change-transform"
               >
                 {[...lImages, ...lImages].map((src, i) => (
-                  <div key={`l-${i}`} className="pb-4 md:pb-6 relative aspect-[9/16]">
+                  <div key={`l-${i}`} className="pb-6 relative aspect-[9/16]">
                     <Image
                       src={src}
                       alt=""
@@ -86,22 +109,20 @@ const Hero = () => {
                       className="object-cover rounded-xl grayscale contrast-125"
                       loading="eager"
                       priority={i === 0}
-                      // @ts-ignore
-                      fetchPriority={i === 0 ? "high" : "low"}
-                      sizes="(max-width: 768px) 30vw, 18vw"
+                      sizes="18vw"
                     />
                   </div>
                 ))}
               </motion.div>
             </div>
-            <div className="w-[30vw] md:w-[18vw] rotate-6 opacity-25 scale-[1.15] opacity-30">
+            <div className="w-[18vw] rotate-6 opacity-25 scale-[1.15] opacity-30">
               <motion.div
                 animate={{ y: ['-50%', '0%'] }}
                 transition={{ duration: 25, ease: 'linear', repeat: Infinity }}
                 className="flex flex-col transform-gpu will-change-transform"
               >
                 {[...rImages, ...rImages].map((src, i) => (
-                  <div key={`r-${i}`} className="pb-4 md:pb-6 relative aspect-[9/16]">
+                  <div key={`r-${i}`} className="pb-6 relative aspect-[9/16]">
                     <Image
                       src={src}
                       alt=""
@@ -109,9 +130,7 @@ const Hero = () => {
                       className="object-cover rounded-xl grayscale contrast-125"
                       loading="eager"
                       priority={i === 0}
-                      // @ts-ignore
-                      fetchPriority={i === 0 ? "high" : "low"}
-                      sizes="(max-width: 768px) 30vw, 18vw"
+                      sizes="18vw"
                     />
                   </div>
                 ))}
@@ -119,12 +138,10 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Cinematic překryvy */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#000000] via-transparent to-[#000000] z-20 pointer-events-none" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000000_100%)] z-20 pointer-events-none opacity-80" />
         </motion.div>
 
-        {/* Initial Big Typography - LCP TARGET */}
         <div className="relative z-30 text-center px-4">
           <motion.div
             style={{ scale: textScale, opacity: textOpacity }}
@@ -133,16 +150,15 @@ const Hero = () => {
             transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
             className="pointer-events-none transform-gpu"
           >
-            <h1 className="text-[18vw] md:text-[22vw] font-black leading-none tracking-tighter text-[#d4ff00] select-none filter drop-shadow-[0_0_40px_rgba(212,255,0,0.3)]">
+            <h1 className="text-[22vw] font-black leading-none tracking-tighter text-[#d4ff00] select-none filter drop-shadow-[0_0_40px_rgba(212,255,0,0.3)]">
               F77<span className="text-white italic">.</span>
             </h1>
-            <p className="text-xl md:text-3xl font-bold text-white tracking-[0.8em] uppercase mt-[-3vw] opacity-90 text-outline-sm">
+            <p className="text-3xl font-bold text-white tracking-[0.8em] uppercase mt-[-3vw] opacity-90">
               Mladá Boleslav
             </p>
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
         {startAnimations && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -150,14 +166,14 @@ const Hero = () => {
             transition={{ delay: 1, duration: 1.5 }}
             className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
           >
-            <span className="text-[10px] uppercase tracking-[0.5em] text-white/50 font-medium text-outline-sm">Scroll to Dive</span>
+            <span className="text-[10px] uppercase tracking-[0.5em] text-white/50 font-medium">Scroll to Dive</span>
             <div className="w-[1px] h-20 bg-gradient-to-b from-[#d4ff00] to-transparent" />
           </motion.div>
         )}
       </div>
 
       {/* Intro Text revealed as we scroll */}
-      <div className="relative z-20 h-screen flex flex-col justify-center px-6 md:px-32">
+      <div className="relative z-20 h-screen flex flex-col justify-center px-6 md:px-32 bg-black/20">
         <motion.div
           style={{ y: introY }}
           initial={{ opacity: 0 }}
@@ -165,13 +181,13 @@ const Hero = () => {
           transition={{ duration: 1 }}
           className="max-w-5xl"
         >
-          <h2 className="text-6xl md:text-9xl font-black text-white leading-[0.9] mb-12 uppercase tracking-tighter font-black drop-shadow-[0_10px_40px_rgba(0,0,0,1)] text-outline-sm">
+          <h2 className="text-6xl md:text-9xl font-black text-white leading-[0.9] mb-12 uppercase tracking-tighter">
             FITNESS 77 – MÍSTO, <br />
             KDE VZNIKAJÍ <br />
             <span className="text-transparent" style={{ WebkitTextStroke: '1px #d4ff00' }}>VÝSLEDKY</span>
           </h2>
           <div className="grid md:grid-cols-2 gap-12 items-end">
-            <p className="text-xl md:text-3xl text-white/90 font-medium leading-tight max-w-xl font-medium uppercase drop-shadow-[0_4px_20px_rgba(0,0,0,1)] text-outline-sm">
+            <p className="text-xl md:text-3xl text-white/90 font-medium leading-tight max-w-xl uppercase">
               Moderní vybavení, tvrdý trénink a prostředí, které tě posune dál.<br />
               Ať začínáš nebo chceš maximum – tady to dokážeš.
             </p>
