@@ -61,6 +61,15 @@ input, textarea, button, select, h1, h2, h3, h4, h5, h6, p, span, a, li, i, em, 
   font-style: normal !important; /* TOTÁLNÍ ZÁKAZ KURZÍVY */
 }
 
+/* L-CODE UTILS */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 #sluzby, #cenik, #main-global-footer {
   content-visibility: auto;
   contain-intrinsic-size: 1px 1000px;

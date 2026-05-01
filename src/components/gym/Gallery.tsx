@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRef } from 'react';
 
 const images = [
@@ -12,51 +12,47 @@ const images = [
 ];
 
 export const Gallery = () => {
-  const targetRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"]
-  });
-
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-80%"]);
-
   return (
-    <section ref={targetRef} className="relative h-[400vh] bg-black">
-      <div className="sticky top-0 h-screen flex flex-col justify-center items-start overflow-hidden px-4">
+    <section className="relative bg-black py-20 overflow-hidden">
+      <div className="container mx-auto px-6 mb-12">
         <motion.div 
-          initial={{ opacity: 0, x: -100 }}
+          initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
           className="mb-12"
         >
-          <span className="text-[10px] font-syne uppercase tracking-[1em] text-[#d4ff00] mb-4 block">Visual evidence</span>
-          <h2 className="text-8xl md:text-[12rem] font-black font-black tracking-tighter leading-none m-0 blend-diff">
-            THE <span className="text-outline">ARENA</span>
+          <span className="text-[10px] font-bold uppercase tracking-[1em] text-[#d4ff00] mb-4 block">Visual evidence</span>
+          <h2 className="text-6xl md:text-[8rem] font-black tracking-tighter leading-none m-0 uppercase italic">
+            THE <span className="text-zinc-800">ARENA</span>
           </h2>
-        </motion.div>
-
-        <motion.div style={{ x }} className="flex gap-12">
-          {images.map((src, index) => (
-            <div key={index} className="relative w-[80vw] md:w-[600px] aspect-[4/5] md:aspect-[16/9] shrink-0 group overflow-hidden">
-              <img 
-                src={src} 
-                alt={`Fitness 77 gym ${index + 1}`}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 ease-out"
-              />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500" />
-              <div className="absolute top-8 left-8">
-                <span className="text-4xl font-black font-black text-[#d4ff00] drop-shadow-lg">0{index + 1}</span>
-              </div>
-            </div>
-          ))}
         </motion.div>
       </div>
 
-      <div className="absolute bottom-20 right-20 flex items-center gap-4 text-white/20">
-        <div className="h-px w-20 bg-white/10" />
-        <span className="text-[10px] font-syne uppercase tracking-widest">Keep scrolling to reveal</span>
+      <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-6 pb-12">
+        {images.map((src, index) => (
+          <div 
+            key={index} 
+            className="relative w-[80vw] md:w-[600px] aspect-[4/5] md:aspect-[16/9] shrink-0 snap-center group overflow-hidden rounded-xl border border-white/5"
+          >
+            <img 
+              src={src} 
+              alt={`Fitness 77 gym ${index + 1}`}
+              loading="lazy"
+              className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-1000 ease-out"
+            />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500" />
+            <div className="absolute top-8 left-8">
+              <span className="text-4xl font-black text-[#d4ff00] drop-shadow-lg">0{index + 1}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-end px-6 opacity-20">
+        <span className="text-[10px] font-bold uppercase tracking-widest italic">Snap Gallery Active</span>
       </div>
     </section>
   );
 };
+
+// clean code comment: Sekundární galerie opravena na Snap Scroll. Eliminována 400vh černá díra. smrk
