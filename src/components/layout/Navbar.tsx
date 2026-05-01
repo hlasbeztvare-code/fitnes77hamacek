@@ -43,6 +43,9 @@ export default function Navbar() {
                   height={30}
                   className="h-10 w-auto md:h-7 object-contain brightness-0 invert"
                   priority
+                  loading="eager"
+                  // @ts-ignore
+                  fetchPriority="high"
                 />
                 <span className="text-base md:text-xl font-black uppercase tracking-[0.1em] md:tracking-[0.14em] text-white whitespace-nowrap">
                   FITNESS 77

@@ -124,6 +124,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="cs" className={`${inter.variable} ${bebas.variable} ${spaceGrotesk.variable}`}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Preconnect pro lokální assety (včetně videí) pro urychlení handshaku */}
+        <link rel="preconnect" href="/" />
+        <link rel="dns-prefetch" href="/" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -11,7 +11,8 @@ export default function WowHero() {
 
   // Záchranný timer, kdyby se video nenačetlo (např. pomalá síť)
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 3000);
+    // Odložení náročných animací o 500ms pro snížení TBT (L-CODE Standard)
+    const timer = setTimeout(() => setIsLoaded(true), 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -25,7 +26,10 @@ export default function WowHero() {
           alt="Fitness 77 Hero"
           fill
           priority
+          loading="eager"
           sizes="100vw"
+          // @ts-ignore
+          fetchPriority="high"
           className={`object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-20' : 'opacity-60'}`}
         />
 
