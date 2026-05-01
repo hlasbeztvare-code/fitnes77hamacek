@@ -168,7 +168,7 @@ export default function CartPage() {
               </p>
 
               <Link 
-                href="/"
+                href="/supplements"
                 className="f77-button-master mt-6 bg-transparent border-2 border-white/10 text-zinc-500 hover:text-white hover:border-white/30 transition-all [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)] py-5"
               >
                 <span className="uppercase tracking-[0.15em]">POKRAČOVAT V NÁKUPU</span>
