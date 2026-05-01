@@ -39,16 +39,13 @@ const LazyVideo = forwardRef<HTMLVideoElement, LazyVideoProps>(({ src, poster, .
     return () => observer.disconnect();
   }, []);
 
-  // Odstraníme src z props, aby se nedostal přímo na video tag dřív, než chceme
-  const { src: _unused, ...videoProps } = props;
-
   return (
     <video
       ref={videoRef}
       preload="none"
       poster={poster}
       src={shouldLoad ? src : undefined}
-      {...videoProps}
+      {...props}
     />
   );
 });
