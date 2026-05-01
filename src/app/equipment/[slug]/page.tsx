@@ -22,10 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${product.name} | Vybavení | Fitness 77`,
-    description: product.shortDescription,
+    description: product.shortDescription ?? undefined,
     openGraph: {
       title: product.name,
-      description: product.shortDescription,
+      description: product.shortDescription ?? undefined,
       images: [{ url: product.image ?? '/images/brand/og_image.png' }],
     },
   };
