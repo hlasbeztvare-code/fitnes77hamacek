@@ -54,7 +54,7 @@ const Hero = () => {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
             className="relative z-10 w-full h-full object-cover md:object-contain grayscale-[0.2] brightness-[0.7] contrast-[1.1] rotate-6 scale-[1.05] transform-gpu will-change-transform"
           >
             <source src="/videos/TVE_NOVE_VIDEO_9_16.webm" type="video/webm" />

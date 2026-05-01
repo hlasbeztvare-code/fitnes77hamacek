@@ -9,6 +9,7 @@ import { Minus, Plus, Trash2, ArrowRight } from 'lucide-react';
 import useMounted from '@/hooks/useMounted';
 import { resolveProductImage } from '@/lib/resolve-image';
 import ProductCard from '@/components/shop/ProductCard';
+import LazyVideo from '@/components/utils/LazyVideo';
 
 // GOLIÁŠ v41.0: Real Cart Page (Mezibod před Shoptetem)
 export default function CartPage() {
@@ -143,7 +144,7 @@ export default function CartPage() {
                     
                     if (isVideo) {
                       return (
-                        <video src={mediaPath} autoPlay loop muted playsInline className="w-full h-full object-contain p-1" />
+                        <LazyVideo src={mediaPath} autoPlay loop muted playsInline className="w-full h-full object-contain p-1" />
                       );
                     }
                     return <Image src={mediaPath} alt={item.name} fill className="object-contain p-1" />;
@@ -196,6 +197,7 @@ export default function CartPage() {
                         src={resolveProductImage(product.image, product.name, product.slug, { forceStatic: true })} 
                         alt={product.name} 
                         fill 
+                        sizes="48px"
                         className="object-contain p-1 group-hover:scale-110 transition-transform duration-500" 
                       />
                     </div>

@@ -24,6 +24,7 @@ export default function WowHero() {
           alt="Fitness 77 Hero"
           fill
           priority
+          sizes="100vw"
           className={`object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-20' : 'opacity-60'}`}
         />
 
@@ -34,7 +35,7 @@ export default function WowHero() {
           loop
           muted
           playsInline
-          preload="auto"
+          preload="none"
           onCanPlay={() => setIsLoaded(true)}
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ${isLoaded ? 'opacity-90 contrast-125' : 'opacity-40 grayscale-[0.5]'}`}
         />

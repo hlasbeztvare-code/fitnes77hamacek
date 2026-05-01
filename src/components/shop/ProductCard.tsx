@@ -8,6 +8,7 @@ import { useCartStore } from '@/hooks/useCartStore';
 import { useRouter } from 'next/navigation';
 import AddToCartButton from './AddToCartButton';
 import { resolveProductImage } from '@/lib/resolve-image';
+import LazyVideo from '@/components/utils/LazyVideo';
 
 type Product = {
   id: string;
@@ -135,19 +136,37 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
             style={{ y }}
             whileHover={{ scale: 1.15 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="relative w-full h-[110%] transform-gpu will-change-transform z-10"
+            className="relative w-full h-[110%] transform-gpu will-change-transform z-10 flex items-center justify-center"
           >
-            {isVideo ? (
-              <video src={finalImage} autoPlay loop muted playsInline className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]" />
+            {isVideo && (index === undefined || index < 1) ? (
+              <LazyVideo 
+                src={finalImage as string} 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]" 
+              />
+            ) : isVideo ? (
+              /* Pro ostatní v listu použijeme statický náhled, video se aktivuje až na detailu nebo hoveru (zjednodušeno pro výkon) */
+              <Image 
+                src={finalImageStatic} 
+                alt={product.name} 
+                fill 
+                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw" 
+                className="object-contain drop-shadow-[0_30px_70px_rgba(0,0,0,0.4)]"
+                style={{ objectPosition: 'center center' }}
+                priority={product.featured || (typeof index === 'number' && index < 2)}
+              />
             ) : (
               <Image 
                 src={finalImage} 
                 alt={product.name} 
                 fill 
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" 
+                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw" 
                 className="object-contain drop-shadow-[0_30px_70px_rgba(0,0,0,0.4)]"
                 style={{ objectPosition: 'center center' }}
-                priority={product.featured || (typeof index === 'number' && index < 4)}
+                priority={product.featured || (typeof index === 'number' && index < 2)}
               />
             )}
           </motion.div>

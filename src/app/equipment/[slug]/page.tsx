@@ -76,6 +76,7 @@ export default async function EquipmentDetailPage({ params }: Props) {
                   loop
                   muted
                   playsInline
+                  preload="none"
                   className="w-full h-full object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
                 />
               ) : (

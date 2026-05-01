@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { resolveProductImage } from '@/lib/resolve-image';
+import LazyVideo from '@/components/utils/LazyVideo';
 
 type Props = {
   product: {
@@ -23,8 +24,8 @@ export default function ProductDetailImage({ product }: Props) {
       {/* Hlavní láhev produktu (Primární pohled) - Sjednocená výška */}
       <div className="relative w-full h-full max-h-[90%] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-95 group-hover:opacity-10 transform-gpu z-10 flex items-center justify-center">
         {isVideo ? (
-          <video 
-            src={finalImage} 
+          <LazyVideo 
+            src={finalImage as string} 
             autoPlay 
             loop 
             muted 
