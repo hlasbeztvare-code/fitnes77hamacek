@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
 
 interface LazyVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
   src: string;
@@ -8,13 +8,15 @@ interface LazyVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
 }
 
 /**
- * L-CODE DYNAMICS | LazyVideo Component (THE FINAL PURGE)
- * Implementuje striktní "Data-src Pattern".
- * Video tag nemá SRC hned při renderu. Načítá se až při viditelnosti.
+ * L-CODE DYNAMICS | LazyVideo Component (THE FINAL PURGE - ULTRA RELIABLE)
+ * Používá přímé SRC pro video tag po aktivaci, což je spolehlivější pro autoPlay a onCanPlay.
  */
-export default function LazyVideo({ src, poster, ...props }: LazyVideoProps) {
+const LazyVideo = forwardRef<HTMLVideoElement, LazyVideoProps>(({ src, poster, ...props }, ref) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
+
+  // Expozice nativního elementu pro vnější Ref (Hero, WowHero)
+  useImperativeHandle(ref, () => videoRef.current as HTMLVideoElement);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,7 +28,7 @@ export default function LazyVideo({ src, poster, ...props }: LazyVideoProps) {
       },
       { 
         threshold: 0.01,
-        rootMargin: "50px" 
+        rootMargin: "100px" // Trochu větší margin pro jistotu
       }
     );
 
@@ -37,14 +39,20 @@ export default function LazyVideo({ src, poster, ...props }: LazyVideoProps) {
     return () => observer.disconnect();
   }, []);
 
+  // Odstraníme src z props, aby se nedostal přímo na video tag dřív, než chceme
+  const { src: _unused, ...videoProps } = props;
+
   return (
     <video
       ref={videoRef}
       preload="none"
       poster={poster}
-      {...props}
-    >
-      {shouldLoad && <source src={src} type="video/webm" />}
-    </video>
+      src={shouldLoad ? src : undefined}
+      {...videoProps}
+    />
   );
-}
+});
+
+LazyVideo.displayName = "LazyVideo";
+
+export default LazyVideo;
