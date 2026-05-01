@@ -63,7 +63,7 @@ export const products = [
       "Kofein bezvodý": "225 mg",
       "Bioperine®": "11 mg"
     },
-    price: 1490,
+    price: 990,
     oldPrice: 1790,
     image: '/images/products/Blackdead.webp',
     stock: 42,
@@ -87,7 +87,7 @@ export const products = [
       "Citicoline CDP": "793 mg",
       "Bioperine®": "13 mg"
     },
-    price: 1190,
+    price: 990,
     oldPrice: 1390,
     image: '/images/products/Deadpump.webp',
     stock: 55,
