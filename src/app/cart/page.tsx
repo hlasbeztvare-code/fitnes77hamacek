@@ -171,14 +171,14 @@ export default function CartPage() {
                   <p className="text-[#E10600] font-black text-sm md:text-base mt-1">{(item.price * item.quantity).toLocaleString('cs-CZ')} Kč</p>
                 </div>
                 
-                {/* Kompaktní Volič Množství (Sníženo o 30% - smrk) */}
-                <div className="flex items-center gap-1 sm:gap-1.5 bg-black/40 border border-white/10 p-0.5">
-                  <button onClick={() => decreaseItem(item.id, item.variantCode)} className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-white/40 hover:text-white transition-colors">
-                    <Minus className="w-2.5 h-2.5" />
+                {/* Kompaktní Volič Množství */}
+                <div className="flex items-center gap-1 sm:gap-2 bg-black/40 border border-white/10 p-1">
+                  <button onClick={() => decreaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-white/40 hover:text-white transition-colors">
+                    <Minus className="w-3 h-3" />
                   </button>
-                  <span className="w-5 text-center text-[10px] font-black text-white">{item.quantity}</span>
-                  <button onClick={() => increaseItem(item.id, item.variantCode)} className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-white/40 hover:text-white transition-colors">
-                    <Plus className="w-2.5 h-2.5" />
+                  <span className="w-6 text-center text-xs font-black text-white">{item.quantity}</span>
+                  <button onClick={() => increaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-white/40 hover:text-white transition-colors">
+                    <Plus className="w-3 h-3" />
                   </button>
                 </div>
 
@@ -277,5 +277,3 @@ export default function CartPage() {
     </div>
   );
 }
-
-// L-CODE DYNAMICS: Tracking disabled. Operational efficiency restored. //

@@ -39,7 +39,7 @@ const trainers = [
 export const Team = () => {
   return (
     <section className="py-24 bg-black selection:bg-[#d4ff00] selection:text-black font-black">
-      <div className="max-w-[1400px] mx-auto px-6"> {/* Zvětšili jsme max-w kontejneru (smrk) */}
+      <div className="max-w-[1400px] mx-auto px-6">
         
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
           <h2 className="text-[9vw] font-black text-white leading-none tracking-tighter uppercase select-none">
@@ -60,7 +60,6 @@ export const Team = () => {
           </h2>
         </div>
 
-        {/* Zmenšili jsme mezeru gap z 16 na 8 (smrk) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {trainers.map((trainer, i) => (
             <motion.div
@@ -80,13 +79,13 @@ export const Team = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90 md:opacity-90" />
                 </div>
 
-                <div className="relative md:absolute md:inset-0 flex flex-col justify-end p-6 md:p-12 mt-4 md:mt-0">
+                <div className="relative md:absolute md:inset-0 flex flex-col justify-end p-8 md:p-12 mt-4 md:mt-0">
                   <div className="w-full">
-                      <h3 className="text-5xl md:text-[4.5vw] xl:text-[5.5rem] font-black text-white leading-[0.8] tracking-tighter uppercase group-hover:text-[#d4ff00] transition-colors duration-500 md:whitespace-nowrap">
+                      <h3 className="text-[12vw] lg:text-[4.5vw] xl:text-[5.5rem] font-black text-white leading-[0.8] tracking-tighter uppercase group-hover:text-[#d4ff00] transition-colors duration-500 md:whitespace-nowrap">
                           {trainer.firstName}<br />
                           <span className="text-[#d4ff00] group-hover:text-white">{trainer.lastName}</span>
                       </h3>
-                      <p className="text-white/50 text-[10px] font-medium uppercase tracking-[0.5em] mt-4 md:mt-6 mb-6 md:mb-8">{trainer.title}</p>
+                      <p className="text-white/50 text-[10px] font-medium font-medium uppercase tracking-[0.5em] mt-6 mb-8">{trainer.title}</p>
                       
                       <div className="max-w-[280px] space-y-4 font-medium">
                           {trainer.skills.map((skill, idx) => (
@@ -125,3 +124,5 @@ export const Team = () => {
     </section>
   );
 };
+
+export default Team;
