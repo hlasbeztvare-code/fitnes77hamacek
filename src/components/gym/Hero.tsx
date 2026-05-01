@@ -10,15 +10,9 @@ const Hero = () => {
   const mainVideoRef = useRef<HTMLVideoElement>(null);
   const { scrollY } = useScroll();
 
-  const [startAnimations, setStartAnimations] = useState(false);
-
   useEffect(() => {
     // Video plyne normální rychlostí (prevence sekání)
     if (mainVideoRef.current) mainVideoRef.current.playbackRate = 1;
-    
-    // Odložení animací pro snížení Blocking Time (L-CODE Standard)
-    const timer = setTimeout(() => setStartAnimations(true), 600);
-    return () => clearTimeout(timer);
   }, []);
 
   // Optimalizace pro mobil: na menších displejích omezíme intenzitu transformací pro plynulost
@@ -145,9 +139,6 @@ const Hero = () => {
         <div className="relative z-30 text-center px-4">
           <motion.div
             style={{ scale: textScale, opacity: textOpacity }}
-            initial={false}
-            animate={startAnimations ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
             className="pointer-events-none transform-gpu"
           >
             <h1 className="text-[22vw] font-black leading-none tracking-tighter text-[#d4ff00] select-none filter drop-shadow-[0_0_40px_rgba(212,255,0,0.3)]">
@@ -159,17 +150,16 @@ const Hero = () => {
           </motion.div>
         </div>
 
-        {startAnimations && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1.5 }}
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
-          >
-            <span className="text-[10px] uppercase tracking-[0.5em] text-white/50 font-medium">Scroll to Dive</span>
-            <div className="w-[1px] h-20 bg-gradient-to-b from-[#d4ff00] to-transparent" />
-          </motion.div>
-        )}
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+        >
+          <span className="text-[10px] uppercase tracking-[0.5em] text-white/50 font-medium">Scroll to Dive</span>
+          <div className="w-[1px] h-20 bg-gradient-to-b from-[#d4ff00] to-transparent" />
+        </motion.div>
       </div>
 
       {/* Intro Text revealed as we scroll */}

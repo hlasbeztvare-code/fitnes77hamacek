@@ -70,42 +70,43 @@ export const Team = () => {
               viewport={{ once: true }}
               className="relative group w-full"
             >
-              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/5 bg-zinc-900 transition-all duration-700 group-hover:border-[#d4ff00]/20">
-                <img
-                  src={trainer.image}
-                  alt={trainer.lastName}
-                  className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
-              </div>
+              <div className="flex flex-col md:block">
+                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/5 bg-zinc-900 transition-all duration-700 group-hover:border-[#d4ff00]/20">
+                  <img
+                    src={trainer.image}
+                    alt={trainer.lastName}
+                    className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90 md:opacity-90" />
+                </div>
 
-              <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
-                <div className="w-full">
-                    {/* Snížili jsme text z 8xl na 6xl/7xl pro jistotu (smrk) */}
-                    <h3 className="text-[12vw] lg:text-[4.5vw] xl:text-[5.5rem] font-black text-white leading-[0.8] tracking-tighter uppercase group-hover:text-[#d4ff00] transition-colors duration-500 whitespace-nowrap">
-                        {trainer.firstName}<br />
-                        <span className="text-[#d4ff00] group-hover:text-white">{trainer.lastName}</span>
-                    </h3>
-                    <p className="text-white/50 text-[10px] font-medium font-medium uppercase tracking-[0.5em] mt-6 mb-8">{trainer.title}</p>
-                    
-                    <div className="max-w-[280px] space-y-4 font-medium">
-                        {trainer.skills.map((skill, idx) => (
-                            <div key={idx} className="space-y-1.5">
-                                <div className="flex justify-between text-[9px] text-white/40 uppercase tracking-widest font-bold">
-                                    <span>{skill.name}</span>
-                                    <span>{skill.value}%</span>
-                                </div>
-                                <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
-                                    <motion.div 
-                                        initial={{ width: 0 }}
-                                        whileInView={{ width: `${skill.value}%` }}
-                                        transition={{ duration: 1.5, ease: "easeOut" }}
-                                        className="h-full bg-[#d4ff00]"
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                <div className="relative md:absolute md:inset-0 flex flex-col justify-end p-6 md:p-12 mt-4 md:mt-0">
+                  <div className="w-full">
+                      <h3 className="text-5xl md:text-[4.5vw] xl:text-[5.5rem] font-black text-white leading-[0.8] tracking-tighter uppercase group-hover:text-[#d4ff00] transition-colors duration-500 md:whitespace-nowrap">
+                          {trainer.firstName}<br />
+                          <span className="text-[#d4ff00] group-hover:text-white">{trainer.lastName}</span>
+                      </h3>
+                      <p className="text-white/50 text-[10px] font-medium uppercase tracking-[0.5em] mt-4 md:mt-6 mb-6 md:mb-8">{trainer.title}</p>
+                      
+                      <div className="max-w-[280px] space-y-4 font-medium">
+                          {trainer.skills.map((skill, idx) => (
+                              <div key={idx} className="space-y-1.5">
+                                  <div className="flex justify-between text-[9px] text-white/40 uppercase tracking-widest font-bold">
+                                      <span>{skill.name}</span>
+                                      <span>{skill.value}%</span>
+                                  </div>
+                                  <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
+                                      <motion.div 
+                                          initial={{ width: 0 }}
+                                          whileInView={{ width: `${skill.value}%` }}
+                                          transition={{ duration: 1.5, ease: "easeOut" }}
+                                          className="h-full bg-[#d4ff00]"
+                                      />
+                                  </div>
+                              </div>
+                          ))}
+                      </div>
+                  </div>
                 </div>
               </div>
 
