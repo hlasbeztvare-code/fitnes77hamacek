@@ -7,7 +7,9 @@ async function main() {
     { name: 'Kreatin', price: 555 },
     { name: 'Black Dead', price: 990 },
     { name: 'Dead Pump', price: 990 },
-    { name: 'Glutamine', price: 580 }
+    { name: 'Glutamine', price: 580 },
+    { name: 'Opasek', price: 1890 },
+    { name: 'Kase', price: 90 }
   ];
 
   for (const update of updates) {
