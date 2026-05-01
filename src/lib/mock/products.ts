@@ -35,7 +35,7 @@ export const products = [
       "L-Valin": "8 333 mg",
       "Vitamin B6": "14 mg"
     },
-    price: 890,
+    price: 580,
     oldPrice: 1190,
     image: '/images/products/bcaa.png',
     lifestyleImage: '/images/products/bcaa-hype.jpg',
