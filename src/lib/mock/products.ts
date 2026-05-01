@@ -10,7 +10,7 @@ export const products = [
       "Creatine Monohydrate": "100 g",
       "z toho čistý Kreatin": "88 g"
     },
-    price: 590,
+    price: 555,
     oldPrice: 790,
     image: '/images/products/creatin-pure.png',
     stock: 120,
