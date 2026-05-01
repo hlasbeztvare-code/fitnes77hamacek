@@ -46,10 +46,12 @@ body {
   overflow: hidden !important;
   text-align: center !important;
   white-space: nowrap;
-  font-size: clamp(0.75rem, 3vw, 1.5rem); /* Dynamická velikost fontu */
+  padding-left: 2rem; /* Jan's Mandate: Fixní padding pro luft */
+  padding-right: 2rem;
+  font-size: clamp(0.65rem, 2.2vw, 1.15rem); /* Lehce menší pro stabilitu v gridu */
   text-transform: uppercase;
   font-weight: 900;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em; /* Sníženo z 0.2em pro úsporu místa bez ztráty agresivity */
   transition: all 0.3s ease;
 }
 

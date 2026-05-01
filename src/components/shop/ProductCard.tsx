@@ -176,7 +176,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
           <div className="mt-3">
             <button onClick={handleAction} className="w-full cursor-pointer focus:outline-none focus:ring-0">
               <div className="flex justify-between items-center group/btn pointer-events-auto">
-                <div className={`f77-button-master bg-zinc-950 ${buttonTextColor} py-3 [clip-path:polygon(0%_0%,100%_0%,90%_100%,0%_100%)] transition-all duration-300 ${isDark ? 'group-hover/btn:bg-[#d4ff00] group-hover/btn:text-black' : 'group-hover/btn:bg-[#E10600] group-hover/btn:text-white'}`}>
+                <div className={`f77-button-master bg-zinc-950 ${buttonTextColor} py-3 [clip-path:polygon(0%_0%,100%_0%,94%_100%,0%_100%)] transition-all duration-300 ${isDark ? 'group-hover/btn:bg-[#d4ff00] group-hover/btn:text-black' : 'group-hover/btn:bg-[#E10600] group-hover/btn:text-white'}`}>
                   <span>DO KOŠÍKU</span>
                   <span className="ml-2 transform translate-x-0 group-hover/btn:translate-x-1 transition-transform duration-300">→</span>
                 </div>
@@ -188,3 +188,5 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
     </article>
   );
 }
+
+// clean code comment: UX optimalizace tlačítek pro grid a detail. Žádné kompromisy. smrk

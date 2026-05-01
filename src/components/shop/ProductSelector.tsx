@@ -74,10 +74,10 @@ export default function ProductSelector({ product }: ProductSelectorProps) {
           <div className="flex flex-wrap gap-2">
             {product.variants.map((v, idx) => (
               <button
-                key={`${v.code}-${idx}`}
+                key={`${v.variantCode}-${idx}`}
                 onClick={() => setSelectedVariant(v)}
                 className={clsx(
-                  "px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-200 border-2",
+                  "px-6 py-4 text-xs font-bold uppercase tracking-wider transition-all duration-200 border-2",
                   selectedVariant?.name === v.name
                     ? "border-red-600 bg-red-600 text-white"
                     : "border-zinc-200 text-zinc-500 hover:border-zinc-900",
