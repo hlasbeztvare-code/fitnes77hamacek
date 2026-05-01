@@ -15,7 +15,7 @@ export const Gallery = () => {
   return (
     <section className="relative bg-black py-20 overflow-hidden">
       <div className="container mx-auto px-6 mb-12">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -30,12 +30,12 @@ export const Gallery = () => {
 
       <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-6 pb-12">
         {images.map((src, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="relative w-[80vw] md:w-[600px] aspect-[4/5] md:aspect-[16/9] shrink-0 snap-center group overflow-hidden rounded-xl border border-white/5"
           >
-            <img 
-              src={src} 
+            <img
+              src={src}
               alt={`Fitness 77 gym ${index + 1}`}
               loading="lazy"
               className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-1000 ease-out"

@@ -46,7 +46,7 @@ const HorizontalGallery = () => {
             <span className="text-white">PRO VÝKON</span>
           </h2>
         </div>
-        
+
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 no-scrollbar pb-8">
           {galleryImages.map((img, i) => (
             <div
@@ -91,9 +91,8 @@ const HorizontalGallery = () => {
           {galleryImages.map((img, i) => (
             <div
               key={i}
-              className={`group relative h-[60vh] w-[45vw] flex-shrink-0 overflow-hidden rounded-2xl bg-zinc-900 border border-white/5 transition-all duration-700 ${
-                i % 2 === 0 ? 'translate-y-4' : '-translate-y-4'
-              }`}
+              className={`group relative h-[60vh] w-[45vw] flex-shrink-0 overflow-hidden rounded-2xl bg-zinc-900 border border-white/5 transition-all duration-700 ${i % 2 === 0 ? 'translate-y-4' : '-translate-y-4'
+                }`}
             >
               <Image
                 src={img.url}

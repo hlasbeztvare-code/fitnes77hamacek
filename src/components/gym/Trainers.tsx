@@ -34,7 +34,7 @@ export const Trainers = () => {
   return (
     <div className="bg-black py-24 px-6 border-t border-white/5" id="trainers">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
-        
+
         {/* Levá strana (smrk) */}
         <div>
           <span className="text-[#d4ff00] font-medium text-xs tracking-[0.8em] uppercase mb-6 block">
@@ -44,11 +44,11 @@ export const Trainers = () => {
             NAŠI <br />
             <span className="text-transparent" style={{ WebkitTextStroke: '1px #fff' }}>TRENÉŘI</span>
           </h2>
-          
+
           <div className="space-y-12">
             {miniTrainers.map((t, i) => (
               <Link key={i} href={`/gym/${t.slug}`}>
-                <motion.div 
+                <motion.div
                   whileHover={{ x: 10 }}
                   className="flex items-center gap-6 group cursor-pointer mb-8 last:mb-0"
                 >
@@ -77,19 +77,19 @@ export const Trainers = () => {
                 PŘIDEJ SE<br />K NÁM
               </h2>
               <p className="text-black font-medium text-sm font-bold leading-relaxed max-w-sm uppercase opacity-80">
-                NEJSME JEN FITKO. JSME RODINA, KTERÁ TĚ POSUNE ZA TVOJE LIMITY. 
+                NEJSME JEN FITKO. JSME RODINA, KTERÁ TĚ POSUNE ZA TVOJE LIMITY.
                 PŘIJĎ SE PODÍVAT A ZJISTI, PROČ JE FITNESS 77 JEDNIČKA V MB.
               </p>
             </div>
-            
+
             <div className="mt-20 relative z-10 flex items-baseline gap-2">
-                <span className="text-black font-black text-9xl leading-none font-black tracking-tighter select-none opacity-20">
-                    F77.CZ
-                </span>
+              <span className="text-black font-black text-9xl leading-none font-black tracking-tighter select-none opacity-20">
+                F77.CZ
+              </span>
             </div>
-            
+
             <div className="absolute -bottom-10 -right-10 text-[20rem] font-black text-black/5 font-black italic select-none">
-                77
+              77
             </div>
           </div>
         </div>
