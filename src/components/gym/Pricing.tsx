@@ -8,12 +8,12 @@ const Pricing = () => {
   const plans = [
     { id: 'plan-vstup-zakladni', title: 'ZÁKLADNÍ VSTUPNÉ', priceStr: '160 Kč', priceNum: 160, sub: 'STUDENT* 130 Kč', highlight: false },
     { id: 'plan-1-mesic', title: '1 MĚSÍČNÍ ČLENSTVÍ', priceStr: '1 490 Kč', priceNum: 1490, sub: 'STUDENT* 1 190 Kč', highlight: false },
-    { id: 'plan-rocni-clenstvi', title: 'ROČNÍ ČLENSTVÍ', priceStr: '12 990 Kč', priceNum: 12990, sub: '1 083 Kč / měsíc', highlight: true },
-    { id: 'plan-10-vstupu', title: '10 VSTUPŮ\n(PERMANENTKA)', priceStr: '1 380 Kč', priceNum: 1380, sub: 'STUDENT* 1 150 Kč\nPlatnost 2 měsíce', highlight: false },
-    { id: 'plan-20-vstupu', title: '20 VSTUPŮ\n(PERMANENTKA)', priceStr: '2 490 Kč', priceNum: 2490, sub: '125 Kč za vstup\nPlatnost 3 měsíce', highlight: false },
-    { id: 'plan-30-vstupu', title: '30 VSTUPŮ\n(PERMANENTKA)', priceStr: '3 650 Kč', priceNum: 3650, sub: '122 Kč za vstup\nPlatnost 6 měsíců', highlight: false },
-    { id: 'plan-3-mesice', title: '3 MĚSÍČNÍ ČLENSTVÍ', priceStr: '3 990 Kč', priceNum: 3990, sub: '1 330 Kč / měsíc', highlight: false },
-    { id: 'plan-6-mesicu', title: '6 MĚSÍČNÍ ČLENSTVÍ', priceStr: '6 990 Kč', priceNum: 6990, sub: '1 165 Kč / měsíc', highlight: false },
+    { id: 'plan-rocni-clenstvi', title: 'ROČNÍ ČLENSTVÍ', priceStr: '12 990 Kč', priceNum: 12990, sub: 'Výhodné celoroční členství', highlight: true },
+    { id: 'plan-10-vstupu', title: '10 VSTUPŮ\n(PERMANENTKA)', priceStr: '1 380 Kč', priceNum: 1380, sub: 'STUDENT* 1 150 Kč', highlight: false },
+    { id: 'plan-20-vstupu', title: '20 VSTUPŮ\n(PERMANENTKA)', priceStr: '2 490 Kč', priceNum: 2490, sub: 'Permanentka na 3 měsíce', highlight: false },
+    { id: 'plan-30-vstupu', title: '30 VSTUPŮ\n(PERMANENTKA)', priceStr: '3 650 Kč', priceNum: 3650, sub: 'Permanentka na 6 měsíců', highlight: false },
+    { id: 'plan-3-mesice', title: '3 MĚSÍČNÍ ČLENSTVÍ', priceStr: '3 990 Kč', priceNum: 3990, sub: 'Čtvrtletní členství', highlight: false },
+    { id: 'plan-6-mesicu', title: '6 MĚSÍČNÍ ČLENSTVÍ', priceStr: '6 990 Kč', priceNum: 6990, sub: 'Půlroční členství', highlight: false },
   ];
 
   return (

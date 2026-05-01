@@ -193,13 +193,12 @@ export default async function SupplementDetailPage({ params }: Props) {
         </div>
       )}
 
-      {/* Sticky mobile button for HYPE */}
       <StickyMobileBuy product={{
         id: product.id,
         name: product.name,
         slug: product.slug,
         image: product.image ?? '/images/products/placeholder.webp',
-        price: 1, // Force it to show even if price is hidden
+        price: product.price,
       }} />
     </section>
   );
