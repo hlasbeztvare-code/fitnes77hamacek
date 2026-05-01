@@ -46,7 +46,7 @@ export default function AddToCartButton({ product, disabled }: Props) {
     <button
       onClick={handleAdd}
       disabled={disabled}
-      className={`f77-button-master w-full py-4 md:py-6 transition-all duration-300 [clip-path:polygon(2%_0%,100%_0%,98%_100%,0%_100%)] ${
+      className={`f77-button-master w-full py-4 md:py-6 transition-all duration-300 [clip-path:polygon(6%_0%,100%_0%,94%_100%,0%_100%)] ${
         disabled 
         ? "bg-zinc-100 text-zinc-300 cursor-not-allowed" 
         : "bg-[#E10600] text-white shadow-[0_18px_40px_rgba(225,6,0,0.18)] hover:-translate-y-1 hover:brightness-110"

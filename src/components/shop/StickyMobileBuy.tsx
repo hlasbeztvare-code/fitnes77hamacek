@@ -51,7 +51,7 @@ export default function StickyMobileBuy({ product }: Props) {
     >
       <button
         onClick={handleBuyNow}
-        className="f77-button-master w-full bg-black text-white py-6 px-6 shadow-2xl flex items-center justify-center gap-3 active:scale-95 transition-all border-b-4 border-[#E10600]"
+        className="f77-button-master w-full bg-black text-white py-6 px-6 shadow-2xl flex items-center justify-center gap-3 active:scale-95 transition-all border-b-4 border-[#E10600] [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)]"
       >
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E10600] opacity-75"></span>

@@ -95,7 +95,7 @@ export default function CartPage() {
           <span className="text-white/20 font-black text-6xl mb-6 block">!</span>
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Košík je <span className="text-[#E10600]">prázdný</span></h1>
           <p className="text-zinc-500 mb-8 font-medium italic">Zdá se, že sypání zůstalo v regálu.</p>
-          <Link href="/supplements" className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)]">
+          <Link href="/supplements" className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)]">
             ZPĚT DO OBCHODU
           </Link>
         </motion.div>
@@ -157,11 +157,22 @@ export default function CartPage() {
               
               <button 
                 onClick={handleCheckout}
-                className="w-full bg-[#E10600] text-white font-black py-5 px-6 flex items-center justify-between transition-all hover:brightness-110 [clip-path:polygon(3%_0,100%_0,97%_100%,0%_100%)] group"
+                className="w-full bg-[#E10600] text-white font-black py-5 px-6 flex items-center justify-between transition-all hover:brightness-110 [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)] group"
               >
-                <span className="uppercase text-lg tracking-[0.2em]">K POKLADNĚ</span>
+                <span className="uppercase text-lg tracking-[0.2em]">OBJEDNAT A ZAPLATIT</span>
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </button>
+
+              <p className="text-[10px] text-zinc-600 uppercase tracking-[0.1em] text-center mt-4 px-2 leading-relaxed opacity-60">
+                Kliknutím na tlačítko berete na vědomí <Link href="/obchodni-podminky" className="underline hover:text-white transition-colors">obchodní podmínky</Link> a <Link href="/privacy" className="underline hover:text-white transition-colors">ochranu osobních údajů</Link>.
+              </p>
+
+              <Link 
+                href="/"
+                className="f77-button-master mt-6 bg-transparent border-2 border-white/10 text-zinc-500 hover:text-white hover:border-white/30 transition-all [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)] py-5"
+              >
+                <span className="uppercase tracking-[0.15em]">POKRAČOVAT V NÁKUPU</span>
+              </Link>
             </div>
           </div>
         </div>
