@@ -4,14 +4,15 @@ import { useEffect, useRef, useState } from "react";
 
 interface LazyVideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
   src: string;
+  poster?: string;
 }
 
 /**
- * L-CODE DYNAMICS | LazyVideo Component
- * Implementuje Intersection Observer pro líné načítání videí.
- * Zajišťuje preload="none" a startuje stahování až při viditelnosti.
+ * L-CODE DYNAMICS | LazyVideo Component (THE FINAL PURGE)
+ * Implementuje striktní "Data-src Pattern".
+ * Video tag nemá SRC hned při renderu. Načítá se až při viditelnosti.
  */
-export default function LazyVideo({ src, ...props }: LazyVideoProps) {
+export default function LazyVideo({ src, poster, ...props }: LazyVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
 
@@ -24,8 +25,8 @@ export default function LazyVideo({ src, ...props }: LazyVideoProps) {
         }
       },
       { 
-        threshold: 0.1,
-        rootMargin: "100px" // Začneme načítat kousek předem
+        threshold: 0.01,
+        rootMargin: "50px" 
       }
     );
 
@@ -40,10 +41,10 @@ export default function LazyVideo({ src, ...props }: LazyVideoProps) {
     <video
       ref={videoRef}
       preload="none"
+      poster={poster}
       {...props}
     >
       {shouldLoad && <source src={src} type="video/webm" />}
-      {shouldLoad && <source src={src.replace('.webm', '.mp4')} type="video/mp4" />}
     </video>
   );
 }

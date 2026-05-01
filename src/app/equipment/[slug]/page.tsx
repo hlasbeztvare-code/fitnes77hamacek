@@ -6,6 +6,7 @@ import AddToCartButton from '@/components/shop/AddToCartButton';
 import { Metadata } from 'next';
 import TrustBadges from '@/components/shop/TrustBadges';
 import ProductCard from '@/components/shop/ProductCard';
+import LazyVideo from '@/components/utils/LazyVideo';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -70,13 +71,13 @@ export default async function EquipmentDetailPage({ params }: Props) {
           <div className="relative aspect-square flex items-center justify-center bg-zinc-50/50 p-12 group overflow-hidden">
             <div className="relative w-full h-full transition-transform duration-700 group-hover:-translate-y-4">
               {isVideo ? (
-                <video
+                <LazyVideo
                   src={displayImage || ''}
+                  poster="/images/products/placeholder.webp"
                   autoPlay
                   loop
                   muted
                   playsInline
-                  preload="none"
                   className="w-full h-full object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
                 />
               ) : (

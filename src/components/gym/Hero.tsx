@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import LazyVideo from '@/components/utils/LazyVideo';
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -48,17 +49,16 @@ const Hero = () => {
           className="absolute inset-0 w-full h-full flex items-center justify-center transform-gpu"
         >
           {/* Hlavní ostré video uprostřed - OPTIMALIZOVÁNO */}
-          <video
+          <LazyVideo
             ref={mainVideoRef}
+            src="/videos/TVE_NOVE_VIDEO_9_16.webm"
+            poster="/images/gym/gym01.webp"
             autoPlay
             muted
             loop
             playsInline
-            preload="none"
             className="relative z-10 w-full h-full object-cover md:object-contain grayscale-[0.2] brightness-[0.7] contrast-[1.1] rotate-6 scale-[1.05] transform-gpu will-change-transform"
-          >
-            <source src="/videos/TVE_NOVE_VIDEO_9_16.webm" type="video/webm" />
-          </video>
+          />
 
           {/* Blend Overlay */}
           <div className="absolute inset-0 bg-[#050505]/40 z-11 pointer-events-none mix-blend-multiply" />

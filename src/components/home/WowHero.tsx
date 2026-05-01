@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
+import LazyVideo from '@/components/utils/LazyVideo';
 
 export default function WowHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -28,14 +29,14 @@ export default function WowHero() {
           className={`object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-20' : 'opacity-60'}`}
         />
 
-        <video
+        <LazyVideo
           ref={videoRef}
           src="/videos/hero-eshop.webm"
+          poster="/images/gym/pozadi.webp"
           autoPlay
           loop
           muted
           playsInline
-          preload="none"
           onCanPlay={() => setIsLoaded(true)}
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ${isLoaded ? 'opacity-90 contrast-125' : 'opacity-40 grayscale-[0.5]'}`}
         />
