@@ -90,19 +90,19 @@ const Pricing = () => {
             <div className="space-y-16 mt-20">
               <div className="block group cursor-pointer relative">
                 <Link href="/gym/ondrej-soustruznik" className="absolute inset-0 z-10" aria-label="Ondřej Soustružník Profil"></Link>
-                <div className="flex items-center gap-10 mb-8">
-                  <div className="w-32 h-32 rounded-3xl overflow-hidden transition-all duration-700 rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 mb-6 md:mb-8">
+                  <div className="w-full md:w-32 aspect-square md:aspect-square rounded-3xl overflow-hidden transition-all duration-700 md:rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative shrink-0">
                     <Image 
                       src="/images/trainers/soustruznik.webp" 
                       alt="Ondřej Soustružník" 
                       fill
-                      sizes="128px"
+                      sizes="(max-width: 768px) 100vw, 128px"
                       loading="lazy"
                       className="object-cover object-top transition-all duration-1000" 
                     />
                   </div>
                   <div>
-                    <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-black tracking-wider uppercase leading-none">ONDŘEJ SOUSTRUŽNÍK</h5>
+                    <h5 className="text-4xl md:text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-black tracking-wider uppercase leading-none">ONDŘEJ SOUSTRUŽNÍK</h5>
                     <div className="h-1 w-0 group-hover:w-full bg-[#d4ff00] transition-all duration-700 mt-2" />
                   </div>
                 </div>
@@ -118,19 +118,19 @@ const Pricing = () => {
               </div>
               <div className="block group cursor-pointer relative">
                 <Link href="/gym/jaroslav-hamacek" className="absolute inset-0 z-10" aria-label="Jaroslav Hamáček Profil"></Link>
-                <div className="flex items-center gap-10 mb-8">
-                  <div className="w-32 h-32 rounded-3xl overflow-hidden transition-all duration-700 -rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 mb-6 md:mb-8">
+                  <div className="w-full md:w-32 aspect-square md:aspect-square rounded-3xl overflow-hidden transition-all duration-700 md:-rotate-3 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative shrink-0">
                     <Image 
                       src="/images/trainers/hamacek.webp" 
                       alt="Jaroslav Hamáček" 
                       fill
-                      sizes="128px"
+                      sizes="(max-width: 768px) 100vw, 128px"
                       loading="lazy"
                       className="object-cover object-top transition-all duration-1000" 
                     />
                   </div>
                   <div>
-                    <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-black tracking-wider uppercase leading-none">JAROSLAV HAMÁČEK</h5>
+                    <h5 className="text-4xl md:text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-black tracking-wider uppercase leading-none">JAROSLAV HAMÁČEK</h5>
                     <div className="h-1 w-0 group-hover:w-full bg-[#d4ff00] transition-all duration-700 mt-2" />
                   </div>
                 </div>
@@ -146,19 +146,19 @@ const Pricing = () => {
               </div>
               <div className="block group cursor-pointer relative">
                 <Link href="/gym/beata-cejnarova" className="absolute inset-0 z-10" aria-label="Beata Cejnarová Profil"></Link>
-                <div className="flex items-center gap-10 mb-8">
-                  <div className="w-32 h-32 rounded-3xl overflow-hidden transition-all duration-700 rotate-2 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 mb-6 md:mb-8">
+                  <div className="w-full md:w-32 aspect-square md:aspect-square rounded-3xl overflow-hidden transition-all duration-700 md:rotate-2 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative shrink-0">
                     <Image 
                       src="/images/trainers/cejnarova.webp" 
                       alt="Beata Cejnarová" 
                       fill
-                      sizes="128px"
+                      sizes="(max-width: 768px) 100vw, 128px"
                       loading="lazy"
                       className="object-cover object-top transition-all duration-1000" 
                     />
                   </div>
                   <div>
-                    <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-black tracking-wider uppercase leading-none">BEATA CEJNAROVÁ</h5>
+                    <h5 className="text-4xl md:text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-black tracking-wider uppercase leading-none">BEATA CEJNAROVÁ</h5>
                     <div className="h-1 w-0 group-hover:w-full bg-[#d4ff00] transition-all duration-700 mt-2" />
                   </div>
                 </div>
@@ -174,19 +174,19 @@ const Pricing = () => {
               </div>
               <div className="block group cursor-pointer relative">
                 <Link href="/gym/lenka-pickova" className="absolute inset-0 z-10" aria-label="Lenka Picková Profil"></Link>
-                <div className="flex items-center gap-10 mb-8">
-                  <div className="w-32 h-32 rounded-3xl overflow-hidden transition-all duration-700 -rotate-2 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 mb-6 md:mb-8">
+                  <div className="w-full md:w-32 aspect-square md:aspect-square rounded-3xl overflow-hidden transition-all duration-700 md:-rotate-2 group-hover:rotate-0 border-2 border-white/5 group-hover:border-[#d4ff00]/50 shadow-2xl bg-black relative shrink-0">
                     <Image 
                       src="/images/trainers/lenka.webp" 
                       alt="Lenka Picková" 
                       fill
-                      sizes="128px"
+                      sizes="(max-width: 768px) 100vw, 128px"
                       loading="lazy"
                       className="object-cover object-top transition-all duration-1000" 
                     />
                   </div>
                   <div>
-                    <h5 className="text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-black tracking-wider uppercase leading-none">LENKA PICKOVÁ</h5>
+                    <h5 className="text-4xl md:text-5xl font-black group-hover:text-[#d4ff00] transition-colors font-black tracking-wider uppercase leading-none">LENKA PICKOVÁ</h5>
                     <div className="h-1 w-0 group-hover:w-full bg-[#d4ff00] transition-all duration-700 mt-2" />
                   </div>
                 </div>

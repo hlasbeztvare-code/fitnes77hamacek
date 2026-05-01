@@ -90,7 +90,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
   };
 
   const accentColor = isDark ? '#d4ff00' : '#E10600';
-  const buttonTextColor = isDark ? 'text-black' : 'text-white';
+  const buttonTextColor = 'text-white'; // Vždy bílá v základu, hover řeší neon.
 
   return (
     <article 
