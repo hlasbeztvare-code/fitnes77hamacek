@@ -215,7 +215,7 @@ const Pricing = () => {
             <p className="text-2xl font-medium text-black/70 mb-12 leading-tight uppercase font-medium tracking-tight">
               Nejsme jen fitko. Jsme komunita, která tě posune za tvoje limity. Přijď se podívat a zjisti, proč jsme jednička v Mladé Boleslavi.
             </p>
-            <div className="text-[8vw] font-black text-transparent leading-none font-black tracking-tighter px-10" style={{ WebkitTextStroke: '2px black' }}>Fit77.cz</div>
+            <div className="text-[clamp(3rem,6.5vw,6rem)] font-black text-transparent leading-none font-black tracking-tighter w-full text-center" style={{ WebkitTextStroke: '1.5px black' }}>FIT77.CZ</div>
             <div className="mt-12 flex gap-4">
               <div className="w-12 h-1 bg-black" />
               <div className="w-4 h-1 bg-black" />
