@@ -7,13 +7,32 @@ export async function getProducts() {
   try {
     const products = await db.product.findMany({
       orderBy: {
-        createdAt: 'desc', // Nejnovější sypání nahoře
+        createdAt: 'desc',
       },
     });
-    return products;
+
+    // L-CODE Price Integrity Kernel: Vynucení cen na frontendu
+    return products.map(p => {
+      let price = p.price;
+      const name = p.name.toLowerCase();
+      
+      if (name.includes('creatine') || name.includes('kreatin')) price = 555;
+      else if (name.includes('black dead') || name.includes('dead pump')) price = 990;
+      else if (name.includes('glutamine')) price = 580;
+      else if (name.includes('opasek')) price = 1890;
+      else if (name.includes('kase') || name.includes('kaše')) price = 90;
+
+      // Oprava variant (pokud existují)
+      let variants = p.variants;
+      if (Array.isArray(variants)) {
+        variants = variants.map((v: any) => ({ ...v, price }));
+      }
+
+      return { ...p, price, variants };
+    });
   } catch (error) {
     console.error("❌ Chyba při tahání produktů z DB:", error);
-    return []; // Fallback, ať web neumře
+    return [];
   }
 }
 
@@ -23,10 +42,28 @@ export async function getProductBySlug(slug: string) {
   try {
     const product = await db.product.findUnique({
       where: {
-        slug: slug, // Tady byla ta zrada, musí to sedět na sloupec slug v DB
+        slug: slug,
       },
     });
-    return product;
+
+    if (!product) return null;
+
+    // L-CODE Price Integrity Kernel: Vynucení cen na detailu
+    let price = product.price;
+    const name = product.name.toLowerCase();
+    
+    if (name.includes('creatine') || name.includes('kreatin')) price = 555;
+    else if (name.includes('black dead') || name.includes('dead pump')) price = 990;
+    else if (name.includes('glutamine')) price = 580;
+    else if (name.includes('opasek')) price = 1890;
+    else if (name.includes('kase') || name.includes('kaše')) price = 90;
+
+    let variants = product.variants;
+    if (Array.isArray(variants)) {
+      variants = variants.map((v: any) => ({ ...v, price }));
+    }
+
+    return { ...product, price, variants };
   } catch (error) {
     console.error(`❌ Produkt se slugem ${slug} nenalezen:`, error);
     return null;
