@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getTrainerBySlug, getAllTrainers } from '@/lib/queries/trainers';
 import { db } from '@/lib/db';
+import { getProductsBySlugs } from '@/lib/queries/products';
 import { trainerStacks } from '@/lib/trainer-stacks';
 import { trainerProfiles } from '@/lib/trainer-profiles';
 import TrainerStack from '@/components/gym/TrainerStack';
@@ -47,11 +48,7 @@ export default async function TrainerDetailPage({ params }: Props) {
   let stackProducts = [];
   
   if (stackData) {
-    stackProducts = await db.product.findMany({
-      where: {
-        slug: { in: stackData.productSlugs }
-      }
-    });
+    stackProducts = await getProductsBySlugs(stackData.productSlugs);
     // Zachováme pořadí z definice
     stackProducts.sort((a, b) => 
       stackData.productSlugs.indexOf(a.slug) - stackData.productSlugs.indexOf(b.slug)

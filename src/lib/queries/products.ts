@@ -70,6 +70,40 @@ export async function getProductBySlug(slug: string) {
   }
 }
 
+// 3. Hromadné získání produktů podle SLUGů (pro trenérské stacky atd.)
+export async function getProductsBySlugs(slugs: string[]) {
+  noStore();
+  try {
+    const products = await db.product.findMany({
+      where: {
+        slug: { in: slugs },
+      },
+    });
+
+    // L-CODE Price Integrity Kernel: Vynucení cen pro hromadné výběry
+    return products.map(p => {
+      let price = p.price;
+      const name = p.name.toLowerCase();
+      
+      if (name.includes('creatine') || name.includes('kreatin')) price = 555;
+      else if (name.includes('black dead') || name.includes('dead pump')) price = 990;
+      else if (name.includes('glutamine')) price = 580;
+      else if (name.includes('opasek')) price = 1890;
+      else if (name.includes('kase') || name.includes('kaše')) price = 90;
+
+      let variants = p.variants;
+      if (Array.isArray(variants)) {
+        variants = variants.map((v: any) => ({ ...v, price }));
+      }
+
+      return { ...p, price, variants };
+    });
+  } catch (error) {
+    console.error("❌ Chyba při hromadném získání produktů:", error);
+    return [];
+  }
+}
+
 // 3. Pomocná funkce, kdybys potřeboval hledat podle ID (třeba v administraci)
 export async function getProductById(id: string) {
   try {
@@ -93,7 +127,25 @@ export async function getProductsByCategory(category: string) {
         createdAt: 'desc',
       },
     });
-    return products;
+
+    // L-CODE Price Integrity Kernel: Vynucení cen pro kategorie
+    return products.map(p => {
+      let price = p.price;
+      const name = p.name.toLowerCase();
+      
+      if (name.includes('creatine') || name.includes('kreatin')) price = 555;
+      else if (name.includes('black dead') || name.includes('dead pump')) price = 990;
+      else if (name.includes('glutamine')) price = 580;
+      else if (name.includes('opasek')) price = 1890;
+      else if (name.includes('kase') || name.includes('kaše')) price = 90;
+
+      let variants = p.variants;
+      if (Array.isArray(variants)) {
+        variants = variants.map((v: any) => ({ ...v, price }));
+      }
+
+      return { ...p, price, variants };
+    });
   } catch (error) {
     console.error("❌ Chyba při filtraci kategorie:", error);
     return [];
