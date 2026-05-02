@@ -4,10 +4,10 @@ import dynamic from 'next/dynamic';
 import Hero from '@/components/gym/Hero';
 import Marquee from '@/components/gym/Marquee';
 import ClientOverlays from '@/components/gym/ClientOverlays';
-const Services = dynamic(() => import('@/components/gym/Services'), { ssr: true });
-const Pricing = dynamic(() => import('@/components/gym/Pricing'), { ssr: true });
-const Footer = dynamic(() => import('@/components/gym/Footer'), { ssr: true });
-const GalleryWrapper = dynamic(() => import('@/components/gym/GalleryWrapper'), { ssr: false });
+const Services = dynamic(() => import('@/components/gym/Services'));
+const Pricing = dynamic(() => import('@/components/gym/Pricing'));
+const Footer = dynamic(() => import('@/components/gym/Footer'));
+const GalleryWrapper = dynamic(() => import('@/components/gym/GalleryWrapper'));
 
 
 import { SecurityKernel } from '@/components/security/SecurityKernel';
