@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { db } from '@/lib/db';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function BazaarPage() {
   const items = await db.bazaarListing.findMany({

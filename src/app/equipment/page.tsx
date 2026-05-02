@@ -1,7 +1,7 @@
 import { db } from '@/lib/db';
 import ProductCard from '@/components/shop/ProductCard';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function EquipmentPage() {
   const items = await db.product.findMany({

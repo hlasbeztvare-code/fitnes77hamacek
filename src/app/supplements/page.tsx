@@ -5,7 +5,7 @@ import Reveal from '@/components/ui/Reveal';
 import { getProducts, getProductBySlug } from '@/lib/queries/products';
 import { notFound } from 'next/navigation';
 
-export const revalidate = 60; // Revalidate items from DB every minute (ISR)
+export const dynamic = 'force-dynamic';
 
 export default async function SupplementsPage() {
   const allSupplements = (await getProducts()).filter(p => 

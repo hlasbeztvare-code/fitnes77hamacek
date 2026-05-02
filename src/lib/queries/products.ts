@@ -1,7 +1,9 @@
 import { db } from "@/lib/db";
+import { unstable_noStore as noStore } from 'next/cache';
 
 // 1. Získání všech produktů (pro hlavní výpis v obchodě)
 export async function getProducts() {
+  noStore();
   try {
     const products = await db.product.findMany({
       orderBy: {
@@ -17,6 +19,7 @@ export async function getProducts() {
 
 // 2. Klíčová funkce pro detail produktu - hledáme podle SLUGU (to je to v URL)
 export async function getProductBySlug(slug: string) {
+  noStore();
   try {
     const product = await db.product.findUnique({
       where: {
@@ -43,6 +46,7 @@ export async function getProductById(id: string) {
 
 // 4. Filtrace kategorií (Protein, BCAA, atd.)
 export async function getProductsByCategory(category: string) {
+  noStore();
   try {
     const products = await db.product.findMany({
       where: {

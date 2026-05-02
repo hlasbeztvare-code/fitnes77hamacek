@@ -1,4 +1,5 @@
 import Link from 'next/link';
+export const dynamic = 'force-dynamic';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import AddToCartButton from '@/components/shop/AddToCartButton';
