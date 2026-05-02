@@ -156,7 +156,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
                 sizes="(max-width: 768px) 100vw, 50vw" 
                 className="object-contain drop-shadow-[0_30px_70px_rgba(0,0,0,0.4)]"
                 style={{ objectPosition: 'center center' }}
-                priority={product.featured || (typeof index === 'number' && index < 2)}
+                priority={product.featured || (typeof index === 'number' && index < 4)}
               />
             ) : (
               <Image 
@@ -166,7 +166,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
                 sizes="(max-width: 768px) 100vw, 50vw" 
                 className="object-contain drop-shadow-[0_30px_70px_rgba(0,0,0,0.4)]"
                 style={{ objectPosition: 'center center' }}
-                priority={product.featured || (typeof index === 'number' && index < 2)}
+                priority={product.featured || (typeof index === 'number' && index < 4)}
               />
             )}
           </motion.div>
