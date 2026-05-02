@@ -12,6 +12,7 @@ import ProductSelector from '@/components/shop/ProductSelector';
 import NutritionTable from '@/components/shop/NutritionTable';
 import Reveal from '@/components/ui/Reveal';
 import ProductCard from '@/components/shop/ProductCard';
+import { getProductBySlug } from '@/lib/queries/products';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -66,9 +67,7 @@ export async function generateStaticParams() {
 
 export default async function SupplementDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product = await db.product.findFirst({
-    where: { slug },
-  });
+  const product = await getProductBySlug(slug);
 
   // Fetch related products
   const relatedProducts = await db.product.findMany({

@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { db } from '@/lib/db';
+import { getProductBySlug } from '@/lib/queries/products';
 import AddToCartButton from '@/components/shop/AddToCartButton';
 import { Metadata } from 'next';
 import TrustBadges from '@/components/shop/TrustBadges';
@@ -15,9 +16,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = await db.product.findFirst({
-    where: { slug },
-  });
+  const product = await getProductBySlug(slug);
 
   if (!product) return { title: 'Vybavení | Fitness 77' };
 
@@ -40,9 +39,7 @@ export async function generateStaticParams() {
 export default async function EquipmentDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  const item = await db.product.findFirst({
-    where: { slug, category: 'equipment' },
-  });
+  const item = await getProductBySlug(slug);
 
   if (!item) return notFound();
 
