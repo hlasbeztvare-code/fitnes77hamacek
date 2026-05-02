@@ -9,11 +9,18 @@ import useMounted from '@/hooks/useMounted';
 import { resolveProductImage } from '@/lib/resolve-image';
 
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function CartSidebar() {
   const mounted = useMounted();
   const router = useRouter();
-  const { items, isOpen, closeCart, removeItem, increaseItem, decreaseItem, totalPrice } = useCartStore();
+  const { items, isOpen, closeCart, removeItem, increaseItem, decreaseItem, totalPrice, syncPrices } = useCartStore();
+
+  useEffect(() => {
+    if (isOpen) {
+      syncPrices();
+    }
+  }, [isOpen, syncPrices]);
 
   if (!mounted) return null;
 

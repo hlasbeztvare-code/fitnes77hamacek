@@ -13,7 +13,7 @@ import LazyVideo from '@/components/utils/LazyVideo';
 
 // GOLIÁŠ v41.0: Real Cart Page (Mezibod před Shoptetem)
 export default function CartPage() {
-  const { items, addItem, increaseItem, decreaseItem, removeItem, totalPrice, clearCart } = useCartStore();
+  const { items, addItem, increaseItem, decreaseItem, removeItem, totalPrice, clearCart, syncPrices } = useCartStore();
   const hasHydrated = useCartStore((state) => state._hasHydrated);
   const mounted = useMounted();
   
@@ -22,6 +22,9 @@ export default function CartPage() {
 
   // L-CODE Standard: Fetch ALL once, filter in render for 300% reactivity
   useEffect(() => {
+    // L-CODE Price Integrity: Srovnat ceny položek, které už v košíku jsou
+    syncPrices();
+
     fetch('/api/products')
       .then(res => res.json())
       .then(data => {
