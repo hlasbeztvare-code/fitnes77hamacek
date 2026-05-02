@@ -9,9 +9,9 @@ export const dynamic = 'force-dynamic';
 
 export default async function SupplementsPage() {
   const allSupplements = (await getProducts()).filter(p => 
-    p.category.toLowerCase() !== 'equipment' && 
-    !p.category.toLowerCase().includes('vybavení') &&
-    !p.name.toLowerCase().includes('opasek')
+    (p.category ?? '').toLowerCase() !== 'equipment' && 
+    !(p.category ?? '').toLowerCase().includes('vybavení') &&
+    !(p.name ?? '').toLowerCase().includes('opasek')
   );
 
   return (
