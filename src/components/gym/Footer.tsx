@@ -35,6 +35,7 @@ const Footer = () => {
               src="/images/brand/logo-fitness77.png"
               alt="Fitness 77"
               fill
+              sizes="(max-width: 768px) 320px, 450px"
               className="object-contain brightness-0 invert"
               priority
             />

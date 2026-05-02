@@ -11,8 +11,14 @@ const Hero = () => {
   const { scrollY } = useScroll();
 
   useEffect(() => {
-    // Video plyne normální rychlostí (prevence sekání)
-    if (mainVideoRef.current) mainVideoRef.current.playbackRate = 1;
+    // L-CODE Performance: Delay video start to prioritize first paint
+    const timer = setTimeout(() => {
+      if (mainVideoRef.current) {
+        mainVideoRef.current.playbackRate = 1;
+        mainVideoRef.current.play().catch(() => {});
+      }
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   // Optimalizace pro mobil: na menších displejích omezíme intenzitu transformací pro plynulost
@@ -50,7 +56,7 @@ const Hero = () => {
             ref={mainVideoRef}
             src="/videos/TVE_NOVE_VIDEO_9_16.webm"
             poster="/images/gym/gym01.webp"
-            autoPlay
+            autoPlay={false} // Manually controlled via useEffect for performance
             muted
             loop
             playsInline
@@ -76,7 +82,7 @@ const Hero = () => {
                       className="object-cover rounded-xl grayscale contrast-125"
                       loading="eager"
                       priority={i === 0}
-                      sizes="(max-width: 768px) 30vw, 18vw"
+                      sizes="(max-width: 768px) 40vw, 20vw"
                     />
                   </div>
                 ))}

@@ -153,7 +153,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
                 src={finalImageStatic} 
                 alt={product.name} 
                 fill 
-                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw" 
+                sizes="(max-width: 768px) 100vw, 50vw" 
                 className="object-contain drop-shadow-[0_30px_70px_rgba(0,0,0,0.4)]"
                 style={{ objectPosition: 'center center' }}
                 priority={product.featured || (typeof index === 'number' && index < 2)}
@@ -163,7 +163,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
                 src={finalImage} 
                 alt={product.name} 
                 fill 
-                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw" 
+                sizes="(max-width: 768px) 100vw, 50vw" 
                 className="object-contain drop-shadow-[0_30px_70px_rgba(0,0,0,0.4)]"
                 style={{ objectPosition: 'center center' }}
                 priority={product.featured || (typeof index === 'number' && index < 2)}

@@ -11,8 +11,13 @@ export default function WowHero() {
 
   // Záchranný timer, kdyby se video nenačetlo (např. pomalá síť)
   useEffect(() => {
-    // Odložení náročných animací o 500ms pro snížení TBT (L-CODE Standard)
-    const timer = setTimeout(() => setIsLoaded(true), 500);
+    // Odložení náročných animací a videa pro snížení TBT (L-CODE Standard)
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+      if (videoRef.current) {
+        videoRef.current.play().catch(() => {});
+      }
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -27,7 +32,7 @@ export default function WowHero() {
           fill
           priority
           loading="eager"
-          sizes="100vw"
+          sizes="(max-width: 768px) 100vw, 100vw"
           // @ts-ignore
           fetchPriority="high"
           className={`object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-20' : 'opacity-60'}`}
@@ -37,11 +42,11 @@ export default function WowHero() {
           ref={videoRef}
           src="/videos/hero-eshop.webm"
           poster="/images/gym/pozadi.webp"
-          autoPlay
+          autoPlay={false} // Controlled via useEffect
           loop
           muted
           playsInline
-          onCanPlay={() => setIsLoaded(true)}
+          preload="none"
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ${isLoaded ? 'opacity-90 contrast-125' : 'opacity-40 grayscale-[0.5]'}`}
         />
 

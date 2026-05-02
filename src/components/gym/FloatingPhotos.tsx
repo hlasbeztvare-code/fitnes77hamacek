@@ -41,7 +41,7 @@ const FloatingPhotos = () => {
           style={{ x: img.x, y: img.y, opacity: img.op, scale: img.scale }}
           className="absolute w-[50vw] h-[65vw] md:w-[28vw] md:h-[38vw] xl:w-[24vw] xl:h-[32vw] rounded-3xl overflow-hidden border border-white/10 grayscale brightness-75 contrast-125 shadow-2xl transform-gpu will-change-transform"
         >
-          <Image src={img.src} alt="" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
+          <Image src={img.src} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
           <div className="absolute inset-0 bg-black/40" />
         </motion.div>
       ))}

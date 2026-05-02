@@ -57,7 +57,7 @@ const HorizontalGallery = () => {
                 src={img.url}
                 alt={img.title}
                 fill
-                sizes="85vw"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
                 loading={i < 2 ? "eager" : "lazy"}
               />
@@ -98,7 +98,7 @@ const HorizontalGallery = () => {
                 src={img.url}
                 alt={img.title}
                 fill
-                sizes="45vw"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="w-full h-full object-cover contrast-[1.1] transition-all duration-700 group-hover:scale-105 group-hover:contrast-125"
                 priority={i < 2}
               />
