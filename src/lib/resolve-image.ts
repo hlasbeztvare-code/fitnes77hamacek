@@ -27,7 +27,7 @@ export const resolveProductImage = (
   
   // Pokud nemáme nic ani z masterů, zkusíme DB path nebo placeholder
   if (!finalPath || finalPath === '' || finalPath.includes('placeholder')) {
-    finalPath = '/images/products/placeholder.webp';
+    finalPath = '/images/brand/logo-fitness77.png';
   }
 
   // 2. FORMÁTOVÁNÍ CESTY
@@ -37,9 +37,8 @@ export const resolveProductImage = (
 
   // 3. STATIC VS VIDEO LOGIKA
   if (options.forceStatic && isVideo(finalPath)) {
-    // Pokud chceme jen statický obraz, ale máme video -> fallback na placeholder
-    // (V budoucnu zde můžeme mít pasek_thumb.jpg)
-    return '/images/products/placeholder.webp';
+    // Pokud chceme jen statický obraz, ale máme video -> fallback na logo/brand
+    return '/images/brand/logo-fitness77.png';
   }
 
   return finalPath;
