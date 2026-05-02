@@ -57,7 +57,7 @@ export default async function SupplementsPage() {
             {allSupplements.slice(0, 40).map((product, index) => (
               <Reveal key={product.id} delay={(index % 4) * 0.1}>
                 <ProductCard 
-                  product={{ ...product, compareAtPrice: product.compareAtPrice ?? 0 }} 
+                  product={product as any} 
                   index={index}
                 />
               </Reveal>
