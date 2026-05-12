@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -42,12 +42,7 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
     setMounted(true);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"]
-  });
 
-  const y = useTransform(scrollYProgress, [0, 1], [15, -15]);
 
   const nameUpper = product.name?.toUpperCase() || '';
   const slugLower = product.slug?.toLowerCase() || '';
@@ -133,7 +128,6 @@ export default function ProductCard({ product, showFrame = false, index, isDark 
           </div>
           
           <motion.div 
-            style={{ y }}
             whileHover={{ scale: 1.15 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             className="relative w-full h-[110%] transform-gpu will-change-transform z-10 flex items-center justify-center"

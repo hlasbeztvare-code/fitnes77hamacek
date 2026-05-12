@@ -93,17 +93,24 @@ export default async function WowHomepageSections({ hideCategories }: WowHomepag
             </div>
           </Reveal>
 
-          <div className="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-4 sm:gap-6">
-            {products.slice(0, 8).map((product, index) => (
-              <Reveal key={product.id} delay={index * 0.06}>
-                <ProductCard
-                  product={{
-                    ...product,
-                    compareAtPrice: product.compareAtPrice ?? 0,
-                  }}
-                />
-              </Reveal>
-            ))}
+          <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-16 lg:gap-24">
+            {products.slice(0, 8).map((product, index, array) => {
+              const isLastAndOdd = index === array.length - 1 && array.length % 2 !== 0;
+              return (
+                <Reveal key={product.id} delay={index * 0.06}>
+                  <div className={isLastAndOdd ? "sm:col-span-2 flex justify-center" : ""}>
+                    <div className={isLastAndOdd ? "w-full sm:max-w-[50%]" : "w-full"}>
+                      <ProductCard
+                        product={{
+                          ...product,
+                          compareAtPrice: product.compareAtPrice ?? 0,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

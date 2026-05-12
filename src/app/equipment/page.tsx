@@ -34,10 +34,17 @@ export default async function EquipmentPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4 sm:gap-6">
-          {items.map((item, index) => (
-            <ProductCard key={item.id} product={item as any} index={index} />
-          ))}
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-16 lg:gap-24">
+          {items.map((item, index, array) => {
+            const isLastAndOdd = index === array.length - 1 && array.length % 2 !== 0;
+            return (
+              <div key={item.id} className={isLastAndOdd ? "sm:col-span-2 flex justify-center" : ""}>
+                <div className={isLastAndOdd ? "w-full sm:max-w-[50%]" : "w-full"}>
+                  <ProductCard product={item as any} index={index} isDark={false} />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

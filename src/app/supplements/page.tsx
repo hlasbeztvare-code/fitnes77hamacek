@@ -53,15 +53,23 @@ export default async function SupplementsPage() {
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-10 gap-y-6 md:gap-y-8">
-            {allSupplements.slice(0, 40).map((product, index) => (
-              <Reveal key={product.id} delay={(index % 4) * 0.1}>
-                <ProductCard 
-                  product={product as any} 
-                  index={index}
-                />
-              </Reveal>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-16 lg:gap-24">
+            {allSupplements.slice(0, 40).map((product, index, array) => {
+              const isLastAndOdd = index === array.length - 1 && array.length % 2 !== 0;
+              return (
+                <Reveal key={product.id} delay={(index % 2) * 0.1}>
+                  <div className={isLastAndOdd ? "sm:col-span-2 flex justify-center" : ""}>
+                    <div className={isLastAndOdd ? "w-full sm:max-w-[50%]" : "w-full"}>
+                      <ProductCard 
+                        product={product as any} 
+                        index={index}
+                        isDark={false}
+                      />
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
