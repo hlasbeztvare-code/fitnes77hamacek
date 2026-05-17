@@ -38,7 +38,7 @@ export default function GlobalPreloader({ children }: { children: React.ReactNod
           >
             <div className="relative">
               <h1 className="text-[12vw] font-black text-[#d4ff00] font-black tracking-tighter select-none">
-                F77<span className="text-white italic">.</span>
+                F77<span className="text-white">.</span>
               </h1>
               <div className="absolute bottom-4 left-0 w-full h-[1px] bg-white/10 overflow-hidden">
                 <motion.div 

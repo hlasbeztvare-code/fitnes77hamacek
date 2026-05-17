@@ -20,6 +20,7 @@ model Product {
   featured         Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  hoverVideo       String?
   shoptetId        String?
   shoptetProductId String?
   shoptetPriceId   String?

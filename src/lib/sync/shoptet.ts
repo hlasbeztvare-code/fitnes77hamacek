@@ -122,17 +122,21 @@ export async function syncWithShoptet() {
         let category = item.CATEGORYTEXT || "Suplementy";
         if (baseName.toLowerCase().includes('opasek')) category = 'equipment';
 
+        let hoverVideo = null;
+
+
         grouped[groupId] = {
           shoptetId: item.PRODUCTNO,
           name: manual?.name || baseName,
           slug: slug,
-          price: parseFloat(item.PRICE_VAT || '0'),
-          oldPrice: item.PRICE_BEFORE_DISCOUNT ? parseFloat(item.PRICE_BEFORE_DISCOUNT) : null,
+          price: manual?.price || parseFloat(item.PRICE_VAT || '0'),
+          oldPrice: manual?.oldPrice || (item.PRICE_BEFORE_DISCOUNT ? parseFloat(item.PRICE_BEFORE_DISCOUNT) : null),
           image: finalImage,
           description: manual?.description || item.DESCRIPTION,
           category: category,
           totalStock: 0,
-          variants: []
+          variants: [],
+          hoverVideo: hoverVideo
         };
       }
 
@@ -158,6 +162,7 @@ export async function syncWithShoptet() {
           price: p.price,
           stock: p.totalStock,
           variants: p.variants as any,
+          hoverVideo: p.hoverVideo,
           updatedAt: new Date(),
         },
         create: {
@@ -169,7 +174,8 @@ export async function syncWithShoptet() {
           description: p.description,
           category: p.category,
           stock: p.totalStock,
-          variants: p.variants as any
+          variants: p.variants as any,
+          hoverVideo: p.hoverVideo
         }
       });
     }

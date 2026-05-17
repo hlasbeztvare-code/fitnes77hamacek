@@ -8,7 +8,26 @@ interface WowHomepageSectionsProps {
 }
 
 export default async function WowHomepageSections({ hideCategories }: WowHomepageSectionsProps) {
-  const products = await getProducts();
+  const productsRaw = await getProducts();
+
+  // LOGIKA PRO MANUÁLNÍ SEŘAZENÍ
+  const orderedSlugs = [
+    'creatine-monohydrate',
+    'black-dead-pre-workout',
+    'bcaa-amino-complex',
+    'deadpump-v2-pump-formula',
+    'ryzova-kase'
+  ];
+
+  const products = [...productsRaw].sort((a, b) => {
+    const indexA = orderedSlugs.indexOf(a.slug);
+    const indexB = orderedSlugs.indexOf(b.slug);
+    
+    if (indexA === -1 && indexB === -1) return 0;
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
 
   const categories = [
     {
@@ -81,7 +100,7 @@ export default async function WowHomepageSections({ hideCategories }: WowHomepag
       )}
 
       <section className="bg-white py-24">
-        <div className="mx-auto w-[min(1280px,calc(100%-32px))]">
+        <div className="mx-auto w-[min(1500px,calc(100%-32px))]">
           <Reveal>
             <div className="max-w-3xl">
               <div className="inline-block border-l-4 border-[#E10600] pl-3 text-sm font-black uppercase tracking-[0.22em] text-[#E10600]">
@@ -93,18 +112,20 @@ export default async function WowHomepageSections({ hideCategories }: WowHomepag
             </div>
           </Reveal>
 
-          <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-16 lg:gap-24">
+          <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-16 lg:gap-20">
             {products.slice(0, 8).map((product, index, array) => {
               const isLastAndOdd = index === array.length - 1 && array.length % 2 !== 0;
               return (
                 <Reveal key={product.id} delay={index * 0.06}>
-                  <div className={isLastAndOdd ? "sm:col-span-2 flex justify-center" : ""}>
-                    <div className={isLastAndOdd ? "w-full sm:max-w-[50%]" : "w-full"}>
+                  <div className={isLastAndOdd ? "col-span-2 flex justify-center" : ""}>
+                    <div className={isLastAndOdd ? "w-full max-w-[50%]" : "w-full"}>
                       <ProductCard
                         product={{
                           ...product,
                           compareAtPrice: product.compareAtPrice ?? 0,
                         }}
+                        index={index}
+                        isCentered={isLastAndOdd}
                       />
                     </div>
                   </div>

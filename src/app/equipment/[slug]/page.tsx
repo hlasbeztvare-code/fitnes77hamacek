@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { db } from '@/lib/db';
-import { getProductBySlug } from '@/lib/queries/products';
+import { getProductBySlug, getRelatedProducts } from '@/lib/queries/products';
 import AddToCartButton from '@/components/shop/AddToCartButton';
 import { Metadata } from 'next';
 import TrustBadges from '@/components/shop/TrustBadges';
@@ -43,11 +43,7 @@ export default async function EquipmentDetailPage({ params }: Props) {
 
   if (!item) return notFound();
 
-  const related = await db.product.findMany({
-    where: { category: 'equipment', NOT: { slug } },
-    take: 3,
-    orderBy: { createdAt: 'desc' },
-  });
+  const related = await getRelatedProducts(slug, 3);
 
   const displayImage = item.name.toLowerCase().includes('opasek') ? '/videos/pasek.webm' : item.image;
   const isVideo = displayImage?.toLowerCase().match(/.(mp4|webm)$/i);

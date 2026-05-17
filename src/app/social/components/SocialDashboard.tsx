@@ -191,7 +191,7 @@ export default function SocialDashboard() {
               <Sparkles size={16} />
               <span className="text-[10px] font-black uppercase tracking-[0.4em]">Ad Factory v1.0</span>
             </div>
-            <h1 className="text-4xl font-black uppercase tracking-tighter italic">GOLIÁŠ <span className="text-zinc-500">STUDIO</span></h1>
+            <h1 className="text-4xl font-black uppercase tracking-tighter">GOLIÁŠ <span className="text-zinc-500">STUDIO</span></h1>
           </div>
           <button className="bg-white text-black px-6 py-3 font-black uppercase text-[10px] tracking-widest hover:bg-zinc-200 transition-all flex items-center gap-2">
             <Download size={16} /> Exportovat vizuál
@@ -550,7 +550,7 @@ export default function SocialDashboard() {
               {/* LOGO */}
               <div className="absolute top-10 right-10 flex flex-col items-end gap-1 z-40">
                  <img src="/images/brand/logo-fitness77.png" className="w-24 grayscale invert opacity-90" alt="Logo" />
-                 <div className="text-[8px] font-black tracking-[0.2em] text-white/50 uppercase italic">Est. 2024</div>
+                 <div className="text-[8px] font-black tracking-[0.2em] text-white/50 uppercase">Est. 2024</div>
               </div>
 
               {/* AD CONTENT */}
@@ -561,7 +561,7 @@ export default function SocialDashboard() {
                     key={headline}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className={`${canvasFormat === 'stories' ? 'text-7xl' : 'text-6xl'} font-[1000] uppercase italic leading-[0.9] tracking-tighter`}
+                    className={`${canvasFormat === 'stories' ? 'text-7xl' : 'text-6xl'} font-[1000] uppercase leading-[0.9] tracking-tighter`}
                     style={{ 
                       fontFamily: 'Inter, sans-serif',
                       textShadow: isNeon ? `0 0 ${glowIntensity/2}px ${headlineColor}, 0 0 ${glowIntensity}px ${headlineColor}` : (hasShadow ? '10px 10px 0px rgba(0,0,0,0.8)' : 'none')
@@ -615,7 +615,7 @@ export default function SocialDashboard() {
                      <motion.button 
                       initial={{ scale: 0.9, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="px-12 py-5 bg-white text-black font-black uppercase tracking-[0.2em] italic text-lg shadow-[0_20px_40px_rgba(255,255,255,0.2)]"
+                      className="px-12 py-5 bg-white text-black font-black uppercase tracking-[0.2em] text-lg shadow-[0_20px_40px_rgba(255,255,255,0.2)]"
                       style={{ color: 'black', backgroundColor: 'white' }}
                      >
                        Shop Now
@@ -624,9 +624,9 @@ export default function SocialDashboard() {
                 <div className="w-full flex justify-between items-end">
                       <div className="space-y-1">
                         <div className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Net Weight: 500 g</div>
-                        <div className="text-[14px] font-black text-white uppercase tracking-tighter italic">{footer}</div>
+                        <div className="text-[14px] font-black text-white uppercase tracking-tighter">{footer}</div>
                       </div>
-                      <div className="text-[14px] font-black text-[#E10600] tracking-widest underline decoration-4 underline-offset-8 italic">FIT77.CZ</div>
+                      <div className="text-[14px] font-black text-[#E10600] tracking-widest underline decoration-4 underline-offset-8">FIT77.CZ</div>
                    </div>
                 </div>
 

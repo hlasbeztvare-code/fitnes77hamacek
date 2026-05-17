@@ -27,7 +27,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
   background: #000000;
   color: #fff;
   text-transform: uppercase; /* GOLIÁŠ UPPERCASE MANDATE */
@@ -190,8 +190,8 @@ input, textarea, button, select, h1, h2, h3, h4, h5, h6, p, span, a, li, i, em, 
   margin: 0 0 1.3rem;
   font-size: clamp(4rem, 6vw, 6.2rem);
   font-weight: 900;
-  line-height: .88;
-  letter-spacing: -.03em;
+  line-height: 1.1;
+  letter-spacing: -.01em;
 }
 
 .hero-title span {
@@ -468,7 +468,7 @@ input, textarea, button, select, h1, h2, h3, h4, h5, h6, p, span, a, li, i, em, 
 .founder-h2 {
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 900;
-  line-height: 1;
+  line-height: 1.2;
   margin-bottom: 1.5rem;
   text-transform: uppercase;
 }
@@ -567,7 +567,7 @@ input, textarea, button, select, h1, h2, h3, h4, h5, h6, p, span, a, li, i, em, 
   font-size: clamp(2rem, 4vw, 3.5rem);
   font-weight: 900;
   color: #fff;
-  line-height: 1;
+  line-height: 1.2;
   margin-bottom: 1.2rem;
   text-transform: uppercase;
 }
@@ -1003,4 +1003,16 @@ section {
     top: 100%;
     opacity: 0.6;
   }
+}
+
+/* MARQUEE ANIMATION */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
 }

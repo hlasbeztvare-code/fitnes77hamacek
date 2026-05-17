@@ -41,7 +41,7 @@ const HorizontalGallery = () => {
       <div className="block md:hidden py-12">
         <div className="px-6 mb-8">
           <span className="text-[#d4ff00] text-[10px] font-bold tracking-[0.6em] uppercase mb-2 block">Galerie</span>
-          <h2 className="text-7xl font-black text-[#d4ff00] leading-[0.85] tracking-tighter uppercase italic">
+          <h2 className="text-7xl font-black text-[#d4ff00] leading-[0.85] tracking-tighter uppercase">
             PROSTORY<br />
             <span className="text-white">PRO VÝKON</span>
           </h2>
@@ -73,7 +73,7 @@ const HorizontalGallery = () => {
           <div className="flex flex-row items-end justify-between gap-6">
             <div>
               <span className="text-[#d4ff00] text-xs font-bold tracking-[0.8em] uppercase mb-4 block">Galerie</span>
-              <h2 className="text-[8vw] font-black text-[#d4ff00] leading-[0.85] tracking-tighter uppercase italic">
+              <h2 className="text-[8vw] font-black text-[#d4ff00] leading-[0.85] tracking-tighter uppercase">
                 PROSTORY<br />
                 <span className="text-white">PRO VÝKON</span>
               </h2>

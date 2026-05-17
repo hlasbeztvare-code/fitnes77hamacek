@@ -34,7 +34,7 @@ const SHOPTET_MANUAL_MAP: Record<string, string> = {
 const SHOPTET_IMAGE_MAP: Record<string, string> = {
   'creatine-monohydrate---fitness-77': 'creatine-pure.png',
   'black-dead---pre-workout': 'Blackdead.webp',
-  'dead-pump---stim-free': 'Deadpump.webp',
+  'dead-pump---stim-free': 'deadpump.webp',
   'bcaa-4-1-1-glutamine---fitness-77': 'bcaa.png',
   'ryzova-kase': 'rice-chocolate.png',
 };

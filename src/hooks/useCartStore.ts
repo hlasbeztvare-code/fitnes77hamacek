@@ -3,15 +3,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-const enforcePriceIntegrity = (name: string, currentPrice: number) => {
-  const lowerName = name.toLowerCase();
-  if (lowerName.includes('creatine') || lowerName.includes('kreatin')) return 555;
-  if (lowerName.includes('black dead') || lowerName.includes('dead pump')) return 990;
-  if (lowerName.includes('glutamine')) return 580;
-  if (lowerName.includes('opasek')) return 1890;
-  if (lowerName.includes('kase') || lowerName.includes('kaše')) return 90;
-  return currentPrice;
-};
 
 type CartItem = {
   id: string;
@@ -60,8 +51,7 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (item) => {
         set((state) => {
-          // L-CODE Price Integrity: Vynucení ceny při přidání
-          const price = enforcePriceIntegrity(item.name, item.price);
+          const price = item.price;
           const itemWithFixedPrice = { ...item, price };
 
           const itemKey = `${item.id}-${item.variantCode || 'base'}`;
@@ -93,7 +83,7 @@ export const useCartStore = create<CartStore>()(
         set((state) => ({
           items: state.items.map((item) =>
             (item.id === id && item.variantCode === variantCode) 
-              ? { ...item, quantity: item.quantity + 1, price: enforcePriceIntegrity(item.name, item.price) } 
+              ? { ...item, quantity: item.quantity + 1 } 
               : item
           ),
         }));
@@ -104,7 +94,7 @@ export const useCartStore = create<CartStore>()(
           items: state.items
             .map((item) =>
               (item.id === id && item.variantCode === variantCode) 
-                ? { ...item, quantity: item.quantity - 1, price: enforcePriceIntegrity(item.name, item.price) } 
+                ? { ...item, quantity: item.quantity - 1 } 
                 : item
             )
             .filter((item) => item.quantity > 0),
@@ -122,12 +112,7 @@ export const useCartStore = create<CartStore>()(
         get().items.reduce((acc, item) => acc + item.price * item.quantity, 0),
 
       syncPrices: async () => {
-        set((state) => ({
-          items: state.items.map(item => ({
-            ...item,
-            price: enforcePriceIntegrity(item.name, item.price)
-          }))
-        }));
+        // No-op or fetch from API
       },
 
       currency: 'CZK',

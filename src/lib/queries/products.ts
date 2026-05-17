@@ -1,38 +1,54 @@
 import { db } from "@/lib/db";
 import { unstable_noStore as noStore } from 'next/cache';
 
+// Helper: najde mock produkt podle přesného slugu, nebo pro kaše podle prefixu
+function findMockOverride(mockProducts: any[], slug: string) {
+  const exact = mockProducts.find(m => m.slug === slug);
+  if (exact) return exact;
+  // Kaše — jakýkoliv slug začínající ryzova-kase → použij první kaše z mocku pro cenu
+  if (slug.startsWith('ryzova-kase')) {
+    return mockProducts.find(m => m.slug.startsWith('ryzova-kase')) || null;
+  }
+  return null;
+}
+
 // 1. Získání všech produktů (pro hlavní výpis v obchodě)
 export async function getProducts() {
   noStore();
   try {
-    const products = await db.product.findMany({
+    const dbProducts = await db.product.findMany({
       orderBy: {
         createdAt: 'desc',
       },
     });
 
-    // L-CODE Price Integrity Kernel: Vynucení cen na frontendu
-    return products.map(p => {
-      let price = p.price;
-      const name = p.name.toLowerCase();
-      
-      if (name.includes('creatine') || name.includes('kreatin')) price = 555;
-      else if (name.includes('black dead') || name.includes('dead pump')) price = 990;
-      else if (name.includes('glutamine')) price = 580;
-      else if (name.includes('opasek')) price = 1890;
-      else if (name.includes('kase') || name.includes('kaše')) price = 90;
+    const { products: mockProducts } = require('@/lib/mock/products');
 
-      // Oprava variant (pokud existují)
-      let variants = p.variants;
-      if (Array.isArray(variants)) {
-        variants = variants.map((v: any) => ({ ...v, price }));
+    // SOVEREIGN PRICE OVERRIDE: Prioritizujeme ceny z mocku
+    return dbProducts.map(p => {
+      // Pro kaše hledáme PŘESNÝ match podle slugu (ne prefix) aby každá příchuť dostala svůj obrázek
+      const exactMock = mockProducts.find((m: any) => m.slug === p.slug);
+      const manual = exactMock || findMockOverride(mockProducts, p.slug);
+      if (manual) {
+        return {
+          ...p,
+          price: manual.price || p.price,
+          oldPrice: manual.oldPrice || p.oldPrice,
+          name: manual.name || p.name,
+          weight: manual.weight || p.weight,
+          image: manual.image || p.image,        // ← přidáno: správný obrázek příchutě
+          hoverVideo: manual.hoverVideo || p.hoverVideo,
+          description: manual.description || p.description,
+          ingredients: manual.ingredients || p.ingredients,
+          nutrition: manual.nutrition || p.nutrition
+        };
       }
-
-      return { ...p, price, variants };
+      return p;
     });
   } catch (error) {
-    console.error("❌ Chyba při tahání produktů z DB:", error);
-    return [];
+    console.error("❌ Chyba při tahání produktů z DB, vracím MOCK data:", error);
+    const { products } = require('@/lib/mock/products');
+    return products;
   }
 }
 
@@ -46,27 +62,33 @@ export async function getProductBySlug(slug: string) {
       },
     });
 
-    if (!product) return null;
-
-    // L-CODE Price Integrity Kernel: Vynucení cen na detailu
-    let price = product.price;
-    const name = product.name.toLowerCase();
-    
-    if (name.includes('creatine') || name.includes('kreatin')) price = 555;
-    else if (name.includes('black dead') || name.includes('dead pump')) price = 990;
-    else if (name.includes('glutamine')) price = 580;
-    else if (name.includes('opasek')) price = 1890;
-    else if (name.includes('kase') || name.includes('kaše')) price = 90;
-
-    let variants = product.variants;
-    if (Array.isArray(variants)) {
-      variants = variants.map((v: any) => ({ ...v, price }));
+    if (!product) {
+      const { products: mockProducts } = require('@/lib/mock/products');
+      return mockProducts.find(p => p.slug === slug) || null;
     }
 
-    return { ...product, price, variants };
+    const { products: mockProducts } = require('@/lib/mock/products');
+    const manual = mockProducts.find(m => m.slug === product.slug);
+
+    if (manual) {
+      return {
+        ...product,
+        price: manual.price || product.price,
+        oldPrice: manual.oldPrice || product.oldPrice,
+        name: manual.name || product.name,
+        weight: manual.weight || product.weight,
+        hoverVideo: manual.hoverVideo || product.hoverVideo,
+        description: manual.description || product.description,
+        ingredients: manual.ingredients || product.ingredients,
+        nutrition: manual.nutrition || product.nutrition
+      };
+    }
+
+    return product;
   } catch (error) {
-    console.error(`❌ Produkt se slugem ${slug} nenalezen:`, error);
-    return null;
+    console.error(`❌ Produkt se slugem ${slug} nenalezen v DB, hledám v MOCKu:`, error);
+    const { products } = require('@/lib/mock/products');
+    return products.find(p => p.slug === slug) || null;
   }
 }
 
@@ -74,29 +96,30 @@ export async function getProductBySlug(slug: string) {
 export async function getProductsBySlugs(slugs: string[]) {
   noStore();
   try {
-    const products = await db.product.findMany({
+    const dbProducts = await db.product.findMany({
       where: {
         slug: { in: slugs },
       },
     });
 
-    // L-CODE Price Integrity Kernel: Vynucení cen pro hromadné výběry
-    return products.map(p => {
-      let price = p.price;
-      const name = p.name.toLowerCase();
-      
-      if (name.includes('creatine') || name.includes('kreatin')) price = 555;
-      else if (name.includes('black dead') || name.includes('dead pump')) price = 990;
-      else if (name.includes('glutamine')) price = 580;
-      else if (name.includes('opasek')) price = 1890;
-      else if (name.includes('kase') || name.includes('kaše')) price = 90;
+    const { products: mockProducts } = require('@/lib/mock/products');
 
-      let variants = p.variants;
-      if (Array.isArray(variants)) {
-        variants = variants.map((v: any) => ({ ...v, price }));
+    return dbProducts.map(p => {
+      const manual = findMockOverride(mockProducts, p.slug);
+      if (manual) {
+        return {
+          ...p,
+          price: manual.price || p.price,
+          oldPrice: manual.oldPrice || p.oldPrice,
+          name: manual.name || p.name,
+          weight: manual.weight || p.weight,
+          hoverVideo: manual.hoverVideo || p.hoverVideo,
+          description: manual.description || p.description,
+          ingredients: manual.ingredients || p.ingredients,
+          nutrition: manual.nutrition || p.nutrition
+        };
       }
-
-      return { ...p, price, variants };
+      return p;
     });
   } catch (error) {
     console.error("❌ Chyba při hromadném získání produktů:", error);
@@ -119,7 +142,7 @@ export async function getProductById(id: string) {
 export async function getProductsByCategory(category: string) {
   noStore();
   try {
-    const products = await db.product.findMany({
+    const dbProducts = await db.product.findMany({
       where: {
         category: category,
       },
@@ -128,26 +151,45 @@ export async function getProductsByCategory(category: string) {
       },
     });
 
-    // L-CODE Price Integrity Kernel: Vynucení cen pro kategorie
-    return products.map(p => {
-      let price = p.price;
-      const name = p.name.toLowerCase();
-      
-      if (name.includes('creatine') || name.includes('kreatin')) price = 555;
-      else if (name.includes('black dead') || name.includes('dead pump')) price = 990;
-      else if (name.includes('glutamine')) price = 580;
-      else if (name.includes('opasek')) price = 1890;
-      else if (name.includes('kase') || name.includes('kaše')) price = 90;
+    const { products: mockProducts } = require('@/lib/mock/products');
 
-      let variants = p.variants;
-      if (Array.isArray(variants)) {
-        variants = variants.map((v: any) => ({ ...v, price }));
+    return dbProducts.map(p => {
+      const manual = findMockOverride(mockProducts, p.slug);
+      if (manual) {
+        return {
+          ...p,
+          price: manual.price || p.price,
+          oldPrice: manual.oldPrice || p.oldPrice,
+          name: manual.name || p.name,
+          weight: manual.weight || p.weight,
+          hoverVideo: manual.hoverVideo || p.hoverVideo,
+          description: manual.description || p.description,
+          ingredients: manual.ingredients || p.ingredients,
+          nutrition: manual.nutrition || p.nutrition
+        };
       }
-
-      return { ...p, price, variants };
+      return p;
     });
   } catch (error) {
     console.error("❌ Chyba při filtraci kategorie:", error);
+    return [];
+  }
+}
+
+// 5. Podobné produkty (Related Products) - Fixní řazení a override
+export async function getRelatedProducts(currentSlug: string, limit: number = 3) {
+  noStore();
+  try {
+    const allProducts = await getProducts();
+    const currentProduct = allProducts.find(p => p.slug === currentSlug);
+    
+    // Filtrujeme aktuální produkt a seřadíme zbytek (priorita featured)
+    return allProducts
+      .filter(p => p.slug !== currentSlug)
+      .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+      .slice(0, limit);
+  } catch (error) {
+    console.error("❌ Chyba při získávání souvisejících produktů:", error);
     return [];
   }
 }

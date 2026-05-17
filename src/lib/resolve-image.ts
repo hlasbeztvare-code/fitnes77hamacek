@@ -1,6 +1,6 @@
 /**
  * L-CODE Dynamics | Product Image Resolver
- * Sjednocuje logiku pro zobrazení obrázků napříč celým e-shopem.
+ * Priorita: vlastní image produktu → slug/name fallback → logo
  */
 export const resolveProductImage = (
   image: string | null | undefined, 
@@ -11,33 +11,31 @@ export const resolveProductImage = (
   const nameUpper = name.toUpperCase();
   const slugLower = slug.toLowerCase();
 
-  // Pomocná funkce pro zjištění, zda jde o video
   const isVideo = (path: string) => path.toLowerCase().match(/\.(mp4|webm)$/i);
+  const isValidImage = (path: string) =>
+    path && path !== '' && !path.includes('placeholder') && !path.includes('no-image');
 
-  // 1. ZÍSKÁNÍ ZÁKLADNÍ CESTY (Priorita: Master Assets)
-  let finalPath = image || '';
+  // 1. VLASTNÍ IMAGE MÁ PRIORITU (z mock dat nebo DB)
+  let finalPath = (image && isValidImage(image)) ? image : '';
 
-  // Master Assets Fallbacks
-  if (nameUpper.includes('BCA') || slugLower.includes('bca')) finalPath = '/images/products/bcaa.png';
-  else if (nameUpper.includes('CREATINE') || slugLower.includes('kreatin')) finalPath = '/images/products/creatine-pure.png';
-  else if (nameUpper.includes('PUMP') || slugLower.includes('deadpump')) finalPath = '/images/products/Deadpump.webp';
-  else if (nameUpper.includes('DEAD') || slugLower.includes('blackdead')) finalPath = '/images/products/Blackdead.webp';
-  else if (nameUpper.includes('KAŠE') || nameUpper.includes('RICE')) finalPath = '/images/products/kase1.png';
-  else if (nameUpper.includes('OPASEK')) finalPath = '/videos/pasek.webm';
-  
-  // Pokud nemáme nic ani z masterů, zkusíme DB path nebo placeholder
-  if (!finalPath || finalPath === '' || finalPath.includes('placeholder')) {
-    finalPath = '/images/brand/logo-fitness77.png';
+  // 2. FALLBACK podle slugu/jména — jen pokud vlastní image chybí
+  if (!finalPath) {
+    if (slugLower.includes('bcaa') || slugLower.includes('amino')) finalPath = '/images/products/bcaa-complex.webp';
+    else if (slugLower.includes('creatine') || slugLower.includes('kreatin')) finalPath = '/images/products/creatine-pure.webp';
+    else if (slugLower.includes('deadpump') || slugLower.includes('dead-pump')) finalPath = '/images/products/deadpump_static.webp';
+    else if (slugLower.includes('black-dead')) finalPath = '/images/products/blackdead_static.webp';
+    else if (slugLower.startsWith('ryzova-kase')) finalPath = '/images/products/rice-chocolate.jpg';
+    else if (nameUpper.includes('OPASEK')) finalPath = '/videos/pasek.webm';
+    else finalPath = '/images/brand/logo-fitness77.png';
   }
 
-  // 2. FORMÁTOVÁNÍ CESTY
+  // 3. FORMÁTOVÁNÍ CESTY
   if (!finalPath.startsWith('http') && !finalPath.startsWith('/') && !finalPath.startsWith('data:')) {
     finalPath = `/images/products/${finalPath}`;
   }
 
-  // 3. STATIC VS VIDEO LOGIKA
+  // 4. STATIC VS VIDEO
   if (options.forceStatic && isVideo(finalPath)) {
-    // Pokud chceme jen statický obraz, ale máme video -> fallback na logo/brand
     return '/images/brand/logo-fitness77.png';
   }
 

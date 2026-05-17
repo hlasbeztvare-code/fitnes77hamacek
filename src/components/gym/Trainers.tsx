@@ -40,7 +40,7 @@ export const Trainers = () => {
           <span className="text-[#d4ff00] font-medium text-xs tracking-[0.8em] uppercase mb-6 block">
             THE MENTORS
           </span>
-          <h2 className="text-7xl md:text-8xl font-black text-white font-black leading-[0.8] mb-12 italic tracking-tighter">
+          <h2 className="text-7xl md:text-8xl font-black text-white font-black leading-[0.8] mb-12 tracking-tighter">
             NAŠI <br />
             <span className="text-transparent" style={{ WebkitTextStroke: '1px #fff' }}>TRENÉŘI</span>
           </h2>
@@ -73,7 +73,7 @@ export const Trainers = () => {
         <div className="relative">
           <div className="bg-[#d4ff00] p-12 md:p-20 rounded-[3rem] h-full flex flex-col justify-between overflow-hidden">
             <div className="relative z-10">
-              <h2 className="text-6xl md:text-7xl font-black text-black font-black leading-[0.85] uppercase italic tracking-tighter mb-8">
+              <h2 className="text-6xl md:text-7xl font-black text-black font-black leading-[0.85] uppercase tracking-tighter mb-8">
                 PŘIDEJ SE<br />K NÁM
               </h2>
               <p className="text-black font-medium text-sm font-bold leading-relaxed max-w-sm uppercase opacity-80">
@@ -88,7 +88,7 @@ export const Trainers = () => {
               </span>
             </div>
 
-            <div className="absolute -bottom-10 -right-10 text-[20rem] font-black text-black/5 font-black italic select-none">
+            <div className="absolute -bottom-10 -right-10 text-[20rem] font-black text-black/5 font-black select-none">
               77
             </div>
           </div>

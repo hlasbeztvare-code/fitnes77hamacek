@@ -22,13 +22,13 @@ const inter = Inter({
 
 const bebas = Bebas_Neue({
   weight: '400',
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-bebas',
   display: 'swap',
 });
 
 const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-space',
   display: 'swap',
 });

@@ -77,9 +77,9 @@ export default function ProductSelector({ product }: ProductSelectorProps) {
                 key={`${v.variantCode}-${idx}`}
                 onClick={() => setSelectedVariant(v)}
                 className={clsx(
-                  "px-6 py-4 text-xs font-bold uppercase tracking-wider transition-all duration-200 border-2",
+                  "px-10 py-6 text-sm font-black uppercase tracking-widest transition-all duration-300 border-2",
                   selectedVariant?.name === v.name
-                    ? "border-red-600 bg-red-600 text-white"
+                    ? "border-[#E10600] bg-[#E10600] text-white shadow-[0_10px_25px_rgba(225,6,0,0.2)]"
                     : "border-zinc-200 text-zinc-500 hover:border-zinc-900",
                   v.stock <= 0 && "opacity-50 grayscale cursor-not-allowed"
                 )}

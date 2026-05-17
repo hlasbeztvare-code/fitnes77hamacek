@@ -54,7 +54,7 @@ export default function Preloader() {
                 initial={{ y: 100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-                className="text-5xl md:text-8xl font-black italic tracking-tighter"
+                className="text-5xl md:text-8xl font-black tracking-tighter"
               >
                 FITNESS <span className="text-[#E10600]">77</span>
               </motion.h1>

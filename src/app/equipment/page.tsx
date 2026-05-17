@@ -1,19 +1,14 @@
-import { db } from '@/lib/db';
+import { getProducts } from '@/lib/queries/products';
 import ProductCard from '@/components/shop/ProductCard';
 
 export const dynamic = 'force-dynamic';
 
 export default async function EquipmentPage() {
-  const items = await db.product.findMany({
-    where: { 
-      OR: [
-        { category: 'equipment' },
-        { category: { contains: 'Vybavení', mode: 'insensitive' } },
-        { name: { contains: 'Opasek', mode: 'insensitive' } }
-      ]
-    },
-    orderBy: { createdAt: 'desc' },
-  });
+  const items = (await getProducts()).filter(p => 
+    (p.category ?? '').toLowerCase() === 'equipment' || 
+    (p.category ?? '').toLowerCase().includes('vybavení') ||
+    (p.name ?? '').toLowerCase().includes('opasek')
+  );
 
   return (
     <section className="py-20 bg-white">

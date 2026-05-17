@@ -2,17 +2,38 @@ import Image from 'next/image';
 import WowHero from '@/components/home/WowHero';
 import ProductCard from '@/components/shop/ProductCard';
 import Reveal from '@/components/ui/Reveal';
-import { getProducts, getProductBySlug } from '@/lib/queries/products';
-import { notFound } from 'next/navigation';
+import ProductMarquee from '@/components/shop/ProductMarquee';
+import { getProducts } from '@/lib/queries/products';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SupplementsPage() {
-  const allSupplements = (await getProducts()).filter(p => 
-    (p.category ?? '').toLowerCase() !== 'equipment' && 
+  const kaseVariantSlugs = ['ryzova-kase-cokolada', 'ryzova-kase-slany-karamel', 'ryzova-kase-boruvka', 'ryzova-kase-piskotovy-dort'];
+
+  const allSupplementsRaw = (await getProducts()).filter(p =>
+    (p.category ?? '').toLowerCase() !== 'equipment' &&
     !(p.category ?? '').toLowerCase().includes('vybavení') &&
-    !(p.name ?? '').toLowerCase().includes('opasek')
+    !(p.name ?? '').toLowerCase().includes('opasek') &&
+    !kaseVariantSlugs.includes(p.slug)
   );
+
+  // LOGIKA PRO MANUÁLNÍ SEŘAZENÍ (Dle přání Hamáčka)
+  const orderedSlugs = [
+    'black-dead-pre-workout',
+    'deadpump-v2-pump-formula',
+    'creatine-monohydrate',
+    'bcaa-amino-complex',
+  ];
+
+  const allSupplements = [...allSupplementsRaw].sort((a, b) => {
+    const indexA = orderedSlugs.indexOf(a.slug);
+    const indexB = orderedSlugs.indexOf(b.slug);
+    
+    if (indexA === -1 && indexB === -1) return 0;
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
 
   return (
     <>
@@ -21,60 +42,63 @@ export default async function SupplementsPage() {
       </div>
       <WowHero />
       
-      {/* Dynamic Info Lišta - Bílá verze - ULTRA NARROW */}
-      <section className="border-y border-zinc-100 bg-white text-zinc-950">
-        <div className="mx-auto grid w-[min(1200px,calc(100%-32px))] grid-cols-2 md:grid-cols-4 gap-y-0.5 gap-x-4 py-0.5">
-          <div className="text-center text-[10px] font-black uppercase tracking-[0.16em]">
-            DOPRAVA ZDARMA NAD 2500 KČ
-          </div>
-          <div className="text-center text-[10px] font-black uppercase tracking-[0.16em]">
+      {/* Marquee Section */}
+      <ProductMarquee />
+
+      {/* Dynamic Info Lišta */}
+      <section className="border-b border-zinc-100 bg-white text-zinc-950 py-3 sm:py-5">
+        <div className="mx-auto flex flex-col sm:flex-row justify-around items-center w-full max-w-[1400px] px-4 gap-4 sm:gap-12">
+          <div className="text-[10px] sm:text-[12px] font-black uppercase tracking-[0.2em] flex items-center gap-2 text-zinc-400">
             PPL / ZÁSILKOVNA / DPD
           </div>
-          <div className="text-center text-[10px] font-black uppercase tracking-[0.16em]">
-            OSOBNÍ ODBĚR MB
+          <div className="text-[10px] sm:text-[12px] font-black uppercase tracking-[0.2em] flex items-center gap-2 text-zinc-950">
+             OSOBNÍ ODBĚR MB
           </div>
-          <div className="text-center text-[10px] font-black uppercase tracking-[0.16em] text-[#E10600]">
-            SKLADEM
+          <div className="text-[18px] sm:text-[22px] font-black uppercase tracking-tight flex items-center gap-3 text-[#E10600]">
+            <div className="relative">
+              <span className="block w-3.5 h-3.5 bg-[#E10600] rounded-full animate-pulse" />
+              <span className="absolute inset-0 w-3.5 h-3.5 bg-[#E10600] rounded-full animate-ping opacity-75" />
+            </div>
+            SKLADEM VŠECHNY POLOŽKY
           </div>
         </div>
       </section>
 
-      {/* Main Grid (White Background) - MOVED IMMEDIATELY UNDER HERO/INFO */}
-      <section className="bg-white pt-2 pb-12">
-        <div className="mx-auto w-[min(1280px,calc(100%-48px))]">
+      {/* Main Grid */}
+      <section className="bg-white pt-8 pb-12">
+        <div className="mx-auto w-[min(1400px,calc(100%-32px))]">
           <Reveal>
-            <div className="max-w-3xl mb-8">
-              <div className="inline-block border-l-4 border-zinc-200 pl-3 text-sm font-black uppercase tracking-[0.22em] text-zinc-400">
-                Premium Catalog
+            <div className="mb-24 sm:mb-32">
+              <div className="inline-block border-l-4 border-zinc-200 pl-3 text-xs font-black uppercase tracking-[0.22em] text-zinc-400">
+                Premium Performance
               </div>
-              <h2 className="mt-1 text-4xl font-black uppercase leading-[0.95] text-zinc-950 md:text-6xl">
-                Všechny <span className="text-[#E10600]">Suplementy</span>
+              <h2 className="mt-2 text-5xl font-black uppercase leading-[1.1] text-zinc-950 md:text-7xl tracking-tight pb-1">
+                Všechny <span className="text-[#E10600]">Produkty</span>
               </h2>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-16 lg:gap-24">
-            {allSupplements.slice(0, 40).map((product, index, array) => {
-              const isLastAndOdd = index === array.length - 1 && array.length % 2 !== 0;
+          {/* MAIN GRID */}
+          <div className="grid grid-cols-2 gap-x-4 gap-y-16 sm:gap-x-12 sm:gap-y-24 mb-32">
+            {allSupplements.map((product, index) => {
               return (
                 <Reveal key={product.id} delay={(index % 2) * 0.1}>
-                  <div className={isLastAndOdd ? "sm:col-span-2 flex justify-center" : ""}>
-                    <div className={isLastAndOdd ? "w-full sm:max-w-[50%]" : "w-full"}>
-                      <ProductCard 
-                        product={product as any} 
-                        index={index}
-                        isDark={false}
-                      />
-                    </div>
+                  <div className="w-full">
+                    <ProductCard 
+                      product={product as any} 
+                      index={index}
+                      isDark={false}
+                    />
                   </div>
                 </Reveal>
               );
             })}
           </div>
+
         </div>
       </section>
 
-      {/* Founder Story Section (Restore Absolute Black) */}
+      {/* Founder Story Section */}
       <section className="bg-zinc-950 py-16 md:py-24 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
           <div className="absolute inset-0 bg-linear-to-l from-transparent to-zinc-950 z-10" />
@@ -97,7 +121,7 @@ export default async function SupplementsPage() {
                   Proč vzniklo <br />
                   <span className="text-[#E10600]">Fitness 77?</span>
                 </h2>
-                <div className="space-y-6 text-xl text-zinc-400 font-medium leading-relaxed italic">
+                <div className="space-y-6 text-xl text-zinc-400 font-medium leading-relaxed">
                   <p>
                     „Fitness 77 jsem založil, protože mi na trhu chybělo místo, kde se neřeší jenom svaly, ale skutečný progres a performance."
                   </p>

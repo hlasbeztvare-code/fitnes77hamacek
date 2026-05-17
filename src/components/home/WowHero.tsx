@@ -65,7 +65,7 @@ export default function WowHero() {
           transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
           className="text-center px-4"
         >
-          <span className="text-white/40 text-[clamp(0.75rem,3vw,1.5rem)] font-black uppercase tracking-[0.3em] md:tracking-[0.5em] font-space italic">
+          <span className="text-white/40 text-[clamp(0.75rem,3vw,1.5rem)] font-black uppercase tracking-[0.3em] md:tracking-[0.5em] font-space">
             Fitness 77
           </span>
         </motion.div>
@@ -77,7 +77,7 @@ export default function WowHero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
           >
-            <h1 className="text-4xl md:text-6xl font-black uppercase leading-[0.7] text-[#E10600] tracking-tighter drop-shadow-[0_0_15px_rgba(225,6,0,0.4)]">
+            <h1 className="text-4xl md:text-6xl font-black uppercase leading-[1.1] text-[#E10600] tracking-normal drop-shadow-[0_0_15px_rgba(225,6,0,0.4)] pb-1">
               E-SHOP
             </h1>
           </motion.div>

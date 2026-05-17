@@ -11,12 +11,12 @@ const Contact = () => {
             Ready for the shift?
           </span>
           
-          <h2 className="text-[10vw] md:text-[10vw] font-black text-white font-black leading-[0.8] tracking-tighter uppercase italic mb-4">
+          <h2 className="text-[10vw] md:text-[10vw] font-black text-white font-black leading-[0.8] tracking-tighter uppercase mb-4">
             KONTAKTUJ
           </h2>
           
           <div className="relative inline-block">
-            <h2 className="text-[10vw] md:text-[10vw] font-black font-black leading-[0.8] tracking-tighter uppercase italic text-transparent"
+            <h2 className="text-[10vw] md:text-[10vw] font-black font-black leading-[0.8] tracking-tighter uppercase text-transparent"
                 style={{ WebkitTextStroke: '1px #d4ff00' }}>
               NÁS TEĎ.
             </h2>
@@ -42,8 +42,8 @@ const Contact = () => {
               </div>
               <div>
                 <p className="text-white/40 font-medium text-xs tracking-widest uppercase mb-4">E-mail</p>
-                <a href="mailto:info@fit77.cz" className="text-2xl font-bold text-white font-black hover:text-[#d4ff00] transition-colors uppercase">
-                  info@fit77.cz
+                <a href="mailto:obchod@fit77.cz" className="text-2xl font-bold text-white font-black hover:text-[#d4ff00] transition-colors uppercase">
+                  obchod@fit77.cz
                 </a>
               </div>
             </div>
@@ -58,7 +58,7 @@ const Contact = () => {
                     key={social}
                     whileHover={{ scale: 1.1, color: '#d4ff00' }}
                     href="#"
-                    className="text-4xl font-black text-white font-black italic tracking-tighter"
+                    className="text-4xl font-black text-white font-black tracking-tighter"
                   >
                     {social}
                   </motion.a>

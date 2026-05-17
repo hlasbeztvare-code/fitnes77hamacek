@@ -54,12 +54,8 @@ export default async function TrainerDetailPage({ params }: Props) {
       stackData.productSlugs.indexOf(a.slug) - stackData.productSlugs.indexOf(b.slug)
     );
   } else {
-    // Fallback na náhodu
-    const allProducts = await db.product.findMany({
-      where: {
-        image: { not: '/images/products/placeholder.webp' }
-      }
-    });
+    // Fallback na náhodu s override logic
+    const allProducts = (await getProducts()).filter(p => p.image !== '/images/products/placeholder.webp');
     stackProducts = allProducts.sort(() => Math.random() - 0.5).slice(0, 4);
   }
 

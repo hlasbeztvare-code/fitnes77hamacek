@@ -90,7 +90,7 @@ export default function CartPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md">
           <span className="text-[#E10600] font-black text-6xl mb-6 block">ERR</span>
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Chyba <span className="text-[#E10600]">košíku</span></h1>
-          <p className="text-zinc-500 mb-8 font-medium italic">Nepodařilo se připojit pokladnu. Vyčistěte košík a zkuste to znovu.</p>
+          <p className="text-zinc-500 mb-8 font-medium">Nepodařilo se připojit pokladnu. Vyčistěte košík a zkuste to znovu.</p>
           <button
             onClick={() => { clearCart(); setStatus('idle'); }}
             className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)]"
@@ -128,7 +128,7 @@ export default function CartPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md">
           <span className="text-white/20 font-black text-6xl mb-6 block">!</span>
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Košík je <span className="text-[#E10600]">prázdný</span></h1>
-          <p className="text-zinc-500 mb-8 font-medium italic">Zdá se, že sypání zůstalo v regálu.</p>
+          <p className="text-zinc-500 mb-8 font-medium">Zdá se, že sypání zůstalo v regálu.</p>
           <Link href="/supplements" className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)]">
             ZPĚT DO OBCHODU
           </Link>

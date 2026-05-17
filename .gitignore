@@ -49,3 +49,8 @@ fitness77-phase4-commerce.sh
 install_polish.sh
 .vercel
 .env*.local
+
+# --- Agent and Scratch Files ---
+.claude/
+scratch/
+

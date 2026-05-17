@@ -50,7 +50,11 @@ export default function ProductDetailImage({ product }: Props) {
       {/* Technický obraz složení (Zobrazí se po hoveru) */}
       <div className="absolute inset-0 flex items-center justify-center p-12 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
         <Image
-          src={`/images/products/slozeni${product.slug.split('-')[0]}.webp`}
+          src={
+            product.slug === 'black-dead-pre-workout' ? '/images/products/SLOZENIBLACK.webp' :
+            product.slug === 'deadpump-v2-pump-formula' ? '/images/products/SLOZENIPUMP.webp' :
+            `/images/products/slozeni${product.slug.split('-')[0]}.webp`
+          }
           alt={`${product.name} – složení`}
           fill
           className="object-contain"

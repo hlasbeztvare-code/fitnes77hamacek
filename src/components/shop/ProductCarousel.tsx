@@ -4,8 +4,11 @@ import Image from 'next/image';
 import { products } from '@/lib/mock/products';
 
 export default function ProductCarousel() {
-  // Bereme jen první dva zabijáky: Black Dead a Dead Pump
-  const highlights = products.slice(0, 2);
+  // L-CODE HIGHLIGHTS: Black Dead a Dead Pump (indexy 2 a 3 v mocku)
+  const highlights = products.filter(p => 
+    p.name.toLowerCase().includes('black dead') || 
+    p.name.toLowerCase().includes('dead pump')
+  );
 
   return (
     <div className="relative w-full overflow-visible py-20 px-4">
