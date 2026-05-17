@@ -51,8 +51,8 @@ export default function ProductDetailImage({ product }: Props) {
       <div className="absolute inset-0 flex items-center justify-center p-12 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
         <Image
           src={
-            product.slug.includes('black-dead') ? '/images/products/slozeniblack.webp' :
-            product.slug.includes('deadpump') ? '/images/products/SLOZENIPUMP.webp' :
+            product.slug.includes('black-dead') ? '/images/products/SLOZENIPUMP.webp' :
+            product.slug.includes('deadpump') ? '/images/products/slozeniblack.webp' :
             `/images/products/slozeni${product.slug.split('-')[0]}.webp`
           }
           alt={`${product.name} – složení`}
