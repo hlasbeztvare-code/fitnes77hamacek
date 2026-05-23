@@ -48,12 +48,24 @@ function isConfigured(): boolean {
 }
 
 async function metaFetch(endpoint: string, body: Record<string, string>) {
-  const res = await fetch(`${META_API_BASE}/${endpoint}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...body, access_token: FB_PAGE_TOKEN }),
-  });
-  return res.json();
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+  try {
+    const res = await fetch(`${META_API_BASE}/${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...body, access_token: FB_PAGE_TOKEN }),
+      signal: controller.signal,
+    });
+    return await res.json();
+  } catch (error) {
+    // TODO: Zde napojit Sentry nebo jiný log-aggregator pro monitoring
+    console.error(`❌ Meta API Fetch chyba [${endpoint}]:`, error);
+    return { error: { message: error instanceof Error ? error.message : 'Network or Timeout Error' } };
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 // ─── Facebook ────────────────────────────────────────────────

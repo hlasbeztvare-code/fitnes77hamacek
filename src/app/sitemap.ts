@@ -10,14 +10,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const products = await db.product.findMany({
       select: { slug: true, updatedAt: true, category: true }
     })
-    
+
     productEntries = products.map((product) => {
-      const isEquipment = product.category.toLowerCase() === 'equipment' || 
-                         product.category.toLowerCase().includes('vybavení') ||
-                         product.slug.toLowerCase().includes('opasek');
-      
+      const category = product.category?.toLowerCase() || '';
+      const isEquipment = category === 'equipment' ||
+        category.includes('vybavení') ||
+        product.slug.toLowerCase().includes('opasek');
+
       const route = isEquipment ? 'equipment' : 'supplements';
-      
+
       return {
         url: `${baseUrl}/${route}/${product.slug}`,
         lastModified: product.updatedAt,
