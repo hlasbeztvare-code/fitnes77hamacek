@@ -53,6 +53,8 @@ export default function ProductDetailImage({ product }: Props) {
           src={
             product.slug.includes('black-dead') ? '/images/products/SLOZENIPUMP.webp' :
             product.slug.includes('deadpump') ? '/images/products/slozeniblack.webp' :
+            product.slug.includes('creatine') || product.slug.includes('kreatin') ? '/images/products/slozenicreatine.webp' :
+            product.slug.includes('bcaa') || product.slug.includes('amino') ? '/images/products/slozenibcaa.webp' :
             `/images/products/slozeni${product.slug.split('-')[0]}.webp`
           }
           alt={`${product.name} – složení`}

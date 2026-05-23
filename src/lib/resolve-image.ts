@@ -18,10 +18,14 @@ export const resolveProductImage = (
   // 1. VLASTNÍ IMAGE MÁ PRIORITU (z mock dat nebo DB)
   let finalPath = (image && isValidImage(image)) ? image : '';
 
+  // Pokud je to kreatin, vždy přebijeme obrázek naším lokálním, protože z DB se nenačítá správně
+  if (slugLower.includes('creatine') || slugLower.includes('kreatin')) {
+    finalPath = '/images/products/creatine-pure.webp';
+  }
+
   // 2. FALLBACK podle slugu/jména — jen pokud vlastní image chybí
   if (!finalPath) {
     if (slugLower.includes('bcaa') || slugLower.includes('amino')) finalPath = '/images/products/bcaa-complex.webp';
-    else if (slugLower.includes('creatine') || slugLower.includes('kreatin')) finalPath = '/images/products/creatine-pure.webp';
     else if (slugLower.includes('deadpump') || slugLower.includes('dead-pump')) finalPath = '/images/products/deadpump_static.webp';
     else if (slugLower.includes('black-dead')) finalPath = '/images/products/blackdead_static.webp';
     else if (slugLower.startsWith('ryzova-kase')) finalPath = '/images/products/rice-chocolate.jpg';
