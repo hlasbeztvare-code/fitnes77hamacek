@@ -118,6 +118,7 @@ const jsonLd = {
   image: "https://fitness77.cz/images/brand/og_image.png",
 };
 
+import Script from 'next/script';
 import { SecurityKernel } from '@/components/security/SecurityKernel';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -135,6 +136,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={`${inter.className} antialiased`}>
+        {/* GA4 Tracking Layer */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID || 'G-XXXXXXXXXX'}`}
+        />
+        <Script
+          id="gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID || 'G-XXXXXXXXXX'}', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
+
         <SecurityKernel>
           <GoliasShield>
             <PerformanceProviders>

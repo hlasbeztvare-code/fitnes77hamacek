@@ -12,15 +12,8 @@ import { ReactNode } from 'react';
 export function GoliasShield({ children }: { children: ReactNode }) {
   const isReady = useHydrationFix();
 
-  // Během prvního renderu na serveru nebo před hydratací na klientovi
-  // zachováváme strukturu, ale můžeme potlačit interaktivní části pokud je to nutné.
-  if (!isReady) {
-    return (
-      <div style={{ visibility: 'hidden' }}>
-        {children}
-      </div>
-    );
-  }
-
+  // Abychom neblokovali legitimní crawlery (Google/Meta) a SEO,
+  // vracíme děti napřímo bez obalování do skrytých elementů. SSR tak proběhne čistě.
+  // Goliáš Client Hook se dál stará o stabilizaci a logování.
   return <>{children}</>;
 }
