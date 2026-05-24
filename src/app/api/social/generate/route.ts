@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
     });
 
     // Určení správného cache klíče podle formátu, aby se nám nemíchal feed se story
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type': 'image/webp',
         'Cache-Control': 'public, max-age=31536000, immutable',

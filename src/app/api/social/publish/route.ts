@@ -8,7 +8,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { publishToSocials, buildProductPost, buildBlogPost, buildPromoPost } from '@/lib/meta-social';
+import { publishToSocials, buildProductPost, buildPromoPost } from '@/lib/meta-social';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,9 +28,7 @@ export async function POST(req: NextRequest) {
     case 'product':
       payload = buildProductPost(data);
       break;
-    case 'blog':
-      payload = buildBlogPost(data);
-      break;
+
     case 'promo':
       payload = buildPromoPost(data.text, data.imageUrl);
       break;
