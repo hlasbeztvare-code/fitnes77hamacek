@@ -64,7 +64,7 @@ export default function SocialDashboard() {
       setIsExporting(true);
 
       // ZERO ERROR TOLERANCE: Odesíláme čistá data na náš upravený publish endpoint
-      const res = await fetch('/api/social/publish', {
+      const res = await fetch('/api/social/upload-publish', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
