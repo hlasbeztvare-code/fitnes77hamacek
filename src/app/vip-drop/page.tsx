@@ -110,17 +110,7 @@ export default function VipDropPage() {
               className="text-xl md:text-2xl font-medium text-zinc-400 max-w-2xl mx-auto bg-black/30 p-4 backdrop-blur-sm text-center">
               Tato nabídka není veřejná. Získej kombo, které tě donutí zničit fitko.
             </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-col items-center gap-2 pt-8"
-            >
-              <div className="font-black font-mono text-[#E10600] text-5xl md:text-7xl drop-shadow-[0_0_30px_rgba(225,6,0,0.8)] tracking-widest">
-                {fmt(timeLeft)}
-              </div>
-              <p className="text-xs uppercase tracking-[0.4em] text-[#E10600]/70 font-black">Odpočet do destrukce</p>
-            </motion.div>
+
           </div>
         </div>
       </section>
