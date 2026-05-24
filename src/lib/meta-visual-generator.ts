@@ -4,21 +4,25 @@ import path from 'path';
 /**
  * Centrální generátor "Světového Vizuálu" pro sociální sítě Fitness 77.
  * Vytváří high-end grafiku s produktem na černém pozadí s brandingem.
+ * * ZERRO ERROR TOLERANCE: Plná podpora pro 9:16 Stories/Reels i 4:5 Feed formáty.
  */
 
 export async function generateSocialImage({
   productImage,
   title,
   category,
-  template = 'hero'
+  template = 'hero',
+  format = 'feed' // NOVÝ PARAMETR: 'feed' (1080x1350) nebo 'story' (1080x1920)
 }: {
   productImage: string;
   title: string;
   category?: string;
   template?: 'hero' | 'minimalist' | 'industrial' | 'promo';
+  format?: 'feed' | 'story';
 }) {
+  // STRIKTNÍ ARCHITEKTURA PLÁTNA: Rozměry podle zvoleného formátu
   const WIDTH = 1080;
-  const HEIGHT = 1350;
+  const HEIGHT = format === 'story' ? 1920 : 1350;
 
   let canvas = sharp({
     create: {
@@ -33,29 +37,30 @@ export async function generateSocialImage({
 
   // ─────────────── TEMPLATE LOADING Logic ────────────────────────
   let templateOverlay: Buffer | null = null;
-  const templatePath = path.join(process.cwd(), 'public/images/social-templates', `template-${template}.png`);
-  
+  // Rozlišujeme soubory šablon podle formátu (např. template-hero-story.png)
+  const templateFileName = format === 'story' ? `template-${template}-story.png` : `template-${template}.png`;
+  const templatePath = path.join(process.cwd(), 'public/images/social-templates', templateFileName);
+
   try {
-    // Zkusíme najít externí soubor šablony (např. template-hero.png)
     templateOverlay = await sharp(templatePath).toBuffer();
-    console.log(`✅ Používám externí šablonu: ${template}.png`);
+    console.log(`✅ Používám externí šablonu: ${templateFileName}`);
   } catch (e) {
-    // Pokud soubor neexistuje, použijeme generovanou SVG logiku
+    // Pokud soubor neexistuje, jedeme přes záložní generované SVG
   }
 
   // ─── TEMPLATE: HERO (Generated Backup) ───────────────────────
   if (template === 'hero' && !templateOverlay) {
     const redBar = Buffer.from(`
       <svg width="${WIDTH}" height="${HEIGHT}">
-        <rect x="${WIDTH * 0.6}" y="-10%" width="${WIDTH * 0.6}" height="120%" fill="#e10600" transform="skewX(-12)" opacity="0.9" />
+        <rect x="${WIDTH * 0.5}" y="-10%" width="${WIDTH * 0.7}" height="120%" fill="#e10600" transform="skewX(-12)" opacity="0.9" />
       </svg>
     `);
     compositions.push({ input: redBar, top: 0, left: 0 });
-    
+
     const glow = Buffer.from(`
       <svg width="${WIDTH}" height="${HEIGHT}">
         <defs><radialGradient id="g"><stop offset="0%" stop-color="#e10600" stop-opacity="0.4"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
-        <circle cx="540" cy="550" r="450" fill="url(#g)" />
+        <circle cx="${WIDTH / 2}" cy="${HEIGHT / 2}" r="500" fill="url(#g)" />
       </svg>
     `);
     compositions.push({ input: glow, top: 0, left: 0 });
@@ -79,7 +84,7 @@ export async function generateSocialImage({
   // Hardcoded override pro BCAA 411 - sjednocení vizuálu všude
   if (title.toUpperCase().includes('BCA') || productImage.toLowerCase().includes('bca')) {
     finalProductPath = '/images/products/bcaa411.webp';
-    console.log(`🚀 Social Geneator: BCAA Override aktivován`);
+    console.log(`🚀 Social Generator: BCAA Override aktivován`);
   }
 
   try {
@@ -94,13 +99,18 @@ export async function generateSocialImage({
     productBuffer = Buffer.from('<svg width="200" height="200"><rect width="200" height="200" fill="gray"/></svg>');
   }
 
+  // Velikost produktu: Ve Stories dáváme produktu větší prostor na výšku
+  const productResizeHeight = format === 'story' ? 1000 : 800;
   const processedProduct = await sharp(productBuffer)
-    .resize(template === 'minimalist' ? 600 : 800, 800, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .resize(template === 'minimalist' ? 600 : 800, productResizeHeight, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .toBuffer();
 
-  const productPos = template === 'minimalist' 
-    ? { top: 200, left: WIDTH - 700 }
-    : { top: 150, left: 140 };
+  // Dynamická pozice: Ve Stories musí produkt sedět vycentrovaný níže, aby ho nahoře nezakryly ovládací prvky IG
+  const productPos = format === 'story'
+    ? { top: Math.floor((HEIGHT - productResizeHeight) / 2) + 50, left: 140 }
+    : template === 'minimalist'
+      ? { top: 200, left: WIDTH - 700 }
+      : { top: 150, left: 140 };
 
   compositions.push({ input: processedProduct, ...productPos });
 
@@ -109,8 +119,14 @@ export async function generateSocialImage({
     compositions.push({ input: templateOverlay, top: 0, left: 0 });
   }
 
-  // ─── BRANDING (Generated Backup) ──────────────────────────────
+  // ─── BRANDING & TYPOGRAPHY (Generated Backup) ──────────────────
   if (!templateOverlay) {
+    const brandCategory = category || (template === 'industrial' ? 'ENGINEERED PERFORMANCE' : 'PREMIUM QUALITY');
+
+    // Dynamické Y pozice prvků pro spodní lištu, aby se přizpůsobily výšce plátna
+    const footerY = HEIGHT - 100;
+    const badgeY = HEIGHT - 150;
+
     const branding = Buffer.from(`
       <svg width="${WIDTH}" height="${HEIGHT}">
         <style>
@@ -119,10 +135,10 @@ export async function generateSocialImage({
           .u { fill: #a1a1aa; font-family: sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 2px; }
         </style>
         
-        <path d="M40 1200 L300 1200 L270 1280 L10 1280 Z" fill="#e10600" />
-        <text x="55" y="1255" fill="white" font-family="sans-serif" font-weight="900" font-size="34px">FITNESS 77</text>
-        <text x="50" y="100" class="c">${category || (template === 'industrial' ? 'ENGINEERED PERFORMANCE' : 'PREMIUM QUALITY')}</text>
-        <text x="${WIDTH - 250}" y="1255" class="u">FITNESS77.CZ</text>
+        <path d="M40 ${badgeY} L300 ${badgeY} L270 ${badgeY + 80} L10 ${badgeY + 80} Z" fill="#e10600" />
+        <text x="55" y="${badgeY + 55}" fill="white" font-family="sans-serif" font-weight="900" font-size="34px">FITNESS 77</text>
+        <text x="50" y="100" class="c">${brandCategory}</text>
+        <text x="${WIDTH - 250}" y="${badgeY + 55}" class="u">FITNESS77.CZ</text>
       </svg>
     `);
     compositions.push({ input: branding, top: 0, left: 0 });

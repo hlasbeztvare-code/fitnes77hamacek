@@ -3,34 +3,24 @@
  * ============================================================
  * Centrální služba pro automatické publikování obsahu
  * na Facebook a Instagram prostřednictvím Meta Graph API.
- *
- * SETUP (po získání přístupu od klienta):
- * 1. Vytvoř Meta App na https://developers.facebook.com
- * 2. Přidej oprávnění: pages_manage_posts, instagram_basic,
- *    instagram_content_publish, pages_read_engagement
- * 3. Vygeneruj Long-Lived Page Access Token
- * 4. Doplň proměnné do .env (viz .env.example)
- *
- * INSTAGRAM požadavky:
- * - Musí být Business nebo Creator účet
- * - Musí být napojen na FB stránku v Business Manageru
  * ============================================================
  */
 
 const META_API_BASE = 'https://graph.facebook.com/v19.0';
 
-const FB_PAGE_ID       = process.env.META_FB_PAGE_ID!;
-const FB_PAGE_TOKEN    = process.env.META_FB_PAGE_ACCESS_TOKEN!;
-const IG_ACCOUNT_ID    = process.env.META_IG_ACCOUNT_ID!;   // Instagram Business Account ID
-const APP_URL          = process.env.NEXT_PUBLIC_APP_URL ?? 'https://fitness77.cz';
+const FB_PAGE_ID = process.env.META_FB_PAGE_ID!;
+const FB_PAGE_TOKEN = process.env.META_FB_PAGE_ACCESS_TOKEN!;
+const IG_ACCOUNT_ID = process.env.META_IG_ACCOUNT_ID!;   // Instagram Business Account ID
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://fitness77.cz';
 
 // ─── typy ────────────────────────────────────────────────────
 
 export type PostPayload = {
-  message: string;        // Text příspěvku
-  imageUrl?: string;      // Absolutní URL obrázku (nutné pro IG)
+  message: string;        // Text příspěvku (využito pro Feed / Reels)
+  imageUrl?: string;      // Absolutní URL obrázku nebo videa
   linkUrl?: string;       // URL na web (pro FB link preview)
-  isStory?: boolean;      // Postovat jako Story místo feed postu
+  isStory?: boolean;      // Postovat jako Story
+  isReel?: boolean;       // Postovat jako Reel (pokud je v imageUrl video)
 };
 
 type MetaResult = {
@@ -43,13 +33,12 @@ type MetaResult = {
 // ─── helpers ─────────────────────────────────────────────────
 
 function isConfigured(): boolean {
-  // Aspoň FB musí být nastaven pro základní fungování
   return !!(FB_PAGE_ID && FB_PAGE_TOKEN);
 }
 
 async function metaFetch(endpoint: string, body: Record<string, string>) {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+  const timeoutId = setTimeout(() => controller.abort(), 15000); // Zvýšeno na 15s pro video uploady
 
   try {
     const res = await fetch(`${META_API_BASE}/${endpoint}`, {
@@ -60,7 +49,6 @@ async function metaFetch(endpoint: string, body: Record<string, string>) {
     });
     return await res.json();
   } catch (error) {
-    // TODO: Zde napojit Sentry nebo jiný log-aggregator pro monitoring
     console.error(`❌ Meta API Fetch chyba [${endpoint}]:`, error);
     return { error: { message: error instanceof Error ? error.message : 'Network or Timeout Error' } };
   } finally {
@@ -75,7 +63,7 @@ async function postToFacebook(payload: PostPayload): Promise<{ id?: string; erro
     message: payload.message,
   };
 
-  if (payload.linkUrl)  body.link  = payload.linkUrl;
+  if (payload.linkUrl) body.link = payload.linkUrl;
   if (payload.imageUrl) body.picture = payload.imageUrl;
 
   const data = await metaFetch(`${FB_PAGE_ID}/feed`, body);
@@ -86,28 +74,33 @@ async function postToFacebook(payload: PostPayload): Promise<{ id?: string; erro
   return { id: data.id };
 }
 
-// ─── Instagram ───────────────────────────────────────────────
+// ─── Instagram (Feed, Stories, Reels) ────────────────────────
 
 async function postToInstagram(payload: PostPayload): Promise<{ id?: string; error?: string }> {
   if (!payload.imageUrl) {
     return { error: 'Instagram vyžaduje imageUrl' };
   }
 
-  // Krok 1: Vytvořit media container
-  const containerBody: Record<string, string> = {
-    image_url: payload.imageUrl,
-    caption: payload.message,
-  };
+  const containerBody: Record<string, string> = {};
 
+  // Logika větvení podle formátu obsahu (Rule-Based Architecture)
   if (payload.isStory) {
-    containerBody.media_type = 'IMAGE';
-    containerBody.is_carousel_item = 'false';
+    // STRIKTNÍ META UKAZATEL: Pro Stories musí být media_type 'STORIES' a NESMÍ obsahovat caption
+    containerBody.image_url = payload.imageUrl;
+    containerBody.media_type = 'STORIES';
+  } else if (payload.isReel) {
+    // REELS PROTOKOL: Vyžaduje video_url namísto image_url a media_type 'REELS'
+    containerBody.video_url = payload.imageUrl;
+    containerBody.media_type = 'REELS';
+    containerBody.caption = payload.message;
+  } else {
+    // Standardní Feed Post
+    containerBody.image_url = payload.imageUrl;
+    containerBody.caption = payload.message;
   }
 
-  const container = await metaFetch(
-    `${IG_ACCOUNT_ID}/media`,
-    containerBody
-  );
+  // Krok 1: Vytvořit media container
+  const container = await metaFetch(`${IG_ACCOUNT_ID}/media`, containerBody);
 
   if (container.error || !container.id) {
     console.error('❌ IG container chyba:', container.error);
@@ -123,23 +116,6 @@ async function postToInstagram(payload: PostPayload): Promise<{ id?: string; err
     console.error('❌ IG publish chyba:', publish.error);
     return { error: publish.error.message };
   }
-
-  return { id: publish.id };
-}
-
-// ─── Instagram Story ─────────────────────────────────────────
-
-async function _postStoryToInstagram(imageUrl: string): Promise<{ id?: string; error?: string }> {
-  const container = await metaFetch(`${IG_ACCOUNT_ID}/media`, {
-    image_url: imageUrl,
-    media_type: 'IMAGE',
-  });
-
-  if (!container.id) return { error: 'Story container error' };
-
-  const publish = await metaFetch(`${IG_ACCOUNT_ID}/media_publish`, {
-    creation_id: container.id,
-  });
 
   return { id: publish.id };
 }
@@ -190,7 +166,6 @@ export function buildProductPost(product: {
   category: string;
 }): PostPayload {
   const categoryPath = product.category === 'supplement' ? 'supplements' : 'equipment';
-  // Použijeme náš dynamický generátor pro "Světovej Vizuál"
   const premiumImageUrl = `${APP_URL}/api/social/generate?imageUrl=${encodeURIComponent(product.image)}&title=${encodeURIComponent(product.name)}&category=${encodeURIComponent(product.category)}`;
 
   return {
@@ -200,26 +175,12 @@ export function buildProductPost(product: {
   };
 }
 
-/** Nový blog post */
-export function buildBlogPost(post: {
-  title: string;
-  excerpt: string;
-  slug: string;
-  image: string;
-}): PostPayload {
+/** Akce / promo (Podpora pro vertikální formáty Stories/Reels) */
+export function buildPromoPost(text: string, imageUrl?: string, options?: { isStory?: boolean; isReel?: boolean }): PostPayload {
   return {
-    message: `📖 ${post.title}\n\n${post.excerpt}\n\n👉 ${APP_URL}/blog/${post.slug}\n\n#fitness77 #fitness #mladaboleslav`,
-    imageUrl: post.image.startsWith('/')
-      ? `${APP_URL}${post.image}`
-      : post.image,
-    linkUrl: `${APP_URL}/blog/${post.slug}`,
-  };
-}
-
-/** Akce / promo */
-export function buildPromoPost(text: string, imageUrl?: string): PostPayload {
-  return {
-    message: `${text}\n\n💪 Fitness 77 Mladá Boleslav\n📍 Jiráskova 1320\n☎️ +420 777 105 548\n\n#fitness77 #fitness #mladaboleslav`,
+    message: `${text}\n\n💪 Fitness 77 Mladá Boleslav\n#fitness77 #fitness #mladaboleslav`,
     imageUrl,
+    isStory: options?.isStory,
+    isReel: options?.isReel,
   };
 }

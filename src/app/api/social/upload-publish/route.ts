@@ -5,7 +5,8 @@ import { publishToSocials } from '@/lib/meta-social';
 
 export async function POST(req: Request) {
   try {
-    const { imageBase64, message, linkUrl } = await req.json();
+    // ZERO ERROR TOLERANCE: Přidáváme isStory a isReel do destrukce požadavku
+    const { imageBase64, message, linkUrl, isStory, isReel } = await req.json();
 
     if (!imageBase64) {
       return NextResponse.json({ success: false, error: 'Chybí obrázek' }, { status: 400 });
@@ -18,7 +19,7 @@ export async function POST(req: Request) {
     // 2. Uložení obrázku do složky public/uploads
     const filename = `social-${Date.now()}.png`;
     const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    
+
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
     }
@@ -27,26 +28,26 @@ export async function POST(req: Request) {
     fs.writeFileSync(filepath, buffer);
 
     // 3. Vytvoření veřejné URL pro Meta API
-    // POZNÁMKA: Pokud app běží lokálně (localhost), Meta API nebude mít k obrázku přístup!
-    // App musí běžet na veřejné doméně (např. fitness77.cz)
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://fitness77.cz';
     const publicImageUrl = `${appUrl}/uploads/${filename}`;
 
-    // 4. Odeslání na sítě přes Meta Graph API script
+    // 4. Odeslání na sítě přes Meta Graph API script se všemi příznaky formátu
     const result = await publishToSocials({
       message: message || 'Nová brutalita od Fitness 77!',
       imageUrl: publicImageUrl,
-      linkUrl: linkUrl || 'https://fitness77.cz/vip-drop'
+      linkUrl: linkUrl || 'https://fitness77.cz/vip-drop',
+      isStory: !!isStory, // vynucení booleanu
+      isReel: !!isReel    // vynucení booleanu
     });
 
-    return NextResponse.json({ 
-      success: result.success, 
+    return NextResponse.json({
+      success: result.success,
       imageUrl: publicImageUrl,
-      meta: result 
+      meta: result
     });
 
   } catch (error: any) {
-    console.error('Error publishing to socials:', error);
+    console.error('❌ Error publishing to socials:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
