@@ -46,7 +46,9 @@ export default function SocialDashboard() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setUploadedImage(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onload = (ev) => setUploadedImage(ev.target?.result as string);
+      reader.readAsDataURL(file);
     }
   };
 
