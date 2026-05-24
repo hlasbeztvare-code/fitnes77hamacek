@@ -2,649 +2,403 @@
 
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Type, 
-  Image as ImageIcon, 
-  Layers, 
-  Download, 
-  Plus, 
-  Trash2, 
-  ChevronRight,
-  Sparkles,
-  Maximize,
-  Hash
-} from 'lucide-react';
-
-/**
- * GOLIÁŠ | AD FACTORY V1.0
- * Interní nástroj pro tvorbu brutálních reklamních vizuálů.
- */
-
-const BRUTAL_FONTS = [
-  { id: 'inter', name: 'Inter Black', class: 'font-black' },
-  { id: 'outfit', name: 'Outfit Heavy', class: 'font-[900]' },
-];
+import { Download, Hash, Upload, ShoppingCart, Type, Palette, Maximize, Move, Trash2 } from 'lucide-react';
+// html-to-image is loaded dynamically at runtime
 
 const BRAND_COLORS = [
-  { name: 'Pure White', hex: '#FFFFFF' },
-  { name: 'F77 Red', hex: '#E10600' },
-  { name: 'F77 Pink', hex: '#FF00FF' },
-  { name: 'Acid Green', hex: '#CCFF00' },
-];
-
-const MASTER_BACKGROUNDS = [
-  { id: 'neon-burst', name: '🔥 Neon Burst (Aggressive)', url: '/images/studio/neon-burst.png' },
-  { id: 'science', name: '🧪 Science Lab (Clean)', url: '/images/studio/science.png' },
-  { id: 'industrial', name: '⛓️ Industrial Chain (Power)', url: '/images/studio/industrial.png' },
-  { id: 'toxic', name: '☢️ Toxic Acid (Energy)', url: '/images/studio/toxic.png' },
-  { id: 'toxic-rice', name: '☢️ Toxic Rice (Cream of Rice)', url: '/images/studio/toxic-rice.png' },
-  { id: 'black-dead', name: '💀 Black Dead Studio', url: '/images/studio/black-dead.png' },
-  { id: 'dead-pump', name: '✨ Dead Pump Glow', url: '/images/studio/dead-pump.png' },
-];
-
-const COPY_TEMPLATES = [
-  {
-    id: 'energy',
-    name: '🔥 AGRESIVNÍ START',
-    headline: 'BLACK DEAD\nPRE-WORKOUT',
-    subheadline: 'LEGÁLNÍ ZBRAŇ PRO TVŮJ TRÉNINK.\nNEJSILNĚJŠÍ SLOŽENÍ NA TRHU.',
-    bullets: [
-      '⚡ Extrémní energie a focus',
-      '🩸 Brutální prokrvení svalů',
-      '🎯 Maximální koncentrace',
-      '🚫 Žádný crash efekt'
-    ],
-    footer: 'STOP WEAKNESS. START TRAINING.'
-  },
-  {
-    id: 'recovery',
-    name: '🧪 MAXIMUM RECOVERY',
-    headline: 'BCAA 4:1:1 +\nGLUTAMINE',
-    subheadline: 'NOT JUST RECOVERY.\nIT\'S TOTAL CONTROL.',
-    bullets: [
-      '💪 Ochrana svalové hmoty',
-      '🔄 Zrychlená regenerace',
-      '⚡ Stabilní výkon bez vyhoření',
-      '🧠 Podpora dlouhodobého progresu'
-    ],
-    footer: 'TRAIN HARD, RECOVER SMART.'
-  },
-  {
-    id: 'brand',
-    name: '🛡️ FITNESS 77 BRAND',
-    headline: 'BEZ KOMPROMISŮ.\nFITNESS 77.',
-    subheadline: 'KVALITA Z MLADÉ BOLESLAVI.\nPRO TY, CO CHTĚJÍ VÍC.',
-    bullets: [
-      '🏆 Prémiové suroviny',
-      '🧬 Vlastní receptury',
-      '🏋️‍♀️ Testováno profi atlety',
-      '📦 Bleskové doručení'
-    ],
-    footer: 'PRVNÍ VOLBA ŠAMPIONŮ.'
-  },
-  {
-    id: 'elite',
-    name: '👑 ELITE STATUS (EGO)',
-    headline: 'PALIVO PRO\nTOP 1 %',
-    subheadline: 'NEHRAJEŠ SI. VYHRÁVÁŠ.\nLIMITOVANÁ ŠARŽE PRO ELITU.',
-    bullets: [
-      '💎 Exkluzivní složení',
-      '🎖️ Standard šampionů',
-      '🛡️ Žádné kompromisy',
-      '🔒 Garantovaný progres'
-    ],
-    footer: 'BECOME UNSTOPPABLE.'
-  },
-  {
-    id: 'fomo',
-    name: '⏳ POSLEDNÍ ŠANCE (FOMO)',
-    headline: 'SKLAD SE\nPRÁZDNÍ.',
-    subheadline: 'TISÍCE LIDÍ UŽ MAJÍ NÁKUP.\nTY POŘÁD JEN KOUKÁŠ?',
-    bullets: [
-      '🔥 Obrovská poptávka',
-      '📦 Posledních pár kusů',
-      '🛑 Už se nemusí opakovat',
-      '🏃‍♂️ Jednej, nebo lituj'
-    ],
-    footer: 'LAST CHANCE TO WIN.'
-  },
-  {
-    id: 'excuses',
-    name: '⚡ ZERO EXCUSES (DRIVE)',
-    headline: 'VÝMLUVY\nNEPÁLÍ TUK.',
-    subheadline: 'TVOJE KONKURENCE NYNÍ TRÉNUJE.\nUŽ SE K NÍ NEPŘIDÁŠ?',
-    bullets: [
-      '🦾 Okamžitý restart',
-      '🔥 Spalování na max',
-      '🚫 Konec prokrastinace',
-      '🎯 Tvůj cíl je blíž'
-    ],
-    footer: 'STOP TALKING. START ACTING.'
-  }
+  { id: 'white', hex: '#FFFFFF', name: 'Bílá' },
+  { id: 'black', hex: '#000000', name: 'Černá' },
+  { id: 'red', hex: '#E10600', name: 'Červená' },
+  { id: 'green', hex: '#CCFF00', name: 'Acid Zelená' },
 ];
 
 export default function SocialDashboard() {
-  const [headline, setHeadline] = useState('BCAA 4:1:1 + \nGLUTAMINE');
-  const [subheadline, setSubheadline] = useState('NOT JUST RECOVERY.\nIT\'S TOTAL CONTROL.');
-  const [footer, setFooter] = useState('REALITY: TRAIN HARD, RECOVER SMART.');
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedLogo, setUploadedLogo] = useState<string | null>(null);
   
-  const applyTemplate = (tpl: typeof COPY_TEMPLATES[0]) => {
-    setHeadline(tpl.headline);
-    setSubheadline(tpl.subheadline);
-    setBullets(tpl.bullets);
-    setFooter(tpl.footer);
-  };
-  
-  const [headlineColor, setHeadlineColor] = useState('#FF00FF');
-  const [subColor, setSubColor] = useState('#FFFFFF');
-  const [bulletColor, setBulletColor] = useState('#FFFFFF');
-  const [footerColor, setFooterColor] = useState('#FFFFFF');
-
-  const [glowIntensity, setGlowIntensity] = useState(20);
-  const [hasShadow, setHasShadow] = useState(true);
-  const [isNeon, setIsNeon] = useState(true);
-
-  const [selectedBg, setSelectedBg] = useState(MASTER_BACKGROUNDS[0].url);
-  const [selectedProductImg, setSelectedProductImg] = useState('/images/brand/logo-fitness77.png'); // Default if no prod images
-  const [productX, setProductX] = useState(0);
-  const [productY, setProductY] = useState(0);
-  const [productScale, setProductScale] = useState(1);
-  const [productRotation, setProductRotation] = useState(0);
-  
-  const [canvasFormat, setCanvasFormat] = useState<'feed' | 'stories' | 'portrait'>('portrait');
-  const [fgEffect, setFgEffect] = useState<'none' | 'fire' | 'frost' | 'water' | 'smoke' | 'toxic-mist'>('none');
-  const [productSurface, setProductSurface] = useState<'none' | 'frosty' | 'wet'>('none');
+  // Toggles
   const [showCTA, setShowCTA] = useState(true);
-
-  const [activeFont, setActiveFont] = useState(BRUTAL_FONTS[0]);
-
-  const PRODUCT_ASSETS = [
-    { name: 'Black Dead Bottle', url: '/images/products/black-dead-pure.png' },
-    { name: 'Creatine Tub', url: '/images/products/creatine-pure.png' },
-    { name: 'Rice Porridge', url: '/images/products/rice-pure.png' },
-  ];
+  const [showCustomText, setShowCustomText] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   
-  const [bullets, setBullets] = useState([
-    '💪 Muscle protection every workout',
-    '🔄 Faster recovery with BCAA',
-    '⚡ Stable performance',
-    '🧠 Supports long-term progress'
-  ]);
+  // Button state
+  const [btnText, setBtnText] = useState('SHOP NOW');
+  const [btnBg, setBtnBg] = useState('#E10600');
+  const [btnTextColor, setBtnTextColor] = useState('#CCFF00');
+  const [btnScale, setBtnScale] = useState(1);
+
+  // Logo state
+  const [logoScale, setLogoScale] = useState(1);
+
+  // Text state
+  const [customText, setCustomText] = useState('EXTRÉMNÍ\nPUMPA');
+  const [customTextColor, setCustomTextColor] = useState('#FFFFFF');
+  const [customTextScale, setCustomTextScale] = useState(1);
+
+  // Publish state
+  const [postMessage, setPostMessage] = useState('Dnes objednáš, zítra trénuješ! Získej krev rvoucí pumpu.\n\n#fitness77 #hardcore');
+  const [postLink, setPostLink] = useState('https://fitness77.cz/vip-drop');
 
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  const addBullet = () => setBullets([...bullets, 'Nová odrážka...']);
-  const removeBullet = (index: number) => setBullets(bullets.filter((_, i) => i !== index));
-  const updateBullet = (index: number, val: string) => {
-    const newBullets = [...bullets];
-    newBullets[index] = val;
-    setBullets(newBullets);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadedImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadedLogo(URL.createObjectURL(file));
+    }
+  };
+
+  const handlePublish = async () => {
+    if (!canvasRef.current) return;
+    try {
+      setIsExporting(true);
+      // Dynamicky načteme balíček – pokud není, fallback na alert
+      let dataUrl: string;
+      try {
+        const { toPng } = await import('html-to-image' as any);
+        dataUrl = await toPng(canvasRef.current, { cacheBust: true, pixelRatio: 2 });
+      } catch {
+        alert('⚠️ Potřebuješ nainstalovat html-to-image. Pusť v terminálu: npm install html-to-image');
+        setIsExporting(false);
+        return;
+      }
+      
+      const res = await fetch('/api/social/upload-publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageBase64: dataUrl,
+          message: postMessage,
+          linkUrl: postLink
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert('🔥 Úspěšně odpáleno na sítě!\nObrázek byl vygenerován a Meta (FB/IG) API přijalo požadavek.');
+      } else {
+        alert('❌ Chyba ze serveru Meta API: ' + data.error);
+      }
+    } catch (err) {
+      console.error('Failed to export:', err);
+      alert('Kritická chyba při exportu. Zkus to znovu.');
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#050505] text-white p-4 md:p-8 font-sans">
-      <div className="max-w-[1600px] mx-auto">
-        
+      <div className="max-w-[1400px] mx-auto">
         <header className="mb-8 flex items-center justify-between border-b border-white/5 pb-8">
           <div>
-            <div className="flex items-center gap-3 text-[#E10600] mb-2">
-              <Sparkles size={16} />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em]">Ad Factory v1.0</span>
-            </div>
-            <h1 className="text-4xl font-black uppercase tracking-tighter">GOLIÁŠ <span className="text-zinc-500">STUDIO</span></h1>
+            <h1 className="text-4xl font-black uppercase tracking-tighter">SOCIAL <span className="text-zinc-500">PILOT</span></h1>
+            <p className="text-zinc-500 text-sm mt-2">Přesuň logo, tlačítko a text myší. Uprav velikost pomocí posuvníků.</p>
           </div>
-          <button className="bg-white text-black px-6 py-3 font-black uppercase text-[10px] tracking-widest hover:bg-zinc-200 transition-all flex items-center gap-2">
-            <Download size={16} /> Exportovat vizuál
+          <button 
+            onClick={handlePublish}
+            disabled={isExporting || !uploadedImage}
+            className={`px-8 py-4 font-black uppercase text-xs tracking-widest flex items-center gap-2 shadow-[0_0_30px_rgba(225,6,0,0.8)] transition-all ${
+              isExporting || !uploadedImage ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed shadow-none' : 'bg-[#E10600] text-white hover:bg-red-700 hover:scale-105'
+            }`}
+          >
+            <Download size={18} /> {isExporting ? 'ODPALUJI DO SVĚTA...' : 'ODPÁLIT NA SÍTĚ'}
           </button>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          {/* EDITOR SIDEBAR */}
-          <div className="lg:col-span-4 space-y-8 h-[calc(100vh-200px)] overflow-y-auto pr-4 scrollbar-hide">
+        <div className="flex flex-col xl:flex-row gap-8 items-start">
+          {/* OVLÁDÁNÍ */}
+          <div className="w-full xl:w-[350px] shrink-0 space-y-6">
             
-            {/* Copy Templates */}
-            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-4">
+            {/* Upload Pozadí */}
+            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-4 shadow-xl">
               <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center gap-2">
-                <Sparkles size={14} /> 00. Copywriter Library
+                <Upload size={14} /> 1. Hlavní obrázek
               </h2>
-              <div className="grid grid-cols-1 gap-2">
-                {COPY_TEMPLATES.map((tpl) => (
-                  <button 
-                    key={tpl.id}
-                    onClick={() => applyTemplate(tpl)}
-                    className="group text-left p-4 bg-black border border-white/5 hover:border-[#E10600] transition-all relative overflow-hidden"
-                  >
-                    <div className="text-[10px] font-black uppercase tracking-widest mb-1">{tpl.name}</div>
-                    <div className="text-[9px] text-zinc-500 uppercase tracking-tighter truncate opacity-60 group-hover:opacity-100">{tpl.headline.replace('\n', ' ')}</div>
-                    <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ChevronRight size={14} className="text-[#E10600]" />
-                    </div>
-                  </button>
-                ))}
-              </div>
+              <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-zinc-600 hover:border-[#E10600] hover:bg-zinc-800/50 transition-all cursor-pointer group">
+                <Upload size={20} className="text-zinc-500 mb-2 group-hover:text-[#E10600]" />
+                <span className="text-[10px] text-zinc-400 font-black uppercase tracking-widest text-center px-4">
+                  Klikni pro nahrání pozadí
+                </span>
+                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+              </label>
             </section>
 
-            {/* Background selection */}
-            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-4">
-              <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center gap-2">
-                <ImageIcon size={14} /> 01. Studio Backgrounds
-              </h2>
-              <div className="grid grid-cols-3 gap-2">
-                {MASTER_BACKGROUNDS.map((bg) => (
+            {/* Upload Loga */}
+            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-4 shadow-xl">
+              <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center justify-between">
+                <span className="flex items-center gap-2"><Upload size={14} /> 2. Vlastní Logo</span>
+                {uploadedLogo && (
                   <button 
-                    key={bg.id}
-                    onClick={() => setSelectedBg(bg.url)}
-                    className={`relative aspect-square border-2 transition-all overflow-hidden ${selectedBg === bg.url ? 'border-[#E10600]' : 'border-transparent opacity-50 hover:opacity-80'}`}
+                    onClick={() => { setUploadedLogo(null); setLogoScale(1); }}
+                    className="text-[9px] flex items-center gap-1 text-zinc-500 hover:text-[#E10600] transition-colors"
                   >
-                    <img src={bg.url} alt={bg.name} className="w-full h-full object-cover" />
+                    <Trash2 size={10} /> Smazat
                   </button>
-                ))}
-              </div>
-            </section>
-
-            {/* Product Layer Control */}
-            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-4">
-              <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center gap-2">
-                <Layers size={14} /> 02. Product Layer (Pixsla)
+                )}
               </h2>
+              <label className="flex flex-col items-center justify-center w-full h-16 border-2 border-dashed border-zinc-600 hover:border-[#E10600] hover:bg-zinc-800/50 transition-all cursor-pointer group">
+                <span className="text-[10px] text-zinc-400 font-black uppercase tracking-widest group-hover:text-[#E10600]">Nahrát Logo (PNG)</span>
+                <input type="file" accept="image/png, image/jpeg, image/svg+xml" onChange={handleLogoUpload} className="hidden" />
+              </label>
               
-              <div className="grid grid-cols-3 gap-2 mb-4">
-                {PRODUCT_ASSETS.map((p, i) => (
-                  <button 
-                    key={i}
-                    onClick={() => setSelectedProductImg(p.url)}
-                    className={`aspect-square bg-black border p-2 transition-all ${selectedProductImg === p.url ? 'border-white' : 'border-white/5 opacity-40 hover:opacity-100'}`}
-                  >
-                    <img src={p.url} className="w-full h-full object-contain" />
-                  </button>
-                ))}
-              </div>
-
-              <div className="space-y-4 text-white">
-                <div className="space-y-1">
-                  <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex justify-between">Position X <span>{productX}px</span></label>
-                  <input type="range" min="-400" max="400" value={productX} onChange={(e) => setProductX(parseInt(e.target.value))} className="w-full accent-[#E10600]" />
+              {uploadedLogo && (
+                <div className="space-y-2 pt-4">
+                  <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex items-center justify-between">
+                    <span className="flex items-center gap-1"><Maximize size={10} /> Velikost Loga</span>
+                    <span>{Math.round(logoScale * 100)}%</span>
+                  </label>
+                  <input type="range" min="0.2" max="3" step="0.1" value={logoScale} onChange={e => setLogoScale(parseFloat(e.target.value))} className="w-full accent-[#E10600]" />
                 </div>
-                <div className="space-y-1">
-                  <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex justify-between">Position Y <span>{productY}px</span></label>
-                  <input type="range" min="-400" max="400" value={productY} onChange={(e) => setProductY(parseInt(e.target.value))} className="w-full accent-[#E10600]" />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex justify-between">Scale <span>{productScale}</span></label>
-                  <input type="range" min="0.1" max="3" step="0.05" value={productScale} onChange={(e) => setProductScale(parseFloat(e.target.value))} className="w-full accent-[#E10600]" />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex justify-between">Rotation <span>{productRotation}°</span></label>
-                  <input type="range" min="-180" max="180" value={productRotation} onChange={(e) => setProductRotation(parseInt(e.target.value))} className="w-full accent-[#E10600]" />
-                </div>
-              </div>
-
-              <div className="pt-2 flex gap-2">
-                {['none', 'frosty', 'wet'].map(s => (
-                  <button 
-                    key={s} 
-                    onClick={() => setProductSurface(s as any)}
-                    className={`flex-1 py-2 text-[8px] font-black uppercase border ${productSurface === s ? 'bg-white text-black border-white' : 'border-white/10 text-white/40'}`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
+              )}
             </section>
 
-            {/* Atmosphere & Formats */}
-            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-6">
-              <div>
-                <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center gap-2 mb-4">
-                  <Maximize size={14} /> 03. Format Selector
-                </h2>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { id: 'feed', name: 'Feed (1:1)', class: 'aspect-square' },
-                    { id: 'portrait', name: 'Portrait (4:5)', class: 'aspect-[4/5]' },
-                    { id: 'stories', name: 'Stories (9:16)', class: 'aspect-[9/16]' },
-                  ].map((f) => (
-                    <button 
-                      key={f.id}
-                      onClick={() => setCanvasFormat(f.id as any)}
-                      className={`flex flex-col items-center gap-2 p-3 border transition-all ${canvasFormat === f.id ? 'bg-[#E10600] border-[#E10600]' : 'border-white/10 text-white/40 hover:text-white'}`}
-                    >
-                      <div className={`w-4 h-6 border-2 border-current rounded-[1px] ${f.id === 'feed' ? 'aspect-square h-4' : ''}`} />
-                      <div className="text-[8px] font-black uppercase tracking-tighter">{f.name}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center gap-2">
-                  <Sparkles size={14} /> 04. Atmosphere FX
-                </h2>
-                <div className="grid grid-cols-3 gap-2">
-                  {['none', 'fire', 'frost', 'water', 'smoke', 'toxic-mist'].map((eff) => (
-                    <button 
-                      key={eff}
-                      onClick={() => setFgEffect(eff as any)}
-                      className={`py-2 text-[8px] font-black uppercase tracking-widest border transition-all ${fgEffect === eff ? 'bg-white text-black border-white' : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white'}`}
-                    >
-                      {eff.replace('-', ' ')}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between pt-2">
-                    <label className="text-[9px] uppercase tracking-wider text-zinc-500">Shop Now Button</label>
-                    <button 
-                      onClick={() => setShowCTA(!showCTA)}
-                      className={`w-10 h-5 rounded-full transition-colors relative ${showCTA ? 'bg-green-500' : 'bg-zinc-800'}`}
-                    >
-                      <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${showCTA ? 'left-6' : 'left-1'}`} />
-                    </button>
-                </div>
-              </div>
-            </section>
-
-            {/* Typography & Colors */}
-            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-6">
-              <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center gap-2">
-                <Type size={14} /> 02. Typography & Colors
-              </h2>
-              
-              <div className="space-y-6">
-                <div>
-                  <label className="text-[9px] uppercase tracking-wider text-zinc-500 block mb-2">Headline Text & Color</label>
-                  <div className="flex gap-2 mb-2">
-                    <input type="color" value={headlineColor} onChange={(e) => setHeadlineColor(e.target.value)} className="w-10 h-10 bg-transparent border-none cursor-pointer" />
-                    <textarea 
-                      value={headline}
-                      onChange={(e) => setHeadline(e.target.value)}
-                      className="flex-1 bg-black border border-white/10 p-3 text-xs font-bold focus:border-[#E10600] outline-none"
-                      rows={2}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-[9px] uppercase tracking-wider text-zinc-500 block mb-2">Subheadline & Color</label>
-                  <div className="flex gap-2">
-                    <input type="color" value={subColor} onChange={(e) => setSubColor(e.target.value)} className="w-8 h-8 bg-transparent border-none cursor-pointer" />
-                    <textarea 
-                      value={subheadline}
-                      onChange={(e) => setSubheadline(e.target.value)}
-                      className="flex-1 bg-black border border-white/10 p-3 text-[10px] font-medium focus:border-[#E10600] outline-none"
-                      rows={2}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                   <label className="text-[9px] uppercase tracking-wider text-zinc-500 block mb-2">Bullet Color</label>
-                   <div className="flex gap-2 items-center">
-                      <input type="color" value={bulletColor} onChange={(e) => setBulletColor(e.target.value)} className="w-8 h-8 bg-transparent border-none cursor-pointer" />
-                      <div className="flex gap-1">
-                        {BRAND_COLORS.map(c => (
-                          <button key={c.hex} onClick={() => setBulletColor(c.hex)} className="w-4 h-4 rounded-full" style={{ backgroundColor: c.hex }} />
-                        ))}
-                      </div>
-                   </div>
-                </div>
-
-                <div className="pt-4 border-t border-white/5 space-y-4">
-                  <h3 className="text-[10px] font-black uppercase tracking-widest text-zinc-400">FX Engine</h3>
-                  
-                  <div className="flex items-center justify-between">
-                    <label className="text-[9px] uppercase tracking-wider text-zinc-500">Neon Glow</label>
-                    <button 
-                      onClick={() => setIsNeon(!isNeon)}
-                      className={`w-10 h-5 rounded-full transition-colors relative ${isNeon ? 'bg-[#FF00FF]' : 'bg-zinc-800'}`}
-                    >
-                      <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${isNeon ? 'left-6' : 'left-1'}`} />
-                    </button>
-                  </div>
-
-                  {isNeon && (
-                    <div>
-                      <label className="text-[9px] uppercase tracking-wider text-zinc-500 block mb-1">Glow Intensity</label>
-                      <input 
-                        type="range" min="0" max="100" 
-                        value={glowIntensity}
-                        onChange={(e) => setGlowIntensity(parseInt(e.target.value))}
-                        className="w-full h-1 bg-zinc-800 appearance-none cursor-pointer accent-[#FF00FF]"
-                      />
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between">
-                    <label className="text-[9px] uppercase tracking-wider text-zinc-500">Hard Shadow</label>
-                    <button 
-                      onClick={() => setHasShadow(!hasShadow)}
-                      className={`w-10 h-5 rounded-full transition-colors relative ${hasShadow ? 'bg-[#E10600]' : 'bg-zinc-800'}`}
-                    >
-                      <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${hasShadow ? 'left-6' : 'left-1'}`} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Bullets editor */}
-            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-4">
-              <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center gap-2">
-                <Layers size={14} /> 03. Feature Bullets
-              </h2>
-              <div className="space-y-2">
-                {bullets.map((b, i) => (
-                  <div key={i} className="flex gap-2">
-                    <input 
-                      value={b}
-                      onChange={(e) => updateBullet(i, e.target.value)}
-                      className="flex-1 bg-black border border-white/10 p-2 text-[11px] outline-none focus:border-[#E10600]"
-                    />
-                    <button onClick={() => removeBullet(i)} className="p-2 text-zinc-600 hover:text-red-500"><Trash2 size={14} /></button>
-                  </div>
-                ))}
+            {/* Nastavení Tlačítka */}
+            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-6 shadow-xl">
+               <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center justify-between mb-2">
+                <span className="flex items-center gap-2"><ShoppingCart size={14} /> 3. Tlačítko</span>
                 <button 
-                  onClick={addBullet}
-                  className="w-full py-2 border border-dashed border-white/10 text-[9px] uppercase font-black tracking-widest hover:bg-white/5"
+                  onClick={() => setShowCTA(!showCTA)}
+                  className={`w-10 h-5 rounded-full transition-colors relative ${showCTA ? 'bg-[#E10600]' : 'bg-zinc-800'}`}
                 >
-                  <Plus size={12} className="inline mr-2" /> Přidat výhodu
+                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${showCTA ? 'left-6' : 'left-1'}`} />
                 </button>
-              </div>
-            </section>
-
-            {/* Footer */}
-            <section className="bg-zinc-900/50 border border-white/5 p-6">
-               <label className="text-[9px] uppercase tracking-wider text-zinc-500 block mb-2">Footer Claim</label>
-               <input 
-                  value={footer}
-                  onChange={(e) => setFooter(e.target.value)}
-                  className="w-full bg-black border border-white/10 p-3 text-[10px] outline-none"
-               />
-            </section>
-
-            {/* Hashtag Generator */}
-            <section className="bg-red-600/10 border border-red-600/20 p-6 space-y-4">
-              <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center gap-2">
-                <Hash size={14} /> Goliáš Hashtags
               </h2>
-              <div className="bg-black/40 p-4 border border-white/5 text-[9px] font-mono text-zinc-400 break-all">
-                #fitness77 #hamacek #gymlife #training #bodybuilding #supplements #czechfitness #fitnessmotivation #fit77 #brutal #nopainnogain
+              
+              {showCTA && (
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex items-center gap-1"><Type size={10} /> Text tlačítka</label>
+                    <input 
+                      type="text" 
+                      value={btnText}
+                      onChange={(e) => setBtnText(e.target.value)}
+                      className="w-full bg-black border border-white/10 p-2 text-xs font-black uppercase tracking-widest outline-none focus:border-[#E10600]"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex items-center gap-1"><Palette size={10} /> Barva Pozadí</label>
+                    <div className="flex gap-2">
+                      {BRAND_COLORS.map(c => (
+                        <button 
+                          key={`bg-${c.id}`} 
+                          onClick={() => setBtnBg(c.hex)}
+                          title={c.name}
+                          className={`w-8 h-8 border-2 transition-all ${btnBg === c.hex ? 'border-white scale-110' : 'border-white/10 opacity-50 hover:opacity-100'}`}
+                          style={{ backgroundColor: c.hex }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex items-center gap-1"><Type size={10} /> Barva Textu</label>
+                    <div className="flex gap-2">
+                      {BRAND_COLORS.map(c => (
+                        <button 
+                          key={`txt-${c.id}`} 
+                          onClick={() => setBtnTextColor(c.hex)}
+                          title={c.name}
+                          className={`w-8 h-8 border-2 transition-all flex items-center justify-center font-black text-xs ${btnTextColor === c.hex ? 'border-white scale-110' : 'border-white/10 opacity-50 hover:opacity-100'}`}
+                          style={{ backgroundColor: c.hex === '#FFFFFF' ? '#000' : '#FFF', color: c.hex }}
+                        >
+                          T
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 pt-2 border-t border-white/5">
+                    <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex items-center justify-between">
+                      <span className="flex items-center gap-1"><Maximize size={10} /> Velikost Tlačítka</span>
+                      <span>{Math.round(btnScale * 100)}%</span>
+                    </label>
+                    <input type="range" min="0.5" max="3" step="0.1" value={btnScale} onChange={e => setBtnScale(parseFloat(e.target.value))} className="w-full accent-[#E10600]" />
+                  </div>
+                </div>
+              )}
+            </section>
+
+            {/* Vlastní Text */}
+            <section className="bg-zinc-900/50 border border-white/5 p-6 space-y-6 shadow-xl">
+               <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center justify-between mb-2">
+                <span className="flex items-center gap-2"><Type size={14} /> 4. Volný Text</span>
+                <button 
+                  onClick={() => setShowCustomText(!showCustomText)}
+                  className={`w-10 h-5 rounded-full transition-colors relative ${showCustomText ? 'bg-[#E10600]' : 'bg-zinc-800'}`}
+                >
+                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${showCustomText ? 'left-6' : 'left-1'}`} />
+                </button>
+              </h2>
+              
+              {showCustomText && (
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex items-center gap-1"><Type size={10} /> Obsah textu (lze i více řádků)</label>
+                    <textarea 
+                      value={customText}
+                      onChange={(e) => setCustomText(e.target.value)}
+                      className="w-full bg-black border border-white/10 p-2 text-xs font-black uppercase tracking-widest outline-none focus:border-[#E10600] min-h-[60px]"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex items-center gap-1"><Palette size={10} /> Barva Textu</label>
+                    <div className="flex gap-2">
+                      {BRAND_COLORS.map(c => (
+                        <button 
+                          key={`ct-${c.id}`} 
+                          onClick={() => setCustomTextColor(c.hex)}
+                          title={c.name}
+                          className={`w-8 h-8 border-2 transition-all flex items-center justify-center font-black text-xs ${customTextColor === c.hex ? 'border-white scale-110' : 'border-white/10 opacity-50 hover:opacity-100'}`}
+                          style={{ backgroundColor: c.hex === '#FFFFFF' ? '#000' : '#FFF', color: c.hex }}
+                        >
+                          T
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 pt-2 border-t border-white/5">
+                    <label className="text-[9px] uppercase tracking-wider text-zinc-500 flex items-center justify-between">
+                      <span className="flex items-center gap-1"><Maximize size={10} /> Velikost Textu</span>
+                      <span>{Math.round(customTextScale * 100)}%</span>
+                    </label>
+                    <input type="range" min="0.5" max="5" step="0.1" value={customTextScale} onChange={e => setCustomTextScale(parseFloat(e.target.value))} className="w-full accent-[#E10600]" />
+                  </div>
+                </div>
+              )}
+            </section>
+
+            {/* Publikování na sítě */}
+            <section className="bg-red-600/10 border border-red-600/20 p-6 space-y-4 shadow-xl">
+              <h2 className="text-[10px] font-black uppercase tracking-widest text-[#E10600] flex items-center gap-2">
+                <Hash size={14} /> 5. Publikace na sítě
+              </h2>
+              
+              <div className="space-y-4 pt-2">
+                <div className="space-y-2">
+                  <label className="text-[9px] uppercase tracking-wider text-zinc-400">Popisek příspěvku (FB/IG)</label>
+                  <textarea 
+                    value={postMessage}
+                    onChange={(e) => setPostMessage(e.target.value)}
+                    className="w-full bg-black border border-white/10 p-3 text-xs text-zinc-300 outline-none focus:border-[#E10600] min-h-[100px]"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-[9px] uppercase tracking-wider text-zinc-400">Odkaz (Facebook)</label>
+                  <input 
+                    type="text" 
+                    value={postLink}
+                    onChange={(e) => setPostLink(e.target.value)}
+                    className="w-full bg-black border border-white/10 p-3 text-xs text-zinc-300 outline-none focus:border-[#E10600]"
+                  />
+                </div>
               </div>
-              <button 
-                onClick={() => navigator.clipboard.writeText('#fitness77 #hamacek #gymlife #training #bodybuilding #supplements #czechfitness #fitnessmotivation #fit77 #brutal #nopainnogain')}
-                className="w-full py-2 bg-red-600/20 hover:bg-red-600/40 text-[9px] font-black uppercase tracking-[0.2em] transition-all"
-              >
-                Copy Hashtags
-              </button>
             </section>
 
           </div>
 
-          {/* PREVIEW CANVAS */}
-          <div className="lg:col-span-8 flex justify-center sticky top-8">
+          {/* CANVAS */}
+          <div className="flex-1 flex justify-center sticky top-8">
             <div 
-              id="ad-canvas"
               ref={canvasRef}
-              className={`relative bg-black shadow-[0_0_100px_rgba(225,6,0,0.1)] border border-white/10 transition-all duration-500 origin-top overflow-hidden
-                ${canvasFormat === 'feed' ? 'aspect-square w-full max-w-[500px]' : 
-                  canvasFormat === 'stories' ? 'aspect-[9/16] h-[calc(100vh-160px)]' : 
-                  'aspect-[4/5] w-full max-w-[500px]'}
-              `}
+              className="relative bg-zinc-900/50 border border-white/10 flex items-center justify-center overflow-hidden shadow-[0_0_100px_rgba(225,6,0,0.1)] w-full max-w-[800px] aspect-square"
             >
-              {/* MASTER CANVAS BACKGROUND */}
-              <div 
-                className="absolute inset-0 z-0"
-                style={{
-                  backgroundImage: `url(${selectedBg})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              />
-
-              {/* Overlay Gradient for readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/60 opacity-80 z-10" />
-
-              {/* PRODUCT LAYER */}
-              <div 
-                className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
-              >
-                <div className="relative">
-                  <motion.img 
-                    animate={{ x: productX, y: productY, scale: productScale, rotate: productRotation }}
-                    src={selectedProductImg}
-                    className={`max-h-[70vh] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all
-                      ${productSurface === 'frosty' ? 'brightness-125 contrast-75 saturate-50 blur-[0.5px]' : ''}
-                      ${productSurface === 'wet' ? 'brightness-110 contrast-125 saturate-125' : ''}
-                    `}
-                  />
-                  {productSurface === 'frosty' && (
-                    <div className="absolute inset-0 bg-white/10 rounded-full blur-3xl mix-blend-screen opacity-30 animate-pulse pointer-events-none" />
-                  )}
-                </div>
-              </div>
-
-              {/* FOREGROUND EFFECTS */}
-              {fgEffect !== 'none' && (
-                <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
-                   {fgEffect === 'toxic-mist' && <div className="w-full h-full bg-gradient-to-t from-[#CCFF00]/40 to-transparent blur-3xl animate-pulse" />}
-                   {fgEffect === 'smoke' && <div className="w-full h-full bg-gradient-to-tr from-white/10 to-transparent blur-2xl animate-pulse" style={{ animationDuration: '4s' }} />}
-                   {fgEffect === 'fire' && (
-                     <div className="w-full h-full relative">
-                        <div className="absolute bottom-0 w-full h-[60%] bg-gradient-to-t from-[#E10600]/60 via-[#FF8000]/20 to-transparent blur-2xl animate-pulse" />
-                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dust.png')] opacity-20 invert mix-blend-screen animate-bounce" style={{ animationDuration: '0.1s' }} />
-                     </div>
-                   )}
-                   {fgEffect === 'frost' && (
-                     <div className="w-full h-full bg-gradient-to-b from-[#00FFFF]/20 via-white/10 to-transparent blur-3xl mix-blend-screen animate-pulse" />
-                   )}
-                   {fgEffect === 'water' && (
-                     <div className="w-full h-full relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#1877F2]/10 via-[#00FFFF]/5 to-[#1877F2]/10 blur-xl animate-pulse" />
-                        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/water.png')] animate-pulse" />
-                     </div>
-                   )}
+              {uploadedImage ? (
+                <img src={uploadedImage} alt="Uploaded" className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
+              ) : (
+                <div className="text-zinc-600 text-[10px] uppercase tracking-widest font-black text-center px-8 pointer-events-none">
+                  Pracovní plocha<br/><span className="opacity-50">(Nejprve nahrajte hlavní obrázek)</span>
                 </div>
               )}
 
-              {/* LOGO */}
-              <div className="absolute top-10 right-10 flex flex-col items-end gap-1 z-40">
-                 <img src="/images/brand/logo-fitness77.png" className="w-24 grayscale invert opacity-90" alt="Logo" />
-                 <div className="text-[8px] font-black tracking-[0.2em] text-white/50 uppercase">Est. 2024</div>
-              </div>
+              {/* Logo Overlay (Draggable) */}
+              {uploadedLogo && (
+                <motion.div 
+                  drag 
+                  dragMomentum={false}
+                  dragConstraints={canvasRef}
+                  className="absolute z-40 cursor-move group"
+                  initial={{ x: 0, y: -150 }}
+                  style={{ scale: logoScale }}
+                >
+                  <img src={uploadedLogo} className="w-32 drop-shadow-[0_5px_10px_rgba(0,0,0,0.8)] pointer-events-none" alt="Custom Logo" />
+                  <div className="absolute -top-4 -right-4 bg-[#E10600] p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <Move size={12} className="text-white"/>
+                  </div>
+                </motion.div>
+              )}
 
-              {/* AD CONTENT */}
-              <div className="relative h-full p-12 flex flex-col justify-between z-50">
-                
-                <div className="space-y-6">
-                   <motion.h2 
-                    key={headline}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className={`${canvasFormat === 'stories' ? 'text-7xl' : 'text-6xl'} font-[1000] uppercase leading-[0.9] tracking-tighter`}
+              {/* BRUTAL CTA BUTTON (Draggable) */}
+              {showCTA && uploadedImage && (
+                <motion.div 
+                  drag 
+                  dragMomentum={false}
+                  dragConstraints={canvasRef}
+                  className="absolute z-40 cursor-move group"
+                  initial={{ x: 0, y: 150 }}
+                  style={{ scale: btnScale }}
+                >
+                  <div 
+                    className="px-8 py-4 font-black uppercase tracking-tighter text-2xl shadow-2xl pointer-events-none transition-colors"
                     style={{ 
+                      backgroundColor: btnBg, 
+                      color: btnTextColor,
                       fontFamily: 'Inter, sans-serif',
-                      textShadow: isNeon ? `0 0 ${glowIntensity/2}px ${headlineColor}, 0 0 ${glowIntensity}px ${headlineColor}` : (hasShadow ? '10px 10px 0px rgba(0,0,0,0.8)' : 'none')
+                      fontWeight: 1000,
+                      border: `4px solid ${btnTextColor === btnBg ? '#FFFFFF' : btnTextColor}`,
+                      boxShadow: '8px 8px 0px rgba(0,0,0,0.8)',
+                      transform: 'skewX(-10deg)',
                     }}
-                   >
-                     {headline.split('\n').map((line, i) => (
-                       <div key={i} className={i % 2 === 1 ? '' : 'text-white'} style={{ color: i % 2 === 1 ? headlineColor : undefined }}>
-                         {line}
-                       </div>
-                     ))}
-                   </motion.h2>
+                  >
+                    <div style={{ transform: 'skewX(10deg)' }}>{btnText}</div>
+                  </div>
+                  <div className="absolute -top-4 -right-4 bg-[#E10600] p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <Move size={12} className="text-white"/>
+                  </div>
+                </motion.div>
+              )}
 
-                   <div className="space-y-1">
-                      {subheadline.split('\n').map((line, i) => (
-                        <div key={i} className={`${canvasFormat === 'stories' ? 'text-[16px]' : 'text-[12px]'} font-black uppercase tracking-wider`} 
-                          style={{ 
-                            color: i === 1 ? headlineColor : (i === 0 ? subColor : subColor),
-                            textShadow: isNeon ? `0 0 ${glowIntensity/4}px ${headlineColor}` : (hasShadow ? '2px 2px 4px rgba(0,0,0,0.5)' : 'none')
-                          }}
-                        >
-                          {line}
-                        </div>
-                      ))}
-                   </div>
-
-                   <div className="pt-8 space-y-4">
-                      {bullets.map((b, i) => (
-                        <motion.div 
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                          className="flex items-center gap-3"
-                        >
-                          <div className="w-1.5 h-1.5 bg-white rotate-45" style={{ backgroundColor: bulletColor, boxShadow: isNeon ? `0 0 10px ${bulletColor}` : 'none' }} />
-                          <span className={`font-black uppercase tracking-tight text-white drop-shadow-md ${canvasFormat === 'stories' ? 'text-[18px]' : 'text-[14px]'}`}
-                            style={{ 
-                              color: bulletColor,
-                              textShadow: isNeon ? `0 0 ${glowIntensity/5}px ${bulletColor}` : (hasShadow ? '2px 2px 2px rgba(0,0,0,0.8)' : 'none')
-                            }}
-                          >
-                            {b}
-                          </span>
-                        </motion.div>
-                      ))}
-                   </div>
-                </div>
-
-                <div className="flex flex-col items-center gap-6 border-t border-white/20 pt-8">
-                   {showCTA && (
-                     <motion.button 
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      className="px-12 py-5 bg-white text-black font-black uppercase tracking-[0.2em] text-lg shadow-[0_20px_40px_rgba(255,255,255,0.2)]"
-                      style={{ color: 'black', backgroundColor: 'white' }}
-                     >
-                       Shop Now
-                     </motion.button>
-                   )}
-                <div className="w-full flex justify-between items-end">
-                      <div className="space-y-1">
-                        <div className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Net Weight: 500 g</div>
-                        <div className="text-[14px] font-black text-white uppercase tracking-tighter">{footer}</div>
-                      </div>
-                      <div className="text-[14px] font-black text-[#E10600] tracking-widest underline decoration-4 underline-offset-8">FIT77.CZ</div>
-                   </div>
-                </div>
-
-              </div>
-
-              {/* Industrial Decorations */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#E10600] to-transparent opacity-50 z-[60]" />
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#E10600] to-transparent opacity-50 z-[60]" />
+              {/* CUSTOM TEXT (Draggable) */}
+              {showCustomText && uploadedImage && (
+                <motion.div 
+                  drag 
+                  dragMomentum={false}
+                  dragConstraints={canvasRef}
+                  className="absolute z-40 cursor-move group"
+                  initial={{ x: 0, y: -50 }}
+                  style={{ scale: customTextScale }}
+                >
+                  <div 
+                    className="font-black uppercase tracking-tighter text-5xl shadow-2xl pointer-events-none transition-colors whitespace-pre-wrap text-center leading-[0.9] drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
+                    style={{ 
+                      color: customTextColor,
+                      fontFamily: 'Inter, sans-serif',
+                      fontWeight: 1000,
+                    }}
+                  >
+                    {customText}
+                  </div>
+                  <div className="absolute -top-4 -right-4 bg-[#E10600] p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <Move size={12} className="text-white"/>
+                  </div>
+                </motion.div>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
     </div>
   );
 }
