@@ -12,8 +12,8 @@ const Footer = () => {
         <div className="flex flex-col lg:flex-row lg:justify-between gap-x-12 gap-y-16">
 
           {/* 1. Logo - Neon Brand Block */}
-          <div className="flex flex-col items-center lg:items-start text-center lg:text-left min-w-[240px]">
-            <div className="relative w-64 h-24 mb-6">
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left min-w-[360px]">
+            <div className="relative w-[358px] h-[134px] mb-6">
               <Image src="/images/brand/logo-fitness77.png" alt="Fitness 77" fill className="object-contain brightness-0 invert" />
             </div>
           </div>
