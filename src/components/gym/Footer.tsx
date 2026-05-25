@@ -43,7 +43,7 @@ const Footer = () => {
 
           {/* 2. Menu sekce */}
           <div className="flex flex-col gap-4 pt-4">
-            <span className="text-[#e10600] text-[10px] font-black uppercase tracking-[0.4em] mb-2 block">Menu</span>
+            <span className="text-[#d4ff00] text-[10px] font-black uppercase tracking-[0.4em] mb-2 block">Menu</span>
             {[
               { label: 'SUPLEMENTY', href: '/supplements' },
               { label: 'VYBAVENÍ', href: '/equipment' },
@@ -63,12 +63,19 @@ const Footer = () => {
           {/* 3. Location & Connect */}
           <div className="flex flex-col gap-8 pt-4">
             <div className="space-y-2">
-              <span className="text-[#e10600] text-[10px] font-black uppercase tracking-[0.4em]">Location</span>
+              <span className="text-[#d4ff00] text-[10px] font-black uppercase tracking-[0.4em]">Location</span>
               <h4 className="text-2xl lg:text-3xl font-black uppercase tracking-tighter leading-none text-white whitespace-nowrap">Fitness77 MB</h4>
               <p className="text-white/60 text-sm font-bold uppercase tracking-widest mt-2">Jiráskova 1320, 293 01</p>
+              
+              {/* Billing Info */}
+              <div className="pt-2 text-[10px] uppercase tracking-wider text-white/40 leading-relaxed font-black">
+                <span className="block text-white/50">Provozovatel: Fitness 77</span>
+                <span className="block text-white/50">IČO: 04019369</span>
+                <span className="block text-white/50">Sídlo: Chudoplesy 77, 294 01</span>
+              </div>
             </div>
             <div className="space-y-2">
-              <span className="text-[#e10600] text-[10px] font-black uppercase tracking-[0.4em]">Connect</span>
+              <span className="text-[#d4ff00] text-[10px] font-black uppercase tracking-[0.4em]">Connect</span>
               <Link href="mailto:fitness77@post.cz" className="text-xl lg:text-2xl font-black uppercase tracking-tighter text-white hover:text-[#d4ff00] transition-colors block">
                 fitness77@post.cz
               </Link>

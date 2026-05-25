@@ -47,11 +47,11 @@ const Footer = () => {
           </div>
 
           {/* Links Grid - Mobile Optimized Stacking */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-8 flex-grow lg:border-l lg:border-white/5 lg:pl-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-y-12 gap-x-8 flex-grow lg:border-l lg:border-white/5 lg:pl-12">
             
             {/* 2. Menu Links */}
             <div className="flex flex-col gap-4 text-center sm:text-left">
-              <span className="text-white/20 text-[8px] font-black tracking-[0.4em] uppercase mb-2">PROFIL</span>
+              <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">PROFIL</span>
               <div className="flex flex-col gap-3 text-[11px] font-black tracking-widest uppercase">
                 <Link href="/supplements" className="hover:text-[#d4ff00] transition-colors">SUPLEMENTY</Link>
                 <Link href="/equipment" className="hover:text-[#d4ff00] transition-colors">VYBAVENÍ</Link>
@@ -61,7 +61,7 @@ const Footer = () => {
 
             {/* 3. Support Contact */}
             <div className="flex flex-col gap-4 text-center sm:text-left">
-              <span className="text-white/20 text-[8px] font-black tracking-[0.4em] uppercase mb-2">KONTAKT</span>
+              <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">KONTAKT</span>
               <div className="flex flex-col gap-3 text-[11px] font-black tracking-widest uppercase">
                 <Link href="tel:+420777105548" className="hover:text-[#d4ff00] transition-colors whitespace-nowrap">+420 777 105 548</Link>
                 <Link href="mailto:fitness77@post.cz" className="hover:text-[#d4ff00] transition-colors whitespace-nowrap lowercase font-medium tracking-normal text-[12px]">fitness77@post.cz</Link>
@@ -70,15 +70,26 @@ const Footer = () => {
 
             {/* 4. Base Location */}
             <div className="flex flex-col gap-4 text-center sm:text-left">
-              <span className="text-white/20 text-[8px] font-black tracking-[0.4em] uppercase mb-2">PRODEJNA</span>
+              <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">PRODEJNA</span>
               <div className="flex flex-col gap-2 text-[11px] font-black tracking-widest uppercase leading-loose">
                 <span className="text-white/60">JIRÁSKOVA 1320,<br />293 01 MB</span>
               </div>
             </div>
 
-            {/* 5. Legal Links */}
+            {/* 5. Billing details */}
             <div className="flex flex-col gap-4 text-center sm:text-left">
-              <span className="text-white/20 text-[8px] font-black tracking-[0.4em] uppercase mb-2">PRÁVNÍ</span>
+              <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">PROVOZOVATEL</span>
+              <div className="flex flex-col gap-2 text-[10px] font-black tracking-widest uppercase leading-relaxed text-white/60">
+                <span>Fitness 77</span>
+                <span>IČO: 04019369</span>
+                <span>Chudoplesy 77</span>
+                <span>294 01 Bakov n. J.</span>
+              </div>
+            </div>
+
+            {/* 6. Legal Links */}
+            <div className="flex flex-col gap-4 text-center sm:text-left">
+              <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">PRÁVNÍ</span>
               <div className="flex flex-col gap-3 text-[11px] font-black tracking-widest uppercase">
                 <Link href="/obchodni-podminky" className="hover:text-[#d4ff00] transition-colors">PODMÍNKY</Link>
                 <Link href="/odstoupeni-od-smlouvy" className="text-[#d4ff00] font-bold border-b border-[#d4ff00]/20 pb-0.5 inline-block w-fit mx-auto sm:mx-0">ODSTOUPENÍ</Link>

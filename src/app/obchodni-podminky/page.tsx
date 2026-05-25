@@ -28,6 +28,11 @@ export default function TermsPage() {
           <section className="space-y-6">
             <h2 className="text-3xl font-black uppercase tracking-tight text-[#E10600]">1. Úvodní ustanovení</h2>
             <div className="text-zinc-600 font-medium leading-relaxed space-y-4 text-sm uppercase tracking-wide">
+              <p>
+                Provozovatelem internetového obchodu a prodávajícím je:<br />
+                <strong>Fitness 77</strong>, se sídlem <strong>Chudoplesy 77, 294 01 Bakov nad Jizerou</strong>, <strong>IČO: 04019369</strong>.<br />
+                Kontaktní e-mail: <strong>fitness77@post.cz</strong>, telefon: <strong>+420 777 105 548</strong>.
+              </p>
               <p>Tyto obchodní podmínky platí pro nákup v internetovém obchodě Fitness 77 (fit77.cz). Podmínky blíže vymezují a upřesňují práva a povinnosti prodávajícího a kupujícího.</p>
               <p>Veškeré smluvní vztahy jsou uzavřeny v souladu s právním řádem České republiky.</p>
             </div>

@@ -1,3 +1,5 @@
+import SuccessTracker from '@/components/shop/SuccessTracker';
+
 type Props = {
   searchParams: Promise<{ orderId?: string }>;
 };
@@ -7,6 +9,8 @@ export default async function SuccessPage({ searchParams }: Props) {
 
   return (
     <section className="py-16">
+      {orderId && <SuccessTracker orderId={orderId} />}
+
       <div className="mx-auto w-[min(800px,calc(100%-32px))] rounded-xl border border-zinc-200 bg-white p-10 text-center">
         <div className="text-sm font-bold uppercase tracking-[0.2em] text-[#E10600]">
           Objednávka přijata

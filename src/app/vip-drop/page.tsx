@@ -36,47 +36,52 @@ export default function VipDropPage() {
   };
 
   return (
-    <div className="bg-black text-white font-sans overflow-x-hidden selection:bg-[#E10600] selection:text-white">
+    <div className="bg-black text-white font-sans overflow-x-hidden selection:bg-[#E10600] selection:text-white w-full min-h-screen">
       <style dangerouslySetInnerHTML={{
         __html: `
+        html, body { padding: 0 !important; margin: 0 !important; width: 100% !important; overflow-x: hidden !important; }
         nav, header, footer, #main-global-footer, .floating-cart-btn { display: none !important; }
         body > div[class*="fixed"][class*="top-0"][class*="z-"] { display: none !important; }
         div[class*="bg-\\[#d4ff00\\]"] { background-color: #E10600 !important; color: white !important; }
       ` }} />
 
-      {/* LIŠTA */}
-      <div className="w-full bg-[#E10600] text-white text-center py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] z-50 relative flex items-center justify-center gap-2 sm:gap-4 px-2">
+      {/* 🔴 HORNÍ ČERVENÁ LIŠTA – Absolutní šířka bez ohledu na padding okolí */}
+      <div className="w-full bg-[#E10600] text-white text-center py-3 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] z-50 relative flex items-center justify-center gap-2 sm:gap-4 px-4 m-0">
         <span>⚡ POUZE PRO ZVANÉ</span><span className="hidden sm:inline">•</span><span className="hidden sm:inline">NABÍDKA NENÍ VEŘEJNÁ ⚡</span>
       </div>
 
-      {/* ══ HERO ══ */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-center p-4 bg-black overflow-hidden">
-        <div className="fixed inset-0 pointer-events-none z-0">
+      {/* ══ HERO SEKCE – Odstraněna fixní výška, plynulé mobilní měřítko ══ */}
+      <section className="relative min-h-screen flex flex-col items-center justify-start lg:justify-center pt-6 sm:pt-12 lg:pt-0 pb-12 p-4 bg-black overflow-hidden w-full">
+        <div className="absolute inset-0 pointer-events-none z-0">
           <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#660000] rounded-full blur-[150px] opacity-20" />
           <div className="absolute top-[40%] right-[-10%] w-[60vw] h-[40vw] bg-[#8a0303] rounded-full blur-[150px] opacity-15" />
         </div>
 
+        {/* Hlavní wrapper obsahu */}
         <div className="relative z-20 w-full max-w-5xl mx-auto text-center flex flex-col items-center">
+
+          {/* MASTER BLOCK PRO CEDULE A ŘETĚZY – Svázáno na pevný poměr stran */}
           <motion.div
-            initial={{ y: '-120vh' }} animate={{ y: 0 }}
-            transition={{ type: 'spring', damping: 10, stiffness: 50, delay: 0.1 }}
-            className="absolute top-[-15vh] sm:top-[-20vh] md:top-[-40vh] w-full flex flex-col items-center origin-top z-30"
+            initial={{ y: '-120vh' }}
+            animate={{ y: 0 }}
+            transition={{ type: 'spring', damping: 14, stiffness: 45, delay: 0.1 }}
+            className="relative lg:absolute lg:top-[-48vh] w-full max-w-[340px] sm:max-w-xl md:max-w-4xl mx-auto flex flex-col items-center origin-top z-30"
           >
             <motion.div
-              animate={{ rotate: [-2, 2, -2] }}
-              transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+              animate={{ rotate: [-0.8, 0.8, -0.8] }}
+              transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
               className="origin-top flex flex-col items-center w-full"
             >
-              <div className="flex justify-between w-[85%] md:w-[65%] h-[35vh] md:h-[60vh]">
+              {/* RESPONSIVE CHAIN REBOOT: Řetězy teď drží měřítko na mobilu i desktopu */}
+              <div className="flex justify-between w-[84%] sm:w-[86%] lg:w-[65%] h-[80px] sm:h-[180px] lg:h-[60vh] transition-all">
                 {[0, 1].map((k) => (
-                  <div key={k} className="w-[40px] sm:w-[60px] h-full relative">
+                  <div key={k} className="w-[18px] sm:w-[35px] lg:w-[60px] h-full relative">
                     <svg width="100%" height="100%" className="absolute inset-0">
                       <defs>
-                        <pattern id={`ch${k}`} x="0" y="0" width="60" height="120" patternUnits="userSpaceOnUse">
-                          <rect x="6" y="0" width="48" height="75" rx="24" fill="none" stroke="#333" strokeWidth="12" />
-                          <rect x="6" y="0" width="48" height="75" rx="24" fill="none" stroke="#666" strokeWidth="2" />
-                          <rect x="18" y="60" width="24" height="75" rx="12" fill="#111" stroke="#000" strokeWidth="3" />
-                          <rect x="22" y="65" width="16" height="65" rx="8" fill="#222" />
+                        <pattern id={`ch${k}`} x="0" y="0" width="100%" height="60" patternUnits="userSpaceOnUse">
+                          <rect x="15%" y="0" width="70%" height="45" rx="15" fill="none" stroke="#222" strokeWidth="6" />
+                          <rect x="15%" y="0" width="70%" height="45" rx="15" fill="none" stroke="#444" strokeWidth="2" />
+                          <rect x="35%" y="30" width="30%" height="45" rx="10" fill="#050505" stroke="#000" strokeWidth="2" />
                         </pattern>
                       </defs>
                       <rect width="100%" height="100%" fill={`url(#ch${k})`} />
@@ -84,28 +89,42 @@ export default function VipDropPage() {
                   </div>
                 ))}
               </div>
+
+              {/* NÁPIS THE DEAD PROTOCOL: Perfektně slícované šrouby k řetězům */}
               <h1
-                className="text-[2.8rem] sm:text-[5rem] md:text-[11rem] font-[1000] uppercase tracking-tighter leading-[0.85] sm:leading-[0.8] text-white drop-shadow-[0_30px_60px_rgba(225,6,0,0.6)] relative z-10 bg-[#020202]/80 backdrop-blur-xl px-4 sm:px-8 md:px-12 py-4 sm:py-6 border-t-[6px] sm:border-t-[10px] border-zinc-800 rounded-b-xl shadow-[inset_0_0_50px_rgba(0,0,0,1),_0_20px_50px_rgba(0,0,0,0.8)] border-x-2 border-b-2"
+                className="text-[1.8rem] sm:text-[3.5rem] md:text-[7rem] lg:text-[11rem] font-[1000] uppercase tracking-tighter leading-[0.95] sm:leading-[0.85] text-white drop-shadow-[0_20px_50px_rgba(225,6,0,0.4)] relative z-10 bg-[#020202]/95 backdrop-blur-xl px-4 sm:px-8 md:px-12 py-4 sm:py-6 border-t-4 sm:border-t-[8px] lg:border-t-[10px] border-zinc-800 rounded-b-xl shadow-[inset_0_0_30px_rgba(0,0,0,1),_0_15px_40px_rgba(0,0,0,0.9)] border-x border-b border-zinc-900 w-full"
                 style={{ fontFamily: 'Inter, sans-serif' }}
               >
-                <div className="absolute -top-4 sm: -top-6 left-[5%] w-4 h-4 sm:w-8 sm:h-8 bg-zinc-400 rounded-full border-2 sm:border-4 border-black shadow-[inset_0_0_10px_white]" />
-                <div className="absolute -top-4 sm: -top-6 right-[5%] w-4 h-4 sm:w-8 sm:h-8 bg-zinc-400 rounded-full border-2 sm:border-4 border-black shadow-[inset_0_0_10px_white]" />
+                {/* Šrouby – Vycentrovány přesně pod osy řetězů */}
+                <div className="absolute -top-1.5 sm:-top-3.5 lg:-top-6 left-[6.5%] sm:left-[6%] lg:left-[17.5%] w-3 h-3 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-zinc-500 rounded-full border sm:border-2 lg:border-4 border-black shadow-[inset_0_0_5px_white]" />
+                <div className="absolute -top-1.5 sm:-top-3.5 lg:-top-6 right-[6.5%] sm:right-[6%] lg:right-[17.5%] w-3 h-3 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-zinc-500 rounded-full border sm:border-2 lg:border-4 border-black shadow-[inset_0_0_5px_white]" />
                 THE DEAD<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#E10600] to-[#550000]">PROTOCOL</span>
               </h1>
             </motion.div>
           </motion.div>
 
-          <div className="pt-[38vh] sm:pt-[45vh] md:pt-[60vh] flex flex-col items-center space-y-6 px-4">
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
-              className="inline-block px-4 py-1 border border-white/10 text-white/50 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em] bg-black/50 backdrop-blur-md">
+          {/* SPODNÍ TEXTY: Dynamický posun, na mobilu netvoří prázdné černé díry */}
+          <div className="mt-8 sm:mt-12 lg:mt-0 lg:pt-[58vh] flex flex-col items-center space-y-4 sm:space-y-6 px-4 w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-block px-4 py-1 border border-white/10 text-white/50 text-[9px] sm:text-[11px] font-black uppercase tracking-[0.4em] bg-black/50 backdrop-blur-md"
+            >
               🔒 Top Secret Drop
             </motion.div>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.6 }}
-              className="text-lg sm:text-xl md:text-2xl font-medium text-zinc-400 max-w-2xl mx-auto bg-black/30 p-4 backdrop-blur-sm text-center">
+
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="text-sm sm:text-lg md:text-2xl font-medium text-zinc-400 max-w-2xl mx-auto bg-black/30 p-2 sm:p-4 backdrop-blur-sm text-center leading-snug"
+            >
               Tato nabídka není veřejná. Získej kombo, které tě donutí zničit fitko.
             </motion.p>
           </div>
+
         </div>
       </section>
 
@@ -118,9 +137,9 @@ export default function VipDropPage() {
       </section>
 
       {/* ══ 5-SLOUPCOVÝ LAYOUT — RESPONSIVE REBOOT ══ */}
-      <section className="bg-[#050505] py-12 sm:py-20 relative overflow-hidden px-4 sm:px-8">
+      <section className="bg-[#050505] py-12 sm:py-20 relative overflow-hidden px-4 sm:px-8 w-full">
 
-        {/* DESKTOP BACKGROUND TUBES (Skryté na mobilu, aktivní od lg) */}
+        {/* DESKTOP BACKGROUND TUBES */}
         <motion.div
           animate={{ y: [0, -20, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
           className="hidden lg:block absolute left-[-380px] top-1/2 -translate-y-1/2 z-10 pointer-events-none"
@@ -137,7 +156,7 @@ export default function VipDropPage() {
           <img src="/images/products/deadp.png" alt="DEAD PUMP" className="h-[1200px] w-auto drop-shadow-[0_40px_100px_rgba(0,102,255,0.8)] object-contain" />
         </motion.div>
 
-        {/* OBSAH — Na mobilu čistý 1 sloupec, na desktopu 3 sloupce */}
+        {/* OBSAH — Na mobilu čistý 1 sloupec s upraveným pořadím, box s cenou skočí dolů pod produkty */}
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_300px_1fr] gap-8 relative z-20">
 
           {/* ── LEVÝ POPIS (BLACK DEAD) ── */}
@@ -147,8 +166,8 @@ export default function VipDropPage() {
               <p className="text-xs font-black uppercase tracking-[0.3em] text-[#E10600] mb-3">Vlajková loď #1</p>
               <h4 className="text-2xl font-black uppercase text-white mb-4">BLACK DEAD PRE-WORKOUT</h4>
 
-              {/* MOBILNÍ NÁHLED PRODUKTU (Zobrazí se pouze na mobilu/tabletu pod nadpisem) */}
-              <div className="block lg:hidden w-full max-w-[200px] mx-auto my-4 drop-shadow-[0_20px_30px_rgba(225,6,0,0.4)]">
+              {/* MOBILNÍ NÁHLED PRODUKTU */}
+              <div className="block lg:hidden w-full max-w-[180px] mx-auto my-4 drop-shadow-[0_20px_30px_rgba(225,6,0,0.4)]">
                 <img src="/images/products/Blackdead.webp" alt="BLACK DEAD" className="w-full h-auto object-contain" />
               </div>
 
@@ -173,37 +192,15 @@ export default function VipDropPage() {
             </div>
           </div>
 
-          {/* ── STŘED — CENA A CHECKOUT (Na mobilu skočí na konec pod produkty) ── */}
-          <div className="border border-[#E10600] lg:border-white/10 p-6 sm:p-8 flex flex-col items-center text-center relative bg-black lg:sticky lg:top-4 z-30 order-3 lg:order-2 shadow-[0_0_40px_rgba(225,6,0,0.15)] lg:shadow-none">
-            <div className="absolute -top-px left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[#E10600] to-transparent" />
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#E10600] mb-3 sm:mb-4">Dead Protocol Kombo</p>
-            <h2 className="text-2xl sm:text-3xl font-[1000] uppercase tracking-tighter text-white mb-1">KOMBO</h2>
-            <div className="text-4xl sm:text-5xl font-[1000] text-[#E10600] mb-4 sm:mb-6">1 898 KČ</div>
-            <div className="text-xs text-zinc-500 mb-6">BLACK DEAD 899 Kč + DEAD PUMP 999 Kč</div>
-            <div className="w-full">
-              <button
-                onClick={handleBuyCombo}
-                className="w-full py-4 sm:py-5 bg-[#E10600] text-white font-black uppercase tracking-[0.2em] text-xs sm:text-sm hover:bg-red-700 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-[0_0_40px_rgba(225,6,0,0.4)]"
-              >
-                Koupit kombo <ArrowRight size={16} />
-              </button>
-            </div>
-            <div className="mt-6 flex flex-wrap justify-center gap-3 sm:gap-4 text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
-              <span className="flex items-center gap-1"><Check size={11} className="text-[#E10600]" /> Skladem</span>
-              <span className="flex items-center gap-1"><Shield size={11} className="text-[#E10600]" /> Goliáš Security</span>
-              <span className="flex items-center gap-1"><Check size={11} className="text-[#E10600]" /> Black Edition</span>
-            </div>
-          </div>
-
           {/* ── PRAVÝ POPIS (DEAD PUMP) ── */}
-          <div className="border border-white/10 p-5 sm:p-7 relative text-left lg:text-right bg-black/40 backdrop-blur-md flex flex-col justify-between order-2 lg:order-3">
+          <div className="border border-white/10 p-5 sm:p-7 relative text-left lg:text-right bg-black/40 backdrop-blur-md flex flex-col justify-between order-2">
             <div className="absolute -top-px right-0 w-1/2 h-px bg-gradient-to-l from-[#E10600] to-transparent" />
             <div>
               <p className="text-xs font-black uppercase tracking-[0.3em] text-[#E10600] mb-3">Vlajková loď #2</p>
               <h4 className="text-2xl font-black uppercase text-white mb-4">DEAD PUMP NON-STIM</h4>
 
-              {/* MOBILNÍ NÁHLED PRODUKTU (Zobrazí se pouze na mobilu/tabletu pod nadpisem) */}
-              <div className="block lg:hidden w-full max-w-[200px] mx-auto my-4 drop-shadow-[0_20px_30px_rgba(0,102,255,0.4)]">
+              {/* MOBILNÍ NÁHLED PRODUKTU */}
+              <div className="block lg:hidden w-full max-w-[180px] mx-auto my-4 drop-shadow-[0_20px_30px_rgba(0,102,255,0.4)]">
                 <img src="/images/products/deadp.png" alt="DEAD PUMP" className="w-full h-auto object-contain" />
               </div>
 
@@ -228,9 +225,31 @@ export default function VipDropPage() {
             </div>
           </div>
 
+          {/* ── STŘED — CENA A CHECKOUT (Na mobilu bezpečně až jako poslední blok, order-3) ── */}
+          <div className="border border-[#E10600] lg:border-white/10 p-6 sm:p-8 flex flex-col items-center text-center relative bg-black lg:sticky lg:top-4 z-30 order-3 shadow-[0_0_40px_rgba(225,6,0,0.15)] lg:shadow-none mt-4 lg:mt-0">
+            <div className="absolute -top-px left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[#E10600] to-transparent" />
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#E10600] mb-3 sm:mb-4">Dead Protocol Kombo</p>
+            <h2 className="text-2xl sm:text-3xl font-[1000] uppercase tracking-tighter text-white mb-1">KOMBO</h2>
+            <div className="text-4xl sm:text-5xl font-[1000] text-[#E10600] mb-4 sm:mb-6">1 898 KČ</div>
+            <div className="text-xs text-zinc-500 mb-6">BLACK DEAD 899 Kč + DEAD PUMP 999 Kč</div>
+            <div className="w-full">
+              <button
+                onClick={handleBuyCombo}
+                className="w-full py-4 sm:py-5 bg-[#E10600] text-white font-black uppercase tracking-[0.2em] text-xs sm:text-sm hover:bg-red-700 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-[0_0_40px_rgba(225,6,0,0.4)]"
+              >
+                Koupit kombo <ArrowRight size={16} />
+              </button>
+            </div>
+            <div className="mt-6 flex flex-wrap justify-center gap-3 sm:gap-4 text-[9px] sm:text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
+              <span className="flex items-center gap-1"><Check size={11} className="text-[#E10600]" /> Skladem</span>
+              <span className="flex items-center gap-1"><Shield size={11} className="text-[#E10600]" /> Goliáš Security</span>
+              <span className="flex items-center gap-1"><Check size={11} className="text-[#E10600]" /> Black Edition</span>
+            </div>
+          </div>
+
         </div>
 
-        {/* ══ RECENZE — RESPONSIVE GRID ══ */}
+        {/* ══ RECENZE ══ */}
         <div className="max-w-5xl mx-auto mt-12 sm:mt-16 border-t border-white/8 pt-10 relative z-20">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-6 text-center">Co říkají ostatní</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

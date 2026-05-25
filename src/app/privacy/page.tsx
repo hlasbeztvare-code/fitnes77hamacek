@@ -28,7 +28,11 @@ export default function PrivacyPage() {
           <section className="space-y-6">
             <h2 className="text-3xl font-black uppercase tracking-tight text-[#E10600]">1. Správce údajů</h2>
             <div className="text-zinc-600 font-medium leading-relaxed space-y-4 text-sm uppercase tracking-wide">
-              <p>Správcem vašich osobních údajů je Fitness 77 (dále jen "správce"). Kontaktní údaje naleznete v sekci kontakt.</p>
+              <p>
+                Správcem vašich osobních údajů je:<br />
+                <strong>Fitness 77</strong>, se sídlem <strong>Chudoplesy 77, 294 01 Bakov nad Jizerou</strong>, <strong>IČO: 04019369</strong>.<br />
+                Kontaktní e-mail: <strong>fitness77@post.cz</strong>, telefon: <strong>+420 777 105 548</strong>.
+              </p>
               <p>Zpracováváme pouze údaje nezbytné pro vyřízení vašich objednávek a poskytování našich služeb.</p>
             </div>
           </section>
