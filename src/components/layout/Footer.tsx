@@ -13,63 +13,76 @@ const Footer = () => {
 
           {/* 1. Logo - Neon Brand Block */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left min-w-[240px]">
-            <div className="relative w-60 h-20 mb-6">
-              <Image src="/images/brand/logo-fitness77.png" alt="Fitness 77" fill className="object-contain" />
+            <div className="relative w-64 h-24 mb-6">
+              <Image src="/images/brand/logo-fitness77.png" alt="Fitness 77" fill className="object-contain brightness-0 invert" />
             </div>
           </div>
 
-          {/* Links Grid - 5 striktních sloupců, texty rozsvíceny do bílé/neon */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-y-12 gap-x-8 flex-grow lg:border-l lg:border-white/5 lg:pl-12">
+          {/* Right Side: Columns & Slogan/Socials Row */}
+          <div className="flex-grow lg:border-l lg:border-white/5 lg:pl-12">
+            
+            {/* 5 columns grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-y-12 gap-x-8 mb-12">
 
-            {/* 2. Menu Links */}
-            <div className="flex flex-col gap-4 text-center sm:text-left text-[#d4ff00]">
-              <span className="text-[8px] font-black tracking-[0.4em] uppercase mb-2">PROFIL</span>
-              <div className="flex flex-col gap-3 text-[11px] font-black tracking-widest uppercase">
-                <Link href="/supplements" className="hover:text-white transition-colors">SUPLEMENTY</Link>
-                <Link href="/equipment" className="hover:text-white transition-colors">VYBAVENÍ</Link>
-                <Link href="/bazaar" className="hover:text-white transition-colors">BAZAR</Link>
+              {/* 2. Menu Links */}
+              <div className="flex flex-col gap-4 text-center sm:text-left">
+                <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">PROFIL</span>
+                <div className="flex flex-col gap-3 text-[11px] font-black tracking-widest uppercase text-white">
+                  <Link href="/supplements" className="hover:text-[#d4ff00] transition-colors">SUPLEMENTY</Link>
+                  <Link href="/equipment" className="hover:text-[#d4ff00] transition-colors">VYBAVENI</Link>
+                  <Link href="/bazaar" className="hover:text-[#d4ff00] transition-colors">BAZAR</Link>
+                </div>
               </div>
+
+              {/* 3. Support Contact */}
+              <div className="flex flex-col gap-4 text-center sm:text-left">
+                <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">KONTAKT</span>
+                <div className="flex flex-col gap-3 text-[11px] font-black tracking-widest uppercase text-white">
+                  <Link href="tel:+420777105548" className="hover:text-[#d4ff00] transition-colors whitespace-nowrap">+420 777 105 548</Link>
+                  <Link href="mailto:obchod@fit77.cz" className="hover:text-[#d4ff00] transition-colors whitespace-nowrap uppercase">OBCHOD@FIT77.CZ</Link>
+                </div>
+              </div>
+
+              {/* 4. Base Location */}
+              <div className="flex flex-col gap-4 text-center sm:text-left">
+                <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">PRODEJNA</span>
+                <div className="flex flex-col gap-2 text-[11px] font-black tracking-widest uppercase leading-loose text-white">
+                  <span>JIRÁSKOVA 1320,<br />293 01 MB</span>
+                </div>
+              </div>
+
+              {/* 5. Billing details */}
+              <div className="flex flex-col gap-4 text-center sm:text-left">
+                <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">PROVOZOVATEL</span>
+                <div className="flex flex-col gap-2 text-[10px] font-black tracking-widest uppercase leading-relaxed text-white">
+                  <span>Fitness 77</span>
+                  <span>IČO: 04019369</span>
+                  <span>Chudoplesy 77</span>
+                  <span>294 01 Bakov n. J.</span>
+                </div>
+              </div>
+
+              {/* 6. Legal Links */}
+              <div className="flex flex-col gap-4 text-center sm:text-left">
+                <span className="text-[#d4ff00] text-[8px] font-black tracking-[0.4em] uppercase mb-2">PRÁVNÍ</span>
+                <div className="flex flex-col gap-3 text-[11px] font-black tracking-widest uppercase text-white">
+                  <Link href="/obchodni-podminky" className="hover:text-[#d4ff00] transition-colors">PODMÍNKY</Link>
+                  <Link href="/odstoupeni-od-smlouvy" className="text-[#d4ff00] font-black border-b border-[#d4ff00]/20 pb-0.5 inline-block w-fit mx-auto sm:mx-0">ODSTOUPENÍ</Link>
+                  <Link href="/privacy" className="hover:text-[#d4ff00] transition-colors">SOUKROMÍ</Link>
+                </div>
+              </div>
+
             </div>
 
-            {/* 3. Support Contact */}
-            <div className="flex flex-col gap-4 text-center sm:text-left text-[#d4ff00]">
-              <span className="text-[8px] font-black tracking-[0.4em] uppercase mb-2">KONTAKT</span>
-              <div className="flex flex-col gap-3 text-[11px] font-black tracking-widest uppercase">
-                <Link href="tel:+420777105548" className="hover:text-white transition-colors whitespace-nowrap">+420 777 105 548</Link>
-                <Link href="mailto:obchod@fit77.cz" className="hover:text-white transition-colors whitespace-nowrap uppercase">OBCHOD@FIT77.CZ</Link>
-              </div>
-            </div>
+            {/* Slogan and Socials Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pt-8 border-t border-white/5">
+              {/* Slogan */}
+              <p className="text-[#d4ff00] text-[11px] sm:text-[13px] md:text-[14px] font-black uppercase tracking-[0.2em] leading-relaxed text-left">
+                VÁŠ PARTNER V CESTĚ ZA LEPŠÍM JÁ. KVALITA BEZ KOMPROMISŮ.
+              </p>
 
-            {/* 4. Base Location */}
-            <div className="flex flex-col gap-4 text-center sm:text-left text-[#d4ff00]">
-              <span className="text-[8px] font-black tracking-[0.4em] uppercase mb-2">PRODEJNA</span>
-              <div className="flex flex-col gap-2 text-[11px] font-black tracking-widest uppercase leading-loose">
-                <span>JIRÁSKOVA 1320,<br />293 01 MB</span>
-              </div>
-            </div>
-
-            {/* 5. Billing details */}
-            <div className="flex flex-col gap-4 text-center sm:text-left text-[#d4ff00]">
-              <span className="text-[8px] font-black tracking-[0.4em] uppercase mb-2">PROVOZOVATEL</span>
-              <div className="flex flex-col gap-2 text-[10px] font-black tracking-widest uppercase leading-relaxed">
-                <span>Fitness 77</span>
-                <span>IČO: 04019369</span>
-                <span>Chudoplesy 77</span>
-                <span>294 01 Bakov n. J.</span>
-              </div>
-            </div>
-
-            {/* 6. Legal Links */}
-            <div className="flex flex-col gap-4 text-center sm:text-left text-[#d4ff00]">
-              <span className="text-[8px] font-black tracking-[0.4em] uppercase mb-2">PRÁVNÍ</span>
-              <div className="flex flex-col gap-3 text-[11px] font-black tracking-widest uppercase">
-                <Link href="/obchodni-podminky" className="hover:text-white transition-colors">PODMÍNKY</Link>
-                <Link href="/odstoupeni-od-smlouvy" className="border-b border-[#d4ff00]/20 pb-0.5 inline-block w-fit hover:text-white hover:border-white transition-colors font-black mx-auto sm:mx-0">ODSTOUPENÍ</Link>
-                <Link href="/privacy" className="hover:text-white transition-colors">SOUKROMÍ</Link>
-              </div>
-
-              {/* Socials - Přesunuto pod PRÁVNÍ */}
-              <div className="flex items-center justify-center sm:justify-start gap-2 mt-6">
+              {/* Socials */}
+              <div className="flex items-center justify-center sm:justify-start gap-2 flex-shrink-0 self-start sm:self-auto">
                 <a href={socialLinks.tiktok || "#"} target="_blank" aria-label="TikTok" className="w-9 h-9 bg-[#d4ff00] text-black font-black text-[11px] hover:scale-105 hover:bg-white transition-all flex items-center justify-center">TT</a>
                 <a href={socialLinks.instagram} target="_blank" aria-label="Instagram" className="w-9 h-9 bg-[#d4ff00] text-black font-black text-[11px] hover:scale-105 hover:bg-white transition-all flex items-center justify-center">IG</a>
                 <a href={socialLinks.facebook} target="_blank" aria-label="Facebook" className="w-9 h-9 bg-[#d4ff00] text-black font-black text-[11px] hover:scale-105 hover:bg-white transition-all flex items-center justify-center">FB</a>
@@ -77,13 +90,7 @@ const Footer = () => {
             </div>
 
           </div>
-        </div>
 
-        {/* Roztažený Slogan */}
-        <div className="mt-16 text-center border-t border-white/5 pt-10">
-          <p className="text-[#d4ff00] text-[14px] sm:text-[18px] font-black uppercase tracking-[0.4em] leading-relaxed">
-            VÁŠ PARTNER V CESTĚ ZA LEPŠÍM JÁ. KVALITA BEZ KOMPROMISŮ.
-          </p>
         </div>
 
         {/* Bottom Bar */}
@@ -99,6 +106,7 @@ const Footer = () => {
           </div>
           <div className="hidden md:block w-full text-right opacity-0 pointer-events-none">© {new Date().getFullYear()} FITNESS 77 MLADÁ BOLESLAV</div>
         </div>
+
       </div>
     </footer>
   );
