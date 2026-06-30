@@ -10,14 +10,16 @@ import useMounted from '@/hooks/useMounted';
 import { resolveProductImage } from '@/lib/resolve-image';
 import ProductCard from '@/components/shop/ProductCard';
 import LazyVideo from '@/components/utils/LazyVideo';
+import CheckoutForm from '@/components/shop/CheckoutForm';
 
-// GOLIÁŠ v41.0: Real Cart Page (Mezibod před Shoptetem)
+// GOLIÁŠ v41.0: Real Cart Page (Mezibod před Shoptetem / Nově interní)
 export default function CartPage() {
   const { items, addItem, increaseItem, decreaseItem, removeItem, totalPrice, clearCart, syncPrices } = useCartStore();
   const hasHydrated = useCartStore((state) => state._hasHydrated);
   const mounted = useMounted();
   
   const [status, setStatus] = useState<'idle' | 'preparing' | 'sending' | 'error'>('idle');
+  const [checkoutError, setCheckoutError] = useState<string>('');
   const [allProducts, setAllProducts] = useState<any[]>([]);
 
   // L-CODE Standard: Fetch ALL once, filter in render for 300% reactivity
@@ -52,35 +54,53 @@ export default function CartPage() {
 
   if (!mounted || !hasHydrated) return null;
 
-  // L-CODE BYPASS: Spouští se AŽ po kliknutí na "K POKLADNĚ"
-  const handleCheckout = () => {
+  // L-CODE BYPASS: Interní checkout přes CheckoutForm
+  const handleCheckout = async (formData: any) => {
     setStatus('preparing');
 
-    const resolved = items.map(i => ({
-      item: i,
-      ids: { productId: i.shoptetProductId, priceId: i.shoptetPriceId }
-    }));
-
-    if (resolved.some(r => !r.ids.productId || !r.ids.priceId)) {
-      console.error('❌ Chybí shoptetProductId nebo shoptetPriceId pro:', resolved.filter(r => !r.ids.productId || !r.ids.priceId).map(r => r.item.slug));
-      setStatus('error');
-      return;
-    }
-
-    setTimeout(() => {
+    try {
       setStatus('sending');
-      try {
-        // GOLIÁŠ Sync - Odpal na Shoptet URL
-        const itemsPayload = resolved.map(({ item, ids }) => {
-          return `${ids.productId}:${ids.priceId}:${item.quantity}`;
-        }).join(',');
+      
+      // Anti-Tamper Payload: Pouze nezbytná ID a údaje. Žádné ceny!
+      const payload = {
+        items: items.map(i => ({
+          id: i.id,
+          quantity: i.quantity,
+          variantCode: i.variantCode
+        })),
+        shippingMethod: formData.shippingMethod,
+        shippingId: formData.shippingId,
+        customerDetails: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city,
+          zip: formData.zip,
+        }
+      };
 
-        window.location.href = `https://obchod.fit77.cz/?sync_cart=1&items=${itemsPayload}`;
-      } catch (err) {
-        console.error('Cart Bridge Error:', err);
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (data.success && data.redirectUrl) {
+        window.location.href = data.redirectUrl;
+      } else {
+        console.error('Checkout error:', data.error);
+        setCheckoutError(data.error || 'Neznámá chyba při komunikaci se serverem.');
         setStatus('error');
       }
-    }, 1000);
+    } catch (err: any) {
+      console.error('Checkout API Error:', err);
+      setCheckoutError(err.message || 'Nepodařilo se připojit pokladnu.');
+      setStatus('error');
+    }
   };
 
   // 1. CHYBOVÁ OBRAZOVKA
@@ -90,12 +110,12 @@ export default function CartPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md">
           <span className="text-[#E10600] font-black text-6xl mb-6 block">ERR</span>
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Chyba <span className="text-[#E10600]">košíku</span></h1>
-          <p className="text-zinc-500 mb-8 font-medium">Nepodařilo se připojit pokladnu. Vyčistěte košík a zkuste to znovu.</p>
+          <p className="text-zinc-500 mb-8 font-medium">{checkoutError}</p>
           <button
-            onClick={() => { clearCart(); setStatus('idle'); }}
+            onClick={() => { setStatus('idle'); setCheckoutError(''); }}
             className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(5%_0,100%_0,95%_100%,0%_100%)]"
           >
-            VYČISTIT KOŠÍK
+            ZPĚT DO KOŠÍKU
           </button>
         </motion.div>
       </div>
@@ -245,28 +265,11 @@ export default function CartPage() {
             </div>
           )}
 
-          {/* Sumář a Checkout */}
+          {/* Formulář a Sumář */}
           <div className="lg:col-span-1 h-full">
-            <div className="bg-white/[0.02] border border-white/10 p-5 lg:sticky lg:top-20 lg:max-h-[calc(100vh-80px)] lg:overflow-y-auto scrollbar-hide pb-10">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-4">Shrnutí</h3>
+            <div className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-80px)] lg:overflow-y-auto scrollbar-hide pb-10">
+              <CheckoutForm onSubmit={handleCheckout} isSubmitting={status === 'sending'} />
               
-              <div className="flex justify-between items-end mb-6 pb-4 border-b border-white/10">
-                <span className="text-[10px] uppercase tracking-widest font-black text-zinc-400">Celkem</span>
-                <span className="text-2xl font-black text-white">{totalPrice().toLocaleString('cs-CZ')} Kč</span>
-              </div>
-              
-              <button 
-                onClick={handleCheckout}
-                className="w-full bg-[#E10600] text-white font-black py-4 px-6 flex items-center justify-between transition-all hover:brightness-110 [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)] group"
-              >
-                <span className="uppercase text-base tracking-[0.2em]">OBJEDNAT A ZAPLATIT</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-
-              <p className="text-[9px] text-zinc-600 uppercase tracking-[0.1em] text-center mt-3 px-2 leading-relaxed opacity-60">
-                Kliknutím berete na vědomí <Link href="/obchodni-podminky" className="underline hover:text-white transition-colors">VOP</Link> a <Link href="/privacy" className="underline hover:text-white transition-colors">GDPR</Link>.
-              </p>
-
               <Link 
                 href="/supplements"
                 className="f77-button-master mt-4 bg-transparent border-2 border-white/10 text-zinc-500 hover:text-white hover:border-white/30 transition-all [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)] py-3.5 flex items-center justify-center"

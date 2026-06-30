@@ -68,14 +68,18 @@ model BlogPost {
 }
 
 model Order {
-  id        String   @id @default(cuid())
-  firstName String
-  lastName  String
-  email     String
-  address   String
-  city      String
-  zip       String
-  total     Float
-  itemsJson String
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  firstName      String
+  lastName       String
+  email          String
+  phone          String   @default("")
+  address        String
+  city           String
+  zip            String
+  total          Float
+  itemsJson      String
+  status         String   @default("PENDING")
+  shippingMethod String   @default("ZASILKOVNA")
+  shippingId     String?
+  createdAt      DateTime @default(now())
 }

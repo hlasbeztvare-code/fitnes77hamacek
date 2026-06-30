@@ -112,7 +112,27 @@ export const useCartStore = create<CartStore>()(
         get().items.reduce((acc, item) => acc + item.price * item.quantity, 0),
 
       syncPrices: async () => {
-        // No-op or fetch from API
+        const currentItems = get().items;
+        if (currentItems.length === 0) return;
+
+        const ids = currentItems.map(item => item.id).join(',');
+        try {
+          const res = await fetch(`/api/products/prices?ids=${ids}`);
+          const data = await res.json();
+          if (data.prices) {
+            set((state) => ({
+              items: state.items.map(item => {
+                const liveData = data.prices[item.id];
+                if (liveData) {
+                  return { ...item, price: liveData.price }; // Force DB price
+                }
+                return item;
+              })
+            }));
+          }
+        } catch (error) {
+          console.error('Failed to sync prices', error);
+        }
       },
 
       currency: 'CZK',
