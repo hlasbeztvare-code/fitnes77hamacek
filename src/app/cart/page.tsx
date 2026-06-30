@@ -160,14 +160,14 @@ export default function CartPage() {
   // 4. PLNOTUČNÁ STRÁNKA KOŠÍKU (Mezibod)
   return (
     <div className="min-h-screen bg-black text-white pt-24 pb-32 px-4 md:px-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-10">
           Tvůj <span className="text-[#E10600]">Košík</span>
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Výpis produktů */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-7 space-y-4">
             {items.map((item) => (
               <div key={`${item.id}-${item.variantCode || 'base'}`} className="flex items-center gap-3 sm:gap-4 bg-white/[0.03] p-2 sm:p-3 border border-white/5 relative group">
                 {/* Malý náhled */}
@@ -218,7 +218,7 @@ export default function CartPage() {
 
           {/* NOVÁ SEKCE: MOHLO BY VÁS ZAJÍMAT (Neon List Layout) */}
           {crossSellProducts.length > 0 && (
-            <div className="lg:col-span-2 mt-16 pt-16 border-t border-white/5">
+            <div className="lg:col-span-7 mt-16 pt-16 border-t border-white/5">
               <h2 className="text-2xl font-black uppercase tracking-tighter mb-8 text-[#d4ff00]">
                 Mohlo by vás <span className="text-white">zajímat</span>
               </h2>
@@ -266,7 +266,7 @@ export default function CartPage() {
           )}
 
           {/* Formulář a Sumář */}
-          <div className="lg:col-span-1 h-full">
+          <div className="lg:col-span-5 h-full">
             <div className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-80px)] lg:overflow-y-auto scrollbar-hide pb-10">
               <CheckoutForm onSubmit={handleCheckout} isSubmitting={status === 'sending'} />
               

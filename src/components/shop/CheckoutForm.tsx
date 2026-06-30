@@ -50,47 +50,47 @@ export default function CheckoutForm({ onSubmit, isSubmitting }: { onSubmit: (da
     <form id="checkout-form" onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* OSOBNÍ ÚDAJE */}
       <div className="bg-white/[0.02] border border-white/10 p-5 lg:p-6">
-        <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#E10600] mb-6 border-b border-white/10 pb-4">
+        <h3 className="text-base font-black uppercase tracking-[0.2em] text-[#E10600] mb-6 border-b border-white/10 pb-4">
           1. Osobní údaje
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">Jméno</label>
+            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Jméno</label>
             <input 
               {...register('firstName')}
               autoComplete="given-name"
-              className="w-full bg-black border border-white/10 p-3 text-white text-sm focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
+              className="w-full bg-[#0a0a0a] border border-white/20 p-4 text-white text-base focus:bg-[#111] focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
               placeholder="Jan"
             />
             {errors.firstName && <p className="text-[#E10600] text-[10px] mt-1">{errors.firstName.message}</p>}
           </div>
           <div>
-            <label className="block text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">Příjmení</label>
+            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Příjmení</label>
             <input 
               {...register('lastName')}
               autoComplete="family-name"
-              className="w-full bg-black border border-white/10 p-3 text-white text-sm focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
+              className="w-full bg-[#0a0a0a] border border-white/20 p-4 text-white text-base focus:bg-[#111] focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
               placeholder="Novák"
             />
             {errors.lastName && <p className="text-[#E10600] text-[10px] mt-1">{errors.lastName.message}</p>}
           </div>
           <div>
-            <label className="block text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">E-mail</label>
+            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">E-mail</label>
             <input 
               {...register('email')}
               type="email"
               autoComplete="email"
-              className="w-full bg-black border border-white/10 p-3 text-white text-sm focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
+              className="w-full bg-[#0a0a0a] border border-white/20 p-4 text-white text-base focus:bg-[#111] focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
               placeholder="jan.novak@email.cz"
             />
             {errors.email && <p className="text-[#E10600] text-[10px] mt-1">{errors.email.message}</p>}
           </div>
           <div>
-            <label className="block text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">Telefon</label>
+            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Telefon</label>
             <input 
               {...register('phone')}
               autoComplete="tel"
-              className="w-full bg-black border border-white/10 p-3 text-white text-sm focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
+              className="w-full bg-[#0a0a0a] border border-white/20 p-4 text-white text-base focus:bg-[#111] focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
               placeholder="+420 777 666 555"
             />
             {errors.phone && <p className="text-[#E10600] text-[10px] mt-1">{errors.phone.message}</p>}
@@ -100,36 +100,36 @@ export default function CheckoutForm({ onSubmit, isSubmitting }: { onSubmit: (da
 
       {/* DORUČOVACÍ ADRESA */}
       <div className="bg-white/[0.02] border border-white/10 p-5 lg:p-6">
-        <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#E10600] mb-6 border-b border-white/10 pb-4">
+        <h3 className="text-base font-black uppercase tracking-[0.2em] text-[#E10600] mb-6 border-b border-white/10 pb-4">
           2. Doručovací adresa
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="md:col-span-2">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">Ulice a číslo popisné</label>
+            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Ulice a číslo popisné</label>
             <input 
               {...register('address')}
               autoComplete="street-address"
-              className="w-full bg-black border border-white/10 p-3 text-white text-sm focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
+              className="w-full bg-[#0a0a0a] border border-white/20 p-4 text-white text-base focus:bg-[#111] focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
               placeholder="Dlouhá 15"
             />
             {errors.address && <p className="text-[#E10600] text-[10px] mt-1">{errors.address.message}</p>}
           </div>
           <div>
-            <label className="block text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">Město</label>
+            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Město</label>
             <input 
               {...register('city')}
               autoComplete="address-level2"
-              className="w-full bg-black border border-white/10 p-3 text-white text-sm focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
+              className="w-full bg-[#0a0a0a] border border-white/20 p-4 text-white text-base focus:bg-[#111] focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
               placeholder="Praha"
             />
             {errors.city && <p className="text-[#E10600] text-[10px] mt-1">{errors.city.message}</p>}
           </div>
           <div>
-            <label className="block text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">PSČ</label>
+            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">PSČ</label>
             <input 
               {...register('zip')}
               autoComplete="postal-code"
-              className="w-full bg-black border border-white/10 p-3 text-white text-sm focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
+              className="w-full bg-[#0a0a0a] border border-white/20 p-4 text-white text-base focus:bg-[#111] focus:border-[#E10600] focus:ring-1 focus:ring-[#E10600] outline-none transition-all"
               placeholder="110 00"
             />
             {errors.zip && <p className="text-[#E10600] text-[10px] mt-1">{errors.zip.message}</p>}
