@@ -141,15 +141,43 @@ export default function CheckoutForm({ onSubmit, isSubmitting }: { onSubmit: (da
           </div>
         </div>
 
-        {/* SLOUPEC 2: DOPRAVA */}
-        <div className="space-y-8 min-w-0">
-          <ShippingPicker 
-            selectedShipping={selectedShipping}
-            shippingPointName={shippingPointName}
-            error={errors.shippingMethod?.message}
-            onChange={handleShippingChange}
-          />
+      {/* SLOUPEC 2: DOPRAVA A PLATBA */}
+      <div className="space-y-8 min-w-0">
+        <ShippingPicker 
+          selectedShipping={selectedShipping}
+          shippingPointName={shippingPointName}
+          error={errors.shippingMethod?.message}
+          onChange={handleShippingChange}
+        />
+
+        {/* PLATBA */}
+        <div className="bg-zinc-50 border border-zinc-200 p-5 lg:p-6 min-w-0">
+          <h3 className="text-base font-black uppercase tracking-[0.2em] text-[#E10600] mb-6 border-b border-zinc-200 pb-4">
+            4. Platba
+          </h3>
+          <div className="space-y-3">
+            <label className="flex items-start p-4 border border-[#E10600] bg-[#E10600]/5 cursor-pointer transition-all">
+              <div className="flex-shrink-0 mt-0.5">
+                <input 
+                  type="radio" 
+                  name="paymentMethod" 
+                  value="COMGATE" 
+                  checked={true}
+                  readOnly
+                  className="accent-[#E10600] w-4 h-4"
+                />
+              </div>
+              <div className="ml-4 flex-1 min-w-0">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-sm font-black text-black uppercase tracking-wider">Platba online (Comgate)</span>
+                  <span className="text-sm font-black text-[#E10600]">ZDARMA</span>
+                </div>
+                <p className="text-xs text-zinc-500">Bezpečná rychlá platba kartou, Apple Pay, Google Pay nebo bankovním převodem.</p>
+              </div>
+            </label>
+          </div>
         </div>
+      </div>
 
         {/* SLOUPEC 3: SHRNUTÍ A TLAČÍTKA */}
         <div className="space-y-8 min-w-0">
