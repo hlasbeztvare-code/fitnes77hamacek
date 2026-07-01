@@ -112,27 +112,10 @@ export const useCartStore = create<CartStore>()(
         get().items.reduce((acc, item) => acc + item.price * item.quantity, 0),
 
       syncPrices: async () => {
-        const currentItems = get().items;
-        if (currentItems.length === 0) return;
-
-        const ids = currentItems.map(item => item.id).join(',');
-        try {
-          const res = await fetch(`/api/products/prices?ids=${ids}`);
-          const data = await res.json();
-          if (data.prices) {
-            set((state) => ({
-              items: state.items.map(item => {
-                const liveData = data.prices[item.id];
-                if (liveData) {
-                  return { ...item, price: liveData.price }; // Force DB price
-                }
-                return item;
-              })
-            }));
-          }
-        } catch (error) {
-          console.error('Failed to sync prices', error);
-        }
+        // L-CODE: Dočasně vypnuto. Ceny na frontendu (v addItem) jsou správné,
+        // nechceme, aby je backend (API) přepisoval jinými (špatnými) cenami.
+        // viz: "ceny co jsou na frontendu ty jsou platne takze bacha v kosiku se nam pridavaji uplne jine ceny"
+        return;
       },
 
       currency: 'CZK',
