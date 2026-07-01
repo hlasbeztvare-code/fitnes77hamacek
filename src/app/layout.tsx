@@ -164,14 +164,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
 
+        <CookieBanner />
+        <FloatingCartButton />
+
         <SecurityKernel>
           <GoliasShield>
             <PerformanceProviders>
               <ScrollToTop />
               <Navbar />
 
-              <FloatingCartButton />
-              <CookieBanner />
               <main><GlobalPreloader>{children}</GlobalPreloader></main>
               <div id="main-global-footer">
                 <Footer />
