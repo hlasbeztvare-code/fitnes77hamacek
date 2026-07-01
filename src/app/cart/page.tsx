@@ -5,16 +5,15 @@ import { useCartStore } from '@/hooks/useCartStore';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Minus, Plus, Trash2, ArrowRight } from 'lucide-react';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 import useMounted from '@/hooks/useMounted';
 import { resolveProductImage } from '@/lib/resolve-image';
-import ProductCard from '@/components/shop/ProductCard';
 import LazyVideo from '@/components/utils/LazyVideo';
 import CheckoutForm from '@/components/shop/CheckoutForm';
 
-// GOLIÁŠ v41.0: Real Cart Page (Mezibod před Shoptetem / Nově interní)
+// GOLIÁŠ v41.0: Real Cart Page - Light Theme
 export default function CartPage() {
-  const { items, addItem, increaseItem, decreaseItem, removeItem, totalPrice, clearCart, syncPrices } = useCartStore();
+  const { items, addItem, increaseItem, decreaseItem, removeItem, syncPrices } = useCartStore();
   const hasHydrated = useCartStore((state) => state._hasHydrated);
   const mounted = useMounted();
   
@@ -22,9 +21,7 @@ export default function CartPage() {
   const [checkoutError, setCheckoutError] = useState<string>('');
   const [allProducts, setAllProducts] = useState<any[]>([]);
 
-  // L-CODE Standard: Fetch ALL once, filter in render for 300% reactivity
   useEffect(() => {
-    // L-CODE Price Integrity: Srovnat ceny položek, které už v košíku jsou
     syncPrices();
 
     fetch('/api/products')
@@ -42,7 +39,6 @@ export default function CartPage() {
         const isAlreadyInCart = items.some(item => item.id === p.id || item.slug === p.slug);
         if (isAlreadyInCart) return false;
         
-        // Prevence duplicitních typů (např. více Kreatinů - smrk)
         const nameKey = p.name.split(' ')[0].toLowerCase();
         if (seenNames.has(nameKey)) return false;
         seenNames.add(nameKey);
@@ -54,14 +50,12 @@ export default function CartPage() {
 
   if (!mounted || !hasHydrated) return null;
 
-  // L-CODE BYPASS: Interní checkout přes CheckoutForm
   const handleCheckout = async (formData: any) => {
     setStatus('preparing');
 
     try {
       setStatus('sending');
       
-      // Anti-Tamper Payload: Pouze nezbytná ID a údaje. Žádné ceny!
       const payload = {
         items: items.map(i => ({
           id: i.id,
@@ -103,10 +97,9 @@ export default function CartPage() {
     }
   };
 
-  // 1. CHYBOVÁ OBRAZOVKA
   if (status === 'error') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-4 text-center">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-white text-black p-4 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md">
           <span className="text-[#E10600] font-black text-6xl mb-6 block">ERR</span>
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Chyba <span className="text-[#E10600]">košíku</span></h1>
@@ -122,17 +115,16 @@ export default function CartPage() {
     );
   }
 
-  // 2. NAČÍTACÍ OBRAZOVKA (Během přesměrování na Shoptet)
   if (status === 'preparing' || status === 'sending') {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-white p-4 text-center">
+      <div className="flex min-h-screen items-center justify-center bg-white text-black p-4 text-center">
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }}>
           <div className="mb-8">
             <div className="h-20 w-20 border-4 border-[#E10600] border-t-transparent rounded-full animate-spin mx-auto mb-8"></div>
             <h1 className="text-4xl font-black uppercase tracking-tighter sm:text-5xl">
               Příprava <span className="text-[#E10600]">objednávky</span>
             </h1>
-            <p className="mt-4 text-gray-500 font-bold uppercase tracking-[0.3em] text-xs">
+            <p className="mt-4 text-zinc-500 font-bold uppercase tracking-[0.3em] text-xs">
               {status === 'sending' ? 'Přesměrování na pokladnu...' : 'Ověřování položek...'}
             </p>
           </div>
@@ -141,12 +133,11 @@ export default function CartPage() {
     );
   }
 
-  // 3. PRÁZDNÝ KOŠÍK
   if (items.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-4 text-center pt-24">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-white text-black p-4 text-center pt-24">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md">
-          <span className="text-white/20 font-black text-6xl mb-6 block">!</span>
+          <span className="text-zinc-200 font-black text-6xl mb-6 block">!</span>
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Košík je <span className="text-[#E10600]">prázdný</span></h1>
           <p className="text-zinc-500 mb-8 font-medium">Zdá se, že sypání zůstalo v regálu.</p>
           <Link href="/supplements" className="inline-block bg-[#E10600] text-white px-10 py-5 font-black uppercase tracking-[0.2em] hover:brightness-110 transition-all [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)]">
@@ -157,21 +148,20 @@ export default function CartPage() {
     );
   }
 
-  // 4. PLNOTUČNÁ STRÁNKA KOŠÍKU (Mezibod)
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-32 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-10">
+    <div className="min-h-screen bg-white text-zinc-900 pt-24 pb-32 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto flex flex-col min-w-0">
+        <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-10 text-black">
           Tvůj <span className="text-[#E10600]">Košík</span>
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Výpis produktů */}
-          <div className="lg:col-span-7 space-y-4">
+          <div className="lg:col-span-7 space-y-4 min-w-0">
             {items.map((item) => (
-              <div key={`${item.id}-${item.variantCode || 'base'}`} className="flex items-center gap-3 sm:gap-4 bg-white/[0.03] p-2 sm:p-3 border border-white/5 relative group">
+              <div key={`${item.id}-${item.variantCode || 'base'}`} className="flex items-center gap-3 sm:gap-4 bg-zinc-50 p-2 sm:p-3 border border-zinc-200 relative group overflow-hidden">
                 {/* Malý náhled */}
-                <div className="relative w-16 h-16 flex-shrink-0 bg-black overflow-hidden border border-white/5">
+                <div className="relative w-16 h-16 flex-shrink-0 bg-white overflow-hidden border border-zinc-200">
                   {(() => {
                     const mediaPath = resolveProductImage(item.image, item.name, item.slug);
                     const isVideo = mediaPath.toLowerCase().match(/\.(mp4|webm)$/i);
@@ -187,20 +177,20 @@ export default function CartPage() {
                 
                 {/* Info & Cena */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-[10px] md:text-sm font-black uppercase truncate tracking-widest leading-tight">{item.name}</h3>
+                  <h3 className="text-[10px] md:text-sm font-black uppercase truncate tracking-widest leading-tight text-black">{item.name}</h3>
                   {item.variantName && (
-                    <p className="text-[8px] text-white/40 uppercase tracking-[0.1em] mt-0.5">{item.variantName}</p>
+                    <p className="text-[8px] text-zinc-500 uppercase tracking-[0.1em] mt-0.5">{item.variantName}</p>
                   )}
                   <p className="text-[#E10600] font-black text-sm md:text-base mt-1">{(item.price * item.quantity).toLocaleString('cs-CZ')} Kč</p>
                 </div>
                 
                 {/* Kompaktní Volič Množství */}
-                <div className="flex items-center gap-1 sm:gap-2 bg-black/40 border border-white/10 p-1">
-                  <button onClick={() => decreaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-white/40 hover:text-white transition-colors">
+                <div className="flex items-center gap-1 sm:gap-2 bg-white border border-zinc-200 p-1 flex-shrink-0">
+                  <button onClick={() => decreaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">
                     <Minus className="w-3 h-3" />
                   </button>
-                  <span className="w-6 text-center text-xs font-black text-white">{item.quantity}</span>
-                  <button onClick={() => increaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-white/40 hover:text-white transition-colors">
+                  <span className="w-6 text-center text-xs font-black text-black">{item.quantity}</span>
+                  <button onClick={() => increaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">
                     <Plus className="w-3 h-3" />
                   </button>
                 </div>
@@ -208,7 +198,7 @@ export default function CartPage() {
                 {/* Smazat - Absolutní vpravo nahoře pro úsporu místa */}
                 <button 
                   onClick={() => removeItem(item.id, item.variantCode)} 
-                  className="absolute top-2 right-2 text-white/10 hover:text-[#E10600] transition-colors p-1"
+                  className="absolute top-2 right-2 text-zinc-300 hover:text-[#E10600] transition-colors p-1"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -216,69 +206,70 @@ export default function CartPage() {
             ))}
           </div>
 
-          {/* NOVÁ SEKCE: MOHLO BY VÁS ZAJÍMAT (Neon List Layout) */}
-          {crossSellProducts.length > 0 && (
-            <div className="lg:col-span-7 mt-16 pt-16 border-t border-white/5">
-              <h2 className="text-2xl font-black uppercase tracking-tighter mb-8 text-[#d4ff00]">
-                Mohlo by vás <span className="text-white">zajímat</span>
-              </h2>
-              <div className="space-y-3">
-                {crossSellProducts.map((product) => (
-                  <div key={product.id} className="flex items-center gap-4 bg-white/[0.02] border border-white/5 p-3 hover:bg-white/[0.04] transition-all group">
-                    {/* Náhled 48x48 */}
-                    <div className="relative w-12 h-12 flex-shrink-0 bg-black border border-white/5 overflow-hidden">
-                      <Image 
-                        src={resolveProductImage(product.image, product.name, product.slug, { forceStatic: true })} 
-                        alt={product.name} 
-                        fill 
-                        sizes="48px"
-                        className="object-contain p-1 group-hover:scale-110 transition-transform duration-500" 
-                      />
-                    </div>
-                    
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-[10px] md:text-xs font-black uppercase truncate tracking-widest text-white">{product.name}</h4>
-                      <p className="text-[#d4ff00] font-black text-sm mt-0.5">{product.price.toLocaleString('cs-CZ')} Kč</p>
-                    </div>
-                    
-                    {/* Tlačítko */}
-                    <button 
-                      onClick={() => {
-                        addItem({
-                          id: product.id,
-                          shoptetProductId: product.shoptetProductId || undefined,
-                          shoptetPriceId: product.shoptetPriceId || undefined,
-                          name: product.name,
-                          slug: product.slug,
-                          price: product.price,
-                          image: resolveProductImage(product.image, product.name, product.slug, { forceStatic: true }),
-                        });
-                      }}
-                      className="bg-[#d4ff00] text-black text-[9px] font-black px-5 py-2.5 uppercase tracking-[0.15em] [clip-path:polygon(10%_0,100%_0,90%_100%,0%_100%)] hover:brightness-110 transition-all whitespace-nowrap"
-                    >
-                      PŘIDAT
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Formulář a Sumář */}
-          <div className="lg:col-span-5 h-full">
+          <div className="lg:col-span-5 h-full min-w-0">
             <div className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-80px)] lg:overflow-y-auto scrollbar-hide pb-10">
               <CheckoutForm onSubmit={handleCheckout} isSubmitting={status === 'sending'} />
               
               <Link 
                 href="/supplements"
-                className="f77-button-master mt-4 bg-transparent border-2 border-white/10 text-zinc-500 hover:text-white hover:border-white/30 transition-all [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)] py-3.5 flex items-center justify-center"
+                className="f77-button-master mt-4 bg-transparent border-2 border-zinc-200 text-zinc-500 hover:text-black hover:border-zinc-400 transition-all [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)] py-3.5 flex items-center justify-center"
               >
-                <span className="uppercase tracking-[0.15em] text-xs">POKRAČOVAT V NÁKUPU</span>
+                <span className="uppercase tracking-[0.15em] text-xs font-black">POKRAČOVAT V NÁKUPU</span>
               </Link>
             </div>
           </div>
         </div>
+
+        {/* NOVÁ SEKCE: MOHLO BY VÁS ZAJÍMAT (Zcela vespod, mimo grid layout) */}
+        {crossSellProducts.length > 0 && (
+          <div className="mt-20 pt-16 border-t border-zinc-200 min-w-0">
+            <h2 className="text-2xl font-black uppercase tracking-tighter mb-8 text-black">
+              Mohlo by vás <span className="text-[#E10600]">zajímat</span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {crossSellProducts.map((product) => (
+                <div key={product.id} className="flex items-center gap-4 bg-zinc-50 border border-zinc-200 p-3 hover:bg-zinc-100 transition-all group overflow-hidden">
+                  {/* Náhled 48x48 */}
+                  <div className="relative w-16 h-16 flex-shrink-0 bg-white border border-zinc-200 overflow-hidden">
+                    <Image 
+                      src={resolveProductImage(product.image, product.name, product.slug, { forceStatic: true })} 
+                      alt={product.name} 
+                      fill 
+                      sizes="64px"
+                      className="object-contain p-1 group-hover:scale-110 transition-transform duration-500" 
+                    />
+                  </div>
+                  
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-[10px] md:text-xs font-black uppercase truncate tracking-widest text-black">{product.name}</h4>
+                    <p className="text-[#E10600] font-black text-sm mt-0.5">{product.price.toLocaleString('cs-CZ')} Kč</p>
+                  </div>
+                  
+                  {/* Tlačítko */}
+                  <button 
+                    onClick={() => {
+                      addItem({
+                        id: product.id,
+                        shoptetProductId: product.shoptetProductId || undefined,
+                        shoptetPriceId: product.shoptetPriceId || undefined,
+                        name: product.name,
+                        slug: product.slug,
+                        price: product.price,
+                        image: resolveProductImage(product.image, product.name, product.slug, { forceStatic: true }),
+                      });
+                    }}
+                    className="bg-[#E10600] text-white text-[9px] font-black px-4 py-2.5 uppercase tracking-[0.15em] [clip-path:polygon(10%_0,100%_0,90%_100%,0%_100%)] hover:brightness-110 transition-all whitespace-nowrap flex-shrink-0"
+                  >
+                    PŘIDAT
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
