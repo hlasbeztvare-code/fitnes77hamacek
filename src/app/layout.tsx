@@ -8,6 +8,7 @@ import Footer from "@/components/layout/Footer";
 import ScrollToTop from "@/components/utils/ScrollToTop";
 
 import FloatingCartButton from "@/components/shop/FloatingCartButton";
+import CookieBanner from "@/components/layout/CookieBanner";
 import dynamic from 'next/dynamic';
 
 import { PerformanceProviders } from '@/providers/PerformanceProviders';
@@ -148,6 +149,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
+              
+              // Default consent state
+              gtag('consent', 'default', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied'
+              });
+
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GA_ID || 'G-XXXXXXXXXX'}', {
                 page_path: window.location.pathname,
@@ -163,6 +171,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Navbar />
 
               <FloatingCartButton />
+              <CookieBanner />
               <main><GlobalPreloader>{children}</GlobalPreloader></main>
               <div id="main-global-footer">
                 <Footer />
