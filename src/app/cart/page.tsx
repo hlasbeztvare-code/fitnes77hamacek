@@ -155,9 +155,9 @@ export default function CartPage() {
           Tvůj <span className="text-[#E10600]">Košík</span>
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          {/* Výpis produktů */}
-          <div className="lg:col-span-7 space-y-4 min-w-0">
+        <div className="flex flex-col gap-12 lg:gap-16">
+          {/* Výpis produktů (Nyní na plnou šířku) */}
+          <div className="space-y-4 min-w-0">
             {items.map((item) => (
               <div key={`${item.id}-${item.variantCode || 'base'}`} className="flex items-center gap-3 sm:gap-4 bg-zinc-50 p-2 sm:p-3 border border-zinc-200 relative group overflow-hidden">
                 {/* Malý náhled */}
@@ -176,23 +176,27 @@ export default function CartPage() {
                 </div>
                 
                 {/* Info & Cena */}
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-[10px] md:text-sm font-black uppercase truncate tracking-widest leading-tight text-black">{item.name}</h3>
-                  {item.variantName && (
-                    <p className="text-[8px] text-zinc-500 uppercase tracking-[0.1em] mt-0.5">{item.variantName}</p>
-                  )}
-                  <p className="text-[#E10600] font-black text-sm md:text-base mt-1">{(item.price * item.quantity).toLocaleString('cs-CZ')} Kč</p>
-                </div>
-                
-                {/* Kompaktní Volič Množství */}
-                <div className="flex items-center gap-1 sm:gap-2 bg-white border border-zinc-200 p-1 flex-shrink-0">
-                  <button onClick={() => decreaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">
-                    <Minus className="w-3 h-3" />
-                  </button>
-                  <span className="w-6 text-center text-xs font-black text-black">{item.quantity}</span>
-                  <button onClick={() => increaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">
-                    <Plus className="w-3 h-3" />
-                  </button>
+                <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between">
+                  <div className="mb-2 sm:mb-0">
+                    <h3 className="text-xs md:text-sm font-black uppercase truncate tracking-widest leading-tight text-black">{item.name}</h3>
+                    {item.variantName && (
+                      <p className="text-[10px] text-zinc-500 uppercase tracking-[0.1em] mt-0.5">{item.variantName}</p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-6 sm:pr-10">
+                    <p className="text-[#E10600] font-black text-sm md:text-base whitespace-nowrap">{(item.price * item.quantity).toLocaleString('cs-CZ')} Kč</p>
+                    
+                    {/* Kompaktní Volič Množství */}
+                    <div className="flex items-center gap-1 sm:gap-2 bg-white border border-zinc-200 p-1 flex-shrink-0">
+                      <button onClick={() => decreaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="w-6 text-center text-xs font-black text-black">{item.quantity}</span>
+                      <button onClick={() => increaseItem(item.id, item.variantCode)} className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Smazat - Absolutní vpravo nahoře pro úsporu místa */}
@@ -206,18 +210,9 @@ export default function CartPage() {
             ))}
           </div>
 
-          {/* Formulář a Sumář */}
-          <div className="lg:col-span-5 h-full min-w-0">
-            <div className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-80px)] lg:overflow-y-auto scrollbar-hide pb-10">
-              <CheckoutForm onSubmit={handleCheckout} isSubmitting={status === 'sending'} />
-              
-              <Link 
-                href="/supplements"
-                className="f77-button-master mt-4 bg-transparent border-2 border-zinc-200 text-zinc-500 hover:text-black hover:border-zinc-400 transition-all [clip-path:polygon(6%_0,100%_0,94%_100%,0%_100%)] py-3.5 flex items-center justify-center"
-              >
-                <span className="uppercase tracking-[0.15em] text-xs font-black">POKRAČOVAT V NÁKUPU</span>
-              </Link>
-            </div>
+          {/* Formulář a Sumář (Nyní obsahuje vlastní 3-sloupcový grid) */}
+          <div className="min-w-0">
+            <CheckoutForm onSubmit={handleCheckout} isSubmitting={status === 'sending'} />
           </div>
         </div>
 

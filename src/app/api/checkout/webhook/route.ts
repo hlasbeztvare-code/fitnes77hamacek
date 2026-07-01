@@ -4,13 +4,25 @@ import { checkComgatePayment } from '@/lib/comgate';
 
 export async function POST(req: Request) {
   try {
-    const bodyText = await req.text();
-    const params = new URLSearchParams(bodyText);
+    const contentType = req.headers.get('content-type') || '';
+    
+    let transId, refId;
 
-    const transId = params.get('transId');
-    const refId = params.get('refId'); // Naše Order ID
+    if (contentType.includes('application/json')) {
+      const data = await req.json();
+      transId = data.transId;
+      refId = data.refId;
+    } else {
+      const bodyText = await req.text();
+      const params = new URLSearchParams(bodyText);
+      transId = params.get('transId');
+      refId = params.get('refId'); // Naše Order ID
+    }
 
     if (!transId || !refId) {
+      if (contentType.includes('application/json')) {
+        return NextResponse.json({ code: 1, message: 'Missing parameters' }, { status: 400 });
+      }
       return new NextResponse('code=1&message=Missing parameters', { 
         status: 400,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
@@ -56,16 +68,24 @@ export async function POST(req: Request) {
       });
     }
 
-    // Comgate striktně vyžaduje odpověď v tomto formátu
-    return new NextResponse('code=0&message=OK', { 
-      status: 200,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    });
+    // Comgate vyžaduje specifickou odpověď
+    if (contentType.includes('application/json')) {
+      return NextResponse.json({ code: 0, message: "OK" });
+    } else {
+      return new NextResponse('code=0&message=OK', { 
+        status: 200,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      });
+    }
 
   } catch (error: any) {
     console.error('Webhook processing error:', error);
     
     // Pokud je chyba Prisma (nenalezená objednávka), Comgate dostane code=1, aby věděl o chybě
+    const contentType = req.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      return NextResponse.json({ code: 1, message: 'Internal error' }, { status: 500 });
+    }
     return new NextResponse('code=1&message=Internal error', { 
       status: 500,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }

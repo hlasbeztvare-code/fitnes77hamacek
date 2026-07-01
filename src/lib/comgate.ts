@@ -4,7 +4,7 @@ const COMGATE_MERCHANT = process.env.COMGATE_MERCHANT || '';
 const COMGATE_SECRET = process.env.COMGATE_SECRET || '';
 const COMGATE_TEST = process.env.COMGATE_TEST === 'true';
 
-const COMGATE_BASE_URL = 'https://payments.comgate.cz/v1.0';
+const COMGATE_BASE_URL = 'https://payments.comgate.cz/v2.0';
 
 export interface CreatePaymentParams {
   price: number; // in CZK
@@ -14,64 +14,73 @@ export interface CreatePaymentParams {
   label: string;
 }
 
-export async function createComgatePayment(params: CreatePaymentParams): Promise<{ redirectUrl: string, transId: string }> {
-  const data = new URLSearchParams();
-  data.append('merchant', COMGATE_MERCHANT);
-  data.append('secret', COMGATE_SECRET);
-  data.append('test', COMGATE_TEST ? 'true' : 'false');
-  data.append('country', 'CZ');
-  data.append('curr', 'CZK');
-  data.append('price', Math.round(params.price * 100).toString()); // v haléřích
-  data.append('refId', params.refId);
-  data.append('email', params.email);
-  data.append('label', params.label);
-  data.append('method', 'ALL');
+function getComgateAuthHeader() {
+  return `Basic ${Buffer.from(`${COMGATE_MERCHANT}:${COMGATE_SECRET}`).toString('base64')}`;
+}
 
+export async function createComgatePayment(params: CreatePaymentParams): Promise<{ redirectUrl: string, transId: string }> {
   try {
-    const response = await axios.post(`${COMGATE_BASE_URL}/create`, data.toString(), {
+    const payload = {
+      test: COMGATE_TEST,
+      country: 'CZ',
+      curr: 'CZK',
+      price: Math.round(params.price * 100), // v haléřích
+      refId: params.refId,
+      email: params.email,
+      label: params.label,
+      method: 'ALL',
+      // 'prepareOnly': true - optional parameter, ale Comgate ve standardu u v2.0 doporučuje, 
+      // my prostě přečteme redirect z odpovědi.
+    };
+
+    const response = await axios.post(`${COMGATE_BASE_URL}/payment.json`, payload, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
+        'Authorization': getComgateAuthHeader()
       },
     });
 
-    const result = new URLSearchParams(response.data);
+    const result = response.data;
     
-    if (result.get('code') === '0') {
-      const transId = result.get('transId');
+    if (result.code === 0) {
+      // transId je ve struktuře, redirect url může být v různých klíčích,
+      // většinou je to result.url_paid ale pokud to není zaplaceno (připravuje se) tak je to url nebo redirect
+      // Dle nové dokumentace by to mělo být v klíči `redirect` (nebo my můžeme ručně sestavit url)
+      // V dokumentaci V2.0 JSON je obvykle vrácena `redirect` nebo my složíme `https://payments.comgate.cz/client/instructions/index?id=${transId}`
+      const transId = result.transId;
       return {
-        redirectUrl: `https://payments.comgate.cz/client/instructions/index?id=${transId}`,
+        redirectUrl: result.redirect || `https://payments.comgate.cz/client/instructions/index?id=${transId}`,
         transId: transId as string
       };
     } else {
-      throw new Error(`Comgate Error: ${result.get('message')}`);
+      throw new Error(`Comgate Error: ${result.message}`);
     }
-  } catch (error) {
-    console.error('Comgate Create Payment Error:', error);
+  } catch (error: any) {
+    console.error('Comgate Create Payment Error:', error.response?.data || error.message);
+    if (error.response?.data?.message) {
+      throw new Error(`Comgate API Error: ${error.response.data.message}`);
+    }
     throw error;
   }
 }
 
 export async function checkComgatePayment(transId: string): Promise<string> {
-  const data = new URLSearchParams();
-  data.append('merchant', COMGATE_MERCHANT);
-  data.append('secret', COMGATE_SECRET);
-  data.append('transId', transId);
-
   try {
-    const response = await axios.post(`${COMGATE_BASE_URL}/status`, data.toString(), {
+    const response = await axios.get(`${COMGATE_BASE_URL}/payment/transId/${transId}.json`, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
+        'Authorization': getComgateAuthHeader()
       },
     });
 
-    const result = new URLSearchParams(response.data);
-    if (result.get('code') === '0') {
-      return result.get('status') || 'UNKNOWN';
+    const result = response.data;
+    if (result.code === 0) {
+      return result.status || 'UNKNOWN';
     } else {
-      throw new Error(`Comgate Status Error: ${result.get('message')}`);
+      throw new Error(`Comgate Status Error: ${result.message}`);
     }
-  } catch (error) {
-    console.error('Comgate Check Payment Error:', error);
+  } catch (error: any) {
+    console.error('Comgate Check Payment Error:', error.response?.data || error.message);
     throw error;
   }
 }
